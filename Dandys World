@@ -56,7 +56,7 @@ end
 
 local function pressSpacebar()
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, nil)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, nil)
+    VirtualInputManager:SendKeyEvent(false, KeyCode.Space, false, nil)
 end
 
 local function checkSkillCheck()
@@ -86,10 +86,12 @@ local function checkSkillCheck()
     end
 end
 
-local function notifyOnce(monsterModel, notification)
-    if not notifiedMonsters[monsterModel] then
+local function notifyOncePerEvent(monsterModel, eventName, notification)
+    local monsterEvents = notifiedMonsters[monsterModel] or {}
+    if not monsterEvents[eventName] then
         game.StarterGui:SetCore("SendNotification", notification)
-        notifiedMonsters[monsterModel] = true
+        monsterEvents[eventName] = true
+        notifiedMonsters[monsterModel] = monsterEvents
     end
 end
 
@@ -107,20 +109,21 @@ local function checkMonsterStatus()
                                 local alerted = chaserScript:FindFirstChild("Alerted")
                                 local chasing = chaserScript:FindFirstChild("Chasing")
                                 local wandering = chaserScript:FindFirstChild("Wandering")
+                                
                                 if alerted and alerted:IsA("BoolValue") and alerted.Value then
-                                    notifyOnce(monsterModel, {
+                                    notifyOncePerEvent(monsterModel, "Alerted", {
                                         Title = "Monster Alerter",
                                         Text = "A monster has been alerted!",
                                         Duration = 5
                                     })
                                 elseif chasing and chasing:IsA("BoolValue") and chasing.Value then
-                                    notifyOnce(monsterModel, {
+                                    notifyOncePerEvent(monsterModel, "Chasing", {
                                         Title = "Monster Alerter",
                                         Text = "You are being chased by a monster!",
                                         Duration = 5
                                     })
                                 elseif wandering and wandering:IsA("BoolValue") and wandering.Value then
-                                    notifyOnce(monsterModel, {
+                                    notifyOncePerEvent(monsterModel, "Wandering", {
                                         Title = "Monster Alerter",
                                         Text = monsterModel.Name .. " has stopped chasing you",
                                         Duration = 5
