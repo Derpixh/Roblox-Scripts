@@ -86,7 +86,7 @@ local function checkSkillCheck()
     end
 end
 
-local function notifyMultipleTimes(generatorModel, eventName, notification)
+local function notifyOncePerEvent(generatorModel, eventName, notification)
     if not notifiedGenerators[generatorModel] then
         notifiedGenerators[generatorModel] = {}
     end
@@ -94,9 +94,6 @@ local function notifyMultipleTimes(generatorModel, eventName, notification)
     if not notifiedGenerators[generatorModel][eventName] then
         game.StarterGui:SetCore("SendNotification", notification)
         notifiedGenerators[generatorModel][eventName] = true
-    elseif notifiedGenerators[generatorModel][eventName] then
-        -- Reset notification status to allow sending it multiple times
-        notifiedGenerators[generatorModel][eventName] = false
     end
 end
 
@@ -113,7 +110,7 @@ local function checkGeneratorStatus()
                             if playerCompletion then
                                 for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
                                     if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == "Havvokz" then
-                                        notifyMultipleTimes(generatorModel, "CompletionStarted", {
+                                        notifyOncePerEvent(generatorModel, "CompletionStarted", {
                                             Title = "Generator Completion",
                                             Text = "Extracting Ichor...",
                                             Duration = 5
@@ -123,7 +120,7 @@ local function checkGeneratorStatus()
                                         if stats then
                                             local completed = stats:FindFirstChild("Completed")
                                             if completed and completed:IsA("BoolValue") and completed.Value then
-                                                notifyMultipleTimes(generatorModel, "Completed", {
+                                                notifyOncePerEvent(generatorModel, "Completed", {
                                                     Title = "Generator Completed",
                                                     Text = "Extracted Ichor Success!",
                                                     Duration = 5
