@@ -3,6 +3,7 @@ local RunService = game:GetService("RunService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
+local notifiedMonsters = {}
 local notifiedGenerators = {}
 
 local function pressKey(keyCode)
@@ -86,15 +87,25 @@ local function checkSkillCheck()
     end
 end
 
-local function notifyOncePerEvent(generatorModel, eventName, notification)
-    if not notifiedGenerators[generatorModel] then
-        notifiedGenerators[generatorModel] = {}
+local function notifyOncePerEvent(model, eventName, notification)
+    if not notifiedGenerators[model] then
+        notifiedGenerators[model] = {}
     end
 
-    if not notifiedGenerators[generatorModel][eventName] then
+    if not notifiedGenerators[model][eventName] then
         game.StarterGui:SetCore("SendNotification", notification)
-        notifiedGenerators[generatorModel][eventName] = true
+        notifiedGenerators[model][eventName] = true
     end
+end
+
+local function notifyChasing(monsterModel, notification)
+    game.StarterGui:SetCore("SendNotification", notification)
+    notifiedMonsters[monsterModel] = true
+end
+
+local function notifyStopChasing(monsterModel, notification)
+    game.StarterGui:SetCore("SendNotification", notification)
+    notifiedMonsters[monsterModel] = nil
 end
 
 local function checkGeneratorStatus()
@@ -138,10 +149,48 @@ local function checkGeneratorStatus()
     end
 end
 
+local function checkMonsterStatus()
+    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                local monstersFolder = roomModel:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
+                        if monsterModel:IsA("Model") then
+                            local chasing = monsterModel:FindFirstChild("Chasing")
+                            local chasingValue = monsterModel:FindFirstChild("ChasingValue")
+                            
+                            if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
+                                if chasing.Value and chasingValue.Value == player then
+                                    if not notifiedMonsters[monsterModel] then
+                                        notifyChasing(monsterModel, {
+                                            Title = "Monster Alerter",
+                                            Text = monsterModel.Name .. " is chasing you",
+                                            Duration = 5
+                                        })
+                                    end
+                                elseif notifiedMonsters[monsterModel] and not chasing.Value then
+                                    notifyStopChasing(monsterModel, {
+                                        Title = "Monster Alerter",
+                                        Text = monsterModel.Name .. " is no longer chasing you",
+                                        Duration = 5
+                                    })
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 RunService.RenderStepped:Connect(function()
     checkSkillCheck()
     checkProximityPrompt()
     checkGeneratorStatus()
+    checkMonsterStatus()
 end)
 
 local function highlightModels(model, fillColor)
