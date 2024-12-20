@@ -1,0 +1,188 @@
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local notifiedMonsters = {}
+
+local function pressKey(keyCode)
+    VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
+    VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
+end
+
+local function isCharacterInFrontOfPrompt(promptPart)
+    local characterPosition = character.PrimaryPart.Position
+    local promptPosition = promptPart.Position
+    local distance = (characterPosition - promptPosition).Magnitude
+
+    return distance < 5 -- Distance threshold for "in front" detection
+end
+
+local function checkProximityPrompt()
+    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                for _, folderName in ipairs({"Items", "Generators"}) do
+                    local folder = roomModel:FindFirstChild(folderName)
+                    if folder then
+                        for _, itemModel in pairs(folder:GetChildren()) do
+                            if itemModel:IsA("Model") then
+                                local promptPart = itemModel:FindFirstChild("Prompt")
+                                if promptPart then
+                                    local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                                    if proximityPrompt and proximityPrompt.Enabled and not proximityPrompt:GetAttribute("pressed") then
+                                        if isCharacterInFrontOfPrompt(promptPart) then
+                                            pressKey(Enum.KeyCode.E)
+                                            proximityPrompt:SetAttribute("pressed", true)
+                                            -- Allow pressing E again after moving away and returning
+                                            RunService.Heartbeat:Connect(function()
+                                                if not isCharacterInFrontOfPrompt(promptPart) then
+                                                    proximityPrompt:SetAttribute("pressed", false)
+                                                end
+                                            end)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function pressSpacebar()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, nil)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, nil)
+end
+
+local function checkSkillCheck()
+    local playerGui = player:FindFirstChildOfClass("PlayerGui")
+    if playerGui then
+        local screenGui = playerGui:FindFirstChild("ScreenGui")
+        if screenGui then
+            local menuFrame = screenGui:FindFirstChild("Menu")
+            if menuFrame then
+                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                if skillCheckFrame then
+                    local marker = skillCheckFrame:FindFirstChild("Marker")
+                    local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
+
+                    if marker and goldArea then
+                        local markerPos = marker.AbsolutePosition
+                        local goldAreaPos = goldArea.AbsolutePosition
+                        local goldAreaSize = goldArea.AbsoluteSize
+
+                        if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
+                            pressSpacebar()
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function notifyOnce(monsterModel, notification)
+    if not notifiedMonsters[monsterModel] then
+        game.StarterGui:SetCore("SendNotification", notification)
+        notifiedMonsters[monsterModel] = true
+    end
+end
+
+local function checkMonsterStatus()
+    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                local monstersFolder = roomModel:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
+                        if monsterModel:IsA("Model") then
+                            local chaserScript = monsterModel:FindFirstChild("Chaser")
+                            if chaserScript then
+                                local alerted = chaserScript:FindFirstChild("Alerted")
+                                local chasing = chaserScript:FindFirstChild("Chasing")
+                                local lostInterest = chaserScript:FindFirstChild("LostInterest")
+                                if alerted and alerted:IsA("BoolValue") and alerted.Value then
+                                    notifyOnce(monsterModel, {
+                                        Title = "Monster Alerter",
+                                        Text = "A monster has been alerted!",
+                                        Duration = 5
+                                    })
+                                elseif chasing and chasing:IsA("BoolValue") and chasing.Value then
+                                    notifyOnce(monsterModel, {
+                                        Title = "Monster Alerter",
+                                        Text = "You are being chased by a monster!",
+                                        Duration = 5
+                                    })
+                                elseif lostInterest and lostInterest:IsA("BoolValue") and lostInterest.Value then
+                                    notifyOnce(monsterModel, {
+                                        Title = "Monster Alerter",
+                                        Text = monsterModel.Name .. " has stopped chasing you",
+                                        Duration = 5
+                                    })
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    checkSkillCheck()
+    checkProximityPrompt()
+    checkMonsterStatus()
+end)
+
+local function highlightModels(model, fillColor)
+    if not model:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.Parent = model
+        highlight.FillColor = fillColor
+        highlight.OutlineColor = Color3.new(1, 1, 1) -- White outline color
+    end
+end
+
+local function highlightContents(folder, fillColor)
+    if folder then
+        for _, child in pairs(folder:GetChildren()) do
+            if child:IsA("Model") then
+                highlightModels(child, fillColor)
+            end
+        end
+    end
+end
+
+local function checkAndHighlight()
+    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                -- Highlighting Generators (Orange)
+                local generatorsFolder = roomModel:FindFirstChild("Generators")
+                highlightContents(generatorsFolder, Color3.new(1, 0.5, 0))
+                
+                -- Highlighting Items (Green)
+                local itemsFolder = roomModel:FindFirstChild("Items")
+                highlightContents(itemsFolder, Color3.new(0, 1, 0))
+                
+                -- Highlighting Monsters (Red)
+                local monstersFolder = roomModel:FindFirstChild("Monsters")
+                highlightContents(monstersFolder, Color3.new(1, 0, 0))
+            end
+        end
+    end
+end
+
+while true do
+    checkAndHighlight()
+    wait(0.1)
+end
