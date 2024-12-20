@@ -97,6 +97,7 @@ local function notifyOncePerEvent(model, eventName, notification)
 end
 
 local function notifyGeneratorCompletion(generatorModel)
+    print("Sending generator completion notification")
     game.StarterGui:SetCore("SendNotification", {
         Title = "Generator Completion",
         Text = "Completing Generator...",
@@ -105,6 +106,7 @@ local function notifyGeneratorCompletion(generatorModel)
 end
 
 local function notifyGeneratorCompleted()
+    print("Sending generator completed notification")
     game.StarterGui:SetCore("SendNotification", {
         Title = "Generator Completion",
         Text = "Generator Has Been Completed",
