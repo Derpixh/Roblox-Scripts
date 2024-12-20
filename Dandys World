@@ -87,67 +87,14 @@ local function checkSkillCheck()
     end
 end
 
-local function notifyOncePerEvent(model, eventName, notification)
-    local modelEvents = notifiedMonsters[model] or {}
-    if not modelEvents[eventName] then
-        game.StarterGui:SetCore("SendNotification", notification)
-        modelEvents[eventName] = true
-        notifiedMonsters[model] = modelEvents
+local function notifyOnce(model, eventName, notification)
+    if not notifiedMonsters[model] then
+        notifiedMonsters[model] = {}
     end
-end
 
-local function notifyGeneratorCompletion(generatorModel)
-    print("Sending generator completion notification")
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Generator Completion",
-        Text = "Completing Generator...",
-        Duration = 5
-    })
-end
-
-local function notifyGeneratorCompleted()
-    print("Sending generator completed notification")
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Generator Completion",
-        Text = "Generator Has Been Completed",
-        Duration = 5
-    })
-end
-
-local function checkGeneratorStatus()
-    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
-    if currentRoomFolder then
-        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
-            if roomModel:IsA("Model") then
-                local generatorsFolder = roomModel:FindFirstChild("Generators")
-                if generatorsFolder then
-                    for _, generatorModel in pairs(generatorsFolder:GetChildren()) do
-                        if generatorModel:IsA("Model") then
-                            local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
-                            if playerCompletion then
-                                for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
-                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Value == player.UserId then
-                                        if not notifiedGenerators[generatorModel] then
-                                            notifyGeneratorCompletion(generatorModel)
-                                            notifiedGenerators[generatorModel] = true
-                                        end
-
-                                        local stats = generatorModel:FindFirstChild("Stats")
-                                        if stats then
-                                            local completed = stats:FindFirstChild("Completed")
-                                            if completed and completed:IsA("BoolValue") and completed.Value then
-                                                notifyGeneratorCompleted()
-                                                notifiedGenerators[generatorModel] = nil -- Reset to allow future notifications
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
+    if not notifiedMonsters[model][eventName] then
+        game.StarterGui:SetCore("SendNotification", notification)
+        notifiedMonsters[model][eventName] = true
     end
 end
 
@@ -165,14 +112,59 @@ local function checkMonsterStatus()
                             
                             if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("StringValue") then
                                 if chasing.Value and chasingValue.Value == player.Name then
-                                    notifyOncePerEvent(monsterModel, "Chasing", {
+                                    notifyOnce(monsterModel, "Chasing", {
                                         Title = "Monster Alerter",
                                         Text = "The " .. monsterModel.Name .. " has started chasing you",
                                         Duration = 5
                                     })
-                                elseif notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] and chasingValue.Value ~= player.Name then
-                                    notifyStopChasing(monsterModel)
+                                elseif not chasing.Value and notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] and chasingValue.Value == player.Name then
+                                    notifyOnce(monsterModel, "StoppedChasing", {
+                                        Title = "Monster Alerter",
+                                        Text = "The " .. monsterModel.Name .. " has stopped chasing you",
+                                        Duration = 5
+                                    })
                                     notifiedMonsters[monsterModel]["Chasing"] = nil -- Reset to allow future notifications
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function checkGeneratorStatus()
+    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                local generatorsFolder = roomModel:FindFirstChild("Generators")
+                if generatorsFolder then
+                    for _, generatorModel in pairs(generatorsFolder:GetChildren()) do
+                        if generatorModel:IsA("Model") then
+                            local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
+                            if playerCompletion then
+                                for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
+                                    if playerCompletionValue:IsA("NumberValue") and tostring(playerCompletionValue.Value) == player.UserId then
+                                        notifyOnce(generatorModel, "CompletionStarted", {
+                                            Title = "Generator Completion",
+                                            Text = "Completing Generator...",
+                                            Duration = 5
+                                        })
+
+                                        local stats = generatorModel:FindFirstChild("Stats")
+                                        if stats then
+                                            local completed = stats:FindFirstChild("Completed")
+                                            if completed and completed:IsA("BoolValue") and completed.Value then
+                                                notifyOnce(generatorModel, "Completed", {
+                                                    Title = "Generator Completion",
+                                                    Text = "Generator Has Been Completed",
+                                                    Duration = 5
+                                                })
+                                            end
+                                        end
+                                    end
                                 end
                             end
                         end
