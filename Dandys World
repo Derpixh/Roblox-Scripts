@@ -162,7 +162,7 @@ local function checkMonsterStatus()
                             local chasingValue = monsterModel:FindFirstChild("ChasingValue")
                             
                             if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
-                                if chasing.Value and chasingValue.Value == player then
+                                if chasing.Value and chasingValue.Value and chasingValue.Value.Name == "Havvokz" then
                                     if not notifiedMonsters[monsterModel] then
                                         notifyChasing(monsterModel, {
                                             Title = "Monster Alerter",
