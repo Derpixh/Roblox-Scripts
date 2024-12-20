@@ -4,7 +4,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedMonsters = {}
-local stopChasingNotifications = {}
 
 local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
@@ -97,14 +96,11 @@ local function notifyOncePerEvent(monsterModel, eventName, notification)
 end
 
 local function notifyStopChasing(monsterModel)
-    if not stopChasingNotifications[monsterModel] then
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Monster Alerter",
-            Text = monsterModel.Name .. " has stopped chasing you",
-            Duration = 5
-        })
-        stopChasingNotifications[monsterModel] = true
-    end
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Monster Alerter",
+        Text = "The " .. monsterModel.Name .. " has stopped chasing you",
+        Duration = 5
+    })
 end
 
 local function checkMonsterStatus()
@@ -118,17 +114,18 @@ local function checkMonsterStatus()
                         if monsterModel:IsA("Model") then
                             local chaserScript = monsterModel:FindFirstChild("Chaser")
                             if chaserScript then
-                                local alerted = chaserScript:FindFirstChild("Alerted")
+                                local chasing = chaserScript:FindFirstChild("Chasing")
                                 
-                                if alerted and alerted:IsA("BoolValue") then
-                                    if alerted.Value then
-                                        notifyOncePerEvent(monsterModel, "Alerted", {
+                                if chasing and chasing:IsA("BoolValue") then
+                                    if chasing.Value then
+                                        notifyOncePerEvent(monsterModel, "Chasing", {
                                             Title = "Monster Alerter",
-                                            Text = "A monster has been alerted!",
+                                            Text = "The " .. monsterModel.Name .. " has started chasing you",
                                             Duration = 5
                                         })
-                                    else
+                                    elseif notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] then
                                         notifyStopChasing(monsterModel)
+                                        notifiedMonsters[monsterModel]["Chasing"] = nil -- Reset to allow future notifications
                                     end
                                 end
                             end
