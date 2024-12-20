@@ -124,7 +124,7 @@ local function checkGeneratorStatus()
                             local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
                             if playerCompletion then
                                 for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
-                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Value == player.Name then
+                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Value == player.UserId then
                                         if not notifiedGenerators[generatorModel] then
                                             notifyGeneratorCompletion(generatorModel)
                                             notifiedGenerators[generatorModel] = true
