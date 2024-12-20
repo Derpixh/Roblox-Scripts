@@ -112,21 +112,19 @@ local function checkMonsterStatus()
                 if monstersFolder then
                     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
                         if monsterModel:IsA("Model") then
-                            local chaserScript = monsterModel:FindFirstChild("Chaser")
-                            if chaserScript then
-                                local chasing = chaserScript:FindFirstChild("Chasing")
-                                
-                                if chasing and chasing:IsA("BoolValue") then
-                                    if chasing.Value then
-                                        notifyOncePerEvent(monsterModel, "Chasing", {
-                                            Title = "Monster Alerter",
-                                            Text = "The " .. monsterModel.Name .. " has started chasing you",
-                                            Duration = 5
-                                        })
-                                    elseif notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] then
-                                        notifyStopChasing(monsterModel)
-                                        notifiedMonsters[monsterModel]["Chasing"] = nil -- Reset to allow future notifications
-                                    end
+                            local chasing = monsterModel:FindFirstChild("Chasing")
+                            local chasingValue = monsterModel:FindFirstChild("ChasingValue")
+                            
+                            if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("StringValue") then
+                                if chasing.Value and chasingValue.Value == player.Name then
+                                    notifyOncePerEvent(monsterModel, "Chasing", {
+                                        Title = "Monster Alerter",
+                                        Text = "The " .. monsterModel.Name .. " has started chasing you",
+                                        Duration = 5
+                                    })
+                                elseif notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] and chasingValue.Value ~= player.Name then
+                                    notifyStopChasing(monsterModel)
+                                    notifiedMonsters[monsterModel]["Chasing"] = nil -- Reset to allow future notifications
                                 end
                             end
                         end
