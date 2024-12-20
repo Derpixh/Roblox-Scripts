@@ -3,7 +3,6 @@ local RunService = game:GetService("RunService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
-local notifiedMonsters = {}
 local notifiedGenerators = {}
 
 local function pressKey(keyCode)
@@ -87,50 +86,17 @@ local function checkSkillCheck()
     end
 end
 
-local function notifyOnce(model, eventName, notification)
-    if not notifiedMonsters[model] then
-        notifiedMonsters[model] = {}
+local function notifyMultipleTimes(generatorModel, eventName, notification)
+    if not notifiedGenerators[generatorModel] then
+        notifiedGenerators[generatorModel] = {}
     end
 
-    if not notifiedMonsters[model][eventName] then
+    if not notifiedGenerators[generatorModel][eventName] then
         game.StarterGui:SetCore("SendNotification", notification)
-        notifiedMonsters[model][eventName] = true
-    end
-end
-
-local function checkMonsterStatus()
-    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
-    if currentRoomFolder then
-        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
-            if roomModel:IsA("Model") then
-                local monstersFolder = roomModel:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
-                        if monsterModel:IsA("Model") then
-                            local chasing = monsterModel:FindFirstChild("Chasing")
-                            local chasingValue = monsterModel:FindFirstChild("ChasingValue")
-                            
-                            if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("StringValue") then
-                                if chasing.Value and chasingValue.Value == player.Name then
-                                    notifyOnce(monsterModel, "Chasing", {
-                                        Title = "Monster Alerter",
-                                        Text = "The " .. monsterModel.Name .. " has started chasing you",
-                                        Duration = 5
-                                    })
-                                elseif not chasing.Value and notifiedMonsters[monsterModel] and notifiedMonsters[monsterModel]["Chasing"] and chasingValue.Value == player.Name then
-                                    notifyOnce(monsterModel, "StoppedChasing", {
-                                        Title = "Monster Alerter",
-                                        Text = "The " .. monsterModel.Name .. " has stopped chasing you",
-                                        Duration = 5
-                                    })
-                                    notifiedMonsters[monsterModel]["Chasing"] = nil -- Reset to allow future notifications
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
+        notifiedGenerators[generatorModel][eventName] = true
+    elseif notifiedGenerators[generatorModel][eventName] then
+        -- Reset notification status to allow sending it multiple times
+        notifiedGenerators[generatorModel][eventName] = false
     end
 end
 
@@ -146,10 +112,10 @@ local function checkGeneratorStatus()
                             local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
                             if playerCompletion then
                                 for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
-                                    if playerCompletionValue:IsA("NumberValue") and tostring(playerCompletionValue.Value) == player.UserId then
-                                        notifyOnce(generatorModel, "CompletionStarted", {
+                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == "Havvokz" then
+                                        notifyMultipleTimes(generatorModel, "CompletionStarted", {
                                             Title = "Generator Completion",
-                                            Text = "Completing Generator...",
+                                            Text = "Extracting Ichor...",
                                             Duration = 5
                                         })
 
@@ -157,9 +123,9 @@ local function checkGeneratorStatus()
                                         if stats then
                                             local completed = stats:FindFirstChild("Completed")
                                             if completed and completed:IsA("BoolValue") and completed.Value then
-                                                notifyOnce(generatorModel, "Completed", {
-                                                    Title = "Generator Completion",
-                                                    Text = "Generator Has Been Completed",
+                                                notifyMultipleTimes(generatorModel, "Completed", {
+                                                    Title = "Generator Completed",
+                                                    Text = "Extracted Ichor Success!",
                                                     Duration = 5
                                                 })
                                             end
@@ -178,7 +144,6 @@ end
 RunService.RenderStepped:Connect(function()
     checkSkillCheck()
     checkProximityPrompt()
-    checkMonsterStatus()
     checkGeneratorStatus()
 end)
 
