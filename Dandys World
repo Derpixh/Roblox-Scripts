@@ -5,6 +5,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedGenerators = {}
 local notifiedMonsters = {}
+local debounce = false
 
 local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
@@ -25,6 +26,9 @@ local function isCharacterInFrontOfPrompt(promptPart)
 end
 
 local function checkProximityPrompt()
+    if debounce then return end
+    debounce = true
+    
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     
     if currentRoomFolder then
@@ -42,6 +46,7 @@ local function checkProximityPrompt()
                                     if proximityPrompt and proximityPrompt.Enabled then
                                         if isCharacterInFrontOfPrompt(promptPart) then
                                             pressKey(Enum.KeyCode.E)
+                                            task.wait(0.5) -- Wait 500 milliseconds before pressing E again
                                         end
                                     end
                                 end
@@ -52,6 +57,8 @@ local function checkProximityPrompt()
             end
         end
     end
+    
+    debounce = false
 end
 
 local function pressSpacebar()
@@ -94,6 +101,17 @@ local function notifyOncePerEvent(model, eventName, notification)
     if not notifiedGenerators[model][eventName] then
         game.StarterGui:SetCore("SendNotification", notification)
         notifiedGenerators[model][eventName] = true
+    end
+end
+
+local function notifyOncePerMonster(monsterModel, eventName, notification)
+    if not notifiedMonsters[monsterModel] then
+        notifiedMonsters[monsterModel] = {}
+    end
+
+    if not notifiedMonsters[monsterModel][eventName] then
+        game.StarterGui:SetCore("SendNotification", notification)
+        notifiedMonsters[monsterModel][eventName] = true
     end
 end
 
@@ -152,21 +170,19 @@ local function checkMonsterStatus()
                             
                             if chaserScript and chasing and chasing:IsA("BoolValue") then
                                 if chasing.Value then
-                                    if not notifiedMonsters[monsterModel] then
-                                        game.StarterGui:SetCore("SendNotification", {
-                                            Title = "Monster Alerter",
-                                            Text = monsterModel.Name .. " is currently chasing you, find a hiding spot!",
-                                            Duration = 5
-                                        })
-                                        notifiedMonsters[monsterModel] = true
-                                    end
-                                elseif notifiedMonsters[monsterModel] and not chasing.Value then
-                                    game.StarterGui:SetCore("SendNotification", {
+                                    notifyOncePerMonster(monsterModel, "Chasing", {
+                                        Title = "Monster Alerter",
+                                        Text = monsterModel.Name .. " is currently chasing you, find a hiding spot!",
+                                        Duration = 5
+                                    })
+                                elseif not chasing.Value then
+                                    notifyOncePerMonster(monsterModel, "StoppedChasing", {
                                         Title = "Monster Alerter",
                                         Text = monsterModel.Name .. " has stopped chasing you",
                                         Duration = 5
                                     })
-                                    notifiedMonsters[monsterModel] = nil
+                                    notifiedMonsters[monsterModel]["Chasing"] = nil
+                                    notifiedMonsters[monsterModel]["StoppedChasing"] = nil
                                 end
                             end
                         end
