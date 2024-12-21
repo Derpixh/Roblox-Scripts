@@ -170,23 +170,25 @@ local function checkMonsterStatus()
                             local chasingValue = monsterModel:FindFirstChild("ChasingValue")
                             
                             if chaserScript and chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
-                                if chasingValue.Value and chasingValue.Value.Name == "Havvokz" then
-                                    if chasing.Value then
-                                        notifyOncePerMonster(monsterModel, "Chasing", {
-                                            Title = "Monster Alerter",
-                                            Text = monsterModel.Name .. " is currently chasing you, find a hiding spot!",
-                                            Duration = 5
-                                        })
-                                    elseif not chasing.Value and not chasingValue.Value then
-                                        notifyOncePerMonster(monsterModel, "StoppedChasing", {
-                                            Title = "Monster Alerter",
-                                            Text = monsterModel.Name .. " has stopped chasing you",
-                                            Duration = 5
-                                        })
-                                        notifiedMonsters[monsterModel]["Chasing"] = nil
-                                        notifiedMonsters[monsterModel]["StoppedChasing"] = nil
+                                RunService.Heartbeat:Connect(function()
+                                    if chasingValue.Value and chasingValue.Value.Name == "Havvokz" then
+                                        if chasing.Value then
+                                            notifyOncePerMonster(monsterModel, "Chasing", {
+                                                Title = "Monster Alerter",
+                                                Text = monsterModel.Name .. " is currently chasing you, find a hiding spot!",
+                                                Duration = 5
+                                            })
+                                        elseif not chasing.Value and not chasingValue.Value then
+                                            notifyOncePerMonster(monsterModel, "StoppedChasing", {
+                                                Title = "Monster Alerter",
+                                                Text = monsterModel.Name .. " has stopped chasing you",
+                                                Duration = 5
+                                            })
+                                            notifiedMonsters[monsterModel]["Chasing"] = nil
+                                            notifiedMonsters[monsterModel]["StoppedChasing"] = nil
+                                        end
                                     end
-                                end
+                                end)
                             end
                         end
                     end
