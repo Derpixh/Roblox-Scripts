@@ -15,23 +15,18 @@ local function sendPickupNotification(itemName)
     local words = itemName:split(" ")
     local secondWord = words[2] or itemName
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Item Picked Up",
-        Text = secondWord .. " has been picked up",
+        Title = "Auto Item Collector",
+        Text = secondWord .. " has been collected",
         Duration = 5
     })
 end
 
-local function isCharacterInFrontOfPrompt(promptPart)
+local function isCharacterNearPrompt(promptPart)
     local characterPosition = character.PrimaryPart.Position
     local promptPosition = promptPart.Position
     local distance = (characterPosition - promptPosition).Magnitude
-    local direction = (promptPosition - characterPosition).Unit
-    local forwardVector = character.PrimaryPart.CFrame.LookVector
 
-    local angle = math.acos(forwardVector:Dot(direction))
-    local angleThreshold = math.rad(30) -- 30 degrees angle threshold
-
-    return distance < 5 and angle < angleThreshold
+    return distance < 5
 end
 
 local function checkProximityPrompt()
@@ -52,7 +47,7 @@ local function checkProximityPrompt()
                             if promptPart then
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
                                 if proximityPrompt and proximityPrompt.Enabled then
-                                    if isCharacterInFrontOfPrompt(promptPart) then
+                                    if isCharacterNearPrompt(promptPart) then
                                         pressKey(Enum.KeyCode.E)
                                         sendPickupNotification(itemModel.Name)
                                         notifiedItems[itemModel] = true
