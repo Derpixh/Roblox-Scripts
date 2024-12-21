@@ -203,7 +203,7 @@ local function highlightContents(folder, fillColor)
     end
 end
 
-local function highlightItemsAndMonsters()
+local function highlightItemsMonstersGenerators()
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     
     if currentRoomFolder then
@@ -216,14 +216,17 @@ local function highlightItemsAndMonsters()
                 -- Highlighting Monsters (Red)
                 local monstersFolder = roomModel:FindFirstChild("Monsters")
                 highlightContents(monstersFolder, Color3.new(1, 0, 0))
+
+                -- Highlighting Generators (Orange)
+                local generatorsFolder = roomModel:FindFirstChild("Generators")
+                highlightContents(generatorsFolder, Color3.new(1, 0.5, 0))
             end
         end
     end
 end
 
 while true do
-    checkAndHighlight()
     checkProximityPrompt()
-    highlightItemsAndMonsters()
+    highlightItemsMonstersGenerators()
     wait(0.1)
 end
