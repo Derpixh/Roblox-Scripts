@@ -4,7 +4,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedGenerators = {}
-local notifiedMonsters = {}
 local debounce = false
 
 local function pressKey(keyCode)
@@ -46,7 +45,7 @@ local function checkProximityPrompt()
                                     if proximityPrompt and proximityPrompt.Enabled then
                                         if isCharacterInFrontOfPrompt(promptPart) then
                                             pressKey(Enum.KeyCode.E)
-                                            task.wait(0.5) -- Wait 500 milliseconds before pressing E again
+                                            task.wait(0.25) -- Wait 250 milliseconds before pressing E again
                                         end
                                     end
                                 end
@@ -104,17 +103,6 @@ local function notifyOncePerEvent(model, eventName, notification)
     end
 end
 
-local function notifyOncePerMonster(monsterModel, eventName, notification)
-    if not notifiedMonsters[monsterModel] then
-        notifiedMonsters[monsterModel] = {}
-    end
-
-    if not notifiedMonsters[monsterModel][eventName] then
-        game.StarterGui:SetCore("SendNotification", notification)
-        notifiedMonsters[monsterModel][eventName] = true
-    end
-end
-
 local function checkGeneratorStatus()
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     if currentRoomFolder then
@@ -156,43 +144,10 @@ local function checkGeneratorStatus()
     end
 end
 
-local function checkMonsterStatus()
-    local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
-    if currentRoomFolder then
-        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
-            if roomModel:IsA("Model") then
-                local monstersFolder = roomModel:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
-                        if monsterModel:IsA("Model") then
-                            local chasingValue = monsterModel:FindFirstChild("ChasingValue")
-                            local chasing = monsterModel:FindFirstChild("Chasing")
-                            
-                            if chasingValue and chasingValue:IsA("ObjectValue") and chasing and chasing:IsA("BoolValue") then
-                                RunService.Heartbeat:Connect(function()
-                                    if chasingValue.Value and chasingValue.Value.Name == player.Name and chasing.Value then
-                                        local monsterName = monsterModel.Name:gsub("Monster", "")
-                                        notifyOncePerMonster(monsterModel, "Chasing", {
-                                            Title = "Monster Alerter",
-                                            Text = monsterName .. " is currently chasing you",
-                                            Duration = 5
-                                        })
-                                    end
-                                end)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
 RunService.RenderStepped:Connect(function()
     checkSkillCheck()
     checkProximityPrompt()
     checkGeneratorStatus()
-    checkMonsterStatus()
 end)
 
 local function highlightModels(model, fillColor)
