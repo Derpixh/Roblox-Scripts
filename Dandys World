@@ -158,11 +158,12 @@ local function checkMonsterStatus()
                 if monstersFolder then
                     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
                         if monsterModel:IsA("Model") then
-                            local chasing = monsterModel:FindFirstChild("Chasing")
+                            local chaserScript = monsterModel:FindFirstChild("Chaser")
                             local chasingValue = monsterModel:FindFirstChild("ChasingValue")
                             
-                            if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
-                                if chasing.Value and chasingValue.Value and chasingValue.Value.Name == player.Name then
+                            if chaserScript and chaserScript:IsA("Script") and chasingValue and chasingValue:IsA("ObjectValue") then
+                                local isChasing = chaserScript:FindFirstChild("Value")
+                                if isChasing and isChasing.Value and chasingValue.Value and chasingValue.Value.Name == player.Name then
                                     if not notifiedMonsters[monsterModel] then
                                         notifyChasing(monsterModel, {
                                             Title = "Monster Alerter",
@@ -170,7 +171,7 @@ local function checkMonsterStatus()
                                             Duration = 5
                                         })
                                     end
-                                elseif notifiedMonsters[monsterModel] and not chasing.Value then
+                                elseif notifiedMonsters[monsterModel] and not isChasing.Value then
                                     notifyStopChasing(monsterModel, {
                                         Title = "Monster Alerter",
                                         Text = monsterModel.Name .. " is no longer chasing you",
