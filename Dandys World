@@ -100,13 +100,15 @@ local function checkSkillCheck()
                 local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
 
                 if marker and goldArea then
-                    local markerPos = marker.AbsolutePosition
-                    local goldAreaPos = goldArea.AbsolutePosition
-                    local goldAreaSize = goldArea.AbsoluteSize
+                    RunService.RenderStepped:Connect(function()
+                        local markerPos = marker.AbsolutePosition
+                        local goldAreaPos = goldArea.AbsolutePosition
+                        local goldAreaSize = goldArea.AbsoluteSize
 
-                    if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
-                        pressSpacebar()
-                    end
+                        if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
+                            pressSpacebar()
+                        end
+                    end)
                 end
             end
         end
