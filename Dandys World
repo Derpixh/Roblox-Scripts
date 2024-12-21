@@ -4,7 +4,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedItems = {}
-local notifiedGenerators = {}
 local debounce = false
 
 local function pressKey(keyCode)
@@ -63,15 +62,19 @@ local function checkProximityPrompt()
                 local generatorsFolder = roomModel:FindFirstChild("Generators")
                 if generatorsFolder then
                     for _, generatorModel in pairs(generatorsFolder:GetChildren()) do
-                        if generatorModel:IsA("Model") and not notifiedGenerators[generatorModel] then
+                        if generatorModel:IsA("Model") and not notifiedItems[generatorModel] then
                             local promptPart = generatorModel:FindFirstChild("Prompt")
                             if promptPart then
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
                                 if proximityPrompt and proximityPrompt.Enabled then
                                     if isCharacterNearPrompt(promptPart) then
-                                        task.wait(0.075) -- 75 milliseconds delay before pressing E
-                                        pressKey(Enum.KeyCode.E)
-                                        notifiedGenerators[generatorModel] = true
+                                        task.defer(function()
+                                            while proximityPrompt.Enabled and isCharacterNearPrompt(promptPart) do
+                                                pressKey(Enum.KeyCode.E)
+                                                task.wait(0.075) -- 75 milliseconds delay
+                                            end
+                                        end)
+                                        notifiedItems[generatorModel] = true
                                     end
                                 end
                             end
