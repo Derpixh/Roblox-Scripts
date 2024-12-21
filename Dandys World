@@ -69,6 +69,7 @@ local function checkProximityPrompt()
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
                                 if proximityPrompt and proximityPrompt.Enabled then
                                     if isCharacterNearPrompt(promptPart) then
+                                        task.wait(0.075) -- 75 milliseconds delay before pressing E
                                         pressKey(Enum.KeyCode.E)
                                         notifiedGenerators[generatorModel] = true
                                     end
