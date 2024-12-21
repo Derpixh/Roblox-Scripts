@@ -15,8 +15,13 @@ local function isCharacterInFrontOfPrompt(promptPart)
     local characterPosition = character.PrimaryPart.Position
     local promptPosition = promptPart.Position
     local distance = (characterPosition - promptPosition).Magnitude
+    local direction = (promptPosition - characterPosition).Unit
+    local forwardVector = character.PrimaryPart.CFrame.LookVector
 
-    return distance < 5 -- Distance threshold for "in front" detection
+    local angle = math.acos(forwardVector:Dot(direction))
+    local angleThreshold = math.rad(30) -- 30 degrees angle threshold
+
+    return distance < 5 and angle < angleThreshold
 end
 
 local function checkProximityPrompt()
@@ -25,25 +30,23 @@ local function checkProximityPrompt()
     if currentRoomFolder then
         for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
-                for _, folderName in ipairs({"Items", "Generators"}) do
-                    local folder = roomModel:FindFirstChild(folderName)
-                    if folder then
-                        for _, itemModel in pairs(folder:GetChildren()) do
-                            if itemModel:IsA("Model") then
-                                local promptPart = itemModel:FindFirstChild("Prompt")
-                                if promptPart then
-                                    local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-                                    if proximityPrompt and proximityPrompt.Enabled and not proximityPrompt:GetAttribute("pressed") then
-                                        if isCharacterInFrontOfPrompt(promptPart) then
-                                            pressKey(Enum.KeyCode.E)
-                                            proximityPrompt:SetAttribute("pressed", true)
-                                            -- Allow pressing E again after moving away and returning
-                                            RunService.Heartbeat:Connect(function()
-                                                if not isCharacterInFrontOfPrompt(promptPart) then
-                                                    proximityPrompt:SetAttribute("pressed", false)
-                                                end
-                                            end)
-                                        end
+                local itemsFolder = roomModel:FindFirstChild("Items")
+                if itemsFolder then
+                    for _, itemModel in pairs(itemsFolder:GetChildren()) do
+                        if itemModel:IsA("Model") then
+                            local promptPart = itemModel:FindFirstChild("Prompt")
+                            if promptPart then
+                                local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                                if proximityPrompt and proximityPrompt.Enabled and not proximityPrompt:GetAttribute("pressed") then
+                                    if isCharacterInFrontOfPrompt(promptPart) then
+                                        pressKey(Enum.KeyCode.E)
+                                        proximityPrompt:SetAttribute("pressed", true)
+                                        -- Allow pressing E again after moving away and returning
+                                        RunService.Heartbeat:Connect(function()
+                                            if not isCharacterInFrontOfPrompt(promptPart) then
+                                                proximityPrompt:SetAttribute("pressed", false)
+                                            end
+                                        end)
                                     end
                                 end
                             end
