@@ -165,17 +165,18 @@ local function checkMonsterStatus()
                 if monstersFolder then
                     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
                         if monsterModel:IsA("Model") then
+                            local chasingValue = monsterModel:FindFirstChild("ChasingValue")
                             local chasing = monsterModel:FindFirstChild("Chasing")
                             
-                            if chasing and chasing:IsA("BoolValue") then
+                            if chasingValue and chasingValue:IsA("ObjectValue") and chasing and chasing:IsA("BoolValue") then
                                 RunService.Heartbeat:Connect(function()
-                                    if chasing.Value then
+                                    if chasingValue.Value and chasingValue.Value.Name == player.Name then
                                         notifyOncePerMonster(monsterModel, "Chasing", {
                                             Title = "Monster Alerter",
                                             Text = "Monster is currently chasing you",
                                             Duration = 5
                                         })
-                                    elseif not chasing.Value then
+                                    elseif not chasingValue.Value then
                                         notifyOncePerMonster(monsterModel, "StoppedChasing", {
                                             Title = "Monster Alerter",
                                             Text = "Monster is no longer chasing you",
