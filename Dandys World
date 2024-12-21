@@ -4,7 +4,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedItems = {}
-local notifiedGenerators = {}
 local debounce = false
 
 local function pressKey(keyCode)
@@ -69,7 +68,7 @@ local function checkProximityPrompt()
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
                                 if proximityPrompt and proximityPrompt.Enabled then
                                     if isCharacterNearPrompt(promptPart) then
-                                        task.wait(0.075) -- 75 milliseconds delay before pressing E
+                                        task.wait(0.1) -- 100 milliseconds delay before pressing E
                                         pressKey(Enum.KeyCode.E)
                                     end
                                 end
@@ -92,7 +91,7 @@ end
 local function checkSkillCheck()
     local playerGui = player:FindFirstChildOfClass("PlayerGui")
     if playerGui then
-        local screenGui = playerGui:FindFirstChild("ScreenGui")
+        local screenGui = player:FindFirstChild("ScreenGui")
         if screenGui then
             local skillCheckFrame = screenGui:FindFirstChild("SkillCheckFrame")
             if skillCheckFrame then
