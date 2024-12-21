@@ -120,6 +120,8 @@ local function checkSkillCheck()
     end
 end
 
+local notifiedGenerators = {}
+
 local function notifyOncePerEvent(model, eventName, notification)
     if not notifiedGenerators[model] then
         notifiedGenerators[model] = {}
@@ -143,7 +145,7 @@ local function checkGeneratorStatus()
                             local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
                             if playerCompletion then
                                 for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
-                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == "Havvokz" then
+                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == player.Name then
                                         notifyOncePerEvent(generatorModel, "CompletionStarted", {
                                             Title = "Generator Completion",
                                             Text = "Extracting Ichor...",
