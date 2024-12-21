@@ -35,9 +35,6 @@ local function isCharacterInFrontOfPrompt(promptPart)
 end
 
 local function checkProximityPrompt()
-    if debounce then return end
-    debounce = true
-    
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     
     if currentRoomFolder then
@@ -69,8 +66,6 @@ local function checkProximityPrompt()
             end
         end
     end
-    
-    debounce = false
 end
 
 local function pressSpacebar()
