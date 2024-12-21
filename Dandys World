@@ -54,7 +54,9 @@ local function checkProximityPrompt()
                                         if isCharacterInFrontOfPrompt(promptPart) then
                                             pressKey(Enum.KeyCode.E)
                                             task.wait(0.25) -- Wait 250 milliseconds before pressing E again
-                                            sendPickupNotification(itemModel.Name)
+                                            if folderName == "Items" then
+                                                sendPickupNotification(itemModel.Name)
+                                            end
                                         end
                                     end
                                 end
