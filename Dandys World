@@ -11,6 +11,14 @@ local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
 end
 
+local function sendPickupNotification(itemName)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Item Picked Up",
+        Text = itemName .. " has been picked up",
+        Duration = 5
+    })
+end
+
 local function isCharacterInFrontOfPrompt(promptPart)
     local characterPosition = character.PrimaryPart.Position
     local promptPosition = promptPart.Position
@@ -46,6 +54,7 @@ local function checkProximityPrompt()
                                         if isCharacterInFrontOfPrompt(promptPart) then
                                             pressKey(Enum.KeyCode.E)
                                             task.wait(0.25) -- Wait 250 milliseconds before pressing E again
+                                            sendPickupNotification(itemModel.Name)
                                         end
                                     end
                                 end
