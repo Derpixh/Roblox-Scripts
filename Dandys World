@@ -70,8 +70,8 @@ local function checkProximityPrompt()
                                     if isCharacterNearPrompt(promptPart) then
                                         task.defer(function()
                                             while proximityPrompt.Enabled and isCharacterNearPrompt(promptPart) do
+                                                task.wait(0.1) -- 100 milliseconds delay
                                                 pressKey(Enum.KeyCode.E)
-                                                task.wait(0.075) -- 75 milliseconds delay
                                             end
                                         end)
                                         notifiedItems[generatorModel] = true
