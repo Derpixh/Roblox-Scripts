@@ -148,11 +148,10 @@ local function checkMonsterStatus()
                 if monstersFolder then
                     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
                         if monsterModel:IsA("Model") then
-                            local chaserScript = monsterModel:FindFirstChildOfClass("Script")
                             local chasing = monsterModel:FindFirstChild("Chasing")
                             local chasingValue = monsterModel:FindFirstChild("ChasingValue")
                             
-                            if chaserScript and chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
+                            if chasing and chasing:IsA("BoolValue") and chasingValue and chasingValue:IsA("ObjectValue") then
                                 if chasing.Value and chasingValue.Value and chasingValue.Value.Name == player.Name then
                                     if not notifiedMonsters[monsterModel] then
                                         game.StarterGui:SetCore("SendNotification", {
@@ -162,7 +161,7 @@ local function checkMonsterStatus()
                                         })
                                         notifiedMonsters[monsterModel] = true
                                     end
-                                elseif notifiedMonsters[monsterModel] and (not chasing.Value or chasingValue.Value == nil) then
+                                elseif notifiedMonsters[monsterModel] and (not chasing.Value or chasingValue.Value == nil or chasingValue.Value.Name ~= player.Name) then
                                     game.StarterGui:SetCore("SendNotification", {
                                         Title = "Monster Alerter",
                                         Text = monsterModel.Name .. " has stopped chasing you",
