@@ -160,7 +160,7 @@ local function checkMonsterStatus()
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     if currentRoomFolder then
         for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
-            if roomModel:IsA("Model") and roomModel.Name:find("Monster") then
+            if roomModel:IsA("Model") then
                 local monstersFolder = roomModel:FindFirstChild("Monsters")
                 if monstersFolder then
                     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
