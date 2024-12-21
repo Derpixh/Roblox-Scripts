@@ -71,7 +71,6 @@ local function checkProximityPrompt()
                                     if isCharacterNearPrompt(promptPart) then
                                         task.wait(0.075) -- 75 milliseconds delay before pressing E
                                         pressKey(Enum.KeyCode.E)
-                                        notifiedGenerators[generatorModel] = true
                                     end
                                 end
                             end
@@ -93,23 +92,20 @@ end
 local function checkSkillCheck()
     local playerGui = player:FindFirstChildOfClass("PlayerGui")
     if playerGui then
-        local screenGui = player:FindFirstChild("ScreenGui")
+        local screenGui = playerGui:FindFirstChild("ScreenGui")
         if screenGui then
-            local menuFrame = screenGui:FindFirstChild("Menu")
-            if menuFrame then
-                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
-                if skillCheckFrame then
-                    local marker = skillCheckFrame:FindFirstChild("Marker")
-                    local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
+            local skillCheckFrame = screenGui:FindFirstChild("SkillCheckFrame")
+            if skillCheckFrame then
+                local marker = skillCheckFrame:FindFirstChild("Marker")
+                local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
 
-                    if marker and goldArea then
-                        local markerPos = marker.AbsolutePosition
-                        local goldAreaPos = goldArea.AbsolutePosition
-                        local goldAreaSize = goldArea.AbsoluteSize
+                if marker and goldArea then
+                    local markerPos = marker.AbsolutePosition
+                    local goldAreaPos = goldArea.AbsolutePosition
+                    local goldAreaSize = goldArea.AbsoluteSize
 
-                        if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
-                            pressSpacebar()
-                        end
+                    if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
+                        pressSpacebar()
                     end
                 end
             end
