@@ -170,20 +170,13 @@ local function checkMonsterStatus()
                             
                             if chasingValue and chasingValue:IsA("ObjectValue") and chasing and chasing:IsA("BoolValue") then
                                 RunService.Heartbeat:Connect(function()
-                                    if chasingValue.Value and chasingValue.Value.Name == player.Name then
+                                    if chasingValue.Value and chasingValue.Value.Name == player.Name and chasing.Value then
+                                        local monsterName = monsterModel.Name:gsub("Monster", "")
                                         notifyOncePerMonster(monsterModel, "Chasing", {
                                             Title = "Monster Alerter",
-                                            Text = "Monster is currently chasing you",
+                                            Text = monsterName .. " is currently chasing you",
                                             Duration = 5
                                         })
-                                    elseif not chasingValue.Value then
-                                        notifyOncePerMonster(monsterModel, "StoppedChasing", {
-                                            Title = "Monster Alerter",
-                                            Text = "Monster is no longer chasing you",
-                                            Duration = 5
-                                        })
-                                        notifiedMonsters[monsterModel]["Chasing"] = nil
-                                        notifiedMonsters[monsterModel]["StoppedChasing"] = nil
                                     end
                                 end)
                             end
