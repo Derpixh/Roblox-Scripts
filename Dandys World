@@ -3,7 +3,7 @@ local RunService = game:GetService("RunService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
-local notifiedGenerators = {}
+local notifiedItems = {}
 local debounce = false
 
 local function pressKey(keyCode)
@@ -35,6 +35,9 @@ local function isCharacterInFrontOfPrompt(promptPart)
 end
 
 local function checkProximityPrompt()
+    if debounce then return end
+    debounce = true
+
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     
     if currentRoomFolder then
@@ -43,15 +46,15 @@ local function checkProximityPrompt()
                 local itemsFolder = roomModel:FindFirstChild("Items")
                 if itemsFolder then
                     for _, itemModel in pairs(itemsFolder:GetChildren()) do
-                        if itemModel:IsA("Model") then
+                        if itemModel:IsA("Model") and not notifiedItems[itemModel] then
                             local promptPart = itemModel:FindFirstChild("Prompt")
                             if promptPart then
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
                                 if proximityPrompt and proximityPrompt.Enabled then
                                     if isCharacterInFrontOfPrompt(promptPart) then
                                         pressKey(Enum.KeyCode.E)
-                                        task.wait(0.1) -- Wait 100 milliseconds before pressing E again
                                         sendPickupNotification(itemModel.Name)
+                                        notifiedItems[itemModel] = true
                                     end
                                 end
                             end
@@ -61,6 +64,8 @@ local function checkProximityPrompt()
             end
         end
     end
+
+    debounce = false
 end
 
 local function pressSpacebar()
