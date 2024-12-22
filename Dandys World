@@ -6,20 +6,32 @@ local character = player.Character or player.CharacterAdded:Wait()
 local notifiedItems = {}
 local notifiedGenerators = {}
 local debounce = false
+local pressedSlots = {}
 
 local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
     VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
 end
 
+local function sendNotification(title, text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = 5
+    })
+end
+
 local function sendPickupNotification(itemName)
     local words = itemName:split(" ")
     local secondWord = words[2] or itemName
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Auto Item Collector",
-        Text = secondWord .. " has been collected",
-        Duration = 5
-    })
+    sendNotification("Auto Item Collector", secondWord .. " has been collected")
+end
+
+local function sendItemUsageNotification(itemName)
+    if not pressedSlots[itemName] then
+        sendNotification("Auto Item Usage", itemName .. " has been used")
+        pressedSlots[itemName] = true
+    end
 end
 
 local function isCharacterNearPrompt(promptPart)
@@ -103,7 +115,7 @@ local function notifyOncePerEvent(model, eventName, notification)
     end
 
     if not notifiedGenerators[model][eventName] then
-        game.StarterGui:SetCore("SendNotification", notification)
+        sendNotification(notification.Title, notification.Text)
         notifiedGenerators[model][eventName] = true
     end
 end
@@ -113,25 +125,32 @@ local function checkGeneratorStatus()
     if currentRoomFolder then
         for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
-                local playerCompletion = roomModel:FindFirstChild("PlayerCompletion")
-                if playerCompletion then
-                    for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
-                        if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == player.Name then
-                            notifyOncePerEvent(roomModel, "CompletionStarted", {
-                                Title = "Generator Completion",
-                                Text = "Extracting Ichor...",
-                                Duration = 5
-                            })
+                local generatorsFolder = roomModel:FindFirstChild("Generators")
+                if generatorsFolder then
+                    for _, generatorModel in pairs(generatorsFolder:GetChildren()) do
+                        if generatorModel:IsA("Model") then
+                            local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
+                            if playerCompletion then
+                                for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
+                                    if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == player.Name then
+                                        notifyOncePerEvent(generatorModel, "CompletionStarted", {
+                                            Title = "Generator Completion",
+                                            Text = "Extracting Ichor...",
+                                            Duration = 5
+                                        })
 
-                            local stats = roomModel:FindFirstChild("Stats")
-                            if stats then
-                                local completed = stats:FindFirstChild("Completed")
-                                if completed and completed:IsA("BoolValue") and completed.Value then
-                                    notifyOncePerEvent(roomModel, "Completed", {
-                                        Title = "Generator Completed",
-                                        Text = "Extracted Ichor Success!",
-                                        Duration = 5
-                                    })
+                                        local stats = generatorModel:FindFirstChild("Stats")
+                                        if stats then
+                                            local completed = stats:FindFirstChild("Completed")
+                                            if completed and completed:IsA("BoolValue") and completed.Value then
+                                                notifyOncePerEvent(generatorModel, "Completed", {
+                                                    Title = "Generator Completed",
+                                                    Text = "Extracted Ichor Success!",
+                                                    Duration = 5
+                                                })
+                                            end
+                                        end
+                                    end
                                 end
                             end
                         end
@@ -142,11 +161,62 @@ local function checkGeneratorStatus()
     end
 end
 
-RunService.RenderStepped:Connect(function()
-    checkSkillCheck()
-    checkProximityPrompt()
-    checkGeneratorStatus()
-end)
+local function checkInventorySlots()
+    local inGamePlayers = game.Workspace:FindFirstChild("InGamePlayers")
+    if inGamePlayers then
+        local havvokz = inGamePlayers:FindFirstChild("Havvokz")
+        if havvokz then
+            local inventory = havvokz:FindFirstChild("Inventory")
+            if inventory then
+                local slot1 = inventory:FindFirstChild("Slot1")
+                local slot2 = inventory:FindFirstChild("Slot2")
+                local slot3 = inventory:FindFirstChild("Slot3")
+
+                local validValues = {
+                    "Gumball",
+                    "Pop",
+                    "EnigmaCandy",
+                    "Bandage",
+                    "ProteinBar",
+                    "Chocolate",
+                    "StealthCandy",
+                    "SkillCheckCandy"
+                }
+
+                local function checkAndPress(slot, keyCode)
+                    if slot and table.find(validValues, slot.Value) then
+                        pressKey(keyCode)
+                        sendItemUsageNotification(slot.Value)
+                    end
+                end
+
+                local function onValueChanged(slot, keyCode)
+                    slot:GetPropertyChangedSignal("Value"):Connect(function()
+                        if slot.Value == "None" then
+                            pressedSlots[slot] = nil
+                        elseif table.find(validValues, slot.Value) then
+                            pressedSlots[slot] = true
+                        end
+                    end)
+                end
+
+                onValueChanged(slot1, Enum.KeyCode.One)
+                onValueChanged(slot2, Enum.KeyCode.Two)
+                onValueChanged(slot3, Enum.KeyCode.Three)
+
+                if slot1 and pressedSlots[slot1] then
+                    checkAndPress(slot1, Enum.KeyCode.One)
+                end
+                if slot2 and pressedSlots[slot2] then
+                    checkAndPress(slot2, Enum.KeyCode.Two)
+                end
+                if slot3 and pressedSlots[slot3] then
+                    checkAndPress(slot3, Enum.KeyCode.Three)
+                end
+            end
+        end
+    end
+end
 
 local function highlightModels(model, fillColor)
     if not model:FindFirstChildOfClass("Highlight") then
@@ -189,8 +259,14 @@ local function highlightItemsMonstersGenerators()
     end
 end
 
-while true do
+RunService.RenderStepped:Connect(function()
+    checkSkillCheck()
     checkProximityPrompt()
+    checkGeneratorStatus()
     highlightItemsMonstersGenerators()
-    wait(0.1)
+end)
+
+while true do
+    checkInventorySlots()
+    wait(0.1) -- Check inventory slots every 100 milliseconds
 end
