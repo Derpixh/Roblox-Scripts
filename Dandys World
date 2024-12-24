@@ -7,6 +7,7 @@ local notifiedItems = {}
 local notifiedGenerators = {}
 local debounce = false
 local pressedSlots = {}
+local hasPressedE = {}
 
 local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
@@ -22,9 +23,7 @@ local function sendNotification(title, text)
 end
 
 local function sendPickupNotification(itemName)
-    local words = itemName:split(" ")
-    local secondWord = words[2] or itemName
-    sendNotification("Auto Item Collector", secondWord .. " has been collected")
+    sendNotification("Auto Item Collector", itemName .. " has been collected")
 end
 
 local function sendItemUsageNotification(itemName)
@@ -40,6 +39,21 @@ local function isCharacterNearPrompt(promptPart)
     local distance = (characterPosition - promptPosition).Magnitude
 
     return distance < 5
+end
+
+local function isMonsterNearCharacter(monstersFolder)
+    local characterPosition = character.PrimaryPart.Position
+    
+    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
+        if monsterModel:IsA("Model") then
+            local monsterPosition = monsterModel.PrimaryPart.Position
+            local distance = (characterPosition - monsterPosition).Magnitude
+            if distance < 6 then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 local function checkProximityPrompt()
@@ -82,33 +96,6 @@ local function pressSpacebar()
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, nil)
 end
 
-local function checkSkillCheck()
-    local playerGui = player:FindFirstChildOfClass("PlayerGui")
-    if playerGui then
-        local screenGui = playerGui:FindFirstChild("ScreenGui")
-        if screenGui then
-            local menuFrame = screenGui:FindFirstChild("Menu")
-            if menuFrame then
-                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
-                if skillCheckFrame then
-                    local marker = skillCheckFrame:FindFirstChild("Marker")
-                    local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
-
-                    if marker and goldArea then
-                        local markerPos = marker.AbsolutePosition
-                        local goldAreaPos = goldArea.AbsolutePosition
-                        local goldAreaSize = goldArea.AbsoluteSize
-
-                        if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
-                            pressSpacebar()
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
 local function notifyOncePerEvent(model, eventName, notification)
     if not notifiedGenerators[model] then
         notifiedGenerators[model] = {}
@@ -126,29 +113,41 @@ local function checkGeneratorStatus()
         for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
                 local generatorsFolder = roomModel:FindFirstChild("Generators")
-                if generatorsFolder then
+                local monstersFolder = roomModel:FindFirstChild("Monsters")
+                if generatorsFolder and monstersFolder then
                     for _, generatorModel in pairs(generatorsFolder:GetChildren()) do
                         if generatorModel:IsA("Model") then
+                            local stats = generatorModel:FindFirstChild("Stats")
+                            local completed = stats and stats:FindFirstChild("Completed")
+                            local promptPart = generatorModel:FindFirstChild("Prompt")
+                            local proximityPrompt = promptPart and promptPart:FindFirstChildOfClass("ProximityPrompt")
+                            
+                            if completed and completed:IsA("BoolValue") and not completed.Value and
+                               proximityPrompt and proximityPrompt.Enabled and 
+                               isCharacterNearPrompt(promptPart) and not isMonsterNearCharacter(monstersFolder) then
+
+                                if not hasPressedE[generatorModel] then
+                                    pressKey(Enum.KeyCode.E)
+                                    hasPressedE[generatorModel] = true
+                                end
+                            else
+                                hasPressedE[generatorModel] = nil
+                            end
+
                             local playerCompletion = generatorModel:FindFirstChild("PlayerCompletion")
                             if playerCompletion then
                                 for _, playerCompletionValue in pairs(playerCompletion:GetChildren()) do
                                     if playerCompletionValue:IsA("NumberValue") and playerCompletionValue.Name == player.Name then
                                         notifyOncePerEvent(generatorModel, "CompletionStarted", {
                                             Title = "Generator Completion",
-                                            Text = "Extracting Ichor...",
-                                            Duration = 5
+                                            Text = "Extracting Ichor..."
                                         })
 
-                                        local stats = generatorModel:FindFirstChild("Stats")
-                                        if stats then
-                                            local completed = stats:FindFirstChild("Completed")
-                                            if completed and completed:IsA("BoolValue") and completed.Value then
-                                                notifyOncePerEvent(generatorModel, "Completed", {
-                                                    Title = "Generator Completed",
-                                                    Text = "Extracted Ichor Success!",
-                                                    Duration = 5
-                                                })
-                                            end
+                                        if completed and completed.Value then
+                                            notifyOncePerEvent(generatorModel, "Completed", {
+                                                Title = "Generator Completed",
+                                                Text = "Extracted Ichor Success!"
+                                            })
                                         end
                                     end
                                 end
@@ -161,7 +160,7 @@ local function checkGeneratorStatus()
     end
 end
 
-local function checkInventorySlots()
+local function checkInventorySlotsAndHealth()
     local inGamePlayers = game.Workspace:FindFirstChild("InGamePlayers")
     if inGamePlayers then
         local havvokz = inGamePlayers:FindFirstChild("Havvokz")
@@ -174,45 +173,65 @@ local function checkInventorySlots()
 
                 local validValues = {
                     "Gumball",
-                    "Pop",
                     "EnigmaCandy",
                     "Bandage",
                     "ProteinBar",
                     "Chocolate",
                     "StealthCandy",
-                    "SkillCheckCandy"
+                    "SkillCheckCandy",
+                    "SpeedCandy",
+                    "ChocolateBox"
                 }
 
                 local function checkAndPress(slot, keyCode)
                     if slot and table.find(validValues, slot.Value) then
-                        pressKey(keyCode)
+                        VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
+                        VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
                         sendItemUsageNotification(slot.Value)
                     end
                 end
 
-                local function onValueChanged(slot, keyCode)
-                    slot:GetPropertyChangedSignal("Value"):Connect(function()
-                        if slot.Value == "None" then
-                            pressedSlots[slot] = nil
-                        elseif table.find(validValues, slot.Value) then
-                            pressedSlots[slot] = true
+                local playerGui = player:FindFirstChildOfClass("PlayerGui")
+                if playerGui then
+                    local screenGui = playerGui:FindFirstChild("ScreenGui")
+                    if screenGui then
+                        local healthFrame = screenGui:FindFirstChild("HealthFrame")
+                        if healthFrame then
+                            local heartLabels = {
+                                {"Heart1", "Heart1Pulse"},
+                                {"Heart2", "Heart2Pulse"},
+                                {"Heart3"}
+                            }
+
+                            for _, labelGroup in pairs(heartLabels) do
+                                for _, labelName in pairs(labelGroup) do
+                                    local heartLabel = healthFrame:FindFirstChild(labelName)
+                                    if heartLabel then
+                                        heartLabel:GetPropertyChangedSignal("Visible"):Connect(function()
+                                            if not heartLabel.Visible then
+                                                for _, slot in pairs({slot1, slot2, slot3}) do
+                                                    if slot and slot.Value == "Bandage" then
+                                                        local keyCode = Enum.KeyCode.One
+                                                        if slot.Name == "Slot2" then keyCode = Enum.KeyCode.Two end
+                                                        if slot.Name == "Slot3" then keyCode = Enum.KeyCode.Three end
+                                                        VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
+                                                        VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
+                                                        sendItemUsageNotification("Bandage")
+                                                        break
+                                                    end
+                                                end
+                                            end
+                                        end)
+                                    end
+                                end
+                            end
                         end
-                    end)
+                    end
                 end
 
-                onValueChanged(slot1, Enum.KeyCode.One)
-                onValueChanged(slot2, Enum.KeyCode.Two)
-                onValueChanged(slot3, Enum.KeyCode.Three)
-
-                if slot1 and pressedSlots[slot1] then
-                    checkAndPress(slot1, Enum.KeyCode.One)
-                end
-                if slot2 and pressedSlots[slot2] then
-                    checkAndPress(slot2, Enum.KeyCode.Two)
-                end
-                if slot3 and pressedSlots[slot3] then
-                    checkAndPress(slot3, Enum.KeyCode.Three)
-                end
+                checkAndPress(slot1, Enum.KeyCode.One)
+                checkAndPress(slot2, Enum.KeyCode.Two)
+                checkAndPress(slot3, Enum.KeyCode.Three)
             end
         end
     end
@@ -241,7 +260,7 @@ local function highlightItemsMonstersGenerators()
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
     
     if currentRoomFolder then
-        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+                for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
                 -- Highlighting Items (Green)
                 local itemsFolder = roomModel:FindFirstChild("Items")
@@ -259,14 +278,49 @@ local function highlightItemsMonstersGenerators()
     end
 end
 
+local function removeSkillCheckElements()
+    local player = game.Players.LocalPlayer
+    local playerGui = player:FindFirstChildOfClass("PlayerGui")
+    if playerGui then
+        local screenGui = playerGui:FindFirstChild("ScreenGui")
+        if screenGui then
+            local menuFrame = screenGui:FindFirstChild("Menu")
+            if menuFrame then
+                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                if skillCheckFrame then
+                    skillCheckFrame:Destroy()
+                end
+
+                local skillCheckMessage = menuFrame:FindFirstChild("SkillCheckMessage")
+                if skillCheckMessage then
+                    skillCheckMessage:Destroy()
+                end
+
+                local spaceBarPromptText = menuFrame:FindFirstChild("SpaceBarPromptText")
+                if spaceBarPromptText then
+                    spaceBarPromptText:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function setWalkSpeed()
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.WalkSpeed = 26
+    end
+end
+
+-- Main execution
 RunService.RenderStepped:Connect(function()
-    checkSkillCheck()
+    removeSkillCheckElements()
     checkProximityPrompt()
     checkGeneratorStatus()
     highlightItemsMonstersGenerators()
+    setWalkSpeed() -- Continuously apply the walkspeed
 end)
 
 while true do
-    checkInventorySlots()
-    wait(0.1) -- Check inventory slots every 100 milliseconds
+    checkInventorySlotsAndHealth()
+    wait(0.1) -- Check inventory slots and health every 100 milliseconds
 end
