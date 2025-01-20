@@ -1,0 +1,65 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local localPlayer = Players.LocalPlayer
+
+-- Function to update MeshParts of the model
+local function updateMeshParts()
+    local model = game.Workspace:FindFirstChild(localPlayer.Name)
+    if model then
+        local parts = {
+            "LeftHand",
+            "LeftUpperArm",
+            "LeftLowerArm",
+            "RightHand",
+            "RightUpperArm",
+            "RightLowerArm"
+        }
+
+        for _, partName in ipairs(parts) do
+            local part = model:FindFirstChild(partName, true)
+            if part and part:IsA("MeshPart") then
+                -- Adjust the dimensions and transparency of the MeshPart
+                local newSize = part.Size
+                newSize = Vector3.new(newSize.X * 3.5, 2.5, newSize.Z) -- Set width to 3.5 and height to 2.5
+                part.Size = newSize
+                part.Transparency = 0.5 -- Make the MeshPart half transparent
+            end
+        end
+    else
+        print("Model '" .. localPlayer.Name .. "' not found in the Workspace.")
+    end
+end
+
+-- Continuously update the size of the Bar Frame when E is pressed
+if localPlayer then
+    local playerGui = localPlayer:WaitForChild("PlayerGui")
+    local visualScreenGui = playerGui:WaitForChild("Visual")
+    local shootingFrame = visualScreenGui:WaitForChild("Shooting")
+    local barFrame = shootingFrame:WaitForChild("Bar")
+
+    local isKeyPressed = false
+
+    UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+        if input.KeyCode == Enum.KeyCode.E then
+            isKeyPressed = true
+        end
+    end)
+
+    UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
+        if input.KeyCode == Enum.KeyCode.E then
+            isKeyPressed = false
+        end
+    end)
+
+    RunService.RenderStepped:Connect(function()
+        if isKeyPressed then
+            barFrame.Size = UDim2.new(1, 0, 1, 0)
+            wait(0.001)  -- 1 millisecond wait
+        end
+    end)
+end
+
+-- Call the function to update the MeshParts initially
+updateMeshParts()
