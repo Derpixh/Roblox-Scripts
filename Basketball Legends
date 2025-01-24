@@ -1,8 +1,10 @@
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local localPlayer = Players.LocalPlayer
+local keyPressed = {}
 
 -- Function to update MeshParts of the model
 local function updateMeshParts()
@@ -63,3 +65,18 @@ end
 
 -- Call the function to update the MeshParts initially
 updateMeshParts()
+
+-- New code to handle virtual key presses for C and Z
+UserInputService.InputBegan:Connect(function(input)
+    if (input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z) and not keyPressed[input.KeyCode] then
+        keyPressed[input.KeyCode] = true
+        VirtualInputManager:SendKeyEvent(true, input.KeyCode, false, game)
+        VirtualInputManager:SendKeyEvent(false, input.KeyCode, false, game)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z then
+        keyPressed[input.KeyCode] = false
+    end
+end)
