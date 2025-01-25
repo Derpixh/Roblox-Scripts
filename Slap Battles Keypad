@@ -1,0 +1,36 @@
+local TeleportService = game:GetService("TeleportService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local placeId = game.PlaceId
+local newPlaceId = 11828384869
+
+local function teleportPlayerToNewPlace(player)
+    if player and player:IsA("Player") then
+        TeleportService:Teleport(newPlaceId, player)
+    end
+end
+
+game.Players.PlayerAdded:Connect(teleportPlayerToNewPlace)
+
+local function checkForKeypad()
+    local keypad = workspace:FindFirstChild("Keypad")
+    if keypad then
+        character:SetPrimaryPartCFrame(keypad.PrimaryPart.CFrame)
+        return true
+    end
+    return false
+end
+
+local foundKeypad = false
+
+while not foundKeypad do
+    foundKeypad = checkForKeypad()
+    wait(0.1)
+end
+
+if foundKeypad then
+    -- After teleporting to the Keypad, teleport to the new place
+    teleportPlayerToNewPlace(player)
+else
+    TeleportService:Teleport(placeId, player)
+end
