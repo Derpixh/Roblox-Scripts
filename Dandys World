@@ -5,9 +5,9 @@ local character = player.Character or player.CharacterAdded:Wait()
 
 local notifiedItems = {}
 local notifiedGenerators = {}
-local debounce = false
 local pressedSlots = {}
 local hasPressedE = {}
+local notifiedChases = {}
 
 local function pressKey(keyCode)
     VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
@@ -36,19 +36,15 @@ end
 local function isCharacterNearPrompt(promptPart)
     local characterPosition = character.PrimaryPart.Position
     local promptPosition = promptPart.Position
-    local distance = (characterPosition - promptPosition).Magnitude
-
-    return distance < 5
+    return (characterPosition - promptPosition).Magnitude < 5
 end
 
 local function isMonsterNearCharacter(monstersFolder)
     local characterPosition = character.PrimaryPart.Position
-    
     for _, monsterModel in pairs(monstersFolder:GetChildren()) do
         if monsterModel:IsA("Model") then
             local monsterPosition = monsterModel.PrimaryPart.Position
-            local distance = (characterPosition - monsterPosition).Magnitude
-            if distance < 6 then
+            if (characterPosition - monsterPosition).Magnitude < 6 then
                 return true
             end
         end
@@ -57,15 +53,10 @@ local function isMonsterNearCharacter(monstersFolder)
 end
 
 local function checkProximityPrompt()
-    if debounce then return end
-    debounce = true
-
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
-    
     if currentRoomFolder then
         for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
-                -- Check Items folder
                 local itemsFolder = roomModel:FindFirstChild("Items")
                 if itemsFolder then
                     for _, itemModel in pairs(itemsFolder:GetChildren()) do
@@ -73,12 +64,10 @@ local function checkProximityPrompt()
                             local promptPart = itemModel:FindFirstChild("Prompt")
                             if promptPart then
                                 local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-                                if proximityPrompt and proximityPrompt.Enabled then
-                                    if isCharacterNearPrompt(promptPart) then
-                                        pressKey(Enum.KeyCode.E)
-                                        sendPickupNotification(itemModel.Name)
-                                        notifiedItems[itemModel] = true
-                                    end
+                                if proximityPrompt and proximityPrompt.Enabled and isCharacterNearPrompt(promptPart) then
+                                    pressKey(Enum.KeyCode.E)
+                                    sendPickupNotification(itemModel.Name)
+                                    notifiedItems[itemModel] = true
                                 end
                             end
                         end
@@ -87,20 +76,12 @@ local function checkProximityPrompt()
             end
         end
     end
-
-    debounce = false
-end
-
-local function pressSpacebar()
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, nil)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, nil)
 end
 
 local function notifyOncePerEvent(model, eventName, notification)
     if not notifiedGenerators[model] then
         notifiedGenerators[model] = {}
     end
-
     if not notifiedGenerators[model][eventName] then
         sendNotification(notification.Title, notification.Text)
         notifiedGenerators[model][eventName] = true
@@ -121,11 +102,9 @@ local function checkGeneratorStatus()
                             local completed = stats and stats:FindFirstChild("Completed")
                             local promptPart = generatorModel:FindFirstChild("Prompt")
                             local proximityPrompt = promptPart and promptPart:FindFirstChildOfClass("ProximityPrompt")
-                            
                             if completed and completed:IsA("BoolValue") and not completed.Value and
                                proximityPrompt and proximityPrompt.Enabled and 
                                isCharacterNearPrompt(promptPart) and not isMonsterNearCharacter(monstersFolder) then
-
                                 if not hasPressedE[generatorModel] then
                                     pressKey(Enum.KeyCode.E)
                                     hasPressedE[generatorModel] = true
@@ -160,12 +139,12 @@ local function checkGeneratorStatus()
     end
 end
 
-local function checkInventorySlotsAndHealth()
+local function checkInventorySlots()
     local inGamePlayers = game.Workspace:FindFirstChild("InGamePlayers")
     if inGamePlayers then
-        local havvokz = inGamePlayers:FindFirstChild("Havvokz")
-        if havvokz then
-            local inventory = havvokz:FindFirstChild("Inventory")
+        local localPlayer = inGamePlayers:FindFirstChild(player.Name)
+        if localPlayer then
+            local inventory = localPlayer:FindFirstChild("Inventory")
             if inventory then
                 local slot1 = inventory:FindFirstChild("Slot1")
                 local slot2 = inventory:FindFirstChild("Slot2")
@@ -184,49 +163,15 @@ local function checkInventorySlotsAndHealth()
                 }
 
                 local function checkAndPress(slot, keyCode)
-                    if slot and table.find(validValues, slot.Value) then
-                        VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
-                        VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
-                        sendItemUsageNotification(slot.Value)
-                    end
-                end
-
-                local playerGui = player:FindFirstChildOfClass("PlayerGui")
-                if playerGui then
-                    local screenGui = playerGui:FindFirstChild("ScreenGui")
-                    if screenGui then
-                        local healthFrame = screenGui:FindFirstChild("HealthFrame")
-                        if healthFrame then
-                            local heartLabels = {
-                                {"Heart1", "Heart1Pulse"},
-                                {"Heart2", "Heart2Pulse"},
-                                {"Heart3"}
-                            }
-
-                            for _, labelGroup in pairs(heartLabels) do
-                                for _, labelName in pairs(labelGroup) do
-                                    local heartLabel = healthFrame:FindFirstChild(labelName)
-                                    if heartLabel then
-                                        heartLabel:GetPropertyChangedSignal("Visible"):Connect(function()
-                                            if not heartLabel.Visible then
-                                                for _, slot in pairs({slot1, slot2, slot3}) do
-                                                    if slot and slot.Value == "Bandage" then
-                                                        local keyCode = Enum.KeyCode.One
-                                                        if slot.Name == "Slot2" then keyCode = Enum.KeyCode.Two end
-                                                        if slot.Name == "Slot3" then keyCode = Enum.KeyCode.Three end
-                                                        VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
-                                                        VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
-                                                        sendItemUsageNotification("Bandage")
-                                                        break
-                                                    end
-                                                end
-                                            end
-                                        end)
-                                    end
-                                end
-                            end
+                    slot:GetPropertyChangedSignal("Value"):Connect(function()
+                        if table.find(validValues, slot.Value) then
+                            VirtualInputManager:SendKeyEvent(true, keyCode, false, nil)
+                            VirtualInputManager:SendKeyEvent(false, keyCode, false, nil)
+                            sendItemUsageNotification(slot.Value)
+                        elseif slot.Value == "" then
+                            sendItemUsageNotification("Item used from slot " .. keyCode.Name)
                         end
-                    end
+                    end)
                 end
 
                 checkAndPress(slot1, Enum.KeyCode.One)
@@ -258,47 +203,30 @@ end
 
 local function highlightItemsMonstersGenerators()
     local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
-    
     if currentRoomFolder then
-                for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
             if roomModel:IsA("Model") then
-                -- Highlighting Items (Green)
-                local itemsFolder = roomModel:FindFirstChild("Items")
-                highlightContents(itemsFolder, Color3.new(0, 1, 0))
-                
-                -- Highlighting Monsters (Red)
-                local monstersFolder = roomModel:FindFirstChild("Monsters")
-                highlightContents(monstersFolder, Color3.new(1, 0, 0))
-
-                -- Highlighting Generators (Orange)
-                local generatorsFolder = roomModel:FindFirstChild("Generators")
-                highlightContents(generatorsFolder, Color3.new(1, 0.5, 0))
+                highlightContents(roomModel:FindFirstChild("Items"), Color3.new(0, 1, 0))
+                highlightContents(roomModel:FindFirstChild("Monsters"), Color3.new(1, 0, 0))
+                highlightContents(roomModel:FindFirstChild("Generators"), Color3.new(1, 0.5, 0))
             end
         end
     end
 end
 
 local function removeSkillCheckElements()
-    local player = game.Players.LocalPlayer
     local playerGui = player:FindFirstChildOfClass("PlayerGui")
     if playerGui then
         local screenGui = playerGui:FindFirstChild("ScreenGui")
         if screenGui then
             local menuFrame = screenGui:FindFirstChild("Menu")
             if menuFrame then
-                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
-                if skillCheckFrame then
-                    skillCheckFrame:Destroy()
-                end
-
-                local skillCheckMessage = menuFrame:FindFirstChild("SkillCheckMessage")
-                if skillCheckMessage then
-                    skillCheckMessage:Destroy()
-                end
-
-                local spaceBarPromptText = menuFrame:FindFirstChild("SpaceBarPromptText")
-                if spaceBarPromptText then
-                    spaceBarPromptText:Destroy()
+                local elementsToRemove = {"SkillCheckFrame", "SkillCheckMessage", "SpaceBarPromptText"}
+                for _, elementName in pairs(elementsToRemove) do
+                    local element = menuFrame:FindFirstChild(elementName)
+                    if element then
+                        element:Destroy()
+                    end
                 end
             end
         end
@@ -311,16 +239,56 @@ local function setWalkSpeed()
     end
 end
 
+local function checkChasingMonsters()
+    local function monitorChasingValue(monsterModel)
+        local chasingValue = monsterModel:FindFirstChild("ChasingValue")
+        if chasingValue and chasingValue:IsA("ObjectValue") then
+            RunService.RenderStepped:Connect(function()
+                if chasingValue.Value and chasingValue.Value.Name == player.Name then
+                    local monsterName = monsterModel.Name
+                    if not notifiedChases[monsterName] then
+                        sendNotification("Monster Chasing", monsterName .. " is chasing you!")
+                        notifiedChases[monsterName] = true
+                    end
+                else
+                    local monsterName = monsterModel.Name
+                    if notifiedChases[monsterName] then
+                        sendNotification("Monster Stopped Chasing", monsterName .. " has stopped chasing you!")
+                        notifiedChases[monsterName] = nil
+                    end
+                end
+            end)
+        end
+    end
+
+        local currentRoomFolder = game.Workspace:FindFirstChild("CurrentRoom")
+    if currentRoomFolder then
+        for _, roomModel in pairs(currentRoomFolder:GetChildren()) do
+            if roomModel:IsA("Model") then
+                local monstersFolder = roomModel:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monsterModel in pairs(monstersFolder:GetChildren()) do
+                        if monsterModel:IsA("Model") then
+                            monitorChasingValue(monsterModel)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 -- Main execution
 RunService.RenderStepped:Connect(function()
     removeSkillCheckElements()
     checkProximityPrompt()
     checkGeneratorStatus()
     highlightItemsMonstersGenerators()
+    checkChasingMonsters()
     setWalkSpeed() -- Continuously apply the walkspeed
 end)
 
 while true do
-    checkInventorySlotsAndHealth()
-    wait(0.1) -- Check inventory slots and health every 100 milliseconds
+    checkInventorySlots()
+    wait(0.1) -- Check inventory slots every 100 milliseconds
 end
