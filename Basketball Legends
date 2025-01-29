@@ -41,6 +41,12 @@ if localPlayer then
     local shootingFrame = visualScreenGui:WaitForChild("Shooting")
     local barFrame = shootingFrame:WaitForChild("Bar")
 
+    -- Delete the ShootingGif frame if it exists
+    local shootingGif = visualScreenGui:FindFirstChild("ShootingGif")
+    if shootingGif then
+        shootingGif:Destroy()
+    end
+
     local isKeyPressed = false
 
     UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
