@@ -9,10 +9,9 @@ local localPlayer = Players.LocalPlayer
 local myHumanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
 local keyPressed = {}
 
-local updateInterval = 0.08 -- Update interval set to 80 milliseconds
+local updateInterval = 0.08
 local lastUpdate = 0
 
--- Function to update MeshParts of the model
 local function updateMeshParts()
     local model = game.Workspace:FindFirstChild(localPlayer.Name)
     if model then
@@ -28,11 +27,10 @@ local function updateMeshParts()
         for _, partName in ipairs(parts) do
             local part = model:FindFirstChild(partName, true)
             if part and part:IsA("MeshPart") then
-                -- Adjust the dimensions and transparency of the MeshPart
                 local newSize = part.Size
-                newSize = Vector3.new(newSize.X * 3.5, 2.5, newSize.Z) -- Set width to 3.5 and height to 2.5
+                newSize = Vector3.new(newSize.X * 3.5, 2.5, newSize.Z)
                 part.Size = newSize
-                part.Transparency = 0.5 -- Make the MeshPart half transparent
+                part.Transparency = 0.5
             end
         end
     else
@@ -40,7 +38,6 @@ local function updateMeshParts()
     end
 end
 
--- Function to highlight models in the Workspace
 local function highlightTeamModels()
     local localTeam = localPlayer.Team
     if localTeam then
@@ -48,26 +45,25 @@ local function highlightTeamModels()
             if player.Name ~= localPlayer.Name then
                 local model = Workspace:FindFirstChild(player.Name)
                 if model then
-                    if not model:FindFirstChildOfClass("Highlight") then
-                        local highlight = Instance.new("Highlight")
-                        highlight.FillColor = player.TeamColor.Color
-                        highlight.OutlineColor = player.TeamColor.Color
+                    local highlight = model:FindFirstChildOfClass("Highlight")
+                    if not highlight then
+                        highlight = Instance.new("Highlight")
                         highlight.Parent = model
                     end
+                    highlight.FillColor = player.TeamColor.Color
+                    highlight.OutlineColor = player.TeamColor.Color
                 end
             end
         end
     end
 end
 
--- Continuously update the size of the Bar Frame when E is pressed
 if localPlayer then
     local playerGui = localPlayer:WaitForChild("PlayerGui")
     local visualScreenGui = playerGui:WaitForChild("Visual")
     local shootingFrame = visualScreenGui:WaitForChild("Shooting")
     local barFrame = shootingFrame:WaitForChild("Bar")
 
-    -- Delete the ShootingGif frame if it exists
     local shootingGif = visualScreenGui:FindFirstChild("ShootingGif")
     if shootingGif then
         shootingGif:Destroy()
@@ -90,16 +86,14 @@ if localPlayer then
     RunService.RenderStepped:Connect(function()
         if isKeyPressed then
             barFrame.Size = UDim2.new(1, 0, 1, 0)
-            wait(0.001)  -- 1 millisecond wait
+            wait(0.001)
         end
-        highlightTeamModels() -- Continuously check and add highlight if needed
+        highlightTeamModels()
     end)
 end
 
--- Call the function to update the MeshParts initially
 updateMeshParts()
 
--- New code to handle virtual key presses for C and Z
 UserInputService.InputBegan:Connect(function(input)
     if (input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z) and not keyPressed[input.KeyCode] then
         keyPressed[input.KeyCode] = true
@@ -114,7 +108,6 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
--- Connect the highlight update function to the RunService.Heartbeat event
 RunService.Heartbeat:Connect(function(deltaTime)
     lastUpdate = lastUpdate + deltaTime
     if lastUpdate >= updateInterval then
