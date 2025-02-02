@@ -9,9 +9,7 @@ local localPlayer = Players.LocalPlayer
 local myHumanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
 local keyPressed = {}
 
-local movementEnabled = false
 local updateInterval = 0.08 -- Update interval set to 80 milliseconds
-local forwardOffset = 3
 local lastUpdate = 0
 
 -- Function to update MeshParts of the model
@@ -47,94 +45,17 @@ local function highlightTeamModels()
     local localTeam = localPlayer.Team
     if localTeam then
         for _, player in ipairs(Players:GetPlayers()) do
-            if player.Team == localTeam and player.Name ~= localPlayer.Name then
-                local model = game.Workspace:FindFirstChild(player.Name)
+            if player.Name ~= localPlayer.Name then
+                local model = Workspace:FindFirstChild(player.Name)
                 if model then
                     if not model:FindFirstChildOfClass("Highlight") then
                         local highlight = Instance.new("Highlight")
-                        highlight.FillColor = Color3.fromRGB(0, 0, 255) -- Blue
-                        highlight.OutlineColor = Color3.fromRGB(0, 0, 139) -- Dark Blue
+                        highlight.FillColor = player.TeamColor.Color
+                        highlight.OutlineColor = player.TeamColor.Color
                         highlight.Parent = model
                     end
                 end
             end
-        end
-    end
-end
-
--- Function to find the closest basketball part
-local function findClosestBasketballPart()
-    local closestBasketball = nil
-    local closestDistance = math.huge
-
-    for _, part in pairs(Workspace:GetDescendants()) do
-        if part:IsA("BasePart") and part.Name == "Basketball" then
-            local distance = (localPlayer.Character.PrimaryPart.Position - part.Position).Magnitude
-            if distance < closestDistance then
-                closestDistance = distance
-                closestBasketball = part
-            end
-        end
-    end
-
-    return closestBasketball
-end
-
--- Function to find the closest attach part
-local function findClosestAttachPart()
-    local closestAttachPart = nil
-    local closestDistance = math.huge
-    local closestModel = nil
-
-    for _, model in pairs(Workspace:GetChildren()) do
-        if model:IsA("Model") and Players:GetPlayerFromCharacter(model) then
-            local basketballTool = model:FindFirstChild("Basketball")
-            if basketballTool and basketballTool:FindFirstChild("Attach") then
-                local attachPart = basketballTool:FindFirstChild("Attach")
-                local player = Players:GetPlayerFromCharacter(model)
-                if player and player.Team ~= localPlayer.Team then
-                    local distance = (localPlayer.Character.PrimaryPart.Position - attachPart.Position).Magnitude
-                    if distance < closestDistance then
-                        closestDistance = distance
-                        closestAttachPart = attachPart
-                        closestModel = model
-                    end
-                end
-            end
-        end
-    end
-
-    return closestAttachPart, closestModel
-end
-
--- Function to update movement
-local function updateMovement()
-    if movementEnabled then
-        local basketballPart = findClosestBasketballPart()
-        local attachPart, model = findClosestAttachPart()
-
-        if basketballPart then
-            myHumanoid:MoveTo(basketballPart.Position)
-        elseif attachPart and model then
-            local modelPrimaryPart = model.PrimaryPart or model:FindFirstChild("HumanoidRootPart") or model:FindFirstChildOfClass("Part")
-            if modelPrimaryPart then
-                local modelPosition = modelPrimaryPart.Position
-                local forwardVector = modelPrimaryPart.CFrame.LookVector
-                local targetPosition = modelPosition + forwardVector * forwardOffset
-                myHumanoid:MoveTo(targetPosition)
-            end
-        else
-            myHumanoid:Move(Vector3.new(0, 0, 0), false)
-        end
-    end
-end
-
--- Function to handle key press
-local function onKeyPress(input)
-    if input.KeyCode == Enum.KeyCode.T then
-        movementEnabled = not movementEnabled
-        if not movementEnabled then
-            myHumanoid:Move(Vector3.new(0, 0, 0), false)
         end
     end
 end
@@ -172,7 +93,6 @@ if localPlayer then
             wait(0.001)  -- 1 millisecond wait
         end
         highlightTeamModels() -- Continuously check and add highlight if needed
-        updateMovement()
     end)
 end
 
@@ -194,14 +114,11 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
--- Connect the movement update function to the RunService.Heartbeat event
+-- Connect the highlight update function to the RunService.Heartbeat event
 RunService.Heartbeat:Connect(function(deltaTime)
     lastUpdate = lastUpdate + deltaTime
     if lastUpdate >= updateInterval then
-        updateMovement()
+        highlightTeamModels()
         lastUpdate = 0
     end
 end)
-
--- Connect the key press handler to the UserInputService.InputBegan event
-UserInputService.InputBegan:Connect(onKeyPress)
