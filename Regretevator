@@ -1,0 +1,96 @@
+-- Bootstrapping Rayfield UI
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Create a window
+local window = Rayfield:CreateWindow({
+    Name = "Rayfield Example Window",
+    LoadingTitle = "Rayfield Interface Suite",
+    LoadingSubtitle = "by Sirius",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = nil,
+        FileName = "Big Hub"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "sirius",
+        RememberJoins = true
+    }
+})
+
+-- Create a tab named "Flood"
+local floodTab = window:CreateTab("Flood", 4483362458)
+
+-- Create a section in the Flood tab named "Script"
+local scriptSectionFlood = floodTab:CreateSection("Script")
+
+-- Create a button in the Flood tab
+local floodButton = floodTab:CreateButton({
+    Name = "Toggle Highlight",
+    Callback = function()
+        local floodFillMine = game.Workspace:FindFirstChild("FloodFillMine")
+        if floodFillMine then
+            local build = floodFillMine:FindFirstChild("Build")
+            if build then
+                for _, layerName in pairs({"Layer1", "Layer2", "Layer3"}) do
+                    local layer = build:FindFirstChild(layerName)
+                    if layer then
+                        local layerHole = layer:FindFirstChild(layerName .. "Hole")
+                        if layerHole then
+                            local highlight = layerHole:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            else
+                                highlight = Instance.new("Highlight")
+                                highlight.Parent = layerHole
+                                highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Maze"
+local mazeTab = window:CreateTab("Maze", 4483362458)
+
+-- Create a section in the Maze tab named "Script"
+local scriptSectionMaze = mazeTab:CreateSection("Script")
+
+-- Function to check and highlight notes in the FunnyMaze
+local function checkAndHighlight()
+    local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
+    if funnyMaze then
+        local build = funnyMaze:FindFirstChild("Build")
+        if build then
+            local finalNotes = build:FindFirstChild("FinalNotes")
+            if finalNotes then
+                for _, part in pairs(finalNotes:GetChildren()) do
+                    if part:IsA("Part") and part.Name == "Note" then
+                        local highlight = part:FindFirstChildOfClass("Highlight")
+                        if highlight then
+                            highlight:Destroy()
+                        else
+                            highlight = Instance.new("Highlight")
+                            highlight.Parent = part
+                            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Create a button in the Maze tab named "ESP Pages"
+local espButton = mazeTab:CreateButton({
+    Name = "ESP Pages",
+    Callback = function()
+        checkAndHighlight()
+    end
+})
+
+-- Load saved configuration
+Rayfield:LoadConfiguration()
