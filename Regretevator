@@ -400,13 +400,13 @@ local findLampertButton = lampertTab:CreateButton({
     end
 })
 
--- Create a tab named "bugbo"
-local bugboTab = window:CreateTab("bugbo", 4483362458)
+-- Create a tab named "Bugbo"
+local bugboTab = window:CreateTab("Bugbo", 4483362458)
 
--- Create a section in the bugbo tab named "Script"
+-- Create a section in the Bugbo tab named "Script"
 local scriptSectionBugbo = bugboTab:CreateSection("Script")
 
--- Create a button in the bugbo tab named "Collect Rocks"
+-- Create a button in the Bugbo tab named "Collect Rocks"
 local collectRocksButton = bugboTab:CreateButton({
     Name = "Collect Rocks",
     Callback = function()
