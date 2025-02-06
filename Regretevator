@@ -608,4 +608,35 @@ local teleportToRoofButton = tpotTab:CreateButton({
     end
 })
 
+local gumballMachineTab = window:CreateTab("Gumball Machine", 4483362458)
+
+local scriptSectionGumballMachine = gumballMachineTab:CreateSection("Script")
+
+local instantWinGumballMachineButton = gumballMachineTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local gumballMachineModel = game.Workspace:FindFirstChild("GumballMachine")
+        if gumballMachineModel then
+            local buildModel = gumballMachineModel:FindFirstChild("Build")
+            if buildModel then
+                local generatedFolder = buildModel:FindFirstChild("Generated")
+                if generatedFolder then
+                    local endColumnModel = generatedFolder:FindFirstChild("EndColumn")
+                    if endColumnModel then
+                        local winPart = endColumnModel:FindFirstChild("WinPart")
+                        if winPart then
+                            local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+                            if touchInterest then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
