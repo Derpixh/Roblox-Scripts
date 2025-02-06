@@ -501,4 +501,65 @@ local winDodgeballButton = teapotDodgeballTab:CreateButton({
     end
 })
 
+local squishyFloodTab = window:CreateTab("Squishy Flood", 4483362458)
+
+local scriptSectionSquishyFlood = squishyFloodTab:CreateSection("Script")
+
+local instantWinSquishyFloodButton = squishyFloodTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local funTimesModel = game.Workspace:FindFirstChild("FunTimesAtSquishyFlood")
+        if funTimesModel then
+            local buildModel = funTimesModel:FindFirstChild("Build")
+            if buildModel then
+                local winpartsFolder = buildModel:FindFirstChild("Winparts")
+                if winpartsFolder then
+                    local winParts = winpartsFolder:GetChildren()
+                    local count = 0
+                    for _, part in pairs(winParts) do
+                        if part:IsA("Part") and part.Name == "WinPart" then
+                            count = count + 1
+                            if count == 4 then
+                                local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
+                                if touchInterest then
+                                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+                                    wait()
+                                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
+                                end
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndSquishyFloodButton = squishyFloodTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local funTimesModel = game.Workspace:FindFirstChild("FunTimesAtSquishyFlood")
+        if funTimesModel then
+            local buildModel = funTimesModel:FindFirstChild("Build")
+            if buildModel then
+                local winpartsFolder = buildModel:FindFirstChild("Winparts")
+                if winpartsFolder then
+                    local winParts = winpartsFolder:GetChildren()
+                    local count = 0
+                    for _, part in pairs(winParts) do
+                        if part:IsA("Part") and part.Name == "WinPart" then
+                            count = count + 1
+                            if count == 4 then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
