@@ -26,7 +26,7 @@ local scriptSectionFlood = floodTab:CreateSection("Script")
 
 -- Create a button in the Flood tab
 local floodButton = floodTab:CreateButton({
-    Name = "Toggle Highlight",
+    Name = "ESP Mines",
     Callback = function()
         local floodFillMine = game.Workspace:FindFirstChild("FloodFillMine")
         if floodFillMine then
