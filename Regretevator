@@ -562,4 +562,27 @@ local teleportToEndSquishyFloodButton = squishyFloodTab:CreateButton({
     end
 })
 
+local jeremyTab = window:CreateTab("Jeremy", 4483362458)
+
+local scriptSectionJeremy = jeremyTab:CreateSection("Script")
+
+local teleportToEndJeremyButton = jeremyTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local jeremyModel = game.Workspace:FindFirstChild("Jeremy")
+        if jeremyModel then
+            local buildModel = jeremyModel:FindFirstChild("Build")
+            if buildModel then
+                local buttonModel = buildModel:FindFirstChild("Button")
+                if buttonModel then
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = buttonModel.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
