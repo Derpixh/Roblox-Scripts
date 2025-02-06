@@ -585,4 +585,27 @@ local teleportToEndJeremyButton = jeremyTab:CreateButton({
     end
 })
 
+local tpotTab = window:CreateTab("TPOT", 4483362458)
+
+local scriptSectionTPOT = tpotTab:CreateSection("Script")
+
+local teleportToRoofButton = tpotTab:CreateButton({
+    Name = "Teleport To Roof",
+    Callback = function()
+        local tpotModel = game.Workspace:FindFirstChild("TPOT")
+        if tpotModel then
+            local buildModel = tpotModel:FindFirstChild("Build")
+            if buildModel then
+                local captureZonePart = buildModel:FindFirstChild("CaptureZone")
+                if captureZonePart then
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = captureZonePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
