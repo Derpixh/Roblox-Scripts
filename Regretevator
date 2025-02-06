@@ -109,34 +109,6 @@ local instantWinObbyButton = obbyTab:CreateButton({
     end
 })
 
--- Create a tab named "Obby"
-local obbyTab = window:CreateTab("Obby", 4483362458)
-
--- Create a section in the Obby tab named "Script"
-local scriptSectionObby = obbyTab:CreateSection("Script")
-
--- Create a button in the Obby tab named "Instant Win Obby"
-local instantWinObbyButton = obbyTab:CreateButton({
-    Name = "Instant Win Obby",
-    Callback = function()
-        local obbyModel = game.Workspace:FindFirstChild("Obby")
-        if obbyModel then
-            local buildModel = obbyModel:FindFirstChild("Build")
-            if buildModel then
-                local endPart = buildModel:FindFirstChild("EndPart")
-                if endPart then
-                    local touchInterest = endPart:FindFirstChildOfClass("TouchTransmitter")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endPart, 1)
-                    end
-                end
-            end
-        end
-    end
-})
-
 -- Create a button in the Obby tab named "Teleport To End (USE AFTER INSTANT WIN)"
 local teleportToEndButton = obbyTab:CreateButton({
     Name = "Teleport To End (USE AFTER INSTANT WIN)",
