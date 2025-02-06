@@ -284,5 +284,140 @@ local findGigglerButton = gigglerTab:CreateButton({
     end
 })
 
+-- Create a tab named "Snowy Slope"
+local snowySlopeTab = window:CreateTab("Snowy Slope", 4483362458)
+
+-- Create a section in the Snowy Slope tab named "Script"
+local scriptSectionSnowySlope = snowySlopeTab:CreateSection("Script")
+
+-- Create a button in the Snowy Slope tab named "Instant Win Floor"
+local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
+    Name = "Instant Win Floor",
+    Callback = function()
+        local snowySlopeModel = game.Workspace:FindFirstChild("SnowySlope")
+        if snowySlopeModel then
+            local winPart = snowySlopeModel:FindFirstChild("WinPart")
+            if winPart then
+                local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Highway"
+local highwayTab = window:CreateTab("Highway", 4483362458)
+
+-- Create a section in the Highway tab named "Script"
+local scriptSectionHighway = highwayTab:CreateSection("Script")
+
+-- Create a button in the Highway tab named "Instant Win Highway"
+local instantWinHighwayButton = highwayTab:CreateButton({
+    Name = "Instant Win Highway",
+    Callback = function()
+        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
+            if winPoint then
+                local touchInterest = winPoint:FindFirstChildOfClass("TouchTransmitter")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 1)
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Color Tiles"
+local colorTilesTab = window:CreateTab("Color Tiles", 4483362458)
+
+-- Create a section in the Color Tiles tab named "Script"
+local scriptSectionColorTiles = colorTilesTab:CreateSection("Script")
+
+-- Create a button in the Color Tiles tab named "Color All Tiles"
+local colorAllTilesButton = colorTilesTab:CreateButton({
+    Name = "Color All Tiles",
+    Callback = function()
+        local colorTheTilesModel = game.Workspace:FindFirstChild("ColorTheTiles")
+        if colorTheTilesModel then
+            local tilesModel = colorTheTilesModel:FindFirstChild("Tiles")
+            if tilesModel then
+                for _, tile in pairs(tilesModel:GetChildren()) do
+                    if tile:IsA("Part") and tile.Name == "Tile" then
+                        local touchInterest = tile:FindFirstChildOfClass("TouchTransmitter")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Lampert"
+local lampertTab = window:CreateTab("Lampert", 4483362458)
+
+-- Create a section in the Lampert tab named "Script"
+local scriptSectionLampert = lampertTab:CreateSection("Script")
+
+-- Create a button in the Lampert tab named "Find Lampert"
+local findLampertButton = lampertTab:CreateButton({
+    Name = "Find Lampert",
+    Callback = function()
+        local roomModel = game.Workspace:FindFirstChild("3008_Room")
+        if roomModel then
+            local buildModel = roomModel:FindFirstChild("Build")
+            if buildModel then
+                local lampertModel = buildModel:FindFirstChild("Lampert")
+                if lampertModel then
+                    local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
+                    if clickDetector then
+                        clickDetector:FireClick()
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "bugbo"
+local bugboTab = window:CreateTab("bugbo", 4483362458)
+
+-- Create a section in the bugbo tab named "Script"
+local scriptSectionBugbo = bugboTab:CreateSection("Script")
+
+-- Create a button in the bugbo tab named "Collect Rocks"
+local collectRocksButton = bugboTab:CreateButton({
+    Name = "Collect Rocks",
+    Callback = function()
+        local bugboModel = game.Workspace:FindFirstChild("bugbo")
+        if bugboModel then
+            local buildModel = bugboModel:FindFirstChild("Build")
+            if buildModel then
+                local rocksFolder = buildModel:FindFirstChild("Rocks")
+                if rocksFolder then
+                    for _, meshPart in pairs(rocksFolder:GetChildren()) do
+                        if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
+                            local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                clickDetector:FireClick()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
