@@ -227,5 +227,34 @@ local instantWinWallOfButton = wallOfTab:CreateButton({
     end
 })
 
+-- Create a tab named "JAOBA"
+local jaobaTab = window:CreateTab("JAOBA", 4483362458)
+
+-- Create a section in the JAOBA tab named "Script"
+local scriptSectionJaoba = jaobaTab:CreateSection("Script")
+
+-- Create a button in the JAOBA tab named "Find Jaoba"
+local findJaobaButton = jaobaTab:CreateButton({
+    Name = "Find Jaoba",
+    Callback = function()
+        local uesModel = game.Workspace:FindFirstChild("UES")
+        if uesModel then
+            local buildModel = uesModel:FindFirstChild("Build")
+            if buildModel then
+                local jaobaModel = buildModel:FindFirstChild("JAOBA")
+                if jaobaModel then
+                    local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
+                    if cardboardBox then
+                        local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
+                        if clickDetector then
+                            clickDetector:FireClick()
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
