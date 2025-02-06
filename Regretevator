@@ -22,8 +22,8 @@ local floodTab = window:CreateTab("Flood", 4483362458)
 -- Create a section in the Flood tab named "Script"
 local scriptSectionFlood = floodTab:CreateSection("Script")
 
--- Create a button in the Flood tab
-local floodButton = floodTab:CreateButton({
+-- Create a button in the Flood tab named "ESP Mines"
+local espMinesButton = floodTab:CreateButton({
     Name = "ESP Mines",
     Callback = function()
         local floodFillMine = game.Workspace:FindFirstChild("FloodFillMine")
