@@ -256,5 +256,33 @@ local findJaobaButton = jaobaTab:CreateButton({
     end
 })
 
+-- Create a tab named "Giggler"
+local gigglerTab = window:CreateTab("Giggler", 4483362458)
+
+-- Create a section in the Giggler tab named "Script"
+local scriptSectionGiggler = gigglerTab:CreateSection("Script")
+
+-- Create a button in the Giggler tab named "Find Giggler"
+local findGigglerButton = gigglerTab:CreateButton({
+    Name = "Find Giggler",
+    Callback = function()
+        local mazeModel = game.Workspace:FindFirstChild("RandomMazeWIndows")
+        if mazeModel then
+            local buildModel = mazeModel:FindFirstChild("Build")
+            if buildModel then
+                local part = buildModel:FindFirstChild("Part")
+                if part then
+                    local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
