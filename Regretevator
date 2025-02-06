@@ -199,5 +199,33 @@ local instantWinWipeoutButton = wipeoutTab:CreateButton({
     end
 })
 
+-- Create a tab named "WALL_OF"
+local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
+
+-- Create a section in the WALL_OF tab named "Script"
+local scriptSectionWallOf = wallOfTab:CreateSection("Script")
+
+-- Create a button in the WALL_OF tab named "Instant Win Obby"
+local instantWinWallOfButton = wallOfTab:CreateButton({
+    Name = "Instant Win Obby",
+    Callback = function()
+        local wallOfModel = game.Workspace:FindFirstChild("WALL_OF")
+        if wallOfModel then
+            local buildModel = wallOfModel:FindFirstChild("Build")
+            if buildModel then
+                local youWinPart = buildModel:FindFirstChild("YOU_WIN")
+                if youWinPart then
+                    local touchInterest = youWinPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, youWinPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, youWinPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
