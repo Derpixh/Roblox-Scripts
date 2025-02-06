@@ -90,5 +90,114 @@ local espButton = mazeTab:CreateButton({
     end
 })
 
+-- Create a tab named "Obby"
+local obbyTab = window:CreateTab("Obby", 4483362458)
+
+-- Create a section in the Obby tab named "Script"
+local scriptSectionObby = obbyTab:CreateSection("Script")
+
+-- Create a button in the Obby tab named "Instant Win Obby"
+local instantWinObbyButton = obbyTab:CreateButton({
+    Name = "Instant Win Obby",
+    Callback = function()
+        local obbyModel = game.Workspace:FindFirstChild("Obby")
+        if obbyModel then
+            local buildModel = obbyModel:FindFirstChild("Build")
+            if buildModel then
+                local endPart = buildModel:FindFirstChild("EndPart")
+                if endPart then
+                    local touchInterest = endPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Minefield"
+local minefieldTab = window:CreateTab("Minefield", 4483362458)
+
+-- Create a section in the Minefield tab named "Script"
+local scriptSectionMinefield = minefieldTab:CreateSection("Script")
+
+-- Create a button in the Minefield tab named "Instant Win"
+local instantWinButton = minefieldTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local minefieldModel = game.Workspace:FindFirstChild("Minefield")
+        if minefieldModel then
+            local buildModel = minefieldModel:FindFirstChild("Build")
+            if buildModel then
+                local winPart = buildModel:FindFirstChild("WinPart")
+                if winPart then
+                    local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Intense Obby"
+local intenseObbyTab = window:CreateTab("Intense Obby", 4483362458)
+
+-- Create a section in the Intense Obby tab named "Script"
+local scriptSectionIntenseObby = intenseObbyTab:CreateSection("Script")
+
+-- Create a button in the Intense Obby tab named "Instant Win"
+local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local obbyModel = game.Workspace:FindFirstChild("IntenseObby")
+        if obbyModel then
+            local endBlock = obbyModel:FindFirstChild("ENDBLOCK")
+            if endBlock then
+                local touchInterest = endBlock:FindFirstChildOfClass("TouchTransmitter")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endBlock, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endBlock, 1)
+                end
+            end
+        end
+    end
+})
+
+-- Create a tab named "Wipeout"
+local wipeoutTab = window:CreateTab("Wipeout", 4483362458)
+
+-- Create a section in the Wipeout tab named "Script"
+local scriptSectionWipeout = wipeoutTab:CreateSection("Script")
+
+-- Create a button in the Wipeout tab named "Instant Win"
+local instantWinWipeoutButton = wipeoutTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local model = game.Workspace:FindFirstChild("Splitsville_Wipeout")
+        if model then
+            local checkpointsFolder = model:FindFirstChild("Checkpoints")
+            if checkpointsFolder then
+                local endCheckpoint = checkpointsFolder:FindFirstChild("EndCheckpoint")
+                if endCheckpoint then
+                    local touchInterest = endCheckpoint:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
