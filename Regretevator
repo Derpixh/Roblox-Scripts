@@ -1,7 +1,5 @@
--- Bootstrapping Rayfield UI
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Create a window
 local window = Rayfield:CreateWindow({
     Name = "Regretevator",
     LoadingTitle = "By Derpixh",
@@ -16,33 +14,26 @@ local window = Rayfield:CreateWindow({
     }
 })
 
--- Create a tab named "Flood"
 local floodTab = window:CreateTab("Flood", 4483362458)
 
--- Create a section in the Flood tab named "Script"
 local scriptSectionFlood = floodTab:CreateSection("Script")
 
--- Create a button in the Flood tab named "ESP Mines"
-local espMinesButton = floodTab:CreateButton({
-    Name = "ESP Mines",
+local instantWinButton = floodTab:CreateButton({
+    Name = "Instant Win",
     Callback = function()
-        local floodFillMine = game.Workspace:FindFirstChild("FloodFillMine")
-        if floodFillMine then
-            local build = floodFillMine:FindFirstChild("Build")
-            if build then
-                for _, layerName in pairs({"Layer1", "Layer2", "Layer3"}) do
-                    local layer = build:FindFirstChild(layerName)
-                    if layer then
-                        local layerHole = layer:FindFirstChild(layerName .. "Hole")
-                        if layerHole then
-                            local highlight = layerHole:FindFirstChildOfClass("Highlight")
-                            if highlight then
-                                highlight:Destroy()
-                            else
-                                highlight = Instance.new("Highlight")
-                                highlight.Parent = layerHole
-                                highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                            end
+        local floodFillMineModel = game.Workspace:FindFirstChild("FloodFillMine")
+        if floodFillMineModel then
+            local buildModel = floodFillMineModel:FindFirstChild("Build")
+            if buildModel then
+                local shieldModel = buildModel:FindFirstChild("Shield")
+                if shieldModel then
+                    local bubblePart = shieldModel:FindFirstChild("Bubble")
+                    if bubblePart then
+                        local touchInterest = bubblePart:FindFirstChildOfClass("TouchTransmitter")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, bubblePart, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, bubblePart, 1)
                         end
                     end
                 end
@@ -51,13 +42,10 @@ local espMinesButton = floodTab:CreateButton({
     end
 })
 
--- Create a tab named "Maze"
 local mazeTab = window:CreateTab("Maze", 4483362458)
 
--- Create a section in the Maze tab named "Script"
 local scriptSectionMaze = mazeTab:CreateSection("Script")
 
--- Create a button in the Maze tab named "Collect Pages"
 local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
@@ -81,13 +69,10 @@ local collectPagesButton = mazeTab:CreateButton({
     end
 })
 
--- Create a tab named "Obby"
 local obbyTab = window:CreateTab("Obby", 4483362458)
 
--- Create a section in the Obby tab named "Script"
 local scriptSectionObby = obbyTab:CreateSection("Script")
 
--- Create a button in the Obby tab named "Instant Win Obby"
 local instantWinObbyButton = obbyTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
@@ -109,7 +94,6 @@ local instantWinObbyButton = obbyTab:CreateButton({
     end
 })
 
--- Create a button in the Obby tab named "Teleport To End (USE AFTER INSTANT WIN)"
 local teleportToEndButton = obbyTab:CreateButton({
     Name = "Teleport To End (USE AFTER INSTANT WIN)",
     Callback = function()
@@ -121,7 +105,7 @@ local teleportToEndButton = obbyTab:CreateButton({
                 if endPart then
                     local part = endPart:FindFirstChild("Part")
                     if part then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endPart.CFrame
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
                     end
                 end
             end
@@ -129,13 +113,10 @@ local teleportToEndButton = obbyTab:CreateButton({
     end
 })
 
--- Create a tab named "Minefield"
 local minefieldTab = window:CreateTab("Minefield", 4483362458)
 
--- Create a section in the Minefield tab named "Script"
 local scriptSectionMinefield = minefieldTab:CreateSection("Script")
 
--- Create a button in the Minefield tab named "Instant Win"
 local instantWinButton = minefieldTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -157,13 +138,10 @@ local instantWinButton = minefieldTab:CreateButton({
     end
 })
 
--- Create a tab named "Intense Obby"
 local intenseObbyTab = window:CreateTab("Intense Obby", 4483362458)
 
--- Create a section in the Intense Obby tab named "Script"
 local scriptSectionIntenseObby = intenseObbyTab:CreateSection("Script")
 
--- Create a button in the Intense Obby tab named "Instant Win"
 local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -182,13 +160,10 @@ local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
     end
 })
 
--- Create a tab named "Wipeout"
 local wipeoutTab = window:CreateTab("Wipeout", 4483362458)
 
--- Create a section in the Wipeout tab named "Script"
 local scriptSectionWipeout = wipeoutTab:CreateSection("Script")
 
--- Create a button in the Wipeout tab named "Instant Win"
 local instantWinWipeoutButton = wipeoutTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -210,13 +185,10 @@ local instantWinWipeoutButton = wipeoutTab:CreateButton({
     end
 })
 
--- Create a tab named "WALL_OF"
 local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
 
--- Create a section in the WALL_OF tab named "Script"
 local scriptSectionWallOf = wallOfTab:CreateSection("Script")
 
--- Create a button in the WALL_OF tab named "Instant Win Obby"
 local instantWinWallOfButton = wallOfTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
@@ -238,13 +210,10 @@ local instantWinWallOfButton = wallOfTab:CreateButton({
     end
 })
 
--- Create a tab named "JAOBA"
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
 
--- Create a section in the JAOBA tab named "Script"
 local scriptSectionJaoba = jaobaTab:CreateSection("Script")
 
--- Create a button in the JAOBA tab named "Find Jaoba"
 local findJaobaButton = jaobaTab:CreateButton({
     Name = "Find Jaoba",
     Callback = function()
@@ -267,13 +236,10 @@ local findJaobaButton = jaobaTab:CreateButton({
     end
 })
 
--- Create a tab named "Giggler"
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
--- Create a section in the Giggler tab named "Script"
 local scriptSectionGiggler = gigglerTab:CreateSection("Script")
 
--- Create a button in the Giggler tab named "Find Giggler"
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
     Callback = function()
@@ -295,13 +261,10 @@ local findGigglerButton = gigglerTab:CreateButton({
     end
 })
 
--- Create a tab named "Snowy Slope"
 local snowySlopeTab = window:CreateTab("Snowy Slope", 4483362458)
 
--- Create a section in the Snowy Slope tab named "Script"
 local scriptSectionSnowySlope = snowySlopeTab:CreateSection("Script")
 
--- Create a button in the Snowy Slope tab named "Instant Win Floor"
 local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
     Name = "Instant Win Floor",
     Callback = function()
@@ -320,13 +283,10 @@ local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
     end
 })
 
--- Create a tab named "Highway"
 local highwayTab = window:CreateTab("Highway", 4483362458)
 
--- Create a section in the Highway tab named "Script"
 local scriptSectionHighway = highwayTab:CreateSection("Script")
 
--- Create a button in the Highway tab named "Instant Win Highway"
 local instantWinHighwayButton = highwayTab:CreateButton({
     Name = "Instant Win Highway",
     Callback = function()
@@ -345,13 +305,10 @@ local instantWinHighwayButton = highwayTab:CreateButton({
     end
 })
 
--- Create a tab named "Color Tiles"
 local colorTilesTab = window:CreateTab("Color Tiles", 4483362458)
 
--- Create a section in the Color Tiles tab named "Script"
 local scriptSectionColorTiles = colorTilesTab:CreateSection("Script")
 
--- Create a button in the Color Tiles tab named "Color All Tiles"
 local colorAllTilesButton = colorTilesTab:CreateButton({
     Name = "Color All Tiles",
     Callback = function()
@@ -374,13 +331,10 @@ local colorAllTilesButton = colorTilesTab:CreateButton({
     end
 })
 
--- Create a tab named "Lampert"
 local lampertTab = window:CreateTab("Lampert", 4483362458)
 
--- Create a section in the Lampert tab named "Script"
 local scriptSectionLampert = lampertTab:CreateSection("Script")
 
--- Create a button in the Lampert tab named "Find Lampert"
 local findLampertButton = lampertTab:CreateButton({
     Name = "Find Lampert",
     Callback = function()
@@ -400,13 +354,10 @@ local findLampertButton = lampertTab:CreateButton({
     end
 })
 
--- Create a tab named "Bugbo"
 local bugboTab = window:CreateTab("Bugbo", 4483362458)
 
--- Create a section in the Bugbo tab named "Script"
 local scriptSectionBugbo = bugboTab:CreateSection("Script")
 
--- Create a button in the Bugbo tab named "Collect Rocks"
 local collectRocksButton = bugboTab:CreateButton({
     Name = "Collect Rocks",
     Callback = function()
@@ -430,29 +381,21 @@ local collectRocksButton = bugboTab:CreateButton({
     end
 })
 
--- Create a tab named "Long Room"
 local longRoomTab = window:CreateTab("Long Room", 4483362458)
 
--- Create a section in the Long Room tab named "Script"
 local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
 
--- Create a button in the Long Room tab named "Instant Win"
 local instantWinLongRoomButton = longRoomTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
-        -- Locate the SuspiciouslyLongRoom model
         local suspiciouslyLongRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
         if suspiciouslyLongRoomModel then
-            -- Locate the Checkpoints model
             local checkpointsModel = suspiciouslyLongRoomModel:FindFirstChild("Checkpoints")
             if checkpointsModel then
-                -- Locate the EndCheckpoint part
                 local endCheckpointPart = checkpointsModel:FindFirstChild("EndCheckpoint")
                 if endCheckpointPart then
-                    -- Locate the TouchInterest
                     local touchInterest = endCheckpointPart:FindFirstChildOfClass("TouchTransmitter")
                     if touchInterest then
-                        -- Fire the TouchTransmitter
                         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 0)
                         wait()
                         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 1)
@@ -463,5 +406,99 @@ local instantWinLongRoomButton = longRoomTab:CreateButton({
     end
 })
 
--- Load saved configuration
+local teleportToEndButton = longRoomTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local suspiciouslyLongRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
+        if suspiciouslyLongRoomModel then
+            local checkpointsModel = suspiciouslyLongRoomModel:FindFirstChild("Checkpoints")
+            if checkpointsModel then
+                local endCheckpointPart = checkpointsModel:FindFirstChild("EndCheckpoint")
+                if endCheckpointPart then
+                    local part = endCheckpointPart:FindFirstChild("Part")
+                    if part then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local stanelyRoomTab = window:CreateTab("Stanely Room", 4483362458)
+
+local scriptSectionStanelyRoom = stanelyRoomTab:CreateSection("Script")
+
+local instantWinStanelyRoomButton = stanelyRoomTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local stanelyRoomModel = game.Workspace:FindFirstChild("StanelyRoom")
+        if stanelyRoomModel then
+            local buildModel = stanelyRoomModel:FindFirstChild("Build")
+            if buildModel then
+                local generatedModel = buildModel:FindFirstChild("Generated")
+                if generatedModel then
+                    local endingModel = generatedModel:FindFirstChild("Ending")
+                    if endingModel then
+                        local endTouchPart = endingModel:FindFirstChild("EndTouch")
+                        if endTouchPart then
+                            local touchInterest = endTouchPart:FindFirstChildOfClass("TouchTransmitter")
+                            if touchInterest then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 1)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndStanelyRoomButton = stanelyRoomTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local stanelyRoomModel = game.Workspace:FindFirstChild("StanelyRoom")
+        if stanelyRoomModel then
+            local buildModel = stanelyRoomModel:FindFirstChild("Build")
+            if buildModel then
+                local generatedModel = buildModel:FindFirstChild("Generated")
+                if generatedModel then
+                    local endingModel = generatedModel:FindFirstChild("Ending")
+                    if endingModel then
+                        local endTouchPart = endingModel:FindFirstChild("EndTouch")
+                        if endTouchPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endTouchPart.CFrame
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
+
+local scriptSectionTeapotDodgeball = teapotDodgeballTab:CreateSection("Script")
+
+local winDodgeballButton = teapotDodgeballTab:CreateButton({
+    Name = "Win Dodgeball",
+    Callback = function()
+        local teapotDodgeballModel = game.Workspace:FindFirstChild("TeapotDodgeball")
+        if teapotDodgeballModel then
+            local buildModel = teapotDodgeballModel:FindFirstChild("Build")
+            if buildModel then
+                local finishPart = buildModel:FindFirstChild("Finish")
+                if finishPart then
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = finishPart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
