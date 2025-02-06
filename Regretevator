@@ -7,9 +7,7 @@ local window = Rayfield:CreateWindow({
     LoadingTitle = "By Derpixh",
     LoadingSubtitle = "Loading Assets...",
     ConfigurationSaving = {
-        Enabled = true,
-        FolderName = nil,
-        FileName = "Big Hub"
+        Enabled = false
     },
     Discord = {
         Enabled = false,
