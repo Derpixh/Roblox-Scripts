@@ -57,36 +57,30 @@ local mazeTab = window:CreateTab("Maze", 4483362458)
 -- Create a section in the Maze tab named "Script"
 local scriptSectionMaze = mazeTab:CreateSection("Script")
 
--- Function to check and highlight notes in the FunnyMaze
-local function checkAndHighlight()
-    local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
-    if funnyMaze then
-        local build = funnyMaze:FindFirstChild("Build")
-        if build then
-            local finalNotes = build:FindFirstChild("FinalNotes")
-            if finalNotes then
-                for _, part in pairs(finalNotes:GetChildren()) do
-                    if part:IsA("Part") and part.Name == "Note" then
-                        local highlight = part:FindFirstChildOfClass("Highlight")
-                        if highlight then
-                            highlight:Destroy()
-                        else
-                            highlight = Instance.new("Highlight")
-                            highlight.Parent = part
-                            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+-- Create a button in the Maze tab named "Collect Pages"
+local collectPagesButton = mazeTab:CreateButton({
+    Name = "Collect Pages",
+    Callback = function()
+        local function checkAndFireClickDetector()
+            local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
+            if funnyMaze then
+                local build = funnyMaze:FindFirstChild("Build")
+                if build then
+                    local finalNotes = build:FindFirstChild("FinalNotes")
+                    if finalNotes then
+                        for _, part in pairs(finalNotes:GetChildren()) do
+                            if part:IsA("Part") and part.Name == "Note" then
+                                local clickDetector = part:FindFirstChildOfClass("ClickDetector")
+                                if clickDetector then
+                                    clickDetector:FireClick()
+                                end
+                            end
                         end
                     end
                 end
             end
         end
-    end
-end
-
--- Create a button in the Maze tab named "ESP Pages"
-local espButton = mazeTab:CreateButton({
-    Name = "ESP Pages",
-    Callback = function()
-        checkAndHighlight()
+        checkAndFireClickDetector()
     end
 })
 
