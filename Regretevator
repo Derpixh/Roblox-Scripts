@@ -413,5 +413,38 @@ local collectRocksButton = bugboTab:CreateButton({
     end
 })
 
+-- Create a tab named "Long Room"
+local longRoomTab = window:CreateTab("Long Room", 4483362458)
+
+-- Create a section in the Long Room tab named "Script"
+local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
+
+-- Create a button in the Long Room tab named "Instant Win"
+local instantWinLongRoomButton = longRoomTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        -- Locate the SuspiciouslyLongRoom model
+        local suspiciouslyLongRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
+        if suspiciouslyLongRoomModel then
+            -- Locate the Checkpoints model
+            local checkpointsModel = suspiciouslyLongRoomModel:FindFirstChild("Checkpoints")
+            if checkpointsModel then
+                -- Locate the EndCheckpoint part
+                local endCheckpointPart = checkpointsModel:FindFirstChild("EndCheckpoint")
+                if endCheckpointPart then
+                    -- Locate the TouchInterest
+                    local touchInterest = endCheckpointPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        -- Fire the TouchTransmitter
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- Load saved configuration
 Rayfield:LoadConfiguration()
