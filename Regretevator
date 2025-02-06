@@ -160,6 +160,19 @@ local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
     end
 })
 
+local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local obbyModel = game.Workspace:FindFirstChild("IntenseObby")
+        if obbyModel then
+            local endBlock = obbyModel:FindFirstChild("ENDBLOCK")
+            if endBlock then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endBlock.CFrame
+            end
+        end
+    end
+})
+
 local wipeoutTab = window:CreateTab("Wipeout", 4483362458)
 
 local scriptSectionWipeout = wipeoutTab:CreateSection("Script")
