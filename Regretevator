@@ -61,26 +61,23 @@ local scriptSectionMaze = mazeTab:CreateSection("Script")
 local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
-        local function checkAndFireClickDetector()
-            local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
-            if funnyMaze then
-                local build = funnyMaze:FindFirstChild("Build")
-                if build then
-                    local finalNotes = build:FindFirstChild("FinalNotes")
-                    if finalNotes then
-                        for _, part in pairs(finalNotes:GetChildren()) do
-                            if part:IsA("Part") and part.Name == "Note" then
-                                local clickDetector = part:FindFirstChildOfClass("ClickDetector")
-                                if clickDetector then
-                                    clickDetector:FireClick()
-                                end
+        local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
+        if funnyMaze then
+            local build = funnyMaze:FindFirstChild("Build")
+            if build then
+                local finalNotes = build:FindFirstChild("FinalNotes")
+                if finalNotes then
+                    for _, part in pairs(finalNotes:GetChildren()) do
+                        if part:IsA("Part") and part.Name == "Note" then
+                            local clickDetector = part:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                clickDetector:FireClick()
                             end
                         end
                     end
                 end
             end
         end
-        checkAndFireClickDetector()
     end
 })
 
