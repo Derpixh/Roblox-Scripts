@@ -726,4 +726,51 @@ local instantWinGumballMachineButton = gumballMachineTab:CreateButton({
     end
 })
 
+local findThePathTab = window:CreateTab("Find The Path", 4483362458)
+
+local scriptSectionFindThePath = findThePathTab:CreateSection("Script")
+
+local instantWinFindThePathButton = findThePathTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
+        if findThePathModel then
+            local buildModel = findThePathModel:FindFirstChild("Build")
+            if buildModel then
+                local endModel = buildModel:FindFirstChild("End")
+                if endModel then
+                    local winZonePart = endModel:FindFirstChild("win_zone")
+                    if winZonePart then
+                        local touchInterest = winZonePart:FindFirstChildOfClass("TouchTransmitter")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToOtherSideButton = findThePathTab:CreateButton({
+    Name = "Teleport To Other Side",
+    Callback = function()
+        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
+        if findThePathModel then
+            local buildModel = findThePathModel:FindFirstChild("Build")
+            if buildModel then
+                local endModel = buildModel:FindFirstChild("End")
+                if endModel then
+                    local winZonePart = endModel:FindFirstChild("win_zone")
+                    if winZonePart then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winZonePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
