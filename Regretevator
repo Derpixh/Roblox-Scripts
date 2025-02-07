@@ -760,4 +760,28 @@ local openAllDoorsButton = cardboardRoomTab:CreateButton({
     end
 })
 
+local forestCampTab = window:CreateTab("Forest Camp", 4483362458)
+
+local scriptSectionForestCamp = forestCampTab:CreateSection("Script")
+
+local removeUFOsButton = forestCampTab:CreateButton({
+    Name = "Remove UFOs",
+    Callback = function()
+        local forestTwoStudCampModel = game.Workspace:FindFirstChild("Forest_TwoStudCamp")
+        if forestTwoStudCampModel then
+            local buildModel = forestTwoStudCampModel:FindFirstChild("Build")
+            if buildModel then
+                local ufosFolder = buildModel:FindFirstChild("UFOs")
+                if ufosFolder then
+                    ufosFolder:Destroy()
+                end
+                local ufoMoveTosFolder = buildModel:FindFirstChild("UFO_MoveTos")
+                if ufoMoveTosFolder then
+                    ufoMoveTosFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
