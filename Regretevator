@@ -42,6 +42,25 @@ local instantWinButton = floodTab:CreateButton({
     end
 })
 
+local teleportToFinishButton = floodTab:CreateButton({
+    Name = "Teleport To Finish",
+    Callback = function()
+        local floodFillMineModel = game.Workspace:FindFirstChild("FloodFillMine")
+        if floodFillMineModel then
+            local buildModel = floodFillMineModel:FindFirstChild("Build")
+            if buildModel then
+                local shieldModel = buildModel:FindFirstChild("Shield")
+                if shieldModel then
+                    local bubblePart = shieldModel:FindFirstChild("Bubble")
+                    if bubblePart then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = bubblePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 local mazeTab = window:CreateTab("Maze", 4483362458)
 
 local scriptSectionMaze = mazeTab:CreateSection("Script")
@@ -198,6 +217,22 @@ local instantWinWipeoutButton = wipeoutTab:CreateButton({
     end
 })
 
+local teleportToEndButton = wipeoutTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local model = game.Workspace:FindFirstChild("Splitsville_Wipeout")
+        if model then
+            local checkpointsFolder = model:FindFirstChild("Checkpoints")
+            if checkpointsFolder then
+                local endCheckpoint = checkpointsFolder:FindFirstChild("EndCheckpoint")
+                if endCheckpoint then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endCheckpoint.CFrame
+                end
+            end
+        end
+    end
+})
+
 local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
 
 local scriptSectionWallOf = wallOfTab:CreateSection("Script")
@@ -217,6 +252,22 @@ local instantWinWallOfButton = wallOfTab:CreateButton({
                         wait()
                         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, youWinPart, 1)
                     end
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndButton = wallOfTab:CreateButton({
+    Name = "Teleport To End (USE AFTER WIN OBBY)",
+    Callback = function()
+        local wallOfModel = game.Workspace:FindFirstChild("WALL_OF")
+        if wallOfModel then
+            local buildModel = wallOfModel:FindFirstChild("Build")
+            if buildModel then
+                local youWinPart = buildModel:FindFirstChild("YOU_WIN")
+                if youWinPart then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = youWinPart.CFrame
                 end
             end
         end
@@ -313,6 +364,19 @@ local instantWinHighwayButton = highwayTab:CreateButton({
                     wait()
                     firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 1)
                 end
+            end
+        end
+    end
+})
+
+local teleportToFinishButton = highwayTab:CreateButton({
+    Name = "Teleport To Finish",
+    Callback = function()
+        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
+            if winPoint then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoint.CFrame
             end
         end
     end
