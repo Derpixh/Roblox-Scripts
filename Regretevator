@@ -282,23 +282,21 @@ local findJaobaButton = jaobaTab:CreateButton({
     Name = "Find Jaoba",
     Callback = function()
         local uesModel = game.Workspace:FindFirstChild("UES")
-        if uesModel then
-            local buildModel = uesModel:FindFirstChild("Build")
-            if buildModel then
-                local jaobaModel = buildModel:FindFirstChild("JAOBA")
-                if jaobaModel then
-                    local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
-                    if cardboardBox then
-                        local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
-                        if clickDetector then
-                            clickDetector.MouseClick:Fire()
-                        end
-                    end
+if uesModel then
+    local buildModel = uesModel:FindFirstChild("Build")
+    if buildModel then
+        local jaobaModel = buildModel:FindFirstChild("JAOBA")
+        if jaobaModel then
+            local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
+            if cardboardBox then
+                local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
+                if clickDetector then
+                    clickDetector:Fire("MouseClick")
                 end
             end
         end
     end
-})
+end
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
@@ -778,6 +776,47 @@ local removeUFOsButton = forestCampTab:CreateButton({
                 local ufoMoveTosFolder = buildModel:FindFirstChild("UFO_MoveTos")
                 if ufoMoveTosFolder then
                     ufoMoveTosFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
+
+local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
+
+local removeObstaclesButton = superDropperTab:CreateButton({
+    Name = "Remove Obstacles",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local currentObsFolder = buildModel:FindFirstChild("CurrentObs")
+                if currentObsFolder then
+                    currentObsFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local instantWinButton = superDropperTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local winPoolPart = buildModel:FindFirstChild("WinPool")
+                if winPoolPart then
+                    local touchInterest = winPoolPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 1)
+                    end
                 end
             end
         end
