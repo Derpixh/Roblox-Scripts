@@ -731,33 +731,6 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
     end
 })
 
-local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
-
-local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
-
-local openAllDoorsButton = cardboardRoomTab:CreateButton({
-    Name = "Open All Doors",
-    Callback = function()
-        local cardboardRoomModel = game.Workspace:FindFirstChild("CardboardRoom")
-        if cardboardRoomModel then
-            local buildModel = cardboardRoomModel:FindFirstChild("Build")
-            if buildModel then
-                local doorsFolder = buildModel:FindFirstChild("Doors")
-                if doorsFolder then
-                    for _, doorModel in pairs(doorsFolder:GetChildren()) do
-                        if doorModel:IsA("Model") and doorModel.Name == "Door" then
-                            local clickDetector = doorModel:FindFirstChildOfClass("ClickDetector")
-                            if clickDetector then
-                                clickDetector.MouseClick:Fire()
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
 local forestCampTab = window:CreateTab("Forest Camp", 4483362458)
 
 local scriptSectionForestCamp = forestCampTab:CreateSection("Script")
