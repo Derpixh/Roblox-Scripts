@@ -274,12 +274,12 @@ local teleportToEndButton = wallOfTab:CreateButton({
     end
 })
 
-local jaobaTab = window:CreateTab("JAOBA", 4483362458)
-
-local scriptSectionJaoba = jaobaTab:CreateSection("Script")
+local jaobaTab = Rayfield:CreateTab({
+    Name = "JAOBA"
+})
 
 local findJaobaButton = jaobaTab:CreateButton({
-    Name = "Find Jaoba",
+    Name = "Find JAOBA",
     Callback = function()
         local uesModel = game.Workspace:FindFirstChild("UES")
         if uesModel then
@@ -287,28 +287,17 @@ local findJaobaButton = jaobaTab:CreateButton({
             if buildModel then
                 local jaobaModel = buildModel:FindFirstChild("JAOBA")
                 if jaobaModel then
-                    local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
+                    local cardboardBox = jaobaModel:FindFirstChild("carboard_box")
                     if cardboardBox then
                         local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
                         if clickDetector then
-                            clickDetector:FireClick()
-                        else
-                            warn("ClickDetector not found inside the cardboard_box!")
+                            clickDetector.MouseClick:Fire()
                         end
-                    else
-                        warn("cardboard_box not found inside JAOBAModel!")
                     end
-                else
-                    warn("JAOBA model not found inside Build!")
                 end
-            else
-                warn("Build model not found inside UES!")
             end
-        else
-            warn("UES model not found in Workspace!")
         end
     end
-})
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
@@ -433,7 +422,7 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector:FireClick()
+                        clickDetector.MouseClick:Fire()
                     end
                 end
             end
@@ -458,7 +447,7 @@ local collectRocksButton = bugboTab:CreateButton({
                         if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
                             local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector:FireClick()
+                                clickDetector.MouseClick:Fire()
                             end
                         end
                     end
