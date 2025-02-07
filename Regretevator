@@ -259,7 +259,7 @@ local instantWinWallOfButton = wallOfTab:CreateButton({
 })
 
 local teleportToEndButton = wallOfTab:CreateButton({
-    Name = "Teleport To End (USE AFTER WIN OBBY)",
+    Name = "Teleport To End",
     Callback = function()
         local wallOfModel = game.Workspace:FindFirstChild("WALL_OF")
         if wallOfModel then
@@ -274,12 +274,12 @@ local teleportToEndButton = wallOfTab:CreateButton({
     end
 })
 
-local jaobaTab = Rayfield:CreateTab({
-    Name = "JAOBA"
-})
+local jaobaTab = window:CreateTab("JAOBA", 4483362458)
+
+local scriptSectionJaoba = jaobaTab:CreateSection("Script")
 
 local findJaobaButton = jaobaTab:CreateButton({
-    Name = "Find JAOBA",
+    Name = "Find Jaoba",
     Callback = function()
         local uesModel = game.Workspace:FindFirstChild("UES")
         if uesModel then
@@ -287,17 +287,18 @@ local findJaobaButton = jaobaTab:CreateButton({
             if buildModel then
                 local jaobaModel = buildModel:FindFirstChild("JAOBA")
                 if jaobaModel then
-                    local cardboardBox = jaobaModel:FindFirstChild("carboard_box")
+                    local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
                     if cardboardBox then
                         local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
                         if clickDetector then
-                            clickDetector.MouseClick:Fire()
+                            clickDetector:FireClick()
                         end
                     end
                 end
             end
         end
     end
+})
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
@@ -422,7 +423,7 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector.MouseClick:Fire()
+                        clickDetector:FireClick()
                     end
                 end
             end
@@ -447,7 +448,7 @@ local collectRocksButton = bugboTab:CreateButton({
                         if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
                             local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector.MouseClick:Fire()
+                                clickDetector:FireClick()
                             end
                         end
                     end
@@ -684,37 +685,6 @@ local teleportToRoofButton = tpotTab:CreateButton({
     end
 })
 
-local gumballMachineTab = window:CreateTab("Gumball Machine", 4483362458)
-
-local scriptSectionGumballMachine = gumballMachineTab:CreateSection("Script")
-
-local instantWinGumballMachineButton = gumballMachineTab:CreateButton({
-    Name = "Instant Win",
-    Callback = function()
-        local gumballMachineModel = game.Workspace:FindFirstChild("GumballMachine")
-        if gumballMachineModel then
-            local buildModel = gumballMachineModel:FindFirstChild("Build")
-            if buildModel then
-                local generatedFolder = buildModel:FindFirstChild("Generated")
-                if generatedFolder then
-                    local endColumnModel = generatedFolder:FindFirstChild("EndColumn")
-                    if endColumnModel then
-                        local winPart = endColumnModel:FindFirstChild("WinPart")
-                        if winPart then
-                            local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
-                            if touchInterest then
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
-                                wait()
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
 local findThePathTab = window:CreateTab("Find The Path", 4483362458)
 
 local scriptSectionFindThePath = findThePathTab:CreateSection("Script")
@@ -761,5 +731,3 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
         end
     end
 })
-
-Rayfield:LoadConfiguration()
