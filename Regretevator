@@ -78,7 +78,7 @@ local collectPagesButton = mazeTab:CreateButton({
                         if part:IsA("Part") and part.Name == "Note" then
                             local clickDetector = part:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector:FireClick()
+                                clickDetector.MouseClick:Fire()
                             end
                         end
                     end
