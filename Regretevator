@@ -292,10 +292,20 @@ local findJaobaButton = jaobaTab:CreateButton({
                         local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
                         if clickDetector then
                             clickDetector:FireClick()
+                        else
+                            warn("ClickDetector not found inside the cardboard_box!")
                         end
+                    else
+                        warn("cardboard_box not found inside JAOBAModel!")
                     end
+                else
+                    warn("JAOBA model not found inside Build!")
                 end
+            else
+                warn("Build model not found inside UES!")
             end
+        else
+            warn("UES model not found in Workspace!")
         end
     end
 })
