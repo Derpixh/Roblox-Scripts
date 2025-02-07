@@ -291,7 +291,7 @@ local findJaobaButton = jaobaTab:CreateButton({
                     if cardboardBox then
                         local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
                         if clickDetector then
-                            clickDetector:FireClick()
+                            clickDetector.MouseClick:Fire()
                         end
                     end
                 end
@@ -423,7 +423,7 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector:FireClick()
+                        clickDetector.MouseClick:Fire()
                     end
                 end
             end
@@ -448,7 +448,7 @@ local collectRocksButton = bugboTab:CreateButton({
                         if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
                             local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector:FireClick()
+                                clickDetector.MouseClick:Fire()
                             end
                         end
                     end
