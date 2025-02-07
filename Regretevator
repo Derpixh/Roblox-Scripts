@@ -423,7 +423,8 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector.MouseClick:Fire()
+                        clickDetector.MouseClick:Connect(function() end)
+                        fireclickdetector(clickDetector)
                     end
                 end
             end
