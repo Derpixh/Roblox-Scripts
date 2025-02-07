@@ -281,22 +281,16 @@ local scriptSectionJaoba = jaobaTab:CreateSection("Script")
 local findJaobaButton = jaobaTab:CreateButton({
     Name = "Find Jaoba",
     Callback = function()
-        local uesModel = game.Workspace:FindFirstChild("UES")
-if uesModel then
-    local buildModel = uesModel:FindFirstChild("Build")
-    if buildModel then
-        local jaobaModel = buildModel:FindFirstChild("JAOBA")
-        if jaobaModel then
-            local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
-            if cardboardBox then
-                local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
-                if clickDetector then
-                    clickDetector:Fire("MouseClick")
-                end
+        local cardboardBox = game.Workspace:WaitForChild("UES"):WaitForChild("Build"):FindFirstChild("JAOBA"):FindFirstChild("cardboard_box")
+        if cardboardBox then
+            local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
+            if clickDetector then
+                clickDetector.MouseClick:Connect(function() end)
+                fireclickdetector(clickDetector)
             end
         end
     end
-end
+})
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
