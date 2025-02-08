@@ -807,4 +807,30 @@ local collectRocksButton = bugboTab:CreateButton({
     end
 })
 
+local jaobaTab = window:CreateTab("JAOBA", 4483362458)
+
+local scriptSectionJaoba = jaobaTab:CreateSection("Script")
+
+local findJaobaButton = jaobaTab:CreateButton({
+    Name = "Find JAOBA",
+    Callback = function()
+        local uesModel = game.Workspace:FindFirstChild("UES")
+        if uesModel then
+            local buildModel = uesModel:FindFirstChild("Build")
+            if buildModel then
+                local jaobaModel = buildModel:FindFirstChild("JAOBA")
+                if jaobaModel then
+                    local cardboardBox = jaobaModel:FindFirstChild("cardboard_box")
+                    if cardboardBox then
+                        local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
+                        if clickDetector then
+                            fireclickdetector(clickDetector)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
