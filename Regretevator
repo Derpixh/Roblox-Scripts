@@ -895,4 +895,58 @@ local instantWinButton = superDropperTab:CreateButton({
     end
 })
 
+local bugboTab = window:CreateTab("Bugbo", 4483362458)
+
+local scriptSectionBugbo = bugboTab:CreateSection("Script")
+
+local collectRocksButton = bugboTab:CreateButton({
+    Name = "Collect Rocks",
+    Callback = function()
+        local bugboModel = game.Workspace:FindFirstChild("bugbo")
+        if bugboModel then
+            local buildModel = bugboModel:FindFirstChild("Build")
+            if buildModel then
+                local rocksFolder = buildModel:FindFirstChild("Rocks")
+                if rocksFolder then
+                    for _, meshPart in pairs(rocksFolder:GetChildren()) do
+                        if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
+                            local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                clickDetector.MouseClick:Connect(function() end)
+                                fireclickdetector(clickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local colorAllTilesTab = window:CreateTab("Color All Tiles", 4483362458)
+
+local scriptSectionColorAllTiles = colorAllTilesTab:CreateSection("Script")
+
+local colorAllTilesButton = colorAllTilesTab:CreateButton({
+    Name = "Color All Tiles",
+    Callback = function()
+        local colorTheTilesModel = game.Workspace:FindFirstChild("ColorTheTiles")
+        if colorTheTilesModel then
+            local tilesModel = colorTheTilesModel:FindFirstChild("Tiles")
+            if tilesModel then
+                for _, tile in pairs(tilesModel:GetChildren()) do
+                    if tile:IsA("Part") and tile.Name == "Tile" then
+                        local touchInterest = tile:FindFirstChildOfClass("TouchTransmitter")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
