@@ -292,7 +292,7 @@ local scriptSectionGiggler = gigglerTab:CreateSection("Script")
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
     Callback = function()
-        local part = game.Workspace:WaitForChild("RandomMazeWindows"):WaitForChild("Build"):GetChildren()[7]
+        local part = game.Workspace:WaitForChild("RandomMazeWindows"):WaitForChild("Build"):GetChildren()[5]
         if part then
             local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
             if touchInterest then
