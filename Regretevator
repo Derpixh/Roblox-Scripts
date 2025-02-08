@@ -69,9 +69,11 @@ local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
         local finalNotesFolder = workspace.FunnyMaze.Build.FinalNotes
+
         for _, noteModel in pairs(finalNotesFolder:GetChildren()) do
             if noteModel:IsA("Model") and noteModel.Name == "Note" then
                 local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
+                
                 if clickDetector then
                     clickDetector.MouseClick:Connect(function() end)
                     fireclickdetector(clickDetector)
@@ -371,19 +373,6 @@ local removeCarsButton = highwayTab:CreateButton({
     end
 })
 
-local teleportToFinishButton = highwayTab:CreateButton({
-    Name = "Teleport To Finish",
-    Callback = function()
-        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
-        if superhighwayModel then
-            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
-            if winPoint then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoint.CFrame
-            end
-        end
-    end
-})
-
 local colorTilesTab = window:CreateTab("Color Tiles", 4483362458)
 
 local scriptSectionColorTiles = colorTilesTab:CreateSection("Script")
@@ -425,8 +414,7 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector.MouseClick:Connect(function() end)
-                        fireclickdetector(clickDetector)
+                        clickDetector:FireClick()
                     end
                 end
             end
@@ -729,6 +717,45 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
                     local winZonePart = endModel:FindFirstChild("win_zone")
                     if winZonePart then
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winZonePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
+
+local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
+
+local openSpecificDoorButton = cardboardRoomTab:CreateButton({
+    Name = "Open Specific Door",
+    Callback = function()
+        local clickDetector = workspace.CardboardRoom.Build.Doors:GetChildren()[54].ClickDetector
+        if clickDetector then
+            clickDetector.MouseClick:Connect(function() end)
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local openAllDoorsButton = cardboardRoomTab:CreateButton({
+    Name = "Open All Doors",
+    Callback = function()
+        local cardboardRoomModel = game.Workspace:FindFirstChild("CardboardRoom")
+        if cardboardRoomModel then
+            local buildModel = cardboardRoomModel:FindFirstChild("Build")
+            if buildModel then
+                local doorsFolder = buildModel:FindFirstChild("Doors")
+                if doorsFolder then
+                    for _, doorModel in pairs(doorsFolder:GetChildren()) do
+                        if doorModel:IsA("Model") and doorModel.Name == "Door" then
+                            local clickDetector = doorModel:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                clickDetector.MouseClick:Connect(function() end)
+                                fireclickdetector(clickDetector)
+                            end
+                        end
                     end
                 end
             end
