@@ -829,3 +829,4 @@ local winDodgeballButton = teapotDodgeballTab:CreateButton({
     end
 })
 
+Rayfield:LoadConfiguration()
