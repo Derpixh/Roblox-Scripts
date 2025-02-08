@@ -361,6 +361,29 @@ local teleportToFinishButton = highwayTab:CreateButton({
     end
 })
 
+local removeCarsButton = highwayTab:CreateButton({
+    Name = "Remove Cars",
+    Callback = function()
+        local activeCarsFolder = workspace.Superhighway:FindFirstChild("ActiveCars")
+        if activeCarsFolder then
+            activeCarsFolder:Destroy()
+        end
+    end
+})
+
+local teleportToFinishButton = highwayTab:CreateButton({
+    Name = "Teleport To Finish",
+    Callback = function()
+        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
+            if winPoint then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoint.CFrame
+            end
+        end
+    end
+})
+
 local colorTilesTab = window:CreateTab("Color Tiles", 4483362458)
 
 local scriptSectionColorTiles = colorTilesTab:CreateSection("Script")
