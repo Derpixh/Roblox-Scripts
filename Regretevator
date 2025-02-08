@@ -68,20 +68,15 @@ local scriptSectionMaze = mazeTab:CreateSection("Script")
 local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
-        local funnyMaze = game.Workspace:FindFirstChild("FunnyMaze")
-        if funnyMaze then
-            local build = funnyMaze:FindFirstChild("Build")
-            if build then
-                local finalNotes = build:FindFirstChild("FinalNotes")
-                if finalNotes then
-                    for _, part in pairs(finalNotes:GetChildren()) do
-                        if part:IsA("Part") and part.Name == "Note" then
-                            local clickDetector = part:FindFirstChildOfClass("ClickDetector")
-                            if clickDetector then
-                                clickDetector.MouseClick:Fire()
-                            end
-                        end
-                    end
+        local finalNotesFolder = workspace.FunnyMaze.Build.FinalNotes
+
+        for _, noteModel in pairs(finalNotesFolder:GetChildren()) do
+            if noteModel:IsA("Model") and noteModel.Name == "Note" then
+                local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
+                
+                if clickDetector then
+                    clickDetector.MouseClick:Connect(function() end)
+                    fireclickdetector(clickDetector)
                 end
             end
         end
@@ -441,7 +436,8 @@ local collectRocksButton = bugboTab:CreateButton({
                         if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
                             local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector.MouseClick:Fire()
+                                clickDetector.MouseClick:Connect(function() end)
+                                fireclickdetector(clickDetector)
                             end
                         end
                     end
