@@ -366,9 +366,12 @@ local teleportToFinishButton = highwayTab:CreateButton({
 local removeCarsButton = highwayTab:CreateButton({
     Name = "Remove Cars",
     Callback = function()
-        local activeCarsFolder = workspace.Superhighway:FindFirstChild("ActiveCars")
-        if activeCarsFolder then
-            activeCarsFolder:Destroy()
+        local superhighwayModel = workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local activeCarsFolder = superhighwayModel:FindFirstChild("ActiveCars")
+            if activeCarsFolder then
+                activeCarsFolder:Destroy()
+            end
         end
     end
 })
