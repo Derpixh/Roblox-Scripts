@@ -895,6 +895,4 @@ local instantWinButton = superDropperTab:CreateButton({
     end
 })
 
-
-
 Rayfield:LoadConfiguration()
