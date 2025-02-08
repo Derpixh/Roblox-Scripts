@@ -61,25 +61,6 @@ local teleportToFinishButton = floodTab:CreateButton({
     end
 })
 
-local teleportToFinishButton = floodTab:CreateButton({
-    Name = "Teleport To Finish",
-    Callback = function()
-        local floodFillMineModel = game.Workspace:FindFirstChild("FloodFillMine")
-        if floodFillMineModel then
-            local buildModel = floodFillMineModel:FindFirstChild("Build")
-            if buildModel then
-                local shieldModel = buildModel:FindFirstChild("Shield")
-                if shieldModel then
-                    local bubblePart = shieldModel:FindFirstChild("Bubble")
-                    if bubblePart then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = bubblePart.CFrame
-                    end
-                end
-            end
-        end
-    end
-})
-
 local mazeTab = window:CreateTab("Maze", 4483362458)
 
 local scriptSectionMaze = mazeTab:CreateSection("Script")
