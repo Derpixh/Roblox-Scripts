@@ -831,4 +831,35 @@ local instantWinButton = superDropperTab:CreateButton({
     end
 })
 
+local buttonsTab = window:CreateTab("Buttons", 4483362458)
+
+local scriptSectionButtons = buttonsTab:CreateSection("Script")
+
+local clickAllButtons = buttonsTab:CreateButton({
+    Name = "Click All Buttons",
+    Callback = function()
+        local buttonsFolder = game.Workspace:WaitForChild("ButtonCompetition"):WaitForChild("Build"):WaitForChild("Buttons")
+
+        for _, button in pairs(buttonsFolder:GetChildren()) do
+            if button:IsA("Model") and button:FindFirstChild("Button") then
+                local clickDetector = button.Button:FindFirstChildOfClass("ClickDetector")
+                if clickDetector then
+                    clickDetector.MouseClick:Connect(function() end)
+                    fireclickdetector(clickDetector)
+                end
+            end
+        end
+
+        buttonsFolder.ChildAdded:Connect(function(child)
+            if child:IsA("Model") and child:FindFirstChild("Button") then
+                local clickDetector = child.Button:FindFirstChildOfClass("ClickDetector")
+                if clickDetector then
+                    clickDetector.MouseClick:Connect(function() end)
+                    fireclickdetector(clickDetector)
+                end
+            end
+        end)
+    end
+})
+
 Rayfield:LoadConfiguration()
