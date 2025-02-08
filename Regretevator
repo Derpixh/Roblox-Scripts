@@ -470,7 +470,7 @@ local collectRocksButton = bugboTab:CreateButton({
     end
 })
 
-local longRoomTab = window:CreateTab("Long Room", 4483362458)
+local longRoomTab = window:CreateTab("Suspiciously Long Room", 4483362458)
 
 local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
 
@@ -609,12 +609,34 @@ local instantWinSquishyFloodButton = squishyFloodTab:CreateButton({
     end
 })
 
+local squishyFloodTab = window:CreateTab("Fun Times at Squishy Flood", 4483362458)
+
+local scriptSectionSquishyFlood = squishyFloodTab:CreateSection("Script")
+
+local instantWinSquishyFloodButton = squishyFloodTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local part = game.Workspace:WaitForChild("FunTimesAtSquishyFlood"):WaitForChild("Build"):WaitForChild("Winparts"):GetChildren()[3]
+        if part then
+            local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
+            end
+        end
+    end
+})
+
 local teleportToEndSquishyFloodButton = squishyFloodTab:CreateButton({
     Name = "Teleport To End",
     Callback = function()
         local part = game.Workspace:WaitForChild("FunTimesAtSquishyFlood"):WaitForChild("Build"):WaitForChild("Winparts"):GetChildren()[3]
         if part then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+            local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
+            if touchInterest then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = touchInterest.Parent.CFrame
+            end
         end
     end
 })
