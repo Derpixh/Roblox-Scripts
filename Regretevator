@@ -426,6 +426,22 @@ local findLampertButton = lampertTab:CreateButton({
     end
 })
 
+local teleportToLampertButton = lampertTab:CreateButton({
+    Name = "Teleport To Lampert",
+    Callback = function()
+        local roomModel = game.Workspace:FindFirstChild("3008_Room")
+        if roomModel then
+            local buildModel = roomModel:FindFirstChild("Build")
+            if buildModel then
+                local lampertModel = buildModel:FindFirstChild("Lampert")
+                if lampertModel then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = lampertModel.CFrame
+                end
+            end
+        end
+    end
+})
+
 local bugboTab = window:CreateTab("Bugbo", 4483362458)
 
 local scriptSectionBugbo = bugboTab:CreateSection("Script")
@@ -699,17 +715,6 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
 local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
 
 local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
-
-local openSpecificDoorButton = cardboardRoomTab:CreateButton({
-    Name = "Open Specific Door",
-    Callback = function()
-        local clickDetector = workspace.CardboardRoom.Build.Doors:GetChildren()[54].ClickDetector
-        if clickDetector then
-            clickDetector.MouseClick:Connect(function() end)
-            fireclickdetector(clickDetector)
-        end
-    end
-})
 
 local openAllDoorsButton = cardboardRoomTab:CreateButton({
     Name = "Open All Doors",
