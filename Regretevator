@@ -69,11 +69,9 @@ local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
         local finalNotesFolder = workspace.FunnyMaze.Build.FinalNotes
-
         for _, noteModel in pairs(finalNotesFolder:GetChildren()) do
             if noteModel:IsA("Model") and noteModel.Name == "Note" then
                 local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
-                
                 if clickDetector then
                     clickDetector.MouseClick:Connect(function() end)
                     fireclickdetector(clickDetector)
