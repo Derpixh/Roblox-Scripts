@@ -284,7 +284,6 @@ local findLampertButton = lampertTab:CreateButton({
                 if lampertModel then
                     local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
                     if clickDetector then
-                        clickDetector.MouseClick:Connect(function() end)
                         fireclickdetector(clickDetector)
                     end
                 end
@@ -414,21 +413,10 @@ local clickAllButtons = buttonsTab:CreateButton({
             if button:IsA("Model") and button:FindFirstChild("Button") then
                 local clickDetector = button.Button:FindFirstChildOfClass("ClickDetector")
                 if clickDetector then
-                    clickDetector.MouseClick:Connect(function() end)
                     fireclickdetector(clickDetector)
                 end
             end
         end
-
-        buttonsFolder.ChildAdded:Connect(function(child)
-            if child:IsA("Model") and child:FindFirstChild("Button") then
-                local clickDetector = child.Button:FindFirstChildOfClass("ClickDetector")
-                if clickDetector then
-                    clickDetector.MouseClick:Connect(function() end)
-                    fireclickdetector(clickDetector)
-                end
-            end
-        end)
     end
 })
 
@@ -449,7 +437,6 @@ local openAllDoorsButton = cardboardRoomTab:CreateButton({
                         if doorModel:IsA("Model") and doorModel.Name == "Door" then
                             local clickDetector = doorModel:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector.MouseClick:Connect(function() end)
                                 fireclickdetector(clickDetector)
                             end
                         end
@@ -810,7 +797,6 @@ local collectRocksButton = bugboTab:CreateButton({
                         if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
                             local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
                             if clickDetector then
-                                clickDetector.MouseClick:Connect(function() end)
                                 fireclickdetector(clickDetector)
                             end
                         end
