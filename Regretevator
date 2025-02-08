@@ -272,19 +272,41 @@ local teleportToEndButton = wallOfTab:CreateButton({
     end
 })
 
-local jaobaTab = window:CreateTab("JAOBA", 4483362458)
+local lampertTab = window:CreateTab("Lampert", 4483362458)
 
-local scriptSectionJaoba = jaobaTab:CreateSection("Script")
+local scriptSectionLampert = lampertTab:CreateSection("Script")
 
-local findJaobaButton = jaobaTab:CreateButton({
-    Name = "Find Jaoba",
+local findLampertButton = lampertTab:CreateButton({
+    Name = "Find Lampert",
     Callback = function()
-        local cardboardBox = game.Workspace:WaitForChild("UES"):WaitForChild("Build"):FindFirstChild("JAOBA"):FindFirstChild("cardboard_box")
-        if cardboardBox then
-            local clickDetector = cardboardBox:FindFirstChildOfClass("ClickDetector")
-            if clickDetector then
-                clickDetector.MouseClick:Connect(function() end)
-                fireclickdetector(clickDetector)
+        local roomModel = game.Workspace:FindFirstChild("3008_Room")
+        if roomModel then
+            local buildModel = roomModel:FindFirstChild("Build")
+            if buildModel then
+                local lampertModel = buildModel:FindFirstChild("Lampert")
+                if lampertModel then
+                    local clickDetector = lampertModel:FindFirstChildOfClass("ClickDetector")
+                    if clickDetector then
+                        clickDetector.MouseClick:Connect(function() end)
+                        fireclickdetector(clickDetector)
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToLampertButton = lampertTab:CreateButton({
+    Name = "Teleport To Lampert",
+    Callback = function()
+        local roomModel = game.Workspace:FindFirstChild("3008_Room")
+        if roomModel then
+            local buildModel = roomModel:FindFirstChild("Build")
+            if buildModel then
+                local lampertModel = buildModel:FindFirstChild("Lampert")
+                if lampertModel then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = lampertModel.CFrame
+                end
             end
         end
     end
@@ -369,9 +391,12 @@ local teleportToFinishButton = highwayTab:CreateButton({
 local removeCarsButton = highwayTab:CreateButton({
     Name = "Remove Cars",
     Callback = function()
-        local activeCarsFolder = workspace.Superhighway:FindFirstChild("ActiveCars")
-        if activeCarsFolder then
-            activeCarsFolder:Destroy()
+        local superhighwayModel = workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local activeCarsFolder = superhighwayModel:FindFirstChild("ActiveCars")
+            if activeCarsFolder then
+                activeCarsFolder:Destroy()
+            end
         end
     end
 })
@@ -532,151 +557,6 @@ local teleportToEndSquishyFloodButton = funTimesSquishyFloodTab:CreateButton({
     end
 })
 
-local jeremyTab = window:CreateTab("Jeremy", 4483362458)
-
-local scriptSectionJeremy = jeremyTab:CreateSection("Script")
-
-local teleportToEndJeremyButton = jeremyTab:CreateButton({
-    Name = "Teleport To End",
-    Callback = function()
-        local jeremyModel = game.Workspace:FindFirstChild("Jeremy")
-        if jeremyModel then
-            local buildModel = jeremyModel:FindFirstChild("Build")
-            if buildModel then
-                local buttonModel = buildModel:FindFirstChild("Button")
-                if buttonModel then
-                    local player = game.Players.LocalPlayer
-                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        player.Character.HumanoidRootPart.CFrame = buttonModel.CFrame
-                    end
-                end
-            end
-        end
-    end
-})
-
-local tpotTab = window:CreateTab("TPOT", 4483362458)
-
-local scriptSectionTPOT = tpotTab:CreateSection("Script")
-
-local teleportToRoofButton = tpotTab:CreateButton({
-    Name = "Teleport To Roof",
-    Callback = function()
-        local tpotModel = game.Workspace:FindFirstChild("TPOT")
-        if tpotModel then
-            local buildModel = tpotModel:FindFirstChild("Build")
-            if buildModel then
-                local captureZonePart = buildModel:FindFirstChild("CaptureZone")
-                if captureZonePart then
-                    local player = game.Players.LocalPlayer
-                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        player.Character.HumanoidRootPart.CFrame = captureZonePart.CFrame
-                    end
-                end
-            end
-        end
-    end
-})
-
-local findThePathTab = window:CreateTab("Find The Path", 4483362458)
-
-local scriptSectionFindThePath = findThePathTab:CreateSection("Script")
-
-local instantWinFindThePathButton = findThePathTab:CreateButton({
-    Name = "Instant Win",
-    Callback = function()
-        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
-        if findThePathModel then
-            local buildModel = findThePathModel:FindFirstChild("Build")
-            if buildModel then
-                local endModel = buildModel:FindFirstChild("End")
-                if endModel then
-                    local winZonePart = endModel:FindFirstChild("win_zone")
-                    if winZonePart then
-                        local touchInterest = winZonePart:FindFirstChildOfClass("TouchTransmitter")
-                        if touchInterest then
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 0)
-                            wait()
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 1)
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
-local teleportToOtherSideButton = findThePathTab:CreateButton({
-    Name = "Teleport To Other Side",
-    Callback = function()
-        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
-        if findThePathModel then
-            local buildModel = findThePathModel:FindFirstChild("Build")
-            if buildModel then
-                local endModel = buildModel:FindFirstChild("End")
-                if endModel then
-                    local winZonePart = endModel:FindFirstChild("win_zone")
-                    if winZonePart then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winZonePart.CFrame
-                    end
-                end
-            end
-        end
-    end
-})
-
-local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
-
-local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
-
-local openAllDoorsButton = cardboardRoomTab:CreateButton({
-    Name = "Open All Doors",
-    Callback = function()
-        local cardboardRoomModel = game.Workspace:FindFirstChild("CardboardRoom")
-        if cardboardRoomModel then
-            local buildModel = cardboardRoomModel:FindFirstChild("Build")
-            if buildModel then
-                local doorsFolder = buildModel:FindFirstChild("Doors")
-                if doorsFolder then
-                    for _, doorModel in pairs(doorsFolder:GetChildren()) do
-                        if doorModel:IsA("Model") and doorModel.Name == "Door" then
-                            local clickDetector = doorModel:FindFirstChildOfClass("ClickDetector")
-                            if clickDetector then
-                                clickDetector.MouseClick:Connect(function() end)
-                                fireclickdetector(clickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
-local forestCampTab = window:CreateTab("Forest Camp", 4483362458)
-
-local scriptSectionForestCamp = forestCampTab:CreateSection("Script")
-
-local removeUFOsButton = forestCampTab:CreateButton({
-    Name = "Remove UFOs",
-    Callback = function()
-        local forestTwoStudCampModel = game.Workspace:FindFirstChild("Forest_TwoStudCamp")
-        if forestTwoStudCampModel then
-            local buildModel = forestTwoStudCampModel:FindFirstChild("Build")
-            if buildModel then
-                local ufosFolder = buildModel:FindFirstChild("UFOs")
-                if ufosFolder then
-                    ufosFolder:Destroy()
-                end
-                local ufoMoveTosFolder = buildModel:FindFirstChild("UFO_MoveTos")
-                if ufoMoveTosFolder then
-                    ufoMoveTosFolder:Destroy()
-                end
-            end
-        end
-    end
-})
-
 local hallOfTab = window:CreateTab("HALL_OF", 4483362458)
 
 local scriptSectionHallOf = hallOfTab:CreateSection("Script")
@@ -822,6 +702,192 @@ local winDodgeballButton = teapotDodgeballTab:CreateButton({
                     local player = game.Players.LocalPlayer
                     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                         player.Character.HumanoidRootPart.CFrame = finishPart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local jeremyTab = window:CreateTab("Jeremy", 4483362458)
+
+local scriptSectionJeremy = jeremyTab:CreateSection("Script")
+
+local teleportToEndJeremyButton = jeremyTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local jeremyModel = game.Workspace:FindFirstChild("Jeremy")
+        if jeremyModel then
+            local buildModel = jeremyModel:FindFirstChild("Build")
+            if buildModel then
+                local buttonModel = buildModel:FindFirstChild("Button")
+                if buttonModel then
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = buttonModel.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local tpotTab = window:CreateTab("TPOT", 4483362458)
+
+local scriptSectionTPOT = tpotTab:CreateSection("Script")
+
+local teleportToRoofButton = tpotTab:CreateButton({
+    Name = "Teleport To Roof",
+    Callback = function()
+        local tpotModel = game.Workspace:FindFirstChild("TPOT")
+        if tpotModel then
+            local buildModel = tpotModel:FindFirstChild("Build")
+            if buildModel then
+                local captureZonePart = buildModel:FindFirstChild("CaptureZone")
+                if captureZonePart then
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = captureZonePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local findThePathTab = window:CreateTab("Find The Path", 4483362458)
+
+local scriptSectionFindThePath = findThePathTab:CreateSection("Script")
+
+local instantWinFindThePathButton = findThePathTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
+        if findThePathModel then
+            local buildModel = findThePathModel:FindFirstChild("Build")
+            if buildModel then
+                local endModel = buildModel:FindFirstChild("End")
+                if endModel then
+                    local winZonePart = endModel:FindFirstChild("win_zone")
+                    if winZonePart then
+                        local touchInterest = winZonePart:FindFirstChildOfClass("TouchTransmitter")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winZonePart, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToOtherSideButton = findThePathTab:CreateButton({
+    Name = "Teleport To Other Side",
+    Callback = function()
+        local findThePathModel = game.Workspace:FindFirstChild("FindThePath")
+        if findThePathModel then
+            local buildModel = findThePathModel:FindFirstChild("Build")
+            if buildModel then
+                local endModel = buildModel:FindFirstChild("End")
+                if endModel then
+                    local winZonePart = endModel:FindFirstChild("win_zone")
+                    if winZonePart then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winZonePart.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
+local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
+
+local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
+
+local openAllDoorsButton = cardboardRoomTab:CreateButton({
+    Name = "Open All Doors",
+    Callback = function()
+        local cardboardRoomModel = game.Workspace:FindFirstChild("CardboardRoom")
+        if cardboardRoomModel then
+            local buildModel = cardboardRoomModel:FindFirstChild("Build")
+            if buildModel then
+                local doorsFolder = buildModel:FindFirstChild("Doors")
+                if doorsFolder then
+                    for _, doorModel in pairs(doorsFolder:GetChildren()) do
+                        if doorModel:IsA("Model") and doorModel.Name == "Door" then
+                            local clickDetector = doorModel:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                clickDetector.MouseClick:Connect(function() end)
+                                fireclickdetector(clickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local forestCampTab = window:CreateTab("Forest Camp", 4483362458)
+
+local scriptSectionForestCamp = forestCampTab:CreateSection("Script")
+
+local removeUFOsButton = forestCampTab:CreateButton({
+    Name = "Remove UFOs",
+    Callback = function()
+        local forestTwoStudCampModel = game.Workspace:FindFirstChild("Forest_TwoStudCamp")
+        if forestTwoStudCampModel then
+            local buildModel = forestTwoStudCampModel:FindFirstChild("Build")
+            if buildModel then
+                local ufosFolder = buildModel:FindFirstChild("UFOs")
+                if ufosFolder then
+                    ufosFolder:Destroy()
+                end
+                local ufoMoveTosFolder = buildModel:FindFirstChild("UFO_MoveTos")
+                if ufoMoveTosFolder then
+                    ufoMoveTosFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
+
+local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
+
+local removeObstaclesButton = superDropperTab:CreateButton({
+    Name = "Remove Obstacles",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local currentObsFolder = buildModel:FindFirstChild("CurrentObs")
+                if currentObsFolder then
+                    currentObsFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local instantWinButton = superDropperTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local winPoolPart = buildModel:FindFirstChild("WinPool")
+                if winPoolPart then
+                    local touchInterest = winPoolPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 1)
                     end
                 end
             end
