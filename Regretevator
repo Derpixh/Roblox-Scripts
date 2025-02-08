@@ -321,13 +321,10 @@ local findGigglerButton = gigglerTab:CreateButton({
             local buildModel = gigglerModel:FindFirstChild("Build")
             if buildModel then
                 local gigglerPart = buildModel:FindFirstChild("Part")
-                if gigglerPart then
-                    local touchInterest = gigglerPart:FindFirstChild("TouchInterest")
-                    if touchInterest and touchInterest.Parent then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 1)
-                    end
+                if gigglerPart and gigglerPart:FindFirstChildOfClass("TouchTransmitter") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, gigglerPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, gigglerPart, 1)
                 end
             end
         end
