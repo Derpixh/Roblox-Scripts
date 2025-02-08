@@ -836,4 +836,36 @@ local clickAllButtons = buttonsTab:CreateButton({
     end
 })
 
+local hallOfTab = window:CreateTab("HALL_OF", 4483362458)
+
+local scriptSectionHallOf = hallOfTab:CreateSection("Script")
+
+local instantWinButton = hallOfTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local winPart = game.Workspace:WaitForChild("HALL_OF"):WaitForChild("Build"):FindFirstChild("YOU_WIN")
+        if winPart then
+            local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+            end
+        end
+    end
+})
+
+local teleportToEndButton = hallOfTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local winPart = game.Workspace:WaitForChild("HALL_OF"):WaitForChild("Build"):FindFirstChild("YOU_WIN")
+        if winPart then
+            local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+            if touchInterest then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = touchInterest.Parent.CFrame
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
