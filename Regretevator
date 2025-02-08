@@ -833,4 +833,98 @@ local findJaobaButton = jaobaTab:CreateButton({
     end
 })
 
+local infectedRacingTab = window:CreateTab("Infected Racing", 4483362458)
+
+local scriptSectionInfectedRacing = infectedRacingTab:CreateSection("Script")
+
+local function fireCheckpointTouch(checkpointPath)
+    local touchPart = checkpointPath
+    if touchPart then
+        local touchInterest = touchPart:FindFirstChildOfClass("TouchTransmitter")
+        if touchInterest then
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 0)
+            wait()
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 1)
+        end
+    end
+end
+
+local winCheckpoint1 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 1",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:GetChildren()[6]
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
+local winCheckpoint2 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 2",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:FindFirstChild("Checkpoint")
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
+local winCheckpoint3 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 3",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:GetChildren()[3]
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
+local winCheckpoint4 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 4",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:GetChildren()[2]
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
+local winCheckpoint5 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 5",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:GetChildren()[4]
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
+local winCheckpoint6 = infectedRacingTab:CreateButton({
+    Name = "Win Checkpoint 6",
+    Callback = function()
+        local checkpoint = workspace.InfectedRacing.Build.Checkpoints:GetChildren()[5]
+        if checkpoint then
+            local hitDetect = checkpoint:FindFirstChild("HitDetect")
+            if hitDetect then
+                fireCheckpointTouch(hitDetect:GetChildren()[4])
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
