@@ -316,13 +316,19 @@ local scriptSectionGiggler = gigglerTab:CreateSection("Script")
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
     Callback = function()
-        local part = game.Workspace:WaitForChild("RandomMazeWindows"):WaitForChild("Build"):GetChildren()[5]
-        if part then
-            local touchInterest = part:FindFirstChildOfClass("TouchTransmitter")
-            if touchInterest then
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
-                wait()
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
+        local gigglerModel = game.Workspace:FindFirstChild("RandomMazeWindows")
+        if gigglerModel then
+            local buildModel = gigglerModel:FindFirstChild("Build")
+            if buildModel then
+                local gigglerPart = buildModel:FindFirstChild("Part")
+                if gigglerPart then
+                    local touchInterest = gigglerPart:FindFirstChild("TouchInterest")
+                    if touchInterest and touchInterest.Parent then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 1)
+                    end
+                end
             end
         end
     end
