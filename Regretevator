@@ -64,12 +64,20 @@ local scriptSectionMaze = mazeTab:CreateSection("Script")
 local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
-        local finalNotesFolder = workspace.FunnyMaze.Build.FinalNotes
-        for _, noteModel in pairs(finalNotesFolder:GetChildren()) do
-            if noteModel:IsA("Model") and noteModel.Name == "Note" then
-                local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
-                if clickDetector then
-                    fireclickdetector(clickDetector)
+        local funnyMaze = workspace:FindFirstChild("FunnyMaze")
+        if funnyMaze then
+            local buildModel = funnyMaze:FindFirstChild("Build")
+            if buildModel then
+                local finalNotesFolder = buildModel:FindFirstChild("FinalNotes")
+                if finalNotesFolder then
+                    for _, notePart in pairs(finalNotesFolder:GetChildren()) do
+                        if notePart:IsA("Part") and notePart.Name == "Note" then
+                            local clickDetector = notePart:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                fireclickdetector(clickDetector)
+                            end
+                        end
+                    end
                 end
             end
         end
