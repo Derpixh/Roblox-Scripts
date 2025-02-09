@@ -221,6 +221,36 @@ local teleportToEndButton = wipeoutTab:CreateButton({
     end
 })
 
+function fireTouchTransmitter(part)
+    for _, touchInterest in pairs(part:GetDescendants()) do
+        if touchInterest:IsA("TouchTransmitter") then
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+        end
+    end
+end
+
+local infectedRacing = game.Workspace:FindFirstChild("InfectedRacing")
+if infectedRacing then
+    local buildModel = infectedRacing:FindFirstChild("Build")
+    if buildModel then
+        local checkpointsFolder = buildModel:FindFirstChild("Checkpoints")
+        if checkpointsFolder then
+            local checkpoints = {"Checkpoint 1", "Checkpoint 2", "Checkpoint 3", "Checkpoint 4", "Checkpoint 5", "Checkpoint 6"}
+            for i, checkpointName in ipairs(checkpoints) do
+                local checkpointModel = checkpointsFolder:FindFirstChild("Checkpoint" .. i)
+                if checkpointModel then
+                    Rayfield:CreateButton({
+                        Name = checkpointName .. " (USE WHILE IN A CAR)",
+                        Callback = function()
+                            fireTouchTransmitter(checkpointModel)
+                        end
+                    })
+                end
+            end
+        end
+    end
+end
+
 local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
 local scriptSectionWallOf = wallOfTab:CreateSection("Script")
 local instantWinWallOfButton = wallOfTab:CreateButton({
