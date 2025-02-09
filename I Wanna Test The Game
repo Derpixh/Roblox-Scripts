@@ -19,8 +19,7 @@ local window = Rayfield:CreateWindow({
 })
 
 local stage1Tab = window:CreateTab("Stage 1")
-local scriptSection = stage1Tab:CreateSection("Script")
-
+local scriptSectionStage1 = stage1Tab:CreateSection("Script")
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas",
     Callback = function()
@@ -33,6 +32,27 @@ local removeLavasButton = stage1Tab:CreateButton({
                     local lavasModel = lavaStageModel:FindFirstChild("Lavas")
                     if lavasModel then
                         lavasModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local stage2Tab = window:CreateTab("Stage 2")
+local scriptSectionStage2 = stage2Tab:CreateSection("Script")
+local removeTriggersButton = stage2Tab:CreateButton({
+    Name = "Remove Triggers",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local lavaStage2Model = stageFolder:FindFirstChild("LavaStage2")
+                if lavaStage2Model then
+                    local triggersModel = lavaStage2Model:FindFirstChild("Triggers")
+                    if triggersModel then
+                        triggersModel:Destroy()
                     end
                 end
             end
