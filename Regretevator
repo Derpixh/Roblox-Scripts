@@ -918,4 +918,45 @@ local teleportToEndGeneratorButton = surviveArea51Tab:CreateButton({
     end
 })
 
+local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
+
+local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
+
+local removeObstaclesButton = superDropperTab:CreateButton({
+    Name = "Remove Obstacles",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local currentObsFolder = buildModel:FindFirstChild("CurrentObs")
+                if currentObsFolder then
+                    currentObsFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local instantWinButton = superDropperTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local superDropperModel = game.Workspace:FindFirstChild("SuperDropper")
+        if superDropperModel then
+            local buildModel = superDropperModel:FindFirstChild("Build")
+            if buildModel then
+                local winPoolPart = buildModel:FindFirstChild("WinPool")
+                if winPoolPart then
+                    local touchInterest = winPoolPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
