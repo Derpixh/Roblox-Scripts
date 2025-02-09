@@ -21,7 +21,7 @@ local window = Rayfield:CreateWindow({
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
 local removeLavasButton = stage1Tab:CreateButton({
-    Name = "Remove Lavas",
+    Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
@@ -39,10 +39,37 @@ local removeLavasButton = stage1Tab:CreateButton({
     end
 })
 
+local removeTriggersLegitButton = stage1Tab:CreateButton({
+    Name = "Remove Triggers (Legit Method)",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local lavaStageModel = stageFolder:FindFirstChild("LavaStage")
+                if lavaStageModel then
+                    local lavasModel = lavaStageModel:FindFirstChild("Lavas")
+                    if lavasModel then
+                        for i = 1, 4 do
+                            local lavaModel = lavasModel:FindFirstChild("Lava" .. i)
+                            if lavaModel then
+                                local triggerPart = lavaModel:FindFirstChild("Trigger")
+                                if triggerPart then
+                                    triggerPart:Destroy()
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
 local removeTriggersButton = stage2Tab:CreateButton({
-    Name = "Remove Triggers",
+    Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
