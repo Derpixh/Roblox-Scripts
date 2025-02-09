@@ -570,47 +570,6 @@ local teleportToEndButton = hallOfTab:CreateButton({
     end
 })
 
-local longRoomTab = window:CreateTab("Long Room", 4483362458)
-
-local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
-
-local instantWinLongRoomButton = longRoomTab:CreateButton({
-    Name = "Instant Win",
-    Callback = function()
-        local suspiciouslyLongRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
-        if suspiciouslyLongRoomModel then
-            local checkpointsModel = suspiciouslyLongRoomModel:FindFirstChild("Checkpoints")
-            if checkpointsModel then
-                local endCheckpointPart = checkpointsModel:FindFirstChild("EndCheckpoint")
-                if endCheckpointPart then
-                    local touchInterest = endCheckpointPart:FindFirstChildOfClass("TouchTransmitter")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 1)
-                    end
-                end
-            end
-        end
-    end
-})
-
-local teleportToEndButton = longRoomTab:CreateButton({
-    Name = "Teleport To End",
-    Callback = function()
-        local suspiciouslyLongRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
-        if suspiciouslyLongRoomModel then
-            local checkpointsModel = suspiciouslyLongRoomModel:FindFirstChild("Checkpoints")
-            if checkpointsModel then
-                local endCheckpointPart = checkpointsModel:FindFirstChild("EndCheckpoint")
-                if endCheckpointPart then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endCheckpointPart.CFrame
-                end
-            end
-        end
-    end
-})
-
 local longRoomTab = window:CreateTab("Suspiciously Long Room", 4483362458)
 
 local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
@@ -870,6 +829,50 @@ local findJaobaButton = jaobaTab:CreateButton({
                         if clickDetector then
                             fireclickdetector(clickDetector)
                         end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local hotelFloor6Tab = window:CreateTab("Hotel Floor 6", 4483362458)
+
+local scriptSectionHotelFloor6 = hotelFloor6Tab:CreateSection("Script")
+
+local instantWinHotelFloor6Button = hotelFloor6Tab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local hotelFloor6Model = game.Workspace:FindFirstChild("HotelFloor6")
+        if hotelFloor6Model then
+            local buildModel = hotelFloor6Model:FindFirstChild("Build")
+            if buildModel then
+                local winPart = buildModel:FindFirstChild("WinPart")
+                if winPart then
+                    local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndHotelFloor6Button = hotelFloor6Tab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local hotelFloor6Model = game.Workspace:FindFirstChild("HotelFloor6")
+        if hotelFloor6Model then
+            local buildModel = hotelFloor6Model:FindFirstChild("Build")
+            if buildModel then
+                local winPart = buildModel:FindFirstChild("WinPart")
+                if winPart then
+                    local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchInterest then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = touchInterest.Parent.CFrame
                     end
                 end
             end
