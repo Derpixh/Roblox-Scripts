@@ -229,24 +229,36 @@ function fireTouchTransmitter(part)
     end
 end
 
-local infectedRacing = game.Workspace:FindFirstChild("InfectedRacing")
-if infectedRacing then
-    local buildModel = infectedRacing:FindFirstChild("Build")
-    if buildModel then
-        local checkpointsFolder = buildModel:FindFirstChild("Checkpoints")
-        if checkpointsFolder then
-            local checkpoints = {"Checkpoint 1", "Checkpoint 2", "Checkpoint 3", "Checkpoint 4", "Checkpoint 5", "Checkpoint 6"}
-            for i, checkpointName in ipairs(checkpoints) do
-                local checkpointModel = checkpointsFolder:FindFirstChild("Checkpoint" .. i)
-                if checkpointModel then
-                    Rayfield:CreateButton({
-                        Name = checkpointName .. " (USE WHILE IN A CAR)",
-                        Callback = function()
+local infectedRacingTab = window:CreateTab("Infected Racing", 4483362458)
+local scriptSectionInfectedRacing = infectedRacingTab:CreateSection("Script")
+local checkpoints = {"Checkpoint 1", "Checkpoint 2", "Checkpoint 3", "Checkpoint 4", "Checkpoint 5", "Checkpoint 6"}
+local checkpointButtons = {}
+
+for i, checkpointName in ipairs(checkpoints) do
+    checkpointButtons[i] = infectedRacingTab:CreateButton({
+        Name = checkpointName .. " (USE WHILE IN A CAR)",
+        Callback = function()
+            local infectedRacing = game.Workspace:FindFirstChild("InfectedRacing")
+            if infectedRacing then
+                local buildModel = infectedRacing:FindFirstChild("Build")
+                if buildModel then
+                    local checkpointsFolder = buildModel:FindFirstChild("Checkpoints")
+                    if checkpointsFolder then
+                        local checkpointModel = checkpointsFolder:FindFirstChild("Checkpoint" .. i)
+                        if checkpointModel then
                             fireTouchTransmitter(checkpointModel)
                         end
-                    })
+                    end
                 end
             end
+        end
+    })
+end
+
+function fireTouchTransmitter(part)
+    for _, touchInterest in pairs(part:GetDescendants()) do
+        if touchInterest:IsA("TouchTransmitter") then
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
         end
     end
 end
