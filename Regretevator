@@ -69,11 +69,9 @@ local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
         local finalNotesFolder = workspace.FunnyMaze.Build.FinalNotes
-
         for _, noteModel in pairs(finalNotesFolder:GetChildren()) do
             if noteModel:IsA("Model") and noteModel.Name == "Note" then
                 local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
-                
                 if clickDetector then
                     clickDetector.MouseClick:Connect(function() end)
                     fireclickdetector(clickDetector)
@@ -84,9 +82,7 @@ local collectPagesButton = mazeTab:CreateButton({
 })
 
 local obbyTab = window:CreateTab("Obby", 4483362458)
-
 local scriptSectionObby = obbyTab:CreateSection("Script")
-
 local instantWinObbyButton = obbyTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
@@ -128,9 +124,7 @@ local teleportToEndButton = obbyTab:CreateButton({
 })
 
 local minefieldTab = window:CreateTab("Minefield", 4483362458)
-
 local scriptSectionMinefield = minefieldTab:CreateSection("Script")
-
 local instantWinButton = minefieldTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -153,9 +147,7 @@ local instantWinButton = minefieldTab:CreateButton({
 })
 
 local intenseObbyTab = window:CreateTab("Intense Obby", 4483362458)
-
 local scriptSectionIntenseObby = intenseObbyTab:CreateSection("Script")
-
 local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -188,9 +180,7 @@ local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
 })
 
 local wipeoutTab = window:CreateTab("Wipeout", 4483362458)
-
 local scriptSectionWipeout = wipeoutTab:CreateSection("Script")
-
 local instantWinWipeoutButton = wipeoutTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -229,9 +219,7 @@ local teleportToEndButton = wipeoutTab:CreateButton({
 })
 
 local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
-
 local scriptSectionWallOf = wallOfTab:CreateSection("Script")
-
 local instantWinWallOfButton = wallOfTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
@@ -270,9 +258,7 @@ local teleportToEndButton = wallOfTab:CreateButton({
 })
 
 local lampertTab = window:CreateTab("Lampert", 4483362458)
-
 local scriptSectionLampert = lampertTab:CreateSection("Script")
-
 local findLampertButton = lampertTab:CreateButton({
     Name = "Find Lampert",
     Callback = function()
@@ -309,9 +295,7 @@ local teleportToLampertButton = lampertTab:CreateButton({
 })
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
-
 local scriptSectionGiggler = gigglerTab:CreateSection("Script")
-
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
     Callback = function()
@@ -331,9 +315,7 @@ local findGigglerButton = gigglerTab:CreateButton({
 })
 
 local snowySlopeTab = window:CreateTab("Snowy Slope", 4483362458)
-
 local scriptSectionSnowySlope = snowySlopeTab:CreateSection("Script")
-
 local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
     Name = "Instant Win Floor",
     Callback = function()
@@ -353,9 +335,7 @@ local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
 })
 
 local highwayTab = window:CreateTab("Highway", 4483362458)
-
 local scriptSectionHighway = highwayTab:CreateSection("Script")
-
 local instantWinHighwayButton = highwayTab:CreateButton({
     Name = "Instant Win Highway",
     Callback = function()
@@ -401,14 +381,11 @@ local removeCarsButton = highwayTab:CreateButton({
 })
 
 local buttonsTab = window:CreateTab("Buttons", 4483362458)
-
 local scriptSectionButtons = buttonsTab:CreateSection("Script")
-
 local clickAllButtons = buttonsTab:CreateButton({
     Name = "Click All Buttons",
     Callback = function()
         local buttonsFolder = game.Workspace:WaitForChild("ButtonCompetition"):WaitForChild("Build"):WaitForChild("Buttons")
-
         for _, button in pairs(buttonsFolder:GetChildren()) do
             if button:IsA("Model") and button:FindFirstChild("Button") then
                 local clickDetector = button.Button:FindFirstChildOfClass("ClickDetector")
@@ -421,9 +398,7 @@ local clickAllButtons = buttonsTab:CreateButton({
 })
 
 local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
-
 local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
-
 local openAllDoorsButton = cardboardRoomTab:CreateButton({
     Name = "Open All Doors",
     Callback = function()
@@ -448,9 +423,7 @@ local openAllDoorsButton = cardboardRoomTab:CreateButton({
 })
 
 local forestCampTab = window:CreateTab("Forest Camp", 4483362458)
-
 local scriptSectionForestCamp = forestCampTab:CreateSection("Script")
-
 local removeUFOsButton = forestCampTab:CreateButton({
     Name = "Remove UFOs",
     Callback = function()
@@ -472,9 +445,7 @@ local removeUFOsButton = forestCampTab:CreateButton({
 })
 
 local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
-
 local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
-
 local removeObstaclesButton = superDropperTab:CreateButton({
     Name = "Remove Obstacles",
     Callback = function()
@@ -513,9 +484,7 @@ local instantWinButton = superDropperTab:CreateButton({
 })
 
 local funTimesSquishyFloodTab = window:CreateTab("Fun Times at Squishy Flood", 4483362458)
-
 local scriptSectionSquishyFlood = funTimesSquishyFloodTab:CreateSection("Script")
-
 local instantWinSquishyFloodButton = funTimesSquishyFloodTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -542,9 +511,7 @@ local teleportToEndSquishyFloodButton = funTimesSquishyFloodTab:CreateButton({
 })
 
 local hallOfTab = window:CreateTab("HALL_OF", 4483362458)
-
 local scriptSectionHallOf = hallOfTab:CreateSection("Script")
-
 local instantWinButton = hallOfTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -571,9 +538,7 @@ local teleportToEndButton = hallOfTab:CreateButton({
 })
 
 local longRoomTab = window:CreateTab("Suspiciously Long Room", 4483362458)
-
 local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
-
 local instantWinLongRoomButton = longRoomTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -615,9 +580,7 @@ local teleportToEndLongRoomButton = longRoomTab:CreateButton({
 })
 
 local stanelyRoomTab = window:CreateTab("Stanely Room", 4483362458)
-
 local scriptSectionStanelyRoom = stanelyRoomTab:CreateSection("Script")
-
 local instantWinStanelyRoomButton = stanelyRoomTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -668,9 +631,7 @@ local teleportToEndStanelyRoomButton = stanelyRoomTab:CreateButton({
 })
 
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
-
 local scriptSectionTeapotDodgeball = teapotDodgeballTab:CreateSection("Script")
-
 local winDodgeballButton = teapotDodgeballTab:CreateButton({
     Name = "Win Dodgeball",
     Callback = function()
@@ -691,9 +652,7 @@ local winDodgeballButton = teapotDodgeballTab:CreateButton({
 })
 
 local jeremyTab = window:CreateTab("Jeremy", 4483362458)
-
 local scriptSectionJeremy = jeremyTab:CreateSection("Script")
-
 local teleportToEndJeremyButton = jeremyTab:CreateButton({
     Name = "Teleport To End",
     Callback = function()
@@ -714,9 +673,7 @@ local teleportToEndJeremyButton = jeremyTab:CreateButton({
 })
 
 local tpotTab = window:CreateTab("TPOT", 4483362458)
-
 local scriptSectionTPOT = tpotTab:CreateSection("Script")
-
 local teleportToRoofButton = tpotTab:CreateButton({
     Name = "Teleport To Roof",
     Callback = function()
@@ -737,9 +694,7 @@ local teleportToRoofButton = tpotTab:CreateButton({
 })
 
 local findThePathTab = window:CreateTab("Find The Path", 4483362458)
-
 local scriptSectionFindThePath = findThePathTab:CreateSection("Script")
-
 local instantWinFindThePathButton = findThePathTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -784,9 +739,7 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
 })
 
 local bugboTab = window:CreateTab("Bugbo", 4483362458)
-
 local scriptSectionBugbo = bugboTab:CreateSection("Script")
-
 local collectRocksButton = bugboTab:CreateButton({
     Name = "Collect Rocks",
     Callback = function()
@@ -811,9 +764,7 @@ local collectRocksButton = bugboTab:CreateButton({
 })
 
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
-
 local scriptSectionJaoba = jaobaTab:CreateSection("Script")
-
 local findJaobaButton = jaobaTab:CreateButton({
     Name = "Find JAOBA",
     Callback = function()
@@ -837,9 +788,7 @@ local findJaobaButton = jaobaTab:CreateButton({
 })
 
 local hotelFloor6Tab = window:CreateTab("Hotel Floor 6", 4483362458)
-
 local scriptSectionHotelFloor6 = hotelFloor6Tab:CreateSection("Script")
-
 local instantWinHotelFloor6Button = hotelFloor6Tab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -877,6 +826,63 @@ local teleportToEndHotelFloor6Button = hotelFloor6Tab:CreateButton({
                 end
             end
         end
+    end
+})
+
+local surviveArea51Tab = window:CreateTab("Survive Area 51", 4483362458)
+local scriptSectionSurviveArea51 = surviveArea51Tab:CreateSection("Script")
+local teleportToGenerator = function(folderName)
+    local survivalModel = workspace:FindFirstChild("SurvivalTheArea51")
+    if survivalModel then
+        local buildModel = survivalModel:FindFirstChild("Build")
+        if buildModel then
+            local folder = buildModel:FindFirstChild(folderName)
+            if folder then
+                local generatorPart = folder:FindFirstChild("Generator")
+                if generatorPart then
+                    local player = game.Players.LocalPlayer
+                    local character = player.Character or player.CharacterAdded:Wait()
+                    if character then
+                        character:MoveTo(generatorPart.Position)
+                    end
+                end
+            end
+        end
+    end
+end
+
+local teleportToAngryWallGeneratorButton = surviveArea51Tab:CreateButton({
+    Name = "Teleport to Angry Wall Generator",
+    Callback = function()
+        teleportToGenerator("AngryWallRoom")
+    end
+})
+
+local teleportToDougGeneratorButton = surviveArea51Tab:CreateButton({
+    Name = "Teleport to Doug Generator",
+    Callback = function()
+        teleportToGenerator("DougRoom")
+    end
+})
+
+local teleportToJeremyGeneratorButton = surviveArea51Tab:CreateButton({
+    Name = "Teleport To Jeremy Generator",
+    Callback = function()
+        teleportToGenerator("JeremyRoom")
+    end
+})
+
+local teleportToKillerGeneratorButton = surviveArea51Tab:CreateButton({
+    Name = "Teleport To Killer Generator",
+    Callback = function()
+        teleportToGenerator("KillerRoom")
+    end
+})
+
+local teleportToEndGeneratorButton = surviveArea51Tab:CreateButton({
+    Name = "Teleport To End Generator",
+    Callback = function()
+        teleportToGenerator("EndRoom")
     end
 })
 
