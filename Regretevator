@@ -385,17 +385,25 @@ local removeCarsButton = highwayTab:CreateButton({
 
 local buttonsTab = window:CreateTab("Buttons", 4483362458)
 local scriptSectionButtons = buttonsTab:CreateSection("Script")
+local firedClickDetectors = {}
+local function checkAndFireClickDetectors()
+    local buttonsFolder = game.Workspace:WaitForChild("ButtonCompetition"):WaitForChild("Build"):WaitForChild("Buttons")
+    for _, button in pairs(buttonsFolder:GetChildren()) do
+        if button:IsA("Model") and button:FindFirstChild("Button") then
+            local clickDetector = button.Button:FindFirstChildOfClass("ClickDetector")
+            if clickDetector and not firedClickDetectors[clickDetector] then
+                fireclickdetector(clickDetector)
+                firedClickDetectors[clickDetector] = true
+            end
+        end
+    end
+end
+
 local clickAllButtons = buttonsTab:CreateButton({
     Name = "Click All Buttons",
     Callback = function()
-        local buttonsFolder = game.Workspace:WaitForChild("ButtonCompetition"):WaitForChild("Build"):WaitForChild("Buttons")
-        for _, button in pairs(buttonsFolder:GetChildren()) do
-            if button:IsA("Model") and button:FindFirstChild("Button") then
-                local clickDetector = button.Button:FindFirstChildOfClass("ClickDetector")
-                if clickDetector then
-                    fireclickdetector(clickDetector)
-                end
-            end
+        while wait(0.1) do
+            checkAndFireClickDetectors()
         end
     end
 })
