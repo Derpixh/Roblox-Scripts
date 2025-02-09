@@ -611,6 +611,50 @@ local teleportToEndButton = longRoomTab:CreateButton({
     end
 })
 
+local longRoomTab = window:CreateTab("Suspiciously Long Room", 4483362458)
+
+local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
+
+local instantWinLongRoomButton = longRoomTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local longRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
+        if longRoomModel then
+            local checkpointsModel = longRoomModel:FindFirstChild("Checkpoints")
+            if checkpointsModel then
+                local endCheckpoint = checkpointsModel:FindFirstChild("EndCheckpoint")
+                if endCheckpoint then
+                    local touchInterest = endCheckpoint:FindFirstChild("TouchInterest")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 1)
+                    end
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndLongRoomButton = longRoomTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local longRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
+        if longRoomModel then
+            local checkpointsModel = longRoomModel:FindFirstChild("Checkpoints")
+            if checkpointsModel then
+                local endCheckpoint = checkpointsModel:FindFirstChild("EndCheckpoint")
+                if endCheckpoint then
+                    local touchInterest = endCheckpoint:FindFirstChild("TouchInterest")
+                    if touchInterest then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = touchInterest.Parent.CFrame
+                    end
+                end
+            end
+        end
+    end
+})
+
 local stanelyRoomTab = window:CreateTab("Stanely Room", 4483362458)
 
 local scriptSectionStanelyRoom = stanelyRoomTab:CreateSection("Script")
@@ -830,79 +874,6 @@ local findJaobaButton = jaobaTab:CreateButton({
                 end
             end
         end
-    end
-})
-
-local infectedRacingTab = window:CreateTab("Infected Racing", 4483362458)
-local scriptSectionInfectedRacing = infectedRacingTab:CreateSection("Script")
-
-local infectedRacing = game.Workspace:FindFirstChild("InfectedRacing")
-if not infectedRacing then return end
-
-local build = infectedRacing:FindFirstChild("Build")
-if not build then return end
-
-local checkpointsFolder = build:FindFirstChild("Checkpoints")
-if not checkpointsFolder or not checkpointsFolder:IsA("Folder") then return end
-
-local player = game.Players.LocalPlayer
-if not player or not player.Character then return end
-
-local character = player.Character
-local rootPart = character:FindFirstChild("HumanoidRootPart")
-if not rootPart then return end
-
-local function fireCheckpointTouch(checkpointIndex)
-    local checkpoint = checkpointsFolder:GetChildren()[checkpointIndex]
-    if checkpoint and checkpoint:IsA("Model") and checkpoint.Name == "Checkpoint" then
-        local touchInterest = checkpoint:FindFirstChildWhichIsA("TouchTransmitter", true)
-        if touchInterest then
-            firetouchinterest(rootPart, touchInterest.Parent, 0)
-            wait()
-            firetouchinterest(rootPart, touchInterest.Parent, 1)
-        end
-    end
-end
-
-local winCheckpoint1 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 1",
-    Callback = function()
-        fireCheckpointTouch(1)
-    end
-})
-
-local winCheckpoint2 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 2",
-    Callback = function()
-        fireCheckpointTouch(2)
-    end
-})
-
-local winCheckpoint3 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 3",
-    Callback = function()
-        fireCheckpointTouch(3)
-    end
-})
-
-local winCheckpoint4 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 4",
-    Callback = function()
-        fireCheckpointTouch(4)
-    end
-})
-
-local winCheckpoint5 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 5",
-    Callback = function()
-        fireCheckpointTouch(5)
-    end
-})
-
-local winCheckpoint6 = infectedRacingTab:CreateButton({
-    Name = "Win Checkpoint 6",
-    Callback = function()
-        fireCheckpointTouch(6)
     end
 })
 
