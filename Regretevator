@@ -379,6 +379,40 @@ local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
     end
 })
 
+local danceFloorTab = window:CreateTab("Dance Floor", 4483362458)
+local scriptSectionDanceFloor = danceFloorTab:CreateSection("Script")
+local setAntiFallButton = danceFloorTab:CreateButton({
+    Name = "Set Anti Fall",
+    Callback = function()
+        local function setTransparencyToZero()
+            local danceModel = workspace:FindFirstChild("Dance")
+            if danceModel then
+                local buildModel = danceModel:FindFirstChild("Build")
+                if buildModel then
+                    local danceFloorFolder = buildModel:FindFirstChild("DanceFloor")
+                    if danceFloorFolder then
+                        for _, part in pairs(danceFloorFolder:GetChildren()) do
+                            if part:IsA("Part") and part.Name == "FP" then
+                                part.Transparency = 0
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        
+        while true do
+            local danceModel = workspace:FindFirstChild("Dance")
+            if danceModel then
+                setTransparencyToZero()
+                wait(0.1)
+            else
+                break
+            end
+        end
+    end
+})
+
 local highwayTab = window:CreateTab("Highway", 4483362458)
 local scriptSectionHighway = highwayTab:CreateSection("Script")
 local instantWinHighwayButton = highwayTab:CreateButton({
