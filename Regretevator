@@ -439,6 +439,43 @@ local removeUFOsButton = forestCampTab:CreateButton({
     end
 })
 
+local autoPickupFirewoodButton = forestCampTab:CreateButton({
+    Name = "Auto Pickup Firewood",
+    Callback = function()
+        local function onProximityPromptTriggered(proximityPrompt)
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            proximityPrompt.HoldDuration = 0
+            proximityPrompt:InputHoldBegin()
+            wait()
+            proximityPrompt:InputHoldEnd()
+        end
+
+        local function checkProximityPrompt()
+            local forestTwoStudCampModel = game.Workspace:FindFirstChild("Forest_TwoStudCamp")
+            if forestTwoStudCampModel then
+                local buildModel = forestTwoStudCampModel:FindFirstChild("Build")
+                if buildModel then
+                    local firewoodFolder = buildModel:FindFirstChild("Firewood")
+                    if firewoodFolder then
+                        local firewood = firewoodFolder:FindFirstChild("Firewood")
+                        if firewood and firewood:IsA("UnionOperation") then
+                            local proximityPrompt = firewood:FindFirstChildOfClass("ProximityPrompt")
+                            if proximityPrompt and proximityPrompt:IsDescendantOf(workspace.CurrentCamera) then
+                                onProximityPromptTriggered(proximityPrompt)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        while wait(0.1) do
+            checkProximityPrompt()
+        end
+    end
+})
+
 local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
 local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
 local removeObstaclesButton = superDropperTab:CreateButton({
