@@ -15,9 +15,7 @@ local window = Rayfield:CreateWindow({
 })
 
 local floodTab = window:CreateTab("Flood", 4483362458)
-
 local scriptSectionFlood = floodTab:CreateSection("Script")
-
 local instantWinButton = floodTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
@@ -62,9 +60,7 @@ local teleportToFinishButton = floodTab:CreateButton({
 })
 
 local mazeTab = window:CreateTab("Maze", 4483362458)
-
 local scriptSectionMaze = mazeTab:CreateSection("Script")
-
 local collectPagesButton = mazeTab:CreateButton({
     Name = "Collect Pages",
     Callback = function()
@@ -73,7 +69,6 @@ local collectPagesButton = mazeTab:CreateButton({
             if noteModel:IsA("Model") and noteModel.Name == "Note" then
                 local clickDetector = noteModel:FindFirstChildOfClass("ClickDetector")
                 if clickDetector then
-                    clickDetector.MouseClick:Connect(function() end)
                     fireclickdetector(clickDetector)
                 end
             end
