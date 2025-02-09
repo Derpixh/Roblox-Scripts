@@ -4,7 +4,7 @@ local window = Rayfield:CreateWindow({
     LoadingTitle = "Loading Assets..",
     LoadingSubtitle = "Created By Derpixh",
     ConfigurationSaving = {
-        Enabled = true,
+        Enabled = false,
         FileName = "Sirius"
     },
     KeySystem = true,
@@ -13,15 +13,15 @@ local window = Rayfield:CreateWindow({
         Subtitle = "Key Prompt",
         Note = "Enter your key",
         FileName = "SiriusKey",
-        SaveKey = true,
+        SaveKey = false,
         Key = "2025"
     }
 })
 
-local exampleTab = window:CreateTab("Example Tab")
-local stage1Section = exampleTab:CreateSection("Stage 1")
+local stage1Tab = window:CreateTab("Stage 1")
+local scriptSection = stage1Tab:CreateSection("Script")
 
-local removeLavasButton = exampleTab:CreateButton({
+local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
