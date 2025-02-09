@@ -1,0 +1,43 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local window = Rayfield:CreateWindow({
+    Name = "I Wanna Test The Game",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = true,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Key System",
+        Subtitle = "Key Prompt",
+        Note = "Enter your key",
+        FileName = "SiriusKey",
+        SaveKey = true,
+        Key = "2025"
+    }
+})
+
+local exampleTab = window:CreateTab("Example Tab")
+local stage1Section = exampleTab:CreateSection("Stage 1")
+
+local removeLavasButton = exampleTab:CreateButton({
+    Name = "Remove Lavas",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local lavaStageModel = stageFolder:FindFirstChild("LavaStage")
+                if lavaStageModel then
+                    local lavasModel = lavaStageModel:FindFirstChild("Lavas")
+                    if lavasModel then
+                        lavasModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
