@@ -382,7 +382,7 @@ local instantWinSnowySlopeButton = snowySlopeTab:CreateButton({
 local danceFloorTab = window:CreateTab("Dance Floor", 4483362458)
 local scriptSectionDanceFloor = danceFloorTab:CreateSection("Script")
 local setAntiFallButton = danceFloorTab:CreateButton({
-    Name = "Set Anti Fall",
+    Name = "Anti Fall",
     Callback = function()
         local function setTransparencyToZero()
             local danceModel = workspace:FindFirstChild("Dance")
