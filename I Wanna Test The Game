@@ -196,10 +196,10 @@ local removeRocketLauncherButton = stage4Tab:CreateButton({
     end
 })
 
-local removeSpikesSection = stage4Tab:CreateSection("Spikes")
-local removeAllSpikesButton = stage4Tab:CreateButton({
+local spikesSection = stage4Tab:CreateSection("Spikes")
+local invincibilityToSpikesButton = stage4Tab:CreateButton({
     Name = "Invincibility To Spikes",
-    SectionParent = removeSpikesSection,
+    SectionParent = spikesSection,
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
@@ -264,10 +264,8 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
                         if trapSpikeModel then
                             for _, meshPart in ipairs(trapSpikeModel:GetChildren()) do
                                 if meshPart:IsA("MeshPart") then
-                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
-                                    if touchInterest then
-                                        touchInterest:Destroy()
-                                    end
+                                    meshPart.CanTouch = false
+                                    meshPart.CanCollide = false
                                 end
                             end
                         end
@@ -278,10 +276,10 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
     end
 })
 
-local removeTrapSection = stage4Tab:CreateSection("Noclip (Dumb Devs LOL)")
-local removeTrapButton = stage4Tab:CreateButton({
-    Name = "Noclip Through Trap",
-    SectionParent = removeTrapSection,
+local noclipSection = stage4Tab:CreateSection("Noclip")
+local noclipButton = stage4Tab:CreateButton({
+    Name = "Noclip Through Traps",
+    SectionParent = noclipSection,
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
@@ -311,27 +309,6 @@ local removeTrapButton = stage4Tab:CreateButton({
                             lavaPart.CanCollide = false
                             lavaPart.CanTouch = false
                         end
-                    end
-                end
-            end
-        end
-    end
-})
-
-local lastPartStage4Section = stage4Tab:CreateSection("Last Part Of Stage 4")
-local makeBrickVisibleButton = stage4Tab:CreateButton({
-    Name = "Make Brick Visible",
-    SectionParent = lastPartStage4Section,
-    Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local stage4Model = stageFolder:FindFirstChild("Stage4")
-                if stage4Model then
-                    local appearBrickPart = stage4Model:FindFirstChild("Appear Brick 1")
-                    if appearBrickPart then
-                        appearBrickPart.Transparency = 0
                     end
                 end
             end
