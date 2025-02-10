@@ -236,11 +236,11 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
     end
 })
 
-local lastPartStage4Section = stage4Tab:CreateSection("Last Part Of Stage 4")
+local removeTrapSection = stage4Tab:CreateSection("Remove Trap (Dumb Devs LOL)")
 
 local removeTrapButton = stage4Tab:CreateButton({
     Name = "Remove Trap",
-    SectionParent = lastPartStage4Section,
+    SectionParent = removeTrapSection,
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
@@ -251,6 +251,28 @@ local removeTrapButton = stage4Tab:CreateButton({
                     local blockTrapModel = stage4Model:FindFirstChild("BlockTrap")
                     if blockTrapModel then
                         blockTrapModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local lastPartStage4Section = stage4Tab:CreateSection("Last Part Of Stage 4")
+
+local makeBrickVisibleButton = stage4Tab:CreateButton({
+    Name = "Make Brick Visible",
+    SectionParent = lastPartStage4Section,
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local stage4Model = stageFolder:FindFirstChild("Stage4")
+                if stage4Model then
+                    local appearBrickPart = stage4Model:FindFirstChild("Appear Brick 1")
+                    if appearBrickPart then
+                        appearBrickPart.Transparency = 0
                     end
                 end
             end
