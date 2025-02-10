@@ -178,7 +178,7 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
 })
 
 local disableDissapearingLavaObbyButton = stage3Tab:CreateButton({
-    Name = "Disable Dissapearing Lava Obby",
+    Name = "Disable Dissapearing Lava Obby (OP If You Use Easy Method Too)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
         if mapFolder then
