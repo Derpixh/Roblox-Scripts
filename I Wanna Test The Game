@@ -98,12 +98,16 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
     Callback = function()
         local npcsFolder = game.Workspace:FindFirstChild("NPCs")
         if npcsFolder then
-            for i = 1, 2 do
-                local obbyKiller = npcsFolder:FindFirstChild("ObbyKiller_" .. i)
-                if obbyKiller then
-                    local hitbox = obbyKiller:FindFirstChild("Hitbox")
+            local count = 0
+            for _, model in pairs(npcsFolder:GetChildren()) do
+                if model:IsA("Model") and model.Name:match("^ObbyKiller_") then
+                    local hitbox = model:FindFirstChild("Hitbox")
                     if hitbox then
                         hitbox.Anchored = true
+                        count = count + 1
+                        if count >= 2 then
+                            break
+                        end
                     end
                 end
             end
