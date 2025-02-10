@@ -236,4 +236,26 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
     end
 })
 
+local lastPartStage4Section = stage4Tab:CreateSection("Last Part Of Stage 4")
+
+local removeTrapButton = stage4Tab:CreateButton({
+    Name = "Remove Trap",
+    SectionParent = lastPartStage4Section,
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local stage4Model = stageFolder:FindFirstChild("Stage4")
+                if stage4Model then
+                    local blockTrapModel = stage4Model:FindFirstChild("BlockTrap")
+                    if blockTrapModel then
+                        blockTrapModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
