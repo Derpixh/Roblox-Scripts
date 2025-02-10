@@ -91,72 +91,51 @@ local removeTriggersButton = stage2Tab:CreateButton({
 
 local stage3Tab = window:CreateTab("Stage 3")
 
-local firstPartSectionStage3 = stage3Tab:CreateSection("First Part Of Stage 3")
-firstPartSectionStage3.Parent = stage3Tab
-local freezeObbyKillersButton = firstPartSectionStage3:CreateButton({
+local firstPartSection = stage3Tab:CreateSection("First Part Of Stage 3")
+local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
+    SectionParent = firstPartSection,
     Callback = function()
         local npcsFolder = game.Workspace:FindFirstChild("NPCs")
         if npcsFolder then
-            local obbyKiller1 = npcsFolder:FindFirstChild("ObbyKiller_1")
-            if obbyKiller1 then
-                local hitbox1 = obbyKiller1:FindFirstChild("Hitbox")
-                if hitbox1 then
-                    hitbox1.Anchored = true
-                end
-            end
-
-            local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
-            if obbyKiller2 then
-                local hitbox2 = obbyKiller2:FindFirstChild("Hitbox")
-                if hitbox2 then
-                    hitbox2.Anchored = true
+            for i = 1, 2 do
+                local obbyKiller = npcsFolder:FindFirstChild("ObbyKiller_" .. i)
+                if obbyKiller then
+                    local hitbox = obbyKiller:FindFirstChild("Hitbox")
+                    if hitbox then
+                        hitbox.Anchored = true
+                    end
                 end
             end
         end
     end
 })
 
-local lavaObbySectionStage3 = stage3Tab:CreateSection("Lava Obby")
-lavaObbySectionStage3.Parent = stage3Tab
-local removeLavaButton = lavaObbySectionStage3:CreateButton({
+local lavaObbySection = stage3Tab:CreateSection("Lava Obby (Second Half)")
+local removeLavaButton = stage3Tab:CreateButton({
     Name = "Remove Lava On Obby (Easy Method)",
+    SectionParent = lavaObbySection,
     Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local stage3Model = stageFolder:FindFirstChild("Stage3")
-                if stage3Model then
-                    local lavaModel = stage3Model:FindFirstChild("Lava")
-                    if lavaModel then
-                        lavaModel:Destroy()
-                    end
-                end
-            end
+        local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
+        if stage3Model then
+            local lavaModel = stage3Model:FindFirstChild("Lava")
+            if lavaModel then lavaModel:Destroy() end
         end
     end
 })
 
-local invincibilityToLavaObbyButton = lavaObbySectionStage3:CreateButton({
+local invincibilityToLavaObbyButton = stage3Tab:CreateButton({
     Name = "Invincibility To Lava Obby (Easiest Method)",
+    SectionParent = lavaObbySection,
     Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local stage3Model = stageFolder:FindFirstChild("Stage3")
-                if stage3Model then
-                    local lavaModel = stage3Model:FindFirstChild("Lava")
-                    if lavaModel then
-                        for _, lavaPart in ipairs(lavaModel:GetChildren()) do
-                            if lavaPart:IsA("Part") and lavaPart.Name == "Lava" then
-                                local touchInterest = lavaPart:FindFirstChild("TouchInterest")
-                                if touchInterest then
-                                    touchInterest:Destroy()
-                                end
-                            end
-                        end
+        local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
+        if stage3Model then
+            local lavaModel = stage3Model:FindFirstChild("Lava")
+            if lavaModel then
+                for _, lavaPart in ipairs(lavaModel:GetChildren()) do
+                    if lavaPart:IsA("Part") and lavaPart.Name == "Lava" then
+                        local touchInterest = lavaPart:FindFirstChild("TouchInterest")
+                        if touchInterest then touchInterest:Destroy() end
                     end
                 end
             end
@@ -164,20 +143,18 @@ local invincibilityToLavaObbyButton = lavaObbySectionStage3:CreateButton({
     end
 })
 
-local lastPartSectionStage3 = stage3Tab:CreateSection("Last Part Of Stage 3")
-lastPartSectionStage3.Parent = stage3Tab
-local removeTriggersButtonStage3 = lastPartSectionStage3:CreateButton({
-    Name = "Remove Triggers (Last Part Of Stage 3)",
+local disableDissapearingLavaObbyButton = stage3Tab:CreateButton({
+    Name = "Disable Disappearing Obby",
+    SectionParent = lavaObbySection,
     Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local stage3Model = stageFolder:FindFirstChild("Stage3")
-                if stage3Model then
-                    local triggersModel = stage3Model:FindFirstChild("Triggers")
-                    if triggersModel then
-                        triggersModel:Destroy()
+        local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
+        if stage3Model then
+            local dissapearingBrickModel = stage3Model:FindFirstChild("DissapearingBrick")
+            if dissapearingBrickModel then
+                for _, brickPart in ipairs(dissapearingBrickModel:GetChildren()) do
+                    if brickPart:IsA("Part") and brickPart.Name == "Dissapearing brick" then
+                        local touchInterest = brickPart:FindFirstChild("TouchInterest")
+                        if touchInterest then touchInterest:Destroy() end
                     end
                 end
             end
@@ -185,28 +162,15 @@ local removeTriggersButtonStage3 = lastPartSectionStage3:CreateButton({
     end
 })
 
-local disableDissapearingLavaObbyButton = lavaObbySectionStage3:CreateButton({
-    Name = "Disable Dissapearing Obby (Use The 2nd One Aswell Its OP)",
+local lastPartSection = stage3Tab:CreateSection("Last Part Of Stage 3")
+local removeTriggersButtonStage3 = stage3Tab:CreateButton({
+    Name = "Remove Triggers",
+    SectionParent = lastPartSection,
     Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local stage3Model = stageFolder:FindFirstChild("Stage3")
-                if stage3Model then
-                    local dissapearingBrickModel = stage3Model:FindFirstChild("DissapearingBrick")
-                    if dissapearingBrickModel then
-                        for _, brickPart in ipairs(dissapearingBrickModel:GetChildren()) do
-                            if brickPart:IsA("Part") and brickPart.Name == "Dissapearing brick" then
-                                local touchInterest = brickPart:FindFirstChild("TouchInterest")
-                                if touchInterest then
-                                    touchInterest:Destroy()
-                                end
-                            end
-                        end
-                    end
-                end
-            end
+        local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
+        if stage3Model then
+            local triggersModel = stage3Model:FindFirstChild("Triggers")
+            if triggersModel then triggersModel:Destroy() end
         end
     end
 })
