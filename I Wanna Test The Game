@@ -9,9 +9,9 @@ local window = Rayfield:CreateWindow({
     },
     KeySystem = true,
     KeySettings = {
-        Title = "Key System",
-        Subtitle = "Key Prompt",
-        Note = "Enter your key",
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
         FileName = "SiriusKey",
         SaveKey = false,
         Key = "2025"
@@ -214,19 +214,64 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
                     if spike1Model then
                         local spikeLeft = spike1Model:FindFirstChild("SpikeLeft")
                         if spikeLeft then
-                            spikeLeft:Destroy()
+                            for _, meshPart in ipairs(spikeLeft:GetChildren()) do
+                                if meshPart:IsA("MeshPart") and meshPart.Name == "Spike" then
+                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        touchInterest:Destroy()
+                                    end
+                                end
+                            end
                         end
+
                         local spikeRight = spike1Model:FindFirstChild("SpikeRight")
                         if spikeRight then
-                            spikeRight:Destroy()
+                            for _, meshPart in ipairs(spikeRight:GetChildren()) do
+                                if meshPart:IsA("MeshPart") and meshPart.Name == "Spike" then
+                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        touchInterest:Destroy()
+                                    end
+                                end
+                            end
                         end
                     end
+
                     local spike2Model = stage4Model:FindFirstChild("Spike2")
                     if spike2Model then
-                        for _, spikeName in ipairs({"LaunchingSpike", "MoreSpike", "TrapSpike", "TrapSpike_2"}) do
-                            local spike = spike2Model:FindFirstChild(spikeName)
-                            if spike then
-                                spike:Destroy()
+                        local launchingSpikeModel = spike2Model:FindFirstChild("LaunchingSpike")
+                        if launchingSpikeModel then
+                            for _, meshPart in ipairs(launchingSpikeModel:GetChildren()) do
+                                if meshPart:IsA("MeshPart") then
+                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        touchInterest:Destroy()
+                                    end
+                                end
+                            end
+                        end
+
+                        local moreSpikeModel = spike2Model:FindFirstChild("MoreSpike")
+                        if moreSpikeModel then
+                            for _, meshPart in ipairs(moreSpikeModel:GetChildren()) do
+                                if meshPart:IsA("MeshPart") then
+                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        touchInterest:Destroy()
+                                    end
+                                end
+                            end
+                        end
+
+                        local trapSpikeModel = spike2Model:FindFirstChild("TrapSpike")
+                        if trapSpikeModel then
+                            for _, meshPart in ipairs(trapSpikeModel:GetChildren()) do
+                                if meshPart:IsA("MeshPart") then
+                                    local touchInterest = meshPart:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        touchInterest:Destroy()
+                                    end
+                                end
                             end
                         end
                     end
