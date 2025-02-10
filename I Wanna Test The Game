@@ -262,12 +262,7 @@ local invincibilityToSpikesButton = stage4Tab:CreateButton({
 
                         local trapSpikeModel = spike2Model:FindFirstChild("TrapSpike")
                         if trapSpikeModel then
-                            for _, meshPart in ipairs(trapSpikeModel:GetChildren()) do
-                                if meshPart:IsA("MeshPart") then
-                                    meshPart.CanTouch = false
-                                    meshPart.CanCollide = false
-                                end
-                            end
+                            trapSpikeModel:Destroy()
                         end
                     end
                 end
