@@ -90,8 +90,8 @@ local removeTriggersButton = stage2Tab:CreateButton({
 })
 
 local stage3Tab = window:CreateTab("Stage 3")
+local scriptSectionStage3 = stage3Tab:CreateSection("Scripts")
 
-local firstPartSectionStage3 = stage3Tab:CreateSection("First Part Of Stage 3")
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
     Callback = function()
@@ -116,7 +116,6 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
     end
 })
 
-local lavaObbySectionStage3 = stage3Tab:CreateSection("Lava Obby")
 local removeLavaButton = stage3Tab:CreateButton({
     Name = "Remove Lava On Obby (Easy Method)",
     Callback = function()
@@ -162,7 +161,6 @@ local invincibilityToLavaObbyButton = stage3Tab:CreateButton({
     end
 })
 
-local lastPartSectionStage3 = stage3Tab:CreateSection("Last Part Of Stage 3")
 local removeTriggersButtonStage3 = stage3Tab:CreateButton({
     Name = "Remove Triggers (Last Part Of Stage 3)",
     Callback = function()
