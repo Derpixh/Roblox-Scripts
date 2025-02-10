@@ -20,7 +20,6 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
-
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
@@ -69,7 +68,6 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
 
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
-
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
@@ -83,6 +81,29 @@ local removeTriggersButton = stage2Tab:CreateButton({
                     if triggersModel then
                         triggersModel:Destroy()
                     end
+                end
+            end
+        end
+    end
+})
+
+local stage3Tab = window:CreateTab("Stage 3")
+local scriptSectionStage3 = stage3Tab:CreateSection("Script")
+local freezeObbyKillersButton = stage3Tab:CreateButton({
+    Name = "Freeze Obby Killers (Disable Movement)",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local npcsFolder = mapFolder:FindFirstChild("NPCs")
+            if npcsFolder then
+                local obbyKiller37 = npcsFolder:FindFirstChild("ObbyKiller_37")
+                if obbyKiller37 then
+                    obbyKiller37.Anchored = true
+                end
+
+                local obbyKiller38 = npcsFolder:FindFirstChild("ObbyKiller_38")
+                if obbyKiller38 then
+                    obbyKiller38.Anchored = true
                 end
             end
         end
