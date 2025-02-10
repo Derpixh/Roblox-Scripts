@@ -20,7 +20,6 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
-
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
@@ -69,7 +68,6 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
 
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
-
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
@@ -90,7 +88,6 @@ local removeTriggersButton = stage2Tab:CreateButton({
 })
 
 local stage3Tab = window:CreateTab("Stage 3")
-
 local firstPartSection = stage3Tab:CreateSection("First Part Of Stage 3")
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
@@ -180,28 +177,28 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
 })
 
 local stage4Tab = window:CreateTab("Stage 4")
-local removeNpcSection = stage4Tab:CreateSection("Remove NPC")
-
-local removeRocketeerButton = stage4Tab:CreateButton({
-    Name = "Remove Rocketeer",
+local removeNpcSection = stage4Tab:CreateSection("Rocket Launcher")
+local removeRocketLauncherButton = stage4Tab:CreateButton({
+    Name = "Remove Rocketeer's Rocket Launcher",
     SectionParent = removeNpcSection,
     Callback = function()
         local npcsFolder = game.Workspace:FindFirstChild("NPCs")
         if npcsFolder then
             for _, model in ipairs(npcsFolder:GetChildren()) do
                 if model:IsA("Model") and model.Name:match("^RocketeerNew_") then
-                    model:Destroy()
-                    break
+                    local rocketLauncherTool = model:FindFirstChild("rocketlauncher")
+                    if rocketLauncherTool then
+                        rocketLauncherTool:Destroy()
+                    end
                 end
             end
         end
     end
 })
 
-local removeSpikesSection = stage4Tab:CreateSection("Remove All Spikes")
-
+local removeSpikesSection = stage4Tab:CreateSection("Spikes")
 local removeAllSpikesButton = stage4Tab:CreateButton({
-    Name = "Remove All Spikes",
+    Name = "Invincibility To Spikes",
     SectionParent = removeSpikesSection,
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
@@ -281,10 +278,9 @@ local removeAllSpikesButton = stage4Tab:CreateButton({
     end
 })
 
-local removeTrapSection = stage4Tab:CreateSection("Remove Trap (Dumb Devs LOL)")
-
+local removeTrapSection = stage4Tab:CreateSection("Noclip (Dumb Devs LOL)")
 local removeTrapButton = stage4Tab:CreateButton({
-    Name = "Remove Trap",
+    Name = "Noclip Through Trap",
     SectionParent = removeTrapSection,
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
@@ -295,7 +291,26 @@ local removeTrapButton = stage4Tab:CreateButton({
                 if stage4Model then
                     local blockTrapModel = stage4Model:FindFirstChild("BlockTrap")
                     if blockTrapModel then
-                        blockTrapModel:Destroy()
+                        local block4 = blockTrapModel:FindFirstChild("Block 4")
+                        if block4 then
+                            block4.CanCollide = false
+                        end
+
+                        local block5 = blockTrapModel:FindFirstChild("Block 5")
+                        if block5 then
+                            block5.CanCollide = false
+                        end
+
+                        local block6 = blockTrapModel:FindFirstChild("Block 6")
+                        if block6 then
+                            block6.CanCollide = false
+                        end
+
+                        local lavaPart = blockTrapModel:FindFirstChild("Lava")
+                        if lavaPart then
+                            lavaPart.CanCollide = false
+                            lavaPart.CanTouch = false
+                        end
                     end
                 end
             end
@@ -304,7 +319,6 @@ local removeTrapButton = stage4Tab:CreateButton({
 })
 
 local lastPartStage4Section = stage4Tab:CreateSection("Last Part Of Stage 4")
-
 local makeBrickVisibleButton = stage4Tab:CreateButton({
     Name = "Make Brick Visible",
     SectionParent = lastPartStage4Section,
