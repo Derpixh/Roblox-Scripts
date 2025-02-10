@@ -20,7 +20,6 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
-
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
@@ -69,7 +68,6 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
 
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
-
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
@@ -91,7 +89,6 @@ local removeTriggersButton = stage2Tab:CreateButton({
 
 local stage3Tab = window:CreateTab("Stage 3")
 local scriptSectionStage3 = stage3Tab:CreateSection("Scripts")
-
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
     Callback = function()
@@ -173,6 +170,32 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
                     local triggersModel = stage3Model:FindFirstChild("Triggers")
                     if triggersModel then
                         triggersModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local disableDissapearingLavaObbyButton = stage3Tab:CreateButton({
+    Name = "Disable Dissapearing Lava Obby",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local stage3Model = stageFolder:FindFirstChild("Stage3")
+                if stage3Model then
+                    local dissapearingBrickModel = stage3Model:FindFirstChild("DissapearingBrick")
+                    if dissapearingBrickModel then
+                        for _, brickPart in ipairs(dissapearingBrickModel:GetChildren()) do
+                            if brickPart:IsA("Part") and brickPart.Name == "Dissapearing brick" then
+                                local touchInterest = brickPart:FindFirstChild("TouchInterest")
+                                if touchInterest then
+                                    touchInterest:Destroy()
+                                end
+                            end
+                        end
                     end
                 end
             end
