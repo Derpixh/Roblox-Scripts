@@ -96,14 +96,13 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
         if mapFolder then
             local npcsFolder = mapFolder:FindFirstChild("NPCs")
             if npcsFolder then
-                local obbyKiller37 = npcsFolder:FindFirstChild("ObbyKiller_37")
-                if obbyKiller37 then
-                    obbyKiller37.Anchored = true
+                local obbyKiller1 = npcsFolder:FindFirstChild("ObbyKiller_1")
+                if obbyKiller1 then
+                    obbyKiller1.Anchored = true
                 end
-
-                local obbyKiller38 = npcsFolder:FindFirstChild("ObbyKiller_38")
-                if obbyKiller38 then
-                    obbyKiller38.Anchored = true
+                local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
+                if obbyKiller2 then
+                    obbyKiller2.Anchored = true
                 end
             end
         end
