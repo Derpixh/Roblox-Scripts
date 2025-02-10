@@ -92,24 +92,20 @@ local scriptSectionStage3 = stage3Tab:CreateSection("Script")
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
     Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local npcsFolder = mapFolder:FindFirstChild("NPCs")
-            if npcsFolder then
-                local obbyKiller1 = npcsFolder:FindFirstChild("ObbyKiller_1")
-                if obbyKiller1 then
-                    local hitbox1 = obbyKiller1:FindFirstChild("Hitbox")
-                    if hitbox1 then
-                        hitbox1.Anchored = true
-                    end
+        local npcsFolder = game.Workspace:FindFirstChild("NPCs")
+        if npcsFolder then
+            local obbyKiller1 = npcsFolder:FindFirstChild("ObbyKiller_1")
+            if obbyKiller1 then
+                local hitbox1 = obbyKiller1:FindFirstChild("Hitbox")
+                if hitbox1 then
+                    hitbox1.Anchored = true
                 end
-
-                local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
-                if obbyKiller2 then
-                    local hitbox2 = obbyKiller2:FindFirstChild("Hitbox")
-                    if hitbox2 then
-                        hitbox2.Anchored = true
-                    end
+            end
+            local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
+            if obbyKiller2 then
+                local hitbox2 = obbyKiller2:FindFirstChild("Hitbox")
+                if hitbox2 then
+                    hitbox2.Anchored = true
                 end
             end
         end
