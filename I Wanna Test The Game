@@ -20,6 +20,7 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
+
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
@@ -66,40 +67,9 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
     end
 })
 
-local invincibilityButton = stage1Tab:CreateButton({
-    Name = "Invincibility (OP If You Also Use Remove Triggers)",
-    Callback = function()
-        local mapFolder = game.Workspace:FindFirstChild("Map")
-        if mapFolder then
-            local stageFolder = mapFolder:FindFirstChild("Stage")
-            if stageFolder then
-                local lavaStageModel = stageFolder:FindFirstChild("LavaStage")
-                if lavaStageModel then
-                    local lavasModel = lavaStageModel:FindFirstChild("Lavas")
-                    if lavasModel then
-                        for i = 1, 4 do
-                            local lavaModel = lavasModel:FindFirstChild("Lava" .. i)
-                            if lavaModel then
-                                for _, partName in ipairs({"Part", "Part1", "Part2", "Part3"}) do
-                                    local part = lavaModel:FindFirstChild(partName)
-                                    if part then
-                                        local touchInterest = part:FindFirstChild("TouchInterest")
-                                        if touchInterest then
-                                            touchInterest:Destroy()
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
+
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
@@ -120,6 +90,7 @@ local removeTriggersButton = stage2Tab:CreateButton({
 })
 
 local stage3Tab = window:CreateTab("Stage 3")
+
 local firstPartSection = stage3Tab:CreateSection("First Part Of Stage 3")
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
@@ -127,12 +98,16 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
     Callback = function()
         local npcsFolder = game.Workspace:FindFirstChild("NPCs")
         if npcsFolder then
-            for i = 1, 2 do
-                local obbyKiller = npcsFolder:FindFirstChild("ObbyKiller_" .. i)
-                if obbyKiller then
-                    local hitbox = obbyKiller:FindFirstChild("Hitbox")
+            local count = 0
+            for _, model in pairs(npcsFolder:GetChildren()) do
+                if model:IsA("Model") and model.Name:match("^ObbyKiller_") then
+                    local hitbox = model:FindFirstChild("Hitbox")
                     if hitbox then
                         hitbox.Anchored = true
+                        count = count + 1
+                        if count >= 2 then
+                            break
+                        end
                     end
                 end
             end
@@ -208,6 +183,7 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
 
 local stage4Tab = window:CreateTab("Stage 4")
 local removeNpcSection = stage4Tab:CreateSection("Remove NPC")
+
 local removeRocketeerButton = stage4Tab:CreateButton({
     Name = "Remove Rocketeer",
     SectionParent = removeNpcSection,
