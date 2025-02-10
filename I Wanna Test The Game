@@ -67,6 +67,38 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
     end
 })
 
+local invincibilityButton = stage1Tab:CreateButton({
+    Name = "Invincibility (OP If You Also Use Remove Triggers)",
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local lavaStageModel = stageFolder:FindFirstChild("LavaStage")
+                if lavaStageModel then
+                    local lavasModel = lavaStageModel:FindFirstChild("Lavas")
+                    if lavasModel then
+                        for i = 1, 4 do
+                            local lavaModel = lavasModel:FindFirstChild("Lava" .. i)
+                            if lavaModel then
+                                for _, partName in ipairs({"Part", "Part1", "Part2", "Part3"}) do
+                                    local part = lavaModel:FindFirstChild(partName)
+                                    if part then
+                                        local touchInterest = part:FindFirstChild("TouchInterest")
+                                        if touchInterest then
+                                            touchInterest:Destroy()
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
 
@@ -175,6 +207,25 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
         if stage3Model then
             local triggersModel = stage3Model:FindFirstChild("Triggers")
             if triggersModel then triggersModel:Destroy() end
+        end
+    end
+})
+
+local stage4Tab = window:CreateTab("Stage 4")
+local removeNpcSection = stage4Tab:CreateSection("Remove NPC")
+
+local removeRocketeerButton = stage4Tab:CreateButton({
+    Name = "Remove Rocketeer",
+    SectionParent = removeNpcSection,
+    Callback = function()
+        local npcsFolder = game.Workspace:FindFirstChild("NPCs")
+        if npcsFolder then
+            for _, model in ipairs(npcsFolder:GetChildren()) do
+                if model:IsA("Model") and model.Name:match("^RocketeerNew_") then
+                    model:Destroy()
+                    break
+                end
+            end
         end
     end
 })
