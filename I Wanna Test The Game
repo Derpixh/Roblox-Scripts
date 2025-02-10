@@ -20,6 +20,7 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
+
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
     Callback = function()
@@ -68,6 +69,7 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
 
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
+
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
     Callback = function()
@@ -88,8 +90,9 @@ local removeTriggersButton = stage2Tab:CreateButton({
 })
 
 local stage3Tab = window:CreateTab("Stage 3")
+
 local firstPartSectionStage3 = stage3Tab:CreateSection("First Part Of Stage 3")
-local freezeObbyKillersButton = firstPartSectionStage3:CreateButton({
+local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
     Callback = function()
         local npcsFolder = game.Workspace:FindFirstChild("NPCs")
@@ -101,6 +104,7 @@ local freezeObbyKillersButton = firstPartSectionStage3:CreateButton({
                     hitbox1.Anchored = true
                 end
             end
+
             local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
             if obbyKiller2 then
                 local hitbox2 = obbyKiller2:FindFirstChild("Hitbox")
@@ -113,7 +117,7 @@ local freezeObbyKillersButton = firstPartSectionStage3:CreateButton({
 })
 
 local lavaObbySectionStage3 = stage3Tab:CreateSection("Lava Obby")
-local removeLavaButton = lavaObbySectionStage3:CreateButton({
+local removeLavaButton = stage3Tab:CreateButton({
     Name = "Remove Lava On Obby (Easy Method)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
@@ -132,7 +136,7 @@ local removeLavaButton = lavaObbySectionStage3:CreateButton({
     end
 })
 
-local invincibilityToLavaObbyButton = lavaObbySectionStage3:CreateButton({
+local invincibilityToLavaObbyButton = stage3Tab:CreateButton({
     Name = "Invincibility To Lava Obby (Easiest Method)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
@@ -159,7 +163,7 @@ local invincibilityToLavaObbyButton = lavaObbySectionStage3:CreateButton({
 })
 
 local lastPartSectionStage3 = stage3Tab:CreateSection("Last Part Of Stage 3")
-local removeTriggersButtonStage3 = lastPartSectionStage3:CreateButton({
+local removeTriggersButtonStage3 = stage3Tab:CreateButton({
     Name = "Remove Triggers (Last Part Of Stage 3)",
     Callback = function()
         local mapFolder = game.Workspace:FindFirstChild("Map")
