@@ -20,7 +20,6 @@ local window = Rayfield:CreateWindow({
 
 local stage1Tab = window:CreateTab("Stage 1")
 local scriptSectionStage1 = stage1Tab:CreateSection("Script")
-scriptSectionStage1:Set("Script")
 
 local removeLavasButton = stage1Tab:CreateButton({
     Name = "Remove Lavas (Blatant/Lazy Method)",
@@ -40,7 +39,6 @@ local removeLavasButton = stage1Tab:CreateButton({
         end
     end
 })
-removeLavasButton:Set("Remove Lavas (Blatant/Lazy Method)")
 
 local removeTriggersLegitButton = stage1Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
@@ -68,11 +66,9 @@ local removeTriggersLegitButton = stage1Tab:CreateButton({
         end
     end
 })
-removeTriggersLegitButton:Set("Remove Triggers (Legit/Easy Method)")
 
 local stage2Tab = window:CreateTab("Stage 2")
 local scriptSectionStage2 = stage2Tab:CreateSection("Script")
-scriptSectionStage2:Set("Script")
 
 local removeTriggersButton = stage2Tab:CreateButton({
     Name = "Remove Triggers (Legit/Easy Method)",
@@ -92,12 +88,10 @@ local removeTriggersButton = stage2Tab:CreateButton({
         end
     end
 })
-removeTriggersButton:Set("Remove Triggers (Legit/Easy Method)")
 
 local stage3Tab = window:CreateTab("Stage 3")
 
 local firstPartSection = stage3Tab:CreateSection("First Part Of Stage 3")
-firstPartSection:Set("First Part Of Stage 3")
 local freezeObbyKillersButton = stage3Tab:CreateButton({
     Name = "Freeze Obby Killers (Disable Movement)",
     SectionParent = firstPartSection,
@@ -120,10 +114,8 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
         end
     end
 })
-freezeObbyKillersButton:Set("Freeze Obby Killers (Disable Movement)")
 
 local lavaObbySection = stage3Tab:CreateSection("Lava Obby (Second Half)")
-lavaObbySection:Set("Lava Obby (Second Half)")
 local removeLavaButton = stage3Tab:CreateButton({
     Name = "Remove Lava On Obby (Easy Method)",
     SectionParent = lavaObbySection,
@@ -135,7 +127,6 @@ local removeLavaButton = stage3Tab:CreateButton({
         end
     end
 })
-removeLavaButton:Set("Remove Lava On Obby (Easy Method)")
 
 local invincibilityToLavaObbyButton = stage3Tab:CreateButton({
     Name = "Invincibility To Lava Obby (Easiest Method)",
@@ -155,10 +146,9 @@ local invincibilityToLavaObbyButton = stage3Tab:CreateButton({
         end
     end
 })
-invincibilityToLavaObbyButton:Set("Invincibility To Lava Obby (Easiest Method)")
 
 local disableDissapearingLavaObbyButton = stage3Tab:CreateButton({
-    Name = "Disable Dissapearing Obby (Use The 2nd One Aswell Its OP)",
+    Name = "Disable Disappearing Obby",
     SectionParent = lavaObbySection,
     Callback = function()
         local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
@@ -175,28 +165,22 @@ local disableDissapearingLavaObbyButton = stage3Tab:CreateButton({
         end
     end
 })
-disableDissapearingLavaObbyButton:Set("Disable Dissapearing Obby (Use The 2nd One Aswell Its OP)")
 
 local lastPartSection = stage3Tab:CreateSection("Last Part Of Stage 3")
-lastPartSection:Set("Last Part Of Stage 3")
 local removeTriggersButtonStage3 = stage3Tab:CreateButton({
-    Name = "Remove Triggers (Last Part Of Stage 3)",
+    Name = "Remove Triggers",
     SectionParent = lastPartSection,
     Callback = function()
         local stage3Model = game.Workspace.Map.Stage:FindFirstChild("Stage3")
         if stage3Model then
             local triggersModel = stage3Model:FindFirstChild("Triggers")
-            if triggersModel then
-                triggersModel:Destroy()
-            end
+            if triggersModel then triggersModel:Destroy() end
         end
     end
 })
-removeTriggersButtonStage3:Set("Remove Triggers (Last Part Of Stage 3)")
 
 local stage4Tab = window:CreateTab("Stage 4")
 local removeNpcSection = stage4Tab:CreateSection("Remove NPC")
-removeNpcSection:Set("Remove NPC")
 
 local removeRocketeerButton = stage4Tab:CreateButton({
     Name = "Remove Rocketeer",
@@ -213,6 +197,43 @@ local removeRocketeerButton = stage4Tab:CreateButton({
         end
     end
 })
-removeRocketeerButton:Set("Remove Rocketeer")
+
+local removeSpikesSection = stage4Tab:CreateSection("Remove All Spikes")
+
+local removeAllSpikesButton = stage4Tab:CreateButton({
+    Name = "Remove All Spikes",
+    SectionParent = removeSpikesSection,
+    Callback = function()
+        local mapFolder = game.Workspace:FindFirstChild("Map")
+        if mapFolder then
+            local stageFolder = mapFolder:FindFirstChild("Stage")
+            if stageFolder then
+                local stage4Model = stageFolder:FindFirstChild("Stage4")
+                if stage4Model then
+                    local spike1Model = stage4Model:FindFirstChild("Spike1")
+                    if spike1Model then
+                        local spikeLeft = spike1Model:FindFirstChild("SpikeLeft")
+                        if spikeLeft then
+                            spikeLeft:Destroy()
+                        end
+                        local spikeRight = spike1Model:FindFirstChild("SpikeRight")
+                        if spikeRight then
+                            spikeRight:Destroy()
+                        end
+                    end
+                    local spike2Model = stage4Model:FindFirstChild("Spike2")
+                    if spike2Model then
+                        for _, spikeName in ipairs({"LaunchingSpike", "MoreSpike", "TrapSpike", "TrapSpike_2"}) do
+                            local spike = spike2Model:FindFirstChild(spikeName)
+                            if spike then
+                                spike:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
 
 Rayfield:LoadConfiguration()
