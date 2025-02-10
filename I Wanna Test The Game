@@ -103,6 +103,7 @@ local freezeObbyKillersButton = stage3Tab:CreateButton({
                         hitbox1.Anchored = true
                     end
                 end
+
                 local obbyKiller2 = npcsFolder:FindFirstChild("ObbyKiller_2")
                 if obbyKiller2 then
                     local hitbox2 = obbyKiller2:FindFirstChild("Hitbox")
