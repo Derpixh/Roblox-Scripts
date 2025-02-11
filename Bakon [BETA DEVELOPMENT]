@@ -178,6 +178,32 @@ chapter1Tab:CreateButton({
     SectionParent = mainStuffSection
 })
 
+chapter1Tab:CreateButton({
+    Name = "Grab Truss",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
+            if Chapter1 then
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local Truss = Utilities:FindFirstChild("Truss")
+                    if Truss then
+                        local Bounds = Truss:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection
+})
+
 local teleportsSection = chapter1Tab:CreateSection("Teleports")
 
 chapter1Tab:CreateButton({
@@ -187,9 +213,9 @@ chapter1Tab:CreateButton({
         if CurrentMap then
             local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
             if Chapter1 then
-                local Misc = Chapter1:FindFirstChild("Misc")
-                if Misc then
-                    local Furniture = Misc:FindFirstChild("Furniture")
+                local MIsc = Chapter1:FindFirstChild("MIsc")
+                if MIsc then
+                    local Furniture = MIsc:FindFirstChild("Furniture")
                     if Furniture then
                         local Carpets = Furniture:FindFirstChild("Carpet")
                         if Carpets then
