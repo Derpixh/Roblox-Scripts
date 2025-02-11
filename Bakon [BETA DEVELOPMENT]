@@ -191,11 +191,11 @@ chapter1Tab:CreateButton({
                 if Misc then
                     local Furniture = Misc:FindFirstChild("Furniture")
                     if Furniture then
-                        local Carparts = Furniture:FindFirstChild("Carpart")
-                        if Carparts then
+                        local Carpets = Furniture:FindFirstChild("Carpet")
+                        if Carpets then
                             local localPlayer = game.Players.LocalPlayer
                             local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-                            character:WaitForChild("HumanoidRootPart").CFrame = Carparts.CFrame
+                            character:WaitForChild("HumanoidRootPart").CFrame = Carpets.CFrame
                         end
                     end
                 end
