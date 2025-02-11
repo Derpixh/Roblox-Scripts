@@ -67,4 +67,40 @@ shootingTab:CreateButton({
     SectionParent = featuresSection
 })
 
+local magsTab = window:CreateTab("Mags", 4483362458)
+
+local featureSection = magsTab:CreateSection("Feature")
+
+magsTab:CreateButton({
+    Name = "Update Mesh Parts",
+    Callback = function()
+        local function updateMeshParts()
+            local model = game.Workspace:FindFirstChild(localPlayer.Name)
+            if model then
+                local parts = {
+                    "LeftHand",
+                    "LeftUpperArm",
+                    "LeftLowerArm",
+                    "RightHand",
+                    "RightUpperArm",
+                    "RightLowerArm"
+                }
+
+                for _, partName in ipairs(parts) do
+                    local part = model:FindFirstChild(partName, true)
+                    if part and part:IsA("MeshPart") then
+                        local newSize = part.Size
+                        newSize = Vector3.new(newSize.X * 3.5, 2.5, newSize.Z)
+                        part.Size = newSize
+                        part.Transparency = 0.5
+                    end
+                end
+            end
+        end
+
+        updateMeshParts()
+    end,
+    SectionParent = featureSection
+})
+
 Rayfield:LoadConfiguration()
