@@ -67,11 +67,11 @@ shootingTab:CreateButton({
     SectionParent = featuresSection
 })
 
-local magsTab = window:CreateTab("Mags", 4483362458)
+local longArmsTab = window:CreateTab("Long Arms", 4483362458)
 
-local featureSection = magsTab:CreateSection("Feature")
+local featureSection = longArmsTab:CreateSection("Feature")
 
-magsTab:CreateButton({
+longArmsTab:CreateButton({
     Name = "Update Mesh Parts",
     Callback = function()
         local function updateMeshParts()
