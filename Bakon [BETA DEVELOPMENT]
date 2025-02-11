@@ -385,30 +385,4 @@ chapter2Tab:CreateButton({
     SectionParent = mainStuffSection2
 })
 
-chapter2Tab:CreateButton({
-    Name = "Grab Blue Wire",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter2 = CurrentMap:FindFirstChild("Chapter2")
-            if Chapter2 then
-                local Utilities = Chapter2:FindFirstChild("Utilities")
-                if Utilities then
-                    local BlueWire = Utilities:FindFirstChild("Blue Wire")
-                    if BlueWire then
-                        local Bounds = BlueWire:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = mainStuffSection2
-})
-
 Rayfield:LoadConfiguration()
