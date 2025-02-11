@@ -1,0 +1,68 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local window = Rayfield:CreateWindow({
+    Name = "Basketball Legends",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "BasketballLegendsKey",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local shootingTab = window:CreateTab("Shooting", 4483362458)
+
+local featuresSection = shootingTab:CreateSection("Features")
+
+shootingTab:CreateButton({
+    Name = "Auto Perfect Green (Blatant)",
+    Callback = function()
+        local Players = game:GetService("Players")
+        local UserInputService = game:GetService("UserInputService")
+        local RunService = game:GetService("RunService")
+
+        local localPlayer = Players.LocalPlayer
+
+        if localPlayer then
+            local playerGui = localPlayer:WaitForChild("PlayerGui")
+            local visualScreenGui = playerGui:WaitForChild("Visual")
+            local shootingFrame = visualScreenGui:WaitForChild("Shooting")
+            local barFrame = shootingFrame:WaitForChild("Bar")
+
+            local shootingGif = visualScreenGui:FindFirstChild("ShootingGif")
+            if shootingGif then
+                shootingGif:Destroy()
+            end
+
+            local isKeyPressed = false
+
+            UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+                if input.KeyCode == Enum.KeyCode.E then
+                    isKeyPressed = true
+                end
+            end)
+
+            UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
+                if input.KeyCode == Enum.KeyCode.E then
+                    isKeyPressed = false
+                end
+            end)
+
+            RunService.RenderStepped:Connect(function()
+                if isKeyPressed then
+                    barFrame.Size = UDim2.new(1, 0, 1, 0)
+                    wait(0.001)
+                end
+            end)
+        end
+    end,
+    SectionParent = featuresSection
+})
