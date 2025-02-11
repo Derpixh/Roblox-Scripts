@@ -20,7 +20,7 @@ local window = Rayfield:CreateWindow({
 
 local chapter1Tab = window:CreateTab("Chapter 1", 4483362458)
 
-local mainStuffSection = chapter1Tab:CreateSection("Main Stuff")
+local mainStuffSection1 = chapter1Tab:CreateSection("Main Stuff")
 
 chapter1Tab:CreateButton({
     Name = "Grab White Key",
@@ -45,7 +45,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -71,7 +71,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -97,7 +97,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -123,7 +123,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -149,7 +149,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -175,7 +175,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 chapter1Tab:CreateButton({
@@ -201,7 +201,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection
+    SectionParent = mainStuffSection1
 })
 
 local teleportsSection = chapter1Tab:CreateSection("Teleports")
@@ -217,8 +217,8 @@ chapter1Tab:CreateButton({
                 if MIsc then
                     local Furniture = MIsc:FindFirstChild("Furniture")
                     if Furniture then
-                        local Carpets = Furniture:FindFirstChild("Carpet")
-                        if Carpets then
+                        local Carpets = Furniture:FindFirstChildWhichIsA("BasePart", 4)
+                        if Carpets and Carpets.Name == "Carpet" then
                             local localPlayer = game.Players.LocalPlayer
                             local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
                             character:WaitForChild("HumanoidRootPart").CFrame = Carpets.CFrame
@@ -258,11 +258,32 @@ chapter1Tab:CreateButton({
 
 local chapter2Tab = window:CreateTab("Chapter 2", 4483362458)
 
+local mainStuffSection2 = chapter2Tab:CreateSection("Main Stuff")
+
 chapter2Tab:CreateButton({
-    Name = "Example Button",
+    Name = "Grab Wrench",
     Callback = function()
-        print("Example Button clicked!")
-    end
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter2 = CurrentMap:FindFirstChild("Chapter2")
+            if Chapter2 then
+                local Utilities = Chapter2:FindFirstChild("Utilities")
+                if Utilities then
+                    local Wrench = Utilities:FindFirstChild("Wrench")
+                    if Wrench then
+                        local Bounds = Wrench:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection2
 })
 
 Rayfield:LoadConfiguration()
