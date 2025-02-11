@@ -67,12 +67,12 @@ shootingTab:CreateButton({
     SectionParent = featuresSection
 })
 
-local longArmsTab = window:CreateTab("Long Arms", 4483362458)
+local magsTab = window:CreateTab("Mags", 4483362458)
 
-local featureSection = longArmsTab:CreateSection("Feature")
+local featureSection = magsTab:CreateSection("Feature")
 
-longArmsTab:CreateButton({
-    Name = "Update Mesh Parts",
+magsTab:CreateButton({
+    Name = "Long Arms",
     Callback = function()
         local localPlayer = game:GetService("Players").LocalPlayer
         local model = game.Workspace:FindFirstChild(localPlayer.Name)
@@ -98,6 +98,45 @@ longArmsTab:CreateButton({
         end
     end,
     SectionParent = featureSection
+})
+
+local autoSpinTab = window:CreateTab("Auto Spin", 4483362458)
+
+local autoSpinFeatureSection = autoSpinTab:CreateSection("Feature")
+
+autoSpinTab:CreateButton({
+    Name = "Auto Spin Z And C (Press Z/C To Spin)",
+    Callback = function()
+        local UserInputService = game:GetService("UserInputService")
+        local RunService = game:GetService("RunService")
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        local keyPressed = {}
+        local lastUpdate = 0
+        local updateInterval = 0.08
+
+        UserInputService.InputBegan:Connect(function(input)
+            if (input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z) and not keyPressed[input.KeyCode] then
+                keyPressed[input.KeyCode] = true
+                VirtualInputManager:SendKeyEvent(true, input.KeyCode, false, game)
+                VirtualInputManager:SendKeyEvent(false, input.KeyCode, false, game)
+            end
+        end)
+
+        UserInputService.InputEnded:Connect(function(input)
+            if input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z then
+                keyPressed[input.KeyCode] = false
+            end
+        end)
+
+        RunService.Heartbeat:Connect(function(deltaTime)
+            lastUpdate = lastUpdate + deltaTime
+            if lastUpdate >= updateInterval then
+                highlightTeamModels()
+                lastUpdate = 0
+            end
+        end)
+    end,
+    SectionParent = autoSpinFeatureSection
 })
 
 Rayfield:LoadConfiguration()
