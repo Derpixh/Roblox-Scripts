@@ -187,15 +187,16 @@ chapter1Tab:CreateButton({
         if CurrentMap then
             local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
             if Chapter1 then
-                local Scavengers = Chapter1:FindFirstChild("Scavengers")
-                if Scavengers then
-                    local Bookcase = Scavengers:FindFirstChild("Bookcase")
-                    if Bookcase then
-                        local localPlayer = game.Players.LocalPlayer
-                        local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-                        local frontOffset = Vector3.new(0, 0, -5)
-                        local newPosition = Bookcase:GetModelCFrame().Position + frontOffset
-                        character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(newPosition, Bookcase:GetModelCFrame().Position)
+                local Misc = Chapter1:FindFirstChild("Misc")
+                if Misc then
+                    local Furniture = Misc:FindFirstChild("Furniture")
+                    if Furniture then
+                        local Carparts = Furniture:FindFirstChild("Carpart")
+                        if Carparts then
+                            local localPlayer = game.Players.LocalPlayer
+                            local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+                            character:WaitForChild("HumanoidRootPart").CFrame = Carparts.CFrame
+                        end
                     end
                 end
             end
