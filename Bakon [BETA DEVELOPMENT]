@@ -798,34 +798,6 @@ chapter4Tab:CreateButton({
     SectionParent = wiresSection
 })
 
-local hammerSection = chapter4Tab:CreateSection("Hammer")
-
-chapter4Tab:CreateButton({
-    Name = "Grab Hammer",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
-            if Chapter4 then
-                local Utilities = Chapter4:FindFirstChild("Utilities")
-                if Utilities then
-                    local Hammer = Utilities:FindFirstChild("Hammer")
-                    if Hammer then
-                        local Bounds = Hammer:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = hammerSection
-})
-
 local crowbarSection = chapter4Tab:CreateSection("Crowbar")
 
 chapter4Tab:CreateButton({
