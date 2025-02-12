@@ -1222,6 +1222,62 @@ chapter6Tab:CreateButton({
     SectionParent = whiteKeySection
 })
 
+local bearSection = chapter5Tab:CreateSection("Bear")
+
+chapter5Tab:CreateButton({
+    Name = "Grab Bear",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter5 = CurrentMap:FindFirstChild("Chapter5")
+            if Chapter5 then
+                local Utilities = Chapter5:FindFirstChild("Utilities")
+                if Utilities then
+                    local Bear = Utilities:FindFirstChild("Bear")
+                    if Bear then
+                        local Bounds = Bear:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = bearSection
+})
+
+local blueKeySection = chapter5Tab:CreateSection("Blue Key")
+
+chapter5Tab:CreateButton({
+    Name = "Grab Blue Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter5 = CurrentMap:FindFirstChild("Chapter5")
+            if Chapter5 then
+                local Utilities = Chapter5:FindFirstChild("Utilities")
+                if Utilities then
+                    local BlueKey = Utilities:FindFirstChild("Blue Key")
+                    if BlueKey then
+                        local Bounds = BlueKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = blueKeySection
+})
+
 local taserSection = chapter6Tab:CreateSection("Taser")
 
 chapter6Tab:CreateButton({
