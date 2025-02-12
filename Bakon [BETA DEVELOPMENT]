@@ -798,4 +798,32 @@ chapter4Tab:CreateButton({
     SectionParent = crowbarSection
 })
 
+local whiteKeySection = chapter4Tab:CreateSection("White Key")
+
+chapter4Tab:CreateButton({
+    Name = "Grab White Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteKey = Utilities:FindFirstChild("White Key")
+                    if WhiteKey then
+                        local Bounds = WhiteKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = whiteKeySection
+})
+
 Rayfield:LoadConfiguration()
