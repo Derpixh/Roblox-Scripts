@@ -19,85 +19,7 @@ local window = Rayfield:CreateWindow({
 })
 
 local chapter1Tab = window:CreateTab("Chapter 1", 4483362458)
-local mainStuffSection1 = chapter1Tab:CreateSection("Main Stuff")
-chapter1Tab:CreateButton({
-    Name = "Grab White Key",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
-            if Chapter1 then
-                local Utilities = Chapter1:FindFirstChild("Utilities")
-                if Utilities then
-                    local WhiteKey = Utilities:FindFirstChild("White Key")
-                    if WhiteKey then
-                        local Bounds = WhiteKey:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = mainStuffSection1
-})
-
-chapter1Tab:CreateButton({
-    Name = "Grab USB",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
-            if Chapter1 then
-                local Utilities = Chapter1:FindFirstChild("Utilities")
-                if Utilities then
-                    local USB = Utilities:FindFirstChild("USB")
-                    if USB then
-                        local Bounds = USB:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = mainStuffSection1
-})
-
-chapter1Tab:CreateButton({
-    Name = "Grab Wrench",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
-            if Chapter1 then
-                local Utilities = Chapter1:FindFirstChild("Utilities")
-                if Utilities then
-                    local Wrench = Utilities:FindFirstChild("Wrench")
-                    if Wrench then
-                        local Bounds = Wrench:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = mainStuffSection1
-})
-
+local booksSection = chapter1Tab:CreateSection("Books")
 chapter1Tab:CreateButton({
     Name = "Grab Green Book",
     Callback = function()
@@ -121,7 +43,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection1
+    SectionParent = booksSection
 })
 
 chapter1Tab:CreateButton({
@@ -147,7 +69,7 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection1
+    SectionParent = booksSection
 })
 
 chapter1Tab:CreateButton({
@@ -173,9 +95,91 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection1
+    SectionParent = booksSection
 })
 
+local wrenchSection = chapter1Tab:CreateSection("Wrench")
+chapter1Tab:CreateButton({
+    Name = "Grab Wrench",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
+            if Chapter1 then
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local Wrench = Utilities:FindFirstChild("Wrench")
+                    if Wrench then
+                        local Bounds = Wrench:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = wrenchSection
+})
+
+local redKeySection = chapter1Tab:CreateSection("Red Key")
+chapter1Tab:CreateButton({
+    Name = "Grab Red Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
+            if Chapter1 then
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local RedKey = Utilities:FindFirstChild("Red Key")
+                    if RedKey then
+                        local Bounds = RedKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = redKeySection
+})
+
+local crowbarSection = chapter1Tab:CreateSection("Crowbar")
+chapter1Tab:CreateButton({
+    Name = "Grab Crowbar",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
+            if Chapter1 then
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local Crowbar = Utilities:FindFirstChild("Crowbar")
+                    if Crowbar then
+                        local Bounds = Crowbar:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = crowbarSection
+})
+
+local trussSection = chapter1Tab:CreateSection("Truss")
 chapter1Tab:CreateButton({
     Name = "Grab Truss",
     Callback = function()
@@ -199,62 +203,65 @@ chapter1Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection1
+    SectionParent = trussSection
 })
 
-local teleportsSection = chapter1Tab:CreateSection("Teleports")
+local usbSection = chapter1Tab:CreateSection("USB")
 chapter1Tab:CreateButton({
-    Name = "Teleport to Book Case",
+    Name = "Grab USB",
     Callback = function()
         local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
         if CurrentMap then
             local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
             if Chapter1 then
-                local MIsc = Chapter1:FindFirstChild("MIsc")
-                if MIsc then
-                    local Furniture = MIsc:FindFirstChild("Furniture")
-                    if Furniture then
-                        local Carpets = Furniture:FindFirstChildWhichIsA("BasePart", 4)
-                        if Carpets and Carpets.Name == "Carpet" then
-                            local localPlayer = game.Players.LocalPlayer
-                            local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-                            character:WaitForChild("HumanoidRootPart").CFrame = Carpets.CFrame
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local USB = Utilities:FindFirstChild("USB")
+                    if USB then
+                        local Bounds = USB:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
                         end
                     end
                 end
             end
         end
     end,
-    SectionParent = teleportsSection
+    SectionParent = usbSection
 })
 
+local whiteKeySection = chapter1Tab:CreateSection("White Key")
 chapter1Tab:CreateButton({
-    Name = "Teleport to USB Computer",
+    Name = "Grab White Key",
     Callback = function()
         local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
         if CurrentMap then
             local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
             if Chapter1 then
-                local Scavengers = Chapter1:FindFirstChild("Scavengers")
-                if Scavengers then
-                    local FinalEscape = Scavengers:FindFirstChild("FinalEscape")
-                    if FinalEscape then
-                        local Computer = FinalEscape:FindFirstChild("Computer")
-                        if Computer and Computer:IsA("Model") then
-                            local localPlayer = game.Players.LocalPlayer
-                            local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-                            character:SetPrimaryPartCFrame(Computer.PrimaryPart.CFrame)
+                local Utilities = Chapter1:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteKey = Utilities:FindFirstChild("White Key")
+                    if WhiteKey then
+                        local Bounds = WhiteKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
                         end
                     end
                 end
             end
         end
     end,
-    SectionParent = teleportsSection
+    SectionParent = whiteKeySection
 })
 
 local chapter2Tab = window:CreateTab("Chapter 2", 4483362458)
-local mainStuffSection2 = chapter2Tab:CreateSection("Main Stuff")
+local wrenchSection = chapter2Tab:CreateSection("Wrench")
 chapter2Tab:CreateButton({
     Name = "Grab Wrench",
     Callback = function()
@@ -278,9 +285,10 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = wrenchSection
 })
 
+local redKeySection = chapter2Tab:CreateSection("Red Key")
 chapter2Tab:CreateButton({
     Name = "Grab Red Key",
     Callback = function()
@@ -304,9 +312,10 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = redKeySection
 })
 
+local crowbarSection = chapter2Tab:CreateSection("Crowbar")
 chapter2Tab:CreateButton({
     Name = "Grab Crowbar",
     Callback = function()
@@ -330,9 +339,10 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = crowbarSection
 })
 
+local wiresSection = chapter2Tab:CreateSection("Wires")
 chapter2Tab:CreateButton({
     Name = "Grab Red Wire",
     Callback = function()
@@ -356,7 +366,7 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = wiresSection
 })
 
 chapter2Tab:CreateButton({
@@ -382,9 +392,10 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = wiresSection
 })
 
+local goldenGearSection = chapter2Tab:CreateSection("Golden Gear"
 chapter2Tab:CreateButton({
     Name = "Grab Golden Gear",
     Callback = function()
@@ -408,13 +419,38 @@ chapter2Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection2
+    SectionParent = goldenGearSection
+})
+
+local whiteKeySection = chapter2Tab:CreateSection("White Key")
+chapter2Tab:CreateButton({
+    Name = "Grab White Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter2 = CurrentMap:FindFirstChild("Chapter2")
+            if Chapter2 then
+                local Utilities = Chapter2:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteKey = Utilities:FindFirstChild("White Key")
+                    if WhiteKey then
+                        local Bounds = WhiteKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = whiteKeySection
 })
 
 local chapter3Tab = window:CreateTab("Chapter 3", 4483362458)
-
 local mainStuffSection3 = chapter3Tab:CreateSection("Main Stuff")
-
 chapter3Tab:CreateButton({
     Name = "Grab Lever",
     Callback = function()
@@ -427,6 +463,110 @@ chapter3Tab:CreateButton({
                     local Lever = Utilities:FindFirstChild("Lever")
                     if Lever then
                         local Bounds = Lever:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection3
+})
+
+chapter3Tab:CreateButton({
+    Name = "Grab White Valve",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter2 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter2 then
+                local Utilities = Chapter2:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteValve = Utilities:FindFirstChild("White Valve")
+                    if WhiteValve then
+                        local Bounds = WhiteValve:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection3
+})
+
+chapter3Tab:CreateButton({
+    Name = "Grab Plank",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter3 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter3 then
+                local Utilities = Chapter3:FindFirstChild("Utilities")
+                if Utilities then
+                    local Plank = Utilities:FindFirstChild("Plank")
+                    if Plank then
+                        local Bounds = Plank:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection3
+})
+
+chapter3Tab:CreateButton({
+    Name = "Grab Crowbar",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter3 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter3 then
+                local Utilities = Chapter3:FindFirstChild("Utilities")
+                if Utilities then
+                    local Crowbar = Utilities:FindFirstChild("Crowbar")
+                    if Crowbar then
+                        local Bounds = Crowbar:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection3
+})
+
+chapter3Tab:CreateButton({
+    Name = "Grab Thermite",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter3 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter3 then
+                local Utilities = Chapter3:FindFirstChild("Utilities")
+                if Utilities then
+                    local Thermite = Utilities:FindFirstChild("Thermite")
+                    if Thermite then
+                        local Bounds = Thermite:FindFirstChild("Bounds")
                         if Bounds then
                             local ClickDetector = Bounds:FindFirstChild("PickUp")
                             if ClickDetector and ClickDetector:IsA("ClickDetector") then
