@@ -19,7 +19,9 @@ local window = Rayfield:CreateWindow({
 })
 
 local chapter1Tab = window:CreateTab("Chapter 1", 4483362458)
+
 local booksSection = chapter1Tab:CreateSection("Books")
+
 chapter1Tab:CreateButton({
     Name = "Grab Green Book",
     Callback = function()
@@ -153,6 +155,7 @@ chapter1Tab:CreateButton({
 })
 
 local crowbarSection = chapter1Tab:CreateSection("Crowbar")
+
 chapter1Tab:CreateButton({
     Name = "Grab Crowbar",
     Callback = function()
@@ -180,6 +183,7 @@ chapter1Tab:CreateButton({
 })
 
 local trussSection = chapter1Tab:CreateSection("Truss")
+
 chapter1Tab:CreateButton({
     Name = "Grab Truss",
     Callback = function()
@@ -207,6 +211,7 @@ chapter1Tab:CreateButton({
 })
 
 local usbSection = chapter1Tab:CreateSection("USB")
+
 chapter1Tab:CreateButton({
     Name = "Grab USB",
     Callback = function()
@@ -234,6 +239,7 @@ chapter1Tab:CreateButton({
 })
 
 local whiteKeySection = chapter1Tab:CreateSection("White Key")
+
 chapter1Tab:CreateButton({
     Name = "Grab White Key",
     Callback = function()
@@ -261,7 +267,9 @@ chapter1Tab:CreateButton({
 })
 
 local chapter2Tab = window:CreateTab("Chapter 2", 4483362458)
+
 local wrenchSection = chapter2Tab:CreateSection("Wrench")
+
 chapter2Tab:CreateButton({
     Name = "Grab Wrench",
     Callback = function()
@@ -289,6 +297,7 @@ chapter2Tab:CreateButton({
 })
 
 local redKeySection = chapter2Tab:CreateSection("Red Key")
+
 chapter2Tab:CreateButton({
     Name = "Grab Red Key",
     Callback = function()
@@ -316,6 +325,7 @@ chapter2Tab:CreateButton({
 })
 
 local crowbarSection = chapter2Tab:CreateSection("Crowbar")
+
 chapter2Tab:CreateButton({
     Name = "Grab Crowbar",
     Callback = function()
@@ -343,6 +353,7 @@ chapter2Tab:CreateButton({
 })
 
 local wiresSection = chapter2Tab:CreateSection("Wires")
+
 chapter2Tab:CreateButton({
     Name = "Grab Red Wire",
     Callback = function()
@@ -395,7 +406,8 @@ chapter2Tab:CreateButton({
     SectionParent = wiresSection
 })
 
-local goldenGearSection = chapter2Tab:CreateSection("Golden Gear"
+local goldenGearSection = chapter2Tab:CreateSection("Golden Gear")
+
 chapter2Tab:CreateButton({
     Name = "Grab Golden Gear",
     Callback = function()
@@ -423,6 +435,7 @@ chapter2Tab:CreateButton({
 })
 
 local whiteKeySection = chapter2Tab:CreateSection("White Key")
+
 chapter2Tab:CreateButton({
     Name = "Grab White Key",
     Callback = function()
@@ -450,7 +463,9 @@ chapter2Tab:CreateButton({
 })
 
 local chapter3Tab = window:CreateTab("Chapter 3", 4483362458)
+
 local mainStuffSection3 = chapter3Tab:CreateSection("Main Stuff")
+
 chapter3Tab:CreateButton({
     Name = "Grab Lever",
     Callback = function()
