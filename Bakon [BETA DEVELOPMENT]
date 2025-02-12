@@ -1744,7 +1744,7 @@ chapter9Tab:CreateButton({
             if Chapter9 then
                 local Utilities = Chapter9:FindFirstChild("Utilities")
                 if Utilities then
-                    local Axe = Utilities:FindFirstChild("Axe")
+                    local Axe = Utilities:FindFirstChild("Ax")
                     if Axe then
                         local Bounds = Axe:FindFirstChild("Bounds")
                         if Bounds then
