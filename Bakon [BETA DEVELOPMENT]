@@ -630,4 +630,172 @@ chapter3Tab:CreateButton({
     SectionParent = thermiteSection
 })
 
+local chapter4Tab = window:CreateTab("Chapter 4", 4483362458)
+
+local fireExtinguisherSection = chapter4Tab:CreateSection("Fire Extinguisher")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Fire Extinguisher",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local FireExtinguisher = Utilities:FindFirstChild("FireExtinguisher")
+                    if FireExtinguisher then
+                        local Bounds = FireExtinguisher:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = fireExtinguisherSection
+})
+
+local wiresSection = chapter4Tab:CreateSection("Wires")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Red Wire",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local RedWire = Utilities:FindFirstChild("Red Wire")
+                    if RedWire then
+                        local Bounds = RedWire:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = wiresSection
+})
+
+chapter4Tab:CreateButton({
+    Name = "Grab Green Wire",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local GreenWire = Utilities:FindFirstChild("Green Wire")
+                    if GreenWire then
+                        local Bounds = GreenWire:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = wiresSection
+})
+
+local hammerSection = chapter4Tab:CreateSection("Hammer")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Hammer",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local Hammer = Utilities:FindFirstChild("Hammer")
+                    if Hammer then
+                        local Bounds = Hammer:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = hammerSection
+})
+
+local padlockSection = chapter4Tab:CreateSection("Padlock")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Padlock",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local Padlock = Utilities:FindFirstChild("Padlock")
+                    if Padlock then
+                        local Bounds = Padlock:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = padlockSection
+})
+
+local crowbarSection = chapter4Tab:CreateSection("Crowbar")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Crowbar",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local Crowbar = Utilities:FindFirstChild("Crowbar")
+                    if Crowbar then
+                        local Bounds = Crowbar:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = crowbarSection
+})
+
 Rayfield:LoadConfiguration()
