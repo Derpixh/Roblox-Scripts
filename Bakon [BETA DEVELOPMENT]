@@ -826,34 +826,6 @@ chapter4Tab:CreateButton({
     SectionParent = hammerSection
 })
 
-local padlockSection = chapter4Tab:CreateSection("Padlock")
-
-chapter4Tab:CreateButton({
-    Name = "Grab Padlock",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
-            if Chapter4 then
-                local Utilities = Chapter4:FindFirstChild("Utilities")
-                if Utilities then
-                    local Padlock = Utilities:FindFirstChild("Padlock")
-                    if Padlock then
-                        local Bounds = Padlock:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = padlockSection
-})
-
 local crowbarSection = chapter4Tab:CreateSection("Crowbar")
 
 chapter4Tab:CreateButton({
