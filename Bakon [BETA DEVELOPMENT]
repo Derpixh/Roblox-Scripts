@@ -411,4 +411,34 @@ chapter2Tab:CreateButton({
     SectionParent = mainStuffSection2
 })
 
+local chapter3Tab = window:CreateTab("Chapter 3", 4483362458)
+
+local mainStuffSection3 = chapter3Tab:CreateSection("Main Stuff")
+
+chapter3Tab:CreateButton({
+    Name = "Grab Lever",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter3 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter3 then
+                local Utilities = Chapter3:FindFirstChild("Utilities")
+                if Utilities then
+                    local Lever = Utilities:FindFirstChild("Lever")
+                    if Lever then
+                        local Bounds = Lever:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = mainStuffSection3
+})
+
 Rayfield:LoadConfiguration()
