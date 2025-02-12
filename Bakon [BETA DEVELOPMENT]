@@ -492,6 +492,8 @@ chapter3Tab:CreateButton({
     SectionParent = leverSection
 })
 
+local valvesSection = chapter3Tab:CreateSection("Valves")
+
 chapter3Tab:CreateButton({
     Name = "Grab White Valve",
     Callback = function()
