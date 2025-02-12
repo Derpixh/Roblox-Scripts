@@ -1476,6 +1476,34 @@ chapter7Tab:CreateButton({
     SectionParent = shovelSection
 })
 
+local redButtonSection = chapter7Tab:CreateSection("Red Button")
+
+chapter7Tab:CreateButton({
+    Name = "Grab Red Button",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local RedButton = Utilities:FindFirstChild("Red Button")
+                    if RedButton then
+                        local Bounds = RedButton:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = redButtonSection
+})
+
 local whiteKeySection = chapter7Tab:CreateSection("White Key")
 
 chapter7Tab:CreateButton({
