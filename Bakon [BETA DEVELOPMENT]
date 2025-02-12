@@ -1052,6 +1052,34 @@ chapter5Tab:CreateButton({
     SectionParent = blueKeySection
 })
 
+local knobSection = chapter5Tab:CreateSection("Knob")
+
+chapter5Tab:CreateButton({
+    Name = "Grab Knob",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter5 = CurrentMap:FindFirstChild("Chapter5")
+            if Chapter5 then
+                local Utilities = Chapter5:FindFirstChild("Utilities")
+                if Utilities then
+                    local Knob = Utilities:FindFirstChild("Knob")
+                    if Knob then
+                        local Bounds = Knob:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = knobSection
+})
+
 local whiteKeySection = chapter5Tab:CreateSection("White Key")
 
 chapter5Tab:CreateButton({
@@ -1648,6 +1676,34 @@ chapter8Tab:CreateButton({
 
 local chapter9Tab = window:CreateTab("Chapter 9", 4483362458)
 
+local greenKeySection = chapter9Tab:CreateSection("Green Key")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Green Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local GreenKey = Utilities:FindFirstChild("Green Key")
+                    if GreenKey then
+                        local Bounds = GreenKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = greenKeySection
+})
+
 local rodSection = chapter9Tab:CreateSection("Rod")
 
 chapter9Tab:CreateButton({
@@ -1702,6 +1758,62 @@ chapter9Tab:CreateButton({
         end
     end,
     SectionParent = fishSection
+})
+
+local axeSection = chapter9Tab:CreateSection("Axe")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Axe",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local Axe = Utilities:FindFirstChild("Axe")
+                    if Axe then
+                        local Bounds = Axe:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = axeSection
+})
+
+local hammerSection = chapter9Tab:CreateSection("Hammer")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Hammer",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local Hammer = Utilities:FindFirstChild("Hammer")
+                    if Hammer then
+                        local Bounds = Hammer:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = hammerSection
 })
 
 local whiteKeySection = chapter9Tab:CreateSection("White Key")
