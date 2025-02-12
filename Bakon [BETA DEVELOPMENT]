@@ -882,6 +882,62 @@ chapter4Tab:CreateButton({
     SectionParent = crowbarSection
 })
 
+local pinkKeySection = chapter4Tab:CreateSection("Pink Key")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Pink Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local PinkKey = Utilities:FindFirstChild("Pink Key")
+                    if PinkKey then
+                        local Bounds = PinkKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = pinkKeySection
+})
+
+local textbookSection = chapter4Tab:CreateSection("Textbook")
+
+chapter4Tab:CreateButton({
+    Name = "Grab Textbook",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter4 = CurrentMap:FindFirstChild("Chapter4")
+            if Chapter4 then
+                local Utilities = Chapter4:FindFirstChild("Utilities")
+                if Utilities then
+                    local Textbook = Utilities:FindFirstChild("Textbook")
+                    if Textbook then
+                        local Bounds = Textbook:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = textbookSection
+})
+
 local whiteKeySection = chapter4Tab:CreateSection("White Key")
 
 chapter4Tab:CreateButton({
