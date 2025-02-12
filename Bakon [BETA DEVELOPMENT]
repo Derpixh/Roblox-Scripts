@@ -1646,4 +1646,90 @@ chapter8Tab:CreateButton({
     SectionParent = taserSection
 })
 
+local chapter9Tab = window:CreateTab("Chapter 9", 4483362458)
+
+local rodSection = chapter9Tab:CreateSection("Rod")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Rod",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local Rod = Utilities:FindFirstChild("Rod")
+                    if Rod then
+                        local Bounds = Rod:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = rodSection
+})
+
+local fishSection = chapter9Tab:CreateSection("Fish")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Fish",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local Fish = Utilities:FindFirstChild("Fish")
+                    if Fish then
+                        local Bounds = Fish:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = fishSection
+})
+
+local whiteKeySection = chapter9Tab:CreateSection("White Key")
+
+chapter9Tab:CreateButton({
+    Name = "Grab White Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteKey = Utilities:FindFirstChild("White Key")
+                    if WhiteKey then
+                        local Bounds = WhiteKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = whiteKeySection
+})
+
 Rayfield:LoadConfiguration()
