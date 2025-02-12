@@ -127,33 +127,6 @@ chapter1Tab:CreateButton({
     SectionParent = wrenchSection
 })
 
-local redKeySection = chapter1Tab:CreateSection("Red Key")
-chapter1Tab:CreateButton({
-    Name = "Grab Red Key",
-    Callback = function()
-        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
-        if CurrentMap then
-            local Chapter1 = CurrentMap:FindFirstChild("Chapter1")
-            if Chapter1 then
-                local Utilities = Chapter1:FindFirstChild("Utilities")
-                if Utilities then
-                    local RedKey = Utilities:FindFirstChild("Red Key")
-                    if RedKey then
-                        local Bounds = RedKey:FindFirstChild("Bounds")
-                        if Bounds then
-                            local ClickDetector = Bounds:FindFirstChild("PickUp")
-                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
-                                fireclickdetector(ClickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-    SectionParent = redKeySection
-})
-
 local crowbarSection = chapter1Tab:CreateSection("Crowbar")
 
 chapter1Tab:CreateButton({
