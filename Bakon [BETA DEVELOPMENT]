@@ -492,7 +492,7 @@ chapter3Tab:CreateButton({
     SectionParent = leverSection
 })
 
-local whiteValveSection = chapter3Tab:CreateSection("White Valve")
+local valvesSection = chapter3Tab:CreateSection("Valves")
 
 chapter3Tab:CreateButton({
     Name = "Grab White Valve",
@@ -517,7 +517,33 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = whiteValveSection
+    SectionParent = valvesSection
+})
+
+chapter3Tab:CreateButton({
+    Name = "Grab Yellow Valve",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter3 = CurrentMap:FindFirstChild("Chapter3")
+            if Chapter3 then
+                local Utilities = Chapter3:FindFirstChild("Utilities")
+                if Utilities then
+                    local YellowValve = Utilities:FindFirstChild("Yellow Valve")
+                    if YellowValve then
+                        local Bounds = YellowValve:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = valvesSection
 })
 
 local plankSection = chapter3Tab:CreateSection("Plank")
