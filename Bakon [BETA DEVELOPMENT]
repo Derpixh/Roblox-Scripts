@@ -464,7 +464,7 @@ chapter2Tab:CreateButton({
 
 local chapter3Tab = window:CreateTab("Chapter 3", 4483362458)
 
-local mainStuffSection3 = chapter3Tab:CreateSection("Main Stuff")
+local leverSection = chapter3Tab:CreateSection("Lever")
 
 chapter3Tab:CreateButton({
     Name = "Grab Lever",
@@ -489,15 +489,17 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection3
+    SectionParent = leverSection
 })
+
+local whiteValveSection = chapter3Tab:CreateSection("White Valve")
 
 chapter3Tab:CreateButton({
     Name = "Grab White Valve",
     Callback = function()
         local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
         if CurrentMap then
-            local Chapter2 = CurrentMap:FindFirstChild("Chapter3")
+            local Chapter2 = CurrentMap:FindFirstChild("Chapter2")
             if Chapter2 then
                 local Utilities = Chapter2:FindFirstChild("Utilities")
                 if Utilities then
@@ -515,8 +517,10 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection3
+    SectionParent = whiteValveSection
 })
+
+local plankSection = chapter3Tab:CreateSection("Plank")
 
 chapter3Tab:CreateButton({
     Name = "Grab Plank",
@@ -541,8 +545,10 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection3
+    SectionParent = plankSection
 })
+
+local crowbarSection = chapter3Tab:CreateSection("Crowbar")
 
 chapter3Tab:CreateButton({
     Name = "Grab Crowbar",
@@ -567,8 +573,10 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection3
+    SectionParent = crowbarSection
 })
+
+local thermiteSection = chapter3Tab:CreateSection("Thermite")
 
 chapter3Tab:CreateButton({
     Name = "Grab Thermite",
@@ -593,7 +601,7 @@ chapter3Tab:CreateButton({
             end
         end
     end,
-    SectionParent = mainStuffSection3
+    SectionParent = thermiteSection
 })
 
 Rayfield:LoadConfiguration()
