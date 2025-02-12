@@ -1306,4 +1306,174 @@ chapter6Tab:CreateButton({
     SectionParent = taserSection
 })
 
+local chapter7Tab = window:CreateTab("Chapter 7", 4483362458)
+
+local redKeySection = chapter7Tab:CreateSection("Red Key")
+
+chapter7Tab:CreateButton({
+    Name = "Grab Red Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local RedKey = Utilities:FindFirstChild("Red Key")
+                    if RedKey then
+                        local Bounds = RedKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = redKeySection
+})
+
+local idCardSection = chapter7Tab:CreateSection("ID Card")
+
+chapter7Tab:CreateButton({
+    Name = "Grab ID Card",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local IDCard = Utilities:FindFirstChild("ID Card")
+                    if IDCard then
+                        local Bounds = IDCard:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = idCardSection
+})
+
+local leverSection = chapter7Tab:CreateSection("Lever")
+
+chapter7Tab:CreateButton({
+    Name = "Grab Lever",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local Lever = Utilities:FindFirstChild("Lever")
+                    if Lever then
+                        local Bounds = Lever:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = leverSection
+})
+
+local shovelSection = chapter7Tab:CreateSection("Shovel")
+
+chapter7Tab:CreateButton({
+    Name = "Grab Shovel",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local Shovel = Utilities:FindFirstChild("Shovel")
+                    if Shovel then
+                        local Bounds = Shovel:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = shovelSection
+})
+
+local whiteKeySection = chapter7Tab:CreateSection("White Key")
+
+chapter7Tab:CreateButton({
+    Name = "Grab White Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local WhiteKey = Utilities:FindFirstChild("White Key")
+                    if WhiteKey then
+                        local Bounds = WhiteKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = whiteKeySection
+})
+
+local taserSection = chapter7Tab:CreateSection("Taser")
+
+chapter7Tab:CreateButton({
+    Name = "Grab Taser",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter7 = CurrentMap:FindFirstChild("Chapter7")
+            if Chapter7 then
+                local Utilities = Chapter7:FindFirstChild("Utilities")
+                if Utilities then
+                    local Taser = Utilities:FindFirstChild("Taser")
+                    if Taser then
+                        local Bounds = Taser:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = taserSection
+})
+
 Rayfield:LoadConfiguration()
