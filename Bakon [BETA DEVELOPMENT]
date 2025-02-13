@@ -1867,6 +1867,34 @@ chapter9Tab:CreateButton({
     SectionParent = hammerSection
 })
 
+local shovelSection = chapter9Tab:CreateSection("Shovel")
+
+chapter9Tab:CreateButton({
+    Name = "Grab Shovel",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter9 = CurrentMap:FindFirstChild("Chapter9")
+            if Chapter9 then
+                local Utilities = Chapter9:FindFirstChild("Utilities")
+                if Utilities then
+                    local Shovel = Utilities:FindFirstChild("Shovel")
+                    if Shovel then
+                        local Bounds = Shovel:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = shovelSection
+})
+
 local whiteKeySection = chapter9Tab:CreateSection("White Key")
 
 chapter9Tab:CreateButton({
