@@ -11,6 +11,15 @@ local window = Rayfield:CreateWindow({
         Enabled = false,
         Invite = "sirius",
         RememberJoins = true
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
     }
 })
 
