@@ -1923,4 +1923,62 @@ chapter9Tab:CreateButton({
     SectionParent = whiteKeySection
 })
 
+local chapter10Tab = window:CreateTab("Chapter 10", 4483362458)
+
+local blueKeySection = chapter10Tab:CreateSection("Blue Key")
+
+chapter10Tab:CreateButton({
+    Name = "Grab Blue Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local BlueKey = Utilities:FindFirstChild("Blue Key")
+                    if BlueKey then
+                        local Bounds = BlueKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = blueKeySection
+})
+
+local crowbarSection = chapter10Tab:CreateSection("Crowbar")
+
+chapter10Tab:CreateButton({
+    Name = "Grab Crowbar",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local Crowbar = Utilities:FindFirstChild("Crowbar")
+                    if Crowbar then
+                        local Bounds = Crowbar:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = crowbarSection
+})
+
 Rayfield:LoadConfiguration()
