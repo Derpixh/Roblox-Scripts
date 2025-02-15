@@ -1925,7 +1925,7 @@ chapter9Tab:CreateButton({
 
 local chapter10Tab = window:CreateTab("Chapter 10", 4483362458)
 
-local blueKeySection = chapter10Tab:CreateSection("Blue Key")
+local keysSection = chapter10Tab:CreateSection("Keys")
 
 chapter10Tab:CreateButton({
     Name = "Grab Blue Key",
@@ -1950,7 +1950,85 @@ chapter10Tab:CreateButton({
             end
         end
     end,
-    SectionParent = blueKeySection
+    SectionParent = keysSection
+})
+
+chapter10Tab:CreateButton({
+    Name = "Grab Orange Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local OrangeKey = Utilities:FindFirstChild("Orange Key")
+                    if OrangeKey then
+                        local Bounds = OrangeKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = keysSection
+})
+
+chapter10Tab:CreateButton({
+    Name = "Grab Pink Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local PinkKey = Utilities:FindFirstChild("Pink Key")
+                    if PinkKey then
+                        local Bounds = PinkKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = keysSection
+})
+
+chapter10Tab:CreateButton({
+    Name = "Grab Red Key",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local RedKey = Utilities:FindFirstChild("Red Key")
+                    if RedKey then
+                        local Bounds = RedKey:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = keysSection
 })
 
 local crowbarSection = chapter10Tab:CreateSection("Crowbar")
@@ -1979,6 +2057,34 @@ chapter10Tab:CreateButton({
         end
     end,
     SectionParent = crowbarSection
+})
+
+local goldenGearSection = chapter10Tab:CreateSection("Golden Gear")
+
+chapter10Tab:CreateButton({
+    Name = "Grab Golden Gear",
+    Callback = function()
+        local CurrentMap = game.Workspace:FindFirstChild("CurrentMap")
+        if CurrentMap then
+            local Chapter10 = CurrentMap:FindFirstChild("Chapter10")
+            if Chapter10 then
+                local Utilities = Chapter10:FindFirstChild("Utilities")
+                if Utilities then
+                    local GoldenGear = Utilities:FindFirstChild("Golden Gear")
+                    if GoldenGear then
+                        local Bounds = GoldenGear:FindFirstChild("Bounds")
+                        if Bounds then
+                            local ClickDetector = Bounds:FindFirstChild("PickUp")
+                            if ClickDetector and ClickDetector:IsA("ClickDetector") then
+                                fireclickdetector(ClickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    SectionParent = goldenGearSection
 })
 
 Rayfield:LoadConfiguration()
