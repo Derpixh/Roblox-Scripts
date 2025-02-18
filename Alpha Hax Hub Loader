@@ -16,9 +16,9 @@ if gameScripts[gameId] then
     elseif gameId == 4601704679 then
         notificationText = "Loading Bakon Hub..."
     elseif gameId == 14259168147 or gameId == 14386691987 then
-        notificationText = "Loading Basketball Legends..."
+        notificationText = "Loading Basketball Legends Hub..."
     elseif gameId == 4972273297 then
-        notificationText = "Loading Regretevator..."
+        notificationText = "Loading Regretevator Hub..."
     end
     game.StarterGui:SetCore("SendNotification", {
         Title = "Game Supported";
