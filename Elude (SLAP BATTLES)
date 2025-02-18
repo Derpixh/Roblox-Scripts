@@ -1,0 +1,101 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local window = Rayfield:CreateWindow({
+    Name = "Elude",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local eludeTab = window:CreateTab("Elude", 4483362458)
+local counterTab = window:CreateTab("Counter", 4483362458)
+
+counterTab:CreateButton({
+    Name = "Auto Get Counter",
+    Callback = function()
+        local leverNotified = false
+        local counterBadgeNotified = false
+
+        coroutine.wrap(function()
+            while true do
+                local model = game.Workspace:FindFirstChild("CounterLever")
+                if model then
+                    local clickDetector = model:FindFirstChildWhichIsA("ClickDetector", true)
+                    if clickDetector and not leverNotified then
+                        fireclickdetector(clickDetector)
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Lever",
+                            Text = "Move your camera to set off the Lever",
+                            Duration = 5
+                        })
+                        leverNotified = true
+                    end
+                end
+                wait(0.5)
+            end
+        end)()
+
+        coroutine.wrap(function()
+            while true do
+                local model = game.Workspace:FindFirstChild("Pim")
+                if model then
+                    model:Destroy()
+                end
+                wait(0.5)
+            end
+        end)()
+
+        coroutine.wrap(function()
+            while true do
+                local meshPart = game.Workspace.Maze:GetChildren()[673]
+                if meshPart then
+                    local clickDetector = meshPart:FindFirstChild("ClickDetector")
+                    if clickDetector and not counterBadgeNotified then
+                        fireclickdetector(clickDetector)
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Counter Badge",
+                            Text = "Move your camera to get the badge",
+                            Duration = 5
+                        })
+                        counterBadgeNotified = true
+                    end
+                end
+                wait(0.5)
+            end
+        end)()
+    end
+})
+
+eludeTab:CreateButton({
+    Name = "Get Elude Badge",
+    Callback = function()
+        local folderName = "Ruins"
+        local modelName = "Elude"
+        local meshPartName = "Glove"
+
+        local folder = game.Workspace:FindFirstChild(folderName)
+        if folder then
+            local model = folder:FindFirstChild(modelName)
+            if model then
+                local meshPart = model:FindFirstChild(meshPartName)
+                if meshPart then
+                    local character = game.Players.LocalPlayer.Character
+                    if character then
+                        character:SetPrimaryPartCFrame(meshPart.CFrame)
+                    end
+                end
+            end
+        end
+    end
+})
