@@ -116,6 +116,12 @@ TextBox.FocusLost:Connect(function(enterPressed)
                 })
                 wait(2)
                 loadstring(game:HttpGet(gameScripts[gameId], true))()
+            else
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Game Not Supported",
+                    Text = "Please wait for the developer to add support.",
+                    Duration = 5
+                })
             end
         end)
     elseif TextBox.Text ~= "" and enterPressed then
