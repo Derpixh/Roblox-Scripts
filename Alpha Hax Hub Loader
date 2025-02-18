@@ -1,3 +1,16 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+Rayfield:CreateWindow({
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
 local gameScripts = {
     [11828384869] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Elude%20(SLAP%20BATTLES)",
     [14422118326] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
