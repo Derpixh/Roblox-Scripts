@@ -1,6 +1,6 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local window = Rayfield:CreateWindow({
-    Name = "Basketball Legends",
+    Name = "Basketball Legends - Alpha Hax",
     LoadingTitle = "Loading Assets..",
     LoadingSubtitle = "Created By Derpixh",
     ConfigurationSaving = {
