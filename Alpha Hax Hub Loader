@@ -3,7 +3,8 @@ local gameScripts = {
     [14422118326] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
     [4601704679] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Bakon%20%5BBETA%20DEVELOPMENT%5D",
     [14259168147] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
-    [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends"
+    [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
+    [4972273297] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Regretevator"
 }
 local gameId = game.PlaceId
 if gameScripts[gameId] then
@@ -16,6 +17,8 @@ if gameScripts[gameId] then
         notificationText = "Loading Bakon Hub..."
     elseif gameId == 14259168147 or gameId == 14386691987 then
         notificationText = "Loading Basketball Legends..."
+    elseif gameId == 4972273297 then
+        notificationText = "Loading Regretevator..."
     end
     game.StarterGui:SetCore("SendNotification", {
         Title = "Game Supported";
