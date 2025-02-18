@@ -886,31 +886,6 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
     end
 })
 
-local bugboTab = window:CreateTab("Bugbo", 4483362458)
-local scriptSectionBugbo = bugboTab:CreateSection("Script")
-local collectRocksButton = bugboTab:CreateButton({
-    Name = "Collect Rocks",
-    Callback = function()
-        local bugboModel = game.Workspace:FindFirstChild("bugbo")
-        if bugboModel then
-            local buildModel = bugboModel:FindFirstChild("Build")
-            if buildModel then
-                local rocksFolder = buildModel:FindFirstChild("Rocks")
-                if rocksFolder then
-                    for _, meshPart in pairs(rocksFolder:GetChildren()) do
-                        if meshPart:IsA("MeshPart") and meshPart.Name == "Rock" then
-                            local clickDetector = meshPart:FindFirstChildOfClass("ClickDetector")
-                            if clickDetector then
-                                fireclickdetector(clickDetector)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-})
-
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
 local scriptSectionJaoba = jaobaTab:CreateSection("Script")
 local findJaobaButton = jaobaTab:CreateButton({
