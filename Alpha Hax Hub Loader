@@ -1,43 +1,128 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-Rayfield:CreateWindow({
-    KeySystem = true,
-    KeySettings = {
-        Title = "Derpixh's Key System",
-        Subtitle = "Enter Your Key",
-        Note = "Rate The Features",
-        FileName = "Sirius",
-        SaveKey = false,
-        Key = "2025"
-    }
-})
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+local BottomLabel = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local TweenService = game:GetService("TweenService")
+local StarterGui = game:GetService("StarterGui")
 
-local gameScripts = {
-    [11828384869] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Elude%20(SLAP%20BATTLES)",
-    [14422118326] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
-    [4601704679] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Bakon%20%5BBETA%20DEVELOPMENT%5D",
-    [14259168147] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
-    [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
-    [4972273297] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Regretevator"
-}
-local gameId = game.PlaceId
-if gameScripts[gameId] then
-    local notificationText = ""
-    if gameId == 11828384869 then
-        notificationText = "Loading Elude Hub..."
-    elseif gameId == 14422118326 then
-        notificationText = "Loading Null Hub..."
-    elseif gameId == 4601704679 then
-        notificationText = "Loading Bakon Hub..."
-    elseif gameId == 14259168147 or gameId == 14386691987 then
-        notificationText = "Loading Basketball Legends Hub..."
-    elseif gameId == 4972273297 then
-        notificationText = "Loading Regretevator Hub..."
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.ZIndex = 2
+Frame.ClipsDescendants = true
+Frame.Visible = true
+
+TitleLabel.Parent = Frame
+TitleLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
+TitleLabel.Position = UDim2.new(0.5, 0, 0.05, 0)
+TitleLabel.AnchorPoint = Vector2.new(0.5, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "Alpha Hax Hub Loader"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 25
+TitleLabel.TextScaled = true
+TitleLabel.Font = Enum.Font.GothamBlack
+TitleLabel.ZIndex = 3
+
+TextBox.Parent = Frame
+TextBox.Size = UDim2.new(0.4, 0, 0.1, 0)
+TextBox.Position = UDim2.new(0.5, 0, 0.4, 0)
+TextBox.AnchorPoint = Vector2.new(0.5, 0)
+TextBox.BackgroundTransparency = 1
+TextBox.PlaceholderText = "Enter Key Here..."
+TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 25
+TextBox.Font = Enum.Font.GothamBlack
+TextBox.TextScaled = true
+TextBox.ClearTextOnFocus = true
+TextBox.ZIndex = 3
+
+BottomLabel.Parent = Frame
+BottomLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
+BottomLabel.Position = UDim2.new(0.5, 0, 0.95, 0)
+BottomLabel.AnchorPoint = Vector2.new(0.5, 1)
+BottomLabel.BackgroundTransparency = 1
+BottomLabel.Text = "Credits To Derpixh"
+BottomLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+BottomLabel.TextSize = 25
+BottomLabel.TextScaled = true
+BottomLabel.Font = Enum.Font.GothamBlack
+BottomLabel.ZIndex = 3
+
+local UICorner = Instance.new("UICorner", Frame)
+UICorner.CornerRadius = UDim.new(0, 30)
+
+local FadeInTween = TweenService:Create(Frame, TweenInfo.new(1), {BackgroundTransparency = 0})
+FadeInTween:Play()
+
+TextBox.FocusLost:Connect(function(enterPressed)
+    if TextBox.Text == "2025" and enterPressed then
+        local FadeOutTween = TweenService:Create(Frame, TweenInfo.new(1), {BackgroundTransparency = 1})
+        FadeOutTween:Play()
+        
+        local TitleFadeOut = TweenService:Create(TitleLabel, TweenInfo.new(1), {TextTransparency = 1})
+        TitleFadeOut:Play()
+        
+        local BottomFadeOut = TweenService:Create(BottomLabel, TweenInfo.new(1), {TextTransparency = 1})
+        BottomFadeOut:Play()
+        
+        local TextBoxFadeOut = TweenService:Create(TextBox, TweenInfo.new(1), {TextTransparency = 1})
+        TextBoxFadeOut:Play()
+
+        FadeOutTween.Completed:Connect(function()
+            StarterGui:SetCore("SendNotification", {
+                Title = "Correct Key!",
+                Text = "You have passed the key system!",
+                Duration = 5
+            })
+            wait(5)
+            ScreenGui:Destroy()
+            
+            local gameScripts = {
+                [11828384869] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Elude%20(SLAP%20BATTLES)",
+                [14422118326] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
+                [4601704679] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Bakon%20%5BBETA%20DEVELOPMENT%5D",
+                [14259168147] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
+                [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
+                [4972273297] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Regretevator"
+            }
+            local gameId = game.PlaceId
+            if gameScripts[gameId] then
+                local notificationText = ""
+                if gameId == 11828384869 then
+                    notificationText = "Loading Elude Hub..."
+                elseif gameId == 14422118326 then
+                    notificationText = "Loading Null Hub..."
+                elseif gameId == 4601704679 then
+                    notificationText = "Loading Bakon Hub..."
+                elseif gameId == 14259168147 or gameId == 14386691987 then
+                    notificationText = "Loading Basketball Legends Hub..."
+                elseif gameId == 4972273297 then
+                    notificationText = "Loading Regretevator Hub..."
+                end
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Game Supported",
+                    Text = notificationText,
+                    Duration = 2
+                })
+                wait(2)
+                loadstring(game:HttpGet(gameScripts[gameId], true))()
+            end
+        end)
+    elseif TextBox.Text ~= "" and enterPressed then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Incorrect Key!",
+            Text = "Please try again.",
+            Duration = 5
+        })
     end
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Game Supported";
-        Text = notificationText;
-        Duration = 2;
-    })
-    wait(2)
-    loadstring(game:HttpGet(gameScripts[gameId], true))()
-end
+end)
