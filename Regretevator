@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local window = Rayfield:CreateWindow({
-    Name = "Regretevator",
+    Name = "Regretevator - Alpha Hax",
     LoadingTitle = "Loading Assets..",
     LoadingSubtitle = "By Derpixh",
     ConfigurationSaving = {
