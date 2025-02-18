@@ -1,6 +1,6 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local window = Rayfield:CreateWindow({
-    Name = "Elude",
+    Name = "Elude - Alpha Hax",
     LoadingTitle = "Loading Assets..",
     LoadingSubtitle = "Created By Derpixh",
     ConfigurationSaving = {
