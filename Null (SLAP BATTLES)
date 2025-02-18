@@ -1,0 +1,46 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local window = Rayfield:CreateWindow({
+    Name = "Null",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local nullGloveTab = window:CreateTab("Null Glove")
+nullGloveTab:CreateButton({
+    Name = "Get Null Badge",
+    Callback = function()
+        local clickDetector = workspace:GetChildren()[12].Handle.ClickDetector
+        fireclickdetector(clickDetector)
+    end
+})
+
+local robPlushieTab = window:CreateTab("Rob Plushie")
+robPlushieTab:CreateButton({
+    Name = "Get Rob Plushie",
+    Callback = function()
+        local clickDetector = workspace._ugcQuestObjectBobPlushie.ClickDetector
+        fireclickdetector(clickDetector)
+    end
+})
+
+local tinkererGloveTab = window:CreateTab("Tinkerer Glove")
+tinkererGloveTab:CreateButton({
+    Name = "Get Tinkerer Badge",
+    Callback = function()
+        local clickDetector = workspace:GetChildren()[12].Handle.ClickDetector
+        fireclickdetector(clickDetector)
+    end
+})
