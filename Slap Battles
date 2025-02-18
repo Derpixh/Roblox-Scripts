@@ -1,0 +1,278 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Slap Battles - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local lobbyTab = window:CreateTab("Lobby")
+
+local arenasSection = lobbyTab:CreateSection("Arenas")
+
+local toggleState = false
+local defaultToggleState = false
+
+local autoArenaToggle
+autoArenaToggle = lobbyTab:CreateToggle({
+    Name = "Auto Arena",
+    SectionParent = arenasSection,
+    State = false,
+    Callback = function(state)
+        toggleState = state
+        if toggleState then
+            local function interactWithTouchTransmitter()
+                local localPlayer = game.Players.LocalPlayer
+                local playerModel = workspace:FindFirstChild(localPlayer.Name)
+                if playerModel then
+                    local lobby = workspace:FindFirstChild("Lobby")
+                    if lobby then
+                        local teleportPart = lobby:FindFirstChild("Teleport1")
+                        if teleportPart then
+                            local touchTransmitter = teleportPart:FindFirstChild("TouchInterest")
+                            if touchTransmitter then
+                                firetouchinterest(localPlayer.Character.HumanoidRootPart, teleportPart, 0)
+                            end
+                        end
+                    end
+                end
+            end
+
+            autoArenaConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                interactWithTouchTransmitter()
+            end)
+        else
+            if autoArenaConnection then
+                autoArenaConnection:Disconnect()
+            end
+        end
+    end
+})
+
+local autoDefaultArenaToggle
+autoDefaultArenaToggle = lobbyTab:CreateToggle({
+    Name = "Auto Default Arena",
+    SectionParent = arenasSection,
+    State = false,
+    Callback = function(state)
+        defaultToggleState = state
+        if defaultToggleState then
+            local function interactWithDefaultTouchTransmitter()
+                local localPlayer = game.Players.LocalPlayer
+                local playerModel = workspace:FindFirstChild(localPlayer.Name)
+                if playerModel then
+                    local lobby = workspace:FindFirstChild("Lobby")
+                    if lobby then
+                        local teleportPart = lobby:FindFirstChild("Teleport2")
+                        if teleportPart then
+                            local touchTransmitter = teleportPart:FindFirstChild("TouchInterest")
+                            if touchTransmitter then
+                                firetouchinterest(localPlayer.Character.HumanoidRootPart, teleportPart, 0)
+                            end
+                        end
+                    end
+                end
+            end
+
+            autoDefaultArenaConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                interactWithDefaultTouchTransmitter()
+            end)
+        else
+            if autoDefaultArenaConnection then
+                autoDefaultArenaConnection:Disconnect()
+            end
+        end
+    end
+})
+
+local gameModesSection = lobbyTab:CreateSection("Game Modes")
+
+local killstreakButton = lobbyTab:CreateButton({
+    Name = "Teleport To Killstreak Only",
+    SectionParent = gameModesSection,
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local lobby = workspace:FindFirstChild("Lobby")
+        if lobby then
+            local teleportPart = lobby:FindFirstChild("Teleport6")
+            if teleportPart then
+                local touchTransmitter = teleportPart:FindFirstChild("TouchInterest")
+                if touchTransmitter then
+                    firetouchinterest(localPlayer.Character.HumanoidRootPart, teleportPart, 0)
+                end
+            end
+        end
+    end
+})
+
+local slapRoyaleButton = lobbyTab:CreateButton({
+    Name = "Teleport To Slap Royale",
+    SectionParent = gameModesSection,
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local lobby = workspace:FindFirstChild("Lobby")
+        if lobby then
+            local teleportPart = lobby:FindFirstChild("Teleport4")
+            if teleportPart then
+                local touchTransmitter = teleportPart:FindFirstChild("TouchInterest")
+                if touchTransmitter then
+                    firetouchinterest(localPlayer.Character.HumanoidRootPart, teleportPart, 0)
+                end
+            end
+        end
+    end
+})
+
+local noOneshotGlovesButton = lobbyTab:CreateButton({
+    Name = "Teleport To No Oneshot Gloves Server",
+    SectionParent = gameModesSection,
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local lobby = workspace:FindFirstChild("Lobby")
+        if lobby then
+            local teleportPart = lobby:FindFirstChild("Teleport3")
+            if teleportPart then
+                local touchTransmitter = teleportPart:FindFirstChild("TouchInterest")
+                if touchTransmitter then
+                    firetouchinterest(localPlayer.Character.HumanoidRootPart, teleportPart, 0)
+                end
+            end
+        end
+    end
+})
+
+local equipGlovesSection = lobbyTab:CreateSection("Equip Gloves")
+
+local equipDefaultGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Default Glove (Requires 0 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Default:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipDualGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Dual Glove (Requires 10 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Dual:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipDiamondGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Diamond Glove (Requires 45 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Diamond:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipZZZZZZZGloveButton = lobbyTab:CreateButton({
+    Name = "Equip ZZZZZZZ Glove (Requires 70 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.ZZZZZZZ:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipExtendedGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Extended Glove (Requires 105 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Extended:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipBrickGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Brick Glove (Requires 150 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Brick:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipSnowGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Snow Glove (Requires 195 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Snow:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipPullGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Pull Glove (Requires 250 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Pull:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipFlashGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Flash Glove (Requires 315 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Flash:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipSpringGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Spring Glove (Requires 380 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Spring:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipSwapperGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Swapper Glove (Requires 420 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Swapper:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
