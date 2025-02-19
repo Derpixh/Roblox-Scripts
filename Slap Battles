@@ -154,19 +154,6 @@ local noOneshotGlovesButton = lobbyTab:CreateButton({
     end
 })
 
-local brazilSection = lobbyTab:CreateSection("Brazil")
-
-local teleportToBrazilButton = lobbyTab:CreateButton({
-    Name = "Teleport To Brazil",
-    SectionParent = brazilSection,
-    Callback = function()
-        local touchTransmitter = workspace.Lobby.brazil.portal:FindFirstChild("TouchTransmitter")
-        if touchTransmitter then
-            firetouchinterest(workspace.Lobby.brazil.portal, touchTransmitter, 0)
-        end
-    end
-})
-
 local equipGlovesSection = lobbyTab:CreateSection("Equip Gloves")
 
 local equipDefaultGloveButton = lobbyTab:CreateButton({
