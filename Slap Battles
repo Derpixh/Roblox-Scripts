@@ -1012,18 +1012,6 @@ local equipParryGloveButton = lobbyTab:CreateButton({
     end
 })
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local window = Rayfield:CreateWindow({
-    Name = "Slap Battles - Auto Collect",
-    LoadingTitle = "Loading Assets...",
-    LoadingSubtitle = "By Your Name",
-    ConfigurationSaving = {
-        Enabled = false,
-        FileName = "Sirius"
-    },
-    KeySystem = false
-})
-
 local arenaTab = window:CreateTab("Arena")
 local slapplesSection = arenaTab:CreateSection("Slapples")
 
