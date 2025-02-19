@@ -1012,13 +1012,13 @@ local equipParryGloveButton = lobbyTab:CreateButton({
     end
 })
 
-local lobbyTab = window:CreateTab("Lobby")
-local slapplesSection = lobbyTab:CreateSection("Slapples")
+local arenaTab = window:CreateTab("Arena")
+local slapplesSection = arenaTab:CreateSection("Slapples")
 
 local toggleState = false
 
 local autoCollectSlapplesToggle
-autoCollectSlapplesToggle = lobbyTab:CreateToggle({
+autoCollectSlapplesToggle = arenaTab:CreateToggle({
     Name = "Auto Collect Slapples (MUST BE IN ARENA)",
     SectionParent = slapplesSection,
     State = false,
