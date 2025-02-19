@@ -154,6 +154,29 @@ local noOneshotGlovesButton = lobbyTab:CreateButton({
     end
 })
 
+local brazilSection = lobbyTab:CreateSection("Brazil")
+
+local teleportToBrazilButton = lobbyTab:CreateButton({
+    Name = "Teleport To Brazil",
+    SectionParent = brazilSection,
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local playerModel = workspace:FindFirstChild(localPlayer.Name)
+        if playerModel then
+            local lobby = workspace:FindFirstChild("Lobby")
+            if lobby then
+                local brazilPortal = lobby:FindFirstChild("brazil")
+                if brazilPortal then
+                    local touchTransmitter = brazilPortal:FindFirstChild("TouchInterest")
+                    if touchTransmitter then
+                        firetouchinterest(localPlayer.Character.HumanoidRootPart, brazilPortal, 0)
+                    end
+                end
+            end
+        end
+    end
+})
+
 local equipGlovesSection = lobbyTab:CreateSection("Equip Gloves")
 
 local equipDefaultGloveButton = lobbyTab:CreateButton({
