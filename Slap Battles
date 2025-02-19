@@ -1012,36 +1012,44 @@ local equipParryGloveButton = lobbyTab:CreateButton({
     end
 })
 
-local arenaTab = window:CreateTab("Arena")
-local slapplesSection = arenaTab:CreateSection("Slapples")
+local lobbyTab = window:CreateTab("Lobby")
+local slapplesSection = lobbyTab:CreateSection("Slapples")
 
-local autoCollectConnection
+local toggleState = false
 
-arenaTab:CreateToggle({
+local autoCollectSlapplesToggle
+autoCollectSlapplesToggle = lobbyTab:CreateToggle({
     Name = "Auto Collect Slapples (MUST BE IN ARENA)",
     SectionParent = slapplesSection,
     State = false,
     Callback = function(state)
-        if state then
-            local player = game.Players.LocalPlayer
-            local character = player.Character or player.CharacterAdded:Wait()
-            local slappleFolder = workspace.Arena.island5:FindFirstChild("Slapples")
+        toggleState = state
+        if toggleState then
+            local function collectSlapples()
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local slappleFolder = workspace.Arena.island5:FindFirstChild("Slapples")
 
-            if slappleFolder then
-                autoCollectConnection = game:GetService("RunService").Stepped:Connect(function()
-                    for _, slapple in pairs(slappleFolder:GetChildren()) do
-                        if slapple:IsA("Model") and slapple.Name == "Slapple" then
-                            local glove = slapple:FindFirstChild("Glove")
-                            if glove and glove:IsA("MeshPart") then
-                                local touchTransmitter = glove:FindFirstChild("TouchInterest")
-                                if touchTransmitter then
-                                    firetouchinterest(character.HumanoidRootPart, glove, 0)
+                if slappleFolder then
+                    game:GetService("RunService").Stepped:Connect(function()
+                        for _, slapple in pairs(slappleFolder:GetChildren()) do
+                            if slapple:IsA("Model") and slapple.Name == "Slapple" then
+                                local glove = slapple:FindFirstChild("Glove")
+                                if glove and glove:IsA("MeshPart") then
+                                    local touchTransmitter = glove:FindFirstChild("TouchInterest")
+                                    if touchTransmitter then
+                                        firetouchinterest(character.HumanoidRootPart, glove, 0)
+                                    end
                                 end
                             end
                         end
-                    end
-                end)
+                    end)
+                end
             end
+
+            autoCollectConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                collectSlapples()
+            end)
         else
             if autoCollectConnection then
                 autoCollectConnection:Disconnect()
