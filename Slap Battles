@@ -276,3 +276,168 @@ local equipSwapperGloveButton = lobbyTab:CreateButton({
         end
     end
 })
+
+local equipBullGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Bull Glove (Requires 520 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Bull:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipDiceGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Dice Glove (Requires 585 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Dice:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipGhostGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Ghost Glove (Requires 666 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Ghost:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipThanosGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Thanos Glove (Requires 795 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Thanos:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipStunGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Stun Glove (Requires 810 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Stun:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipLOLBOBMButton = lobbyTab:CreateButton({
+    Name = "Equip L.O.L.B.O.M.B Glove (Requires 925 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby["L.O.L.B.O.M.B"]:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipZaHandoGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Za Hando Glove (Requires 1000 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby["Za Hando"]:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipFortGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Fort Glove (Requires 1075 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Fort:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipMagnetGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Magnet Glove (Requires 1125 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Magnet:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipPusherGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Pusher Glove (Requires 1250 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Pusher:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipAnchorGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Anchor Glove (Requires 1350 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Anchor:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipSpaceGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Space Glove (Requires 1500 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Space:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipBoomerangGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Boomerang Glove (Requires 1625 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Boomerang:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipSpeedrunGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Speedrun Glove (Requires 1750 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Speedrun:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
+
+local equipMailGloveButton = lobbyTab:CreateButton({
+    Name = "Equip Mail Glove (Requires 2000 Slaps)",
+    SectionParent = equipGlovesSection,
+    Callback = function()
+        local clickDetector = workspace.Lobby.Mail:FindFirstChild("ClickDetector")
+        if clickDetector then
+            fireclickdetector(clickDetector)
+        end
+    end
+})
