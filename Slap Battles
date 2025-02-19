@@ -1013,7 +1013,6 @@ local equipParryGloveButton = lobbyTab:CreateButton({
 })
 
 local arenaTab = window:CreateTab("Arena")
-
 local slapplesSection = arenaTab:CreateSection("Slapples")
 
 local toggleState = false
