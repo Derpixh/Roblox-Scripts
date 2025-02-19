@@ -160,19 +160,9 @@ local teleportToBrazilButton = lobbyTab:CreateButton({
     Name = "Teleport To Brazil",
     SectionParent = brazilSection,
     Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local playerModel = workspace:FindFirstChild(localPlayer.Name)
-        if playerModel then
-            local lobby = workspace:FindFirstChild("Lobby")
-            if lobby then
-                local brazilPortal = lobby:FindFirstChild("brazil")
-                if brazilPortal then
-                    local touchTransmitter = brazilPortal:FindFirstChild("TouchInterest")
-                    if touchTransmitter then
-                        firetouchinterest(localPlayer.Character.HumanoidRootPart, brazilPortal, 0)
-                    end
-                end
-            end
+        local touchTransmitter = workspace.Lobby.brazil.portal:FindFirstChild("TouchTransmitter")
+        if touchTransmitter then
+            firetouchinterest(workspace.Lobby.brazil.portal, touchTransmitter, 0)
         end
     end
 })
