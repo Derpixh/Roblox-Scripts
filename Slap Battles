@@ -154,9 +154,7 @@ local noOneshotGlovesButton = lobbyTab:CreateButton({
     end
 })
 
-local brazilSection = lobbyTab:CreateSection({
-    Name = "Brazil"
-})
+local brazilSection = lobbyTab:CreateSection("Brazil")
 
 local teleportToBrazilButton = lobbyTab:CreateButton({
     Name = "Teleport To Brazil",
