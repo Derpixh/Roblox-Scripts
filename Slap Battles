@@ -162,7 +162,7 @@ local teleportToBrazilButton = lobbyTab:CreateButton({
     Callback = function()
         local touchTransmitter = workspace.Lobby.brazil.portal:FindFirstChild("TouchTransmitter")
         if touchTransmitter then
-            firetouchinterest(touchTransmitter)
+            firetouchinterest(workspace.Lobby.brazil.portal, touchTransmitter, 0)
         end
     end
 })
