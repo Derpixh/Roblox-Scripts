@@ -75,31 +75,34 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
 
 local sectionShowAlerts = tabTwisteds:CreateSection("Show Alerts")
 
+local alertConnection
 local autoAlertChasingToggle = tabTwisteds:CreateToggle({
     Name = "Auto Alert Chasing",
     CurrentValue = false,
     Flag = "AutoAlertChasing",
     Section = sectionShowAlerts,
     Callback = function(Value)
-        _G.AutoAlertChasing = Value
+        if Value then
+            local RunService = game:GetService("RunService")
+            local Players = game:GetService("Players")
+            local localPlayer = Players.LocalPlayer
 
-        local RunService = game:GetService("RunService")
-        local Players = game:GetService("Players")
-        local localPlayer = Players.LocalPlayer
-
-        local function alertChasing(model)
-            local chasingValue = model:FindFirstChild("ChasingValue")
-            if chasingValue and chasingValue:IsA("ObjectValue") and chasingValue.Value == localPlayer.Name then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Twisted Alerter",
-                    Text = model.Name .. " is currently chasing you",
-                    Duration = 5
-                })
+            local function alertChasing(model)
+                local chasingValue = model:FindFirstChild("ChasingValue")
+                if chasingValue and chasingValue:IsA("ObjectValue") then
+                    chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
+                        if chasingValue.Value == localPlayer.Name then
+                            game.StarterGui:SetCore("SendNotification", {
+                                Title = "Twisted Alerter",
+                                Text = model.Name .. " is currently chasing you",
+                                Duration = 5
+                            })
+                        end
+                    end)
+                end
             end
-        end
 
-        local function checkAndAlertChasing()
-            if _G.AutoAlertChasing then
+            local function checkAndAlertChasing()
                 local currentRoom = workspace:FindFirstChild("CurrentRoom")
                 if currentRoom then
                     for _, roomModel in pairs(currentRoom:GetChildren()) do
@@ -116,8 +119,12 @@ local autoAlertChasingToggle = tabTwisteds:CreateToggle({
                     end
                 end
             end
-        end
 
-        RunService.Heartbeat:Connect(checkAndAlertChasing)
+            alertConnection = RunService.Heartbeat:Connect(checkAndAlertChasing)
+        else
+            if alertConnection then
+                alertConnection:Disconnect()
+            end
+        end
     end,
 })
