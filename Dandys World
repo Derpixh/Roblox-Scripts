@@ -73,8 +73,6 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
     end,
 })
 
-local tabTwisteds = window:CreateTab("Twisteds")
-
 local sectionShowAlerts = tabTwisteds:CreateSection("Show Alerts")
 
 local autoAlertChasingToggle = tabTwisteds:CreateToggle({
