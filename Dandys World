@@ -89,7 +89,7 @@ local autoAlertChasingToggle = tabTwisteds:CreateToggle({
 
         local function alertChasing(model)
             local chasingValue = model:FindFirstChild("ChasingValue")
-            if chasingValue and chasingValue:IsA("ObjectValue") and chasingValue.Value == localPlayer then
+            if chasingValue and chasingValue:IsA("ObjectValue") and chasingValue.Value == localPlayer.Name then
                 game.StarterGui:SetCore("SendNotification", {
                     Title = "Twisted Alerter",
                     Text = model.Name .. " is currently chasing you",
