@@ -12,10 +12,10 @@ local window = Rayfield:CreateWindow({
     KeySettings = {
         Title = "Derpixh's Key System",
         Subtitle = "Enter Your Key",
-        Note = "Rate The Features",
-        FileName = "Sirius",
-        SaveKey = false,
-        Key = "2025"
+        Note: "Rate The Features",
+        FileName: "Sirius",
+        SaveKey: false,
+        Key: "2025"
     }
 })
 
@@ -36,23 +36,23 @@ local openDailyQuestsButton = questsTab:CreateButton({
             if mainInterface then
                 local questsFrame = mainInterface:FindFirstChild("QuestsFrame")
                 if questsFrame then
-                    questsFrame.Visible = stateDaily
-                    local items = questsFrame:FindFirstChild("Items")
-                    if items then
-                        local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
-                        if dailyQuestTab then
-                            dailyQuestTab.BackgroundColor3 = stateDaily and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(255, 255, 255)
-                        end
-                        local itemGrid = items:FindFirstChild("ItemGrid")
-                        if itemGrid then
-                            local dailyFrame = itemGrid:FindFirstChild("Daily")
-                            if dailyFrame then
-                                dailyFrame.Visible = stateDaily
-                                dailyFrame.BackgroundColor3 = stateDaily and Color3.fromRGB(163, 162, 165) or Color3.fromRGB(255, 255, 255)
+                    if stateDaily then
+                        questsFrame.Visible = true
+                        local items = questsFrame:FindFirstChild("Items")
+                        if items then
+                            local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
+                            if dailyQuestTab then
+                                dailyQuestTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
                             end
-                            if stateDaily then
+                            local itemGrid = items:FindFirstChild("ItemGrid")
+                            if itemGrid then
+                                local dailyFrame = itemGrid:FindFirstChild("Daily")
+                                if dailyFrame then
+                                    dailyFrame.Visible = true
+                                    dailyFrame.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+                                end
                                 local normalFrame = itemGrid:FindFirstChild("Normal")
-                                if normalFrame and normalFrame.Visible == true then
+                                if normalFrame then
                                     normalFrame.Visible = false
                                 end
                             end
@@ -63,6 +63,8 @@ local openDailyQuestsButton = questsTab:CreateButton({
                                 end
                             end
                         end
+                    else
+                        questsFrame.Visible = false
                     end
                 end
             end
@@ -82,29 +84,34 @@ local openNormalQuestsButton = questsTab:CreateButton({
             if mainInterface then
                 local questsFrame = mainInterface:FindFirstChild("QuestsFrame")
                 if questsFrame then
-                    questsFrame.Visible = stateNormal
-                    local items = questsFrame:FindFirstChild("Items")
-                    if items then
-                        local normalQuestTab = items:FindFirstChild("NormalQuestTab")
-                        if normalQuestTab then
-                            normalQuestTab.BackgroundColor3 = stateNormal and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(255, 255, 255)
-                        end
-                        if stateNormal then
+                    if stateNormal then
+                        questsFrame.Visible = true
+                        local items = questsFrame:FindFirstChild("Items")
+                        if items then
+                            local normalQuestTab = items:FindFirstChild("NormalQuestTab")
+                            if normalQuestTab then
+                                normalQuestTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                            end
+                            local itemGrid = items:FindFirstChild("ItemGrid")
+                            if itemGrid then
+                                local normalFrame = itemGrid:FindFirstChild("Normal")
+                                if normalFrame then
+                                    normalFrame.Visible = true
+                                end
+                                local dailyFrame = itemGrid:FindFirstChild("Daily")
+                                if dailyFrame then
+                                    dailyFrame.Visible = false
+                                end
+                            end
                             local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
                             if dailyQuestTab then
                                 if dailyQuestTab.BackgroundColor3 == Color3.fromRGB(50, 50, 50) then
                                     dailyQuestTab.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                                 end
                             end
-                            local normalFrame = itemGrid:FindFirstChild("Normal")
-                            if normalFrame then
-                                normalFrame.Visible = stateNormal
-                            end
-                            local dailyFrame = itemGrid:FindFirstChild("Daily")
-                            if dailyFrame and dailyFrame.Visible == true then
-                                dailyFrame.Visible = false
-                            end
                         end
+                    else
+                        questsFrame.Visible = false
                     end
                 end
             end
