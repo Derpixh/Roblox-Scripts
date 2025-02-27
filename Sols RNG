@@ -27,30 +27,40 @@ local openDailyQuestsButton = questsTab:CreateButton({
     Callback = function()
         local player = game.Players.LocalPlayer
         local playerGui = player:FindFirstChild("PlayerGui")
+        print("PlayerGui found:", playerGui ~= nil)
         if playerGui then
             local mainInterface = playerGui:FindFirstChild("MainInterface")
+            print("MainInterface found:", mainInterface ~= nil)
             if mainInterface then
                 local questsFrame = mainInterface:FindFirstChild("QuestsFrame")
+                print("QuestsFrame found:", questsFrame ~= nil)
                 if questsFrame then
                     questsFrame.Visible = true
+                    print("QuestsFrame Visible set to true")
                     local items = questsFrame:FindFirstChild("Items")
+                    print("Items found:", items ~= nil)
                     if items then
                         local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
+                        print("DailyQuestTab found:", dailyQuestTab ~= nil)
                         if dailyQuestTab then
                             dailyQuestTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
                         end
                         local itemGrid = items:FindFirstChild("ItemGrid")
+                        print("ItemGrid found:", itemGrid ~= nil)
                         if itemGrid then
                             local dailyFrame = itemGrid:FindFirstChild("Daily")
+                            print("Daily frame found:", dailyFrame ~= nil)
                             if dailyFrame then
                                 dailyFrame.Visible = true
                                 dailyFrame.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
                             end
                             local normalQuestTab = items:FindFirstChild("NormalQuestTab")
+                            print("NormalQuestTab found:", normalQuestTab ~= nil)
                             if normalQuestTab and normalQuestTab.BackgroundColor3 == Color3.fromRGB(163, 162, 165) then
                                 normalQuestTab.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                             end
                             local normalFrame = itemGrid:FindFirstChild("Normal")
+                            print("Normal frame found:", normalFrame ~= nil)
                             if normalFrame and normalFrame.Visible == true then
                                 normalFrame.Visible = false
                             end
