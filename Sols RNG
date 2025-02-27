@@ -1,0 +1,63 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Sols RNG - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local questsTab = window:CreateTab("Quests")
+local dailyQuestsSection = questsTab:CreateSection("Daily Quests")
+
+local openDailyQuestsButton = questsTab:CreateButton({
+    Name = "Open Daily Quests",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local playerGui = player:FindFirstChild("PlayerGui")
+        if playerGui then
+            local mainInterface = playerGui:FindFirstChild("MainInterface")
+            if mainInterface then
+                local questsFrame = mainInterface:FindFirstChild("QuestsFrame")
+                if questsFrame then
+                    local items = questsFrame:FindFirstChild("Items")
+                    if items then
+                        local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
+                        if dailyQuestTab then
+                            dailyQuestTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                        end
+                        local itemGrid = items:FindFirstChild("ItemGrid")
+                        if itemGrid then
+                            local dailyFrame = itemGrid:FindFirstChild("Daily")
+                            if dailyFrame then
+                                dailyFrame.Visible = true
+                                dailyFrame.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+                            end
+                            local normalQuestTab = items:FindFirstChild("NormalQuestTab")
+                            if normalQuestTab and normalQuestTab.BackgroundColor3 == Color3.fromRGB(163, 162, 165) then
+                                normalQuestTab.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+                            end
+                            local normalFrame = itemGrid:FindFirstChild("Normal")
+                            if normalFrame and normalFrame.Visible == true then
+                                normalFrame.Visible = false
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+    Parent = dailyQuestsSection
+})
