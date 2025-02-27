@@ -32,6 +32,7 @@ local openDailyQuestsButton = questsTab:CreateButton({
             if mainInterface then
                 local questsFrame = mainInterface:FindFirstChild("QuestsFrame")
                 if questsFrame then
+                    questsFrame.Visible = true
                     local items = questsFrame:FindFirstChild("Items")
                     if items then
                         local dailyQuestTab = items:FindFirstChild("DailyQuestTab")
