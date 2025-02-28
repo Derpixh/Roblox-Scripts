@@ -12,8 +12,8 @@ local window = Rayfield:CreateWindow({
     KeySettings = {
         Title = "Derpixh's Key System",
         Subtitle = "Enter Your Key",
-        Note: "Rate The Features",
-        FileName: "Sirius",
+        Note = "Rate The Features",
+        FileName = "Sirius",
         SaveKey: false,
         Key: "2025"
     }
