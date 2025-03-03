@@ -8,16 +8,14 @@ local window = Rayfield:CreateWindow({
         Enabled = false,
         FileName = "Sirius"
     },
-    KeySystem = true,
     KeySettings = {
-        Title = "Derpixh's Key System",
-        Subtitle = "Enter Your Key",
-        Note = "Rate The Features",
-        FileName = "Sirius",
-        SaveKey: false,
-        Key: "2025"
-    }
-})
+    Title = "Derpixh's Key System",
+    Subtitle = "Enter Your Key",
+    Note = "Rate The Features",
+    FileName = "Sirius",
+    SaveKey = false,  -- Corrected this line
+    Key = "2025"
+}
 
 local questsTab = window:CreateTab("Quests")
 local dailyNormalQuestsSection = questsTab:CreateSection("Daily Quests/Normal Quests")
