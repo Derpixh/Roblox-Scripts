@@ -13,7 +13,7 @@ local window = Rayfield:CreateWindow({
     Subtitle = "Enter Your Key",
     Note = "Rate The Features",
     FileName = "Sirius",
-    SaveKey = false,  -- Corrected this line
+    SaveKey = false,
     Key = "2025"
 }
 
