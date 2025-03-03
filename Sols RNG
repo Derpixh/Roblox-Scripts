@@ -15,7 +15,7 @@ local window = Rayfield:CreateWindow({
     FileName = "Sirius",
     SaveKey = false,
     Key = "2025"
-}
+})
 
 local questsTab = window:CreateTab("Quests")
 local dailyNormalQuestsSection = questsTab:CreateSection("Daily Quests/Normal Quests")
