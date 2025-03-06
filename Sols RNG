@@ -1,11 +1,4 @@
-local success, Rayfield = pcall(function()
-    return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-end)
-
-if not success then
-    warn("Failed to load Rayfield library.")
-    return
-end
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local window = Rayfield:CreateWindow({
     Name = "Sols RNG - Alpha Hax",
@@ -21,7 +14,7 @@ local window = Rayfield:CreateWindow({
         Subtitle = "Enter Your Key",
         Note = "Rate The Features",
         FileName = "Sirius",
-        SaveKey = false,
+        SaveKey: false,
         Key: "2025"
     }
 })
@@ -126,3 +119,5 @@ local openNormalQuestsButton = questsTab:CreateButton({
     end,
     Parent = dailyNormalQuestsSection
 })
+
+Rayfield:LoadConfiguration()
