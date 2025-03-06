@@ -1,4 +1,11 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local success, Rayfield = pcall(function()
+    return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end)
+
+if not success then
+    warn("Failed to load Rayfield library.")
+    return
+end
 
 local window = Rayfield:CreateWindow({
     Name = "Sols RNG - Alpha Hax",
@@ -8,13 +15,15 @@ local window = Rayfield:CreateWindow({
         Enabled = false,
         FileName = "Sirius"
     },
+    KeySystem = true,
     KeySettings = {
-    Title = "Derpixh's Key System",
-    Subtitle = "Enter Your Key",
-    Note = "Rate The Features",
-    FileName = "Sirius",
-    SaveKey = false,
-    Key = "2025"
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key: "2025"
+    }
 })
 
 local questsTab = window:CreateTab("Quests")
