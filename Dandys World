@@ -134,3 +134,79 @@ local autoAlertChasingToggle = tabTwisteds:CreateToggle({
         end
     end,
 })
+
+local tabItems = window:CreateTab("Items")
+
+local sectionHighlightItems = tabItems:CreateSection("Highlight Items")
+
+local autoHighlightItemsToggle = tabItems:CreateToggle({
+    Name = "Auto Highlight Items",
+    CurrentValue = false,
+    Flag = "AutoHighlightItems",
+    Section = sectionHighlightItems,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+
+        local function addHighlight(model)
+            if not model:FindFirstChildOfClass("Highlight") then
+                local highlight = Instance.new("Highlight")
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                highlight.Parent = model
+            end
+        end
+
+        local function removeHighlight(model)
+            local highlight = model:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+        end
+
+        local function checkAndUpdateItems()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, roomModel in pairs(currentRoom:GetChildren()) do
+                    if roomModel:IsA("Model") then
+                        local itemsFolder = roomModel:FindFirstChild("Items")
+                        if itemsFolder then
+                            for _, item in pairs(itemsFolder:GetChildren()) do
+                                if item:IsA("Model") then
+                                    if Value then
+                                        addHighlight(item)
+                                    else
+                                        removeHighlight(item)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if Value then
+            highlightConnection = RunService.Heartbeat:Connect(checkAndUpdateItems)
+        else
+            if highlightConnection then
+                highlightConnection:Disconnect()
+                highlightConnection = nil
+                local currentRoom = workspace:FindFirstChild("CurrentRoom")
+                if currentRoom then
+                    for _, roomModel in pairs(currentRoom:GetChildren()) do
+                        if roomModel:IsA("Model") then
+                            local itemsFolder = roomModel:FindFirstChild("Items")
+                            if itemsFolder then
+                                for _, item in pairs(itemsFolder:GetChildren()) do
+                                    if item:IsA("Model") then
+                                        removeHighlight(item)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+})
