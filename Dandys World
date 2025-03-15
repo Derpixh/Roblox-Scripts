@@ -347,7 +347,6 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
     Flag = "AutoExtractIchor",
     Section = sectionExtractIchor,
     Callback = function(Value)
-        local RunService = game:GetService("RunService")
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
 
@@ -358,8 +357,12 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
                 if attachment then
                     local proximityPrompt = attachment:FindFirstChildOfClass("ProximityPrompt")
                     if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
-                        proximityPrompt:InputHoldBegin()
-                        proximityPrompt:InputHoldEnd()
+                        proximityPrompt.Triggered:Connect(function(player)
+                            if player == localPlayer then
+                                proximityPrompt:InputHoldBegin()
+                                proximityPrompt:InputHoldEnd()
+                            end
+                        end)
                     end
                 end
             end
@@ -384,7 +387,7 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
         end
 
         if Value then
-            extractIchorConnection = RunService.Heartbeat:Connect(checkAndExtractIchor)
+            extractIchorConnection = game:GetService("RunService").Heartbeat:Connect(checkAndExtractIchor)
         else
             if extractIchorConnection then
                 extractIchorConnection:Disconnect()
