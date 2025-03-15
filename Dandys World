@@ -344,3 +344,66 @@ local autoHighlightGeneratorsToggle = tabGenerators:CreateToggle({
         end
     end,
 })
+
+local tabPlayers = window:CreateTab("Players")
+
+local sectionHighlightPlayers = tabPlayers:CreateSection("Highlight Players")
+
+local autoHighlightPlayersToggle = tabPlayers:CreateToggle({
+    Name = "Auto Highlight Players",
+    CurrentValue = false,
+    Flag = "AutoHighlightPlayers",
+    Section = sectionHighlightPlayers,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+        local connections = {}
+
+        local function addHighlight(model)
+            if not model:FindFirstChildOfClass("Highlight") then
+                local highlight = Instance.new("Highlight")
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                highlight.Parent = model
+            end
+        end
+
+        local function removeHighlight(model)
+            local highlight = model:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+        end
+
+        local function checkAndUpdatePlayers()
+            local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+            if inGamePlayersFolder then
+                for _, playerModel in pairs(inGamePlayersFolder:GetChildren()) do
+                    if playerModel:IsA("Model") then
+                        if Value then
+                            addHighlight(playerModel)
+                        else
+                            removeHighlight(playerModel)
+                        end
+                    end
+                end
+            end
+        end
+
+        if Value then
+            playerHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdatePlayers)
+        else
+            if playerHighlightConnection then
+                playerHighlightConnection:Disconnect()
+                playerHighlightConnection = nil
+                local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+                if inGamePlayersFolder then
+                    for _, playerModel in pairs(inGamePlayersFolder:GetChildren()) do
+                        if playerModel:IsA("Model") then
+                            removeHighlight(playerModel)
+                        end
+                    end
+                end
+            end
+        end
+    end,
+})
