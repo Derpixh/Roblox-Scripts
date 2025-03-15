@@ -349,6 +349,7 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
     Callback = function(Value)
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
+        local connections = {}
 
         local function extractIchor(model)
             local promptPart = model:FindFirstChild("Prompt")
@@ -357,18 +358,20 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
                 if attachment then
                     local proximityPrompt = attachment:FindFirstChildOfClass("ProximityPrompt")
                     if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
-                        proximityPrompt.Triggered:Connect(function(player)
+                        local connection
+                        connection = proximityPrompt.Triggered:Connect(function(player)
                             if player == localPlayer then
                                 proximityPrompt:InputHoldBegin()
                                 proximityPrompt:InputHoldEnd()
                             end
                         end)
+                        table.insert(connections, connection)
                     end
                 end
             end
         end
 
-        local function checkAndExtractIchor()
+        local function monitorGenerators()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if currentRoom then
                 for _, roomModel in pairs(currentRoom:GetChildren()) do
@@ -387,12 +390,12 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
         end
 
         if Value then
-            extractIchorConnection = game:GetService("RunService").Heartbeat:Connect(checkAndExtractIchor)
+            monitorGenerators()
         else
-            if extractIchorConnection then
-                extractIchorConnection:Disconnect()
-                extractIchorConnection = nil
+            for _, connection in pairs(connections) do
+                connection:Disconnect()
             end
+            table.clear(connections)
         end
     end,
 })
