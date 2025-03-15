@@ -211,6 +211,58 @@ local autoHighlightItemsToggle = tabItems:CreateToggle({
     end,
 })
 
+local sectionPickUpItems = tabItems:CreateSection("Pick-Up Items")
+
+local autoPickUpItemsToggle = tabItems:CreateToggle({
+    Name = "Auto Pick-Up Items",
+    CurrentValue = false,
+    Flag = "AutoPickUpItems",
+    Section = sectionPickUpItems,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+        local Players = game:GetService("Players")
+        local localPlayer = Players.LocalPlayer
+
+        local function pickUpItem(model)
+            local promptPart = model:FindFirstChild("Prompt")
+            if promptPart and promptPart:IsA("Part") then
+                local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
+                    proximityPrompt:InputHoldBegin()
+                    proximityPrompt:InputHoldEnd()
+                end
+            end
+        end
+
+        local function checkAndPickUpItems()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, roomModel in pairs(currentRoom:GetChildren()) do
+                    if roomModel:IsA("Model") then
+                        local itemsFolder = roomModel:FindFirstChild("Items")
+                        if itemsFolder then
+                            for _, item in pairs(itemsFolder:GetChildren()) do
+                                if item:IsA("Model") then
+                                    pickUpItem(item)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if Value then
+            pickUpItemsConnection = RunService.Heartbeat:Connect(checkAndPickUpItems)
+        else
+            if pickUpItemsConnection then
+                pickUpItemsConnection:Disconnect()
+                pickUpItemsConnection = nil
+            end
+        end
+    end,
+})
+
 local tabGenerators = window:CreateTab("Generators")
 
 local sectionHighlightGenerators = tabGenerators:CreateSection("Highlight Generators")
