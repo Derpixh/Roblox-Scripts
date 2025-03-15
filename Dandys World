@@ -83,6 +83,15 @@ local autoShowAlertsToggle = tabTwisteds:CreateToggle({
     Callback = function(Value)
         local RunService = game:GetService("RunService")
         local connections = {}
+        local localPlayer = game.Players.LocalPlayer
+
+        local function sendNotification(monsterName, text)
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Twisted Alerter",
+                Text = text,
+                Duration = 5
+            })
+        end
 
         local function monitorChasingValue(model)
             local chasingValue = model:FindFirstChild("ChasingValue")
@@ -92,18 +101,10 @@ local autoShowAlertsToggle = tabTwisteds:CreateToggle({
                 connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
                     local currentValue = chasingValue.Value
 
-                    if currentValue == "Lightuxx" and previousValue ~= "Lightuxx" then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = model.Name .. " is currently chasing you!",
-                            Duration = 5
-                        })
-                    elseif currentValue == "" and previousValue == "Lightuxx" then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = model.Name .. " has stopped chasing you!",
-                            Duration = 5
-                        })
+                    if currentValue == localPlayer.Name and previousValue ~= localPlayer.Name then
+                        sendNotification(model.Name, model.Name .. " is currently chasing you!")
+                    elseif currentValue == "" and previousValue == localPlayer.Name then
+                        sendNotification(model.Name, model.Name .. " has stopped chasing you!")
                     end
 
                     previousValue = currentValue
