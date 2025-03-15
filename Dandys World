@@ -75,39 +75,44 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
 
 local sectionShowAlerts = tabTwisteds:CreateSection("Show Alerts")
 
-local autoAlertChasingToggle = tabTwisteds:CreateToggle({
-    Name = "Auto Alert Chasing",
+local autoShowAlertsToggle = tabTwisteds:CreateToggle({
+    Name = "Show Alerts",
     CurrentValue = false,
-    Flag = "AutoAlertChasing",
+    Flag = "AutoShowAlerts",
     Section = sectionShowAlerts,
     Callback = function(Value)
         local RunService = game:GetService("RunService")
-        local Players = game:GetService("Players")
-        local localPlayer = Players.LocalPlayer
+        local connections = {}
 
-        local function alertChasing(model)
+        local function monitorChasingValue(model)
             local chasingValue = model:FindFirstChild("ChasingValue")
             if chasingValue and chasingValue:IsA("ObjectValue") then
+                local previousValue = chasingValue.Value
                 local connection
                 connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
-                    if chasingValue.Value == localPlayer.Name then
+                    local currentValue = chasingValue.Value
+
+                    if currentValue == "Lightuxx" and previousValue ~= "Lightuxx" then
                         game.StarterGui:SetCore("SendNotification", {
                             Title = "Twisted Alerter",
-                            Text = model.Name .. " is currently chasing you",
+                            Text = model.Name .. " is currently chasing you!",
+                            Duration = 5
+                        })
+                    elseif currentValue == "" and previousValue == "Lightuxx" then
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Twisted Alerter",
+                            Text = model.Name .. " has stopped chasing you!",
                             Duration = 5
                         })
                     end
+
+                    previousValue = currentValue
                 end)
-                
-                model.AncestryChanged:Connect(function(_, parent)
-                    if not parent then
-                        connection:Disconnect()
-                    end
-                end)
+                table.insert(connections, connection)
             end
         end
 
-        local function checkAndAlertChasing()
+        local function monitorMonsters()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if currentRoom then
                 for _, roomModel in pairs(currentRoom:GetChildren()) do
@@ -116,7 +121,7 @@ local autoAlertChasingToggle = tabTwisteds:CreateToggle({
                         if monstersFolder then
                             for _, monster in pairs(monstersFolder:GetChildren()) do
                                 if monster:IsA("Model") then
-                                    alertChasing(monster)
+                                    monitorChasingValue(monster)
                                 end
                             end
                         end
@@ -126,11 +131,12 @@ local autoAlertChasingToggle = tabTwisteds:CreateToggle({
         end
 
         if Value then
-            RunService.Heartbeat:Connect(checkAndAlertChasing)
+            monitorMonsters()
         else
-            for _, connection in pairs(RunService.Heartbeat:GetConnections()) do
+            for _, connection in pairs(connections) do
                 connection:Disconnect()
             end
+            table.clear(connections)
         end
     end,
 })
