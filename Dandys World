@@ -364,6 +364,7 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
                             if proximityPrompt.Enabled and proximityPrompt.HoldDuration == 0 then
                                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
                                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+                                connection:Disconnect()
                             end
                         end)
                         table.insert(connections, connection)
