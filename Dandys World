@@ -338,3 +338,58 @@ local autoHighlightGeneratorsToggle = tabGenerators:CreateToggle({
         end
     end,
 })
+
+local sectionExtractIchor = tabGenerators:CreateSection("Extract Ichor")
+
+local autoExtractIchorToggle = tabGenerators:CreateToggle({
+    Name = "Auto Extract Ichor",
+    CurrentValue = false,
+    Flag = "AutoExtractIchor",
+    Section = sectionExtractIchor,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+        local Players = game:GetService("Players")
+        local localPlayer = Players.LocalPlayer
+
+        local function extractIchor(model)
+            local promptPart = model:FindFirstChild("Prompt")
+            if promptPart and promptPart:IsA("Part") then
+                local attachment = promptPart:FindFirstChildOfClass("Attachment")
+                if attachment then
+                    local proximityPrompt = attachment:FindFirstChildOfClass("ProximityPrompt")
+                    if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
+                        proximityPrompt:InputHoldBegin()
+                        proximityPrompt:InputHoldEnd()
+                    end
+                end
+            end
+        end
+
+        local function checkAndExtractIchor()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, roomModel in pairs(currentRoom:GetChildren()) do
+                    if roomModel:IsA("Model") then
+                        local generatorsFolder = roomModel:FindFirstChild("Generators")
+                        if generatorsFolder then
+                            for _, generator in pairs(generatorsFolder:GetChildren()) do
+                                if generator:IsA("Model") and generator.Name == "Generator" then
+                                    extractIchor(generator)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if Value then
+            extractIchorConnection = RunService.Heartbeat:Connect(checkAndExtractIchor)
+        else
+            if extractIchorConnection then
+                extractIchorConnection:Disconnect()
+                extractIchorConnection = nil
+            end
+        end
+    end,
+})
