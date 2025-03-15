@@ -339,6 +339,9 @@ local autoHighlightGeneratorsToggle = tabGenerators:CreateToggle({
     end,
 })
 
+local UserInputService = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
 local sectionExtractIchor = tabGenerators:CreateSection("Extract Ichor")
 
 local autoExtractIchorToggle = tabGenerators:CreateToggle({
@@ -347,8 +350,6 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
     Flag = "AutoExtractIchor",
     Section = sectionExtractIchor,
     Callback = function(Value)
-        local Players = game:GetService("Players")
-        local localPlayer = Players.LocalPlayer
         local connections = {}
 
         local function extractIchor(model)
@@ -357,12 +358,12 @@ local autoExtractIchorToggle = tabGenerators:CreateToggle({
                 local attachment = promptPart:FindFirstChildOfClass("Attachment")
                 if attachment then
                     local proximityPrompt = attachment:FindFirstChildOfClass("ProximityPrompt")
-                    if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
+                    if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") then
                         local connection
-                        connection = proximityPrompt.Triggered:Connect(function(player)
-                            if player == localPlayer then
-                                proximityPrompt:InputHoldBegin()
-                                proximityPrompt:InputHoldEnd()
+                        connection = proximityPrompt:GetPropertyChangedSignal("Enabled"):Connect(function()
+                            if proximityPrompt.Enabled and proximityPrompt.HoldDuration == 0 then
+                                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
                             end
                         end)
                         table.insert(connections, connection)
