@@ -210,3 +210,79 @@ local autoHighlightItemsToggle = tabItems:CreateToggle({
         end
     end,
 })
+
+local tabGenerators = window:CreateTab("Generators")
+
+local sectionHighlightGenerators = tabGenerators:CreateSection("Highlight Generators")
+
+local autoHighlightGeneratorsToggle = tabGenerators:CreateToggle({
+    Name = "Auto Highlight Generators",
+    CurrentValue = false,
+    Flag = "AutoHighlightGenerators",
+    Section = sectionHighlightGenerators,
+    Callback = function(Value)
+        local RunService = game:GetService("RunService")
+
+        local function addHighlight(model)
+            if not model:FindFirstChildOfClass("Highlight") then
+                local highlight = Instance.new("Highlight")
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                highlight.FillColor = Color3.fromRGB(0, 255, 255)
+                highlight.Parent = model
+            end
+        end
+
+        local function removeHighlight(model)
+            local highlight = model:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+        end
+
+        local function checkAndUpdateGenerators()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, roomModel in pairs(currentRoom:GetChildren()) do
+                    if roomModel:IsA("Model") then
+                        local generatorsFolder = roomModel:FindFirstChild("Generators")
+                        if generatorsFolder then
+                            for _, generator in pairs(generatorsFolder:GetChildren()) do
+                                if generator:IsA("Model") and generator.Name == "Generator" then
+                                    if Value then
+                                        addHighlight(generator)
+                                    else
+                                        removeHighlight(generator)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if Value then
+            generatorHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdateGenerators)
+        else
+            if generatorHighlightConnection then
+                generatorHighlightConnection:Disconnect()
+                generatorHighlightConnection = nil
+                local currentRoom = workspace:FindFirstChild("CurrentRoom")
+                if currentRoom then
+                    for _, roomModel in pairs(currentRoom:GetChildren()) do
+                        if roomModel:IsA("Model") then
+                            local generatorsFolder = roomModel:FindFirstChild("Generators")
+                            if generatorsFolder then
+                                for _, generator in pairs(generatorsFolder:GetChildren()) do
+                                    if generator:IsA("Model") and generator.Name == "Generator" then
+                                        removeHighlight(generator)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+})
