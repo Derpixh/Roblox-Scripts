@@ -1,0 +1,43 @@
+local RunService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local currentRoomFolder = game.Workspace:WaitForChild("CurrentRoom")
+
+local function checkChasingValue()
+    for _, model in pairs(currentRoomFolder:GetChildren()) do
+        if model:IsA("Model") then
+            local monstersFolder = model:FindFirstChild("Monsters")
+            if monstersFolder then
+                for _, monsterModel in pairs(monstersFolder:GetChildren()) do
+                    if monsterModel:IsA("Model") then
+                        local chasingValue = monsterModel:FindFirstChild("ChasingValue")
+                        if chasingValue and chasingValue:IsA("ObjectValue") then
+                            local notifiedChasing = false
+                            local notifiedStopped = false
+                            RunService.Heartbeat:Connect(function()
+                                if chasingValue.Value == "Lightuxx" and not notifiedChasing then
+                                    game:GetService("StarterGui"):SetCore("SendNotification", {
+                                        Title = "Monster Notifier",
+                                        Text = monsterModel.Name .. " is chasing you!",
+                                        Duration = 5
+                                    })
+                                    notifiedChasing = true
+                                    notifiedStopped = false
+                                elseif chasingValue.Value == "" and not notifiedStopped then
+                                    game:GetService("StarterGui"):SetCore("SendNotification", {
+                                        Title = "Monster Notifier",
+                                        Text = monsterModel.Name .. " has stopped chasing you!",
+                                        Duration = 5
+                                    })
+                                    notifiedStopped = true
+                                    notifiedChasing = false
+                                end
+                            end)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+checkChasingValue()
