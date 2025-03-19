@@ -9,27 +9,34 @@ local function checkChasingValue()
             if monstersFolder then
                 for _, monsterModel in pairs(monstersFolder:GetChildren()) do
                     if monsterModel:IsA("Model") then
+                        local chasingBool = monsterModel:FindFirstChild("Chasing")
                         local chasingValue = monsterModel:FindFirstChild("ChasingValue")
-                        if chasingValue and chasingValue:IsA("ObjectValue") then
+                        if chasingBool and chasingValue and chasingBool:IsA("BoolValue") and chasingValue:IsA("ObjectValue") then
                             local notifiedChasing = false
                             local notifiedStopped = false
-                            RunService.Heartbeat:Connect(function()
-                                if chasingValue.Value == "Lightuxx" and not notifiedChasing then
-                                    game:GetService("StarterGui"):SetCore("SendNotification", {
-                                        Title = "Monster Notifier",
-                                        Text = monsterModel.Name .. " is chasing you!",
-                                        Duration = 5
-                                    })
-                                    notifiedChasing = true
-                                    notifiedStopped = false
-                                elseif chasingValue.Value == "" and not notifiedStopped then
-                                    game:GetService("StarterGui"):SetCore("SendNotification", {
-                                        Title = "Monster Notifier",
-                                        Text = monsterModel.Name .. " has stopped chasing you!",
-                                        Duration = 5
-                                    })
-                                    notifiedStopped = true
-                                    notifiedChasing = false
+                            chasingBool.Changed:Connect(function()
+                                if chasingBool.Value == true then
+                                    if chasingValue.Value == player.Name then
+                                        if not notifiedChasing then
+                                            game:GetService("StarterGui"):SetCore("SendNotification", {
+                                                Title = "Monster Notifier",
+                                                Text = monsterModel.Name .. " is chasing you!",
+                                                Duration = 5
+                                            })
+                                            notifiedChasing = true
+                                            notifiedStopped = false
+                                        end
+                                    end
+                                elseif chasingBool.Value == false then
+                                    if chasingValue.Value == "" and not notifiedStopped then
+                                        game:GetService("StarterGui"):SetCore("SendNotification", {
+                                            Title = "Monster Notifier",
+                                            Text = monsterModel.Name .. " has stopped chasing you!",
+                                            Duration = 5
+                                        })
+                                        notifiedStopped = true
+                                        notifiedChasing = false
+                                    end
                                 end
                             end)
                         end
