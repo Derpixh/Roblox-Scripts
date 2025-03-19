@@ -1,8 +1,8 @@
 local RunService = game:GetService("RunService")
 local player = game.Players.LocalPlayer
-local currentRoomFolder = game.Workspace:WaitForChild("CurrentRoom")
 
 local function checkChasingValue()
+    local currentRoomFolder = game.Workspace:WaitForChild("CurrentRoom")
     for _, model in pairs(currentRoomFolder:GetChildren()) do
         if model:IsA("Model") then
             local monstersFolder = model:FindFirstChild("Monsters")
