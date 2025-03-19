@@ -158,7 +158,7 @@ local autoHighlightItemsToggle = tabItems:CreateToggle({
             if not model:FindFirstChildOfClass("Highlight") then
                 local highlight = Instance.new("Highlight")
                 highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                highlight.FillColor = Color3.fromRGB(255, 165, 0)
                 highlight.Parent = model
             end
         end
@@ -193,11 +193,11 @@ local autoHighlightItemsToggle = tabItems:CreateToggle({
         end
 
         if Value then
-            highlightConnection = RunService.Heartbeat:Connect(checkAndUpdateItems)
+            itemHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdateItems)
         else
-            if highlightConnection then
-                highlightConnection:Disconnect()
-                highlightConnection = nil
+            if itemHighlightConnection then
+                itemHighlightConnection:Disconnect()
+                itemHighlightConnection = nil
                 local currentRoom = workspace:FindFirstChild("CurrentRoom")
                 if currentRoom then
                     for _, roomModel in pairs(currentRoom:GetChildren()) do
