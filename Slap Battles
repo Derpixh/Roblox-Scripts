@@ -176,6 +176,42 @@ local teleportToBrazilButton = lobbyTab:CreateButton({
 
 local eludeKeypadSection = lobbyTab:CreateSection("Elude Keypad")
 
+local autoNotifyKeypadButton = lobbyTab:CreateButton({
+    Name = "Auto Notify Keypad",
+    SectionParent = eludeKeypadSection,
+    Callback = function()
+        local runService = game:GetService("RunService")
+        local keypadExists = false
+
+        runService.Stepped:Connect(function()
+            local keypad = workspace:FindFirstChild("Keypad")
+
+            if keypad and not keypadExists then
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Keypad Notifier",
+                    Text = "Keypad Found!",
+                    Duration = 5
+                })
+                keypadExists = true
+            elseif not keypad and keypadExists then
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Keypad Notifier",
+                    Text = "Keypad Has Despawned!",
+                    Duration = 5
+                })
+                keypadExists = false
+            elseif not keypad and not keypadExists then
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Keypad Notifier",
+                    Text = "Keypad Not Found!",
+                    Duration = 5
+                })
+                keypadExists = nil
+            end
+        end)
+    end
+})
+
 local getKeypadCodeButton = lobbyTab:CreateButton({
     Name = "Get Keypad Code",
     SectionParent = eludeKeypadSection,
