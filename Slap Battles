@@ -176,39 +176,40 @@ local teleportToBrazilButton = lobbyTab:CreateButton({
 
 local eludeKeypadSection = lobbyTab:CreateSection("Elude Keypad")
 
-local autoNotifyKeypadButton = lobbyTab:CreateButton({
+local autoNotifyKeypadToggle = lobbyTab:CreateToggle({
     Name = "Auto Notify Keypad",
     SectionParent = eludeKeypadSection,
-    Callback = function()
+    CurrentValue = false,
+    Callback = function(value)
         local runService = game:GetService("RunService")
-        local keypadExists = false
+        local connection
 
-        runService.Stepped:Connect(function()
-            local keypad = workspace:FindFirstChild("Keypad")
+        if value then
+            local keypadExists = false
+            connection = runService.Stepped:Connect(function()
+                local keypad = workspace:FindFirstChild("Keypad")
 
-            if keypad and not keypadExists then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Keypad Notifier",
-                    Text = "Keypad Found!",
-                    Duration = 5
-                })
-                keypadExists = true
-            elseif not keypad and keypadExists then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Keypad Notifier",
-                    Text = "Keypad Has Despawned!",
-                    Duration = 5
-                })
-                keypadExists = false
-            elseif not keypad and not keypadExists then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Keypad Notifier",
-                    Text = "Keypad Not Found!",
-                    Duration = 5
-                })
-                keypadExists = nil
+                if keypad and not keypadExists then
+                    game.StarterGui:SetCore("SendNotification", {
+                        Title = "Keypad Notifier",
+                        Text = "Keypad Found!",
+                        Duration = 5
+                    })
+                    keypadExists = true
+                elseif not keypad and keypadExists then
+                    game.StarterGui:SetCore("SendNotification", {
+                        Title = "Keypad Notifier",
+                        Text = "Keypad Has Despawned!",
+                        Duration = 5
+                    })
+                    keypadExists = false
+                end
+            end)
+        else
+            if connection then
+                connection:Disconnect()
             end
-        end)
+        end
     end
 })
 
