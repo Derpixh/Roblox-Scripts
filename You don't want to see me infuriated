@@ -189,6 +189,10 @@ local autoRemoveToggle = stage4Tab:CreateToggle({
                                             if touchInterest then
                                                 touchInterest:Destroy()
                                             end
+                                            local evilScript = child:FindFirstChild("EvilScript")
+                                            if evilScript then
+                                                evilScript:Destroy()
+                                            end
                                         end
                                     end
                                 end
