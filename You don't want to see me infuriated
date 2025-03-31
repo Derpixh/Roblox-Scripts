@@ -1,0 +1,47 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "You don't wanna see me infuriated - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local stage1Tab = window:CreateTab("Stage 1")
+
+local obbySection = stage1Tab:CreateSection("Obby")
+
+local freezeObbyButton = stage1Tab:CreateButton({
+    Name = "Freeze Obby (Easier To Walk Across)",
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder1 = stageParts:FindFirstChild("1")
+            if folder1 then
+                local reallyGoodBridge = folder1:FindFirstChild("ReallyGoodBridge")
+                if reallyGoodBridge then
+                    local bridgeParts = reallyGoodBridge:FindFirstChild("BridgeParts")
+                    if bridgeParts then
+                        for _, part in ipairs(bridgeParts:GetChildren()) do
+                            if part.Name == "Baseplate" and part:IsA("Part") then
+                                part.Anchored = true
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
