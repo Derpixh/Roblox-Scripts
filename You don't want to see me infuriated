@@ -250,7 +250,7 @@ local winObbyButtonStage5 = stage5Tab:CreateButton({
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
         if obbyStages then
-            local part5 = obbyStages:FindFirstChild("5")
+            local part5 = obbyStages:FindFirstChild("6")
             if part5 and part5:IsA("Part") then
                 local touchInterest = part5:FindFirstChild("TouchInterest")
                 if touchInterest then
