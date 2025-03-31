@@ -411,3 +411,48 @@ local autoHighlightDoorsToggle = stage7Tab:CreateToggle({
         end
     end,
 })
+
+local invincibilityButton = stage7Tab:CreateButton({
+    Name = "Invincibility To Exploding Doors (Annoying Dying To Other Doors)",
+    SectionParent = doorsSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder7 = stageParts:FindFirstChild("7")
+            if folder7 then
+                local explodingDoorsFolder = folder7:FindFirstChild("ExplodingDoors")
+                if explodingDoorsFolder then
+                    for _, part in ipairs(explodingDoorsFolder:GetChildren()) do
+                        if part.Name == "Door" and part:IsA("Part") then
+                            local touchInterest = part:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                touchInterest:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local miscSection = stage7Tab:CreateSection("Misc")
+
+local skipStageButtonStage7 = stage7Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part8 = obbyStages:FindFirstChild("8")
+            if part8 and part8:IsA("Part") then
+                local touchInterest = part8:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part8, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part8, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part8.CFrame
+            end
+        end
+    end
+})
