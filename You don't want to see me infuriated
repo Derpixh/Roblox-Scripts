@@ -158,16 +158,15 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
     end
 })
 
-local stage4Tab = window:CreateTab("Stage 4")
-
-local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
+local RunService = game:GetService("RunService")
+local connection
 
 local autoRemoveToggle = stage4Tab:CreateToggle({
     Name = "Auto Remove Fruit Jumpscares",
-    SectionParent = fruitJumpscaresSection,
-    Default = false,
-    Callback = function(state)
-        if state then
+    CurrentValue = false,
+    Flag = "AutoRemoveFruitJumpscares", -- Unique flag for configuration saving
+    Callback = function(Value)
+        if Value then
             connection = RunService.Heartbeat:Connect(function()
                 local localPlayer = game.Players.LocalPlayer
                 if localPlayer then
@@ -190,5 +189,5 @@ local autoRemoveToggle = stage4Tab:CreateToggle({
                 connection = nil
             end
         end
-    end
+    end,
 })
