@@ -742,7 +742,7 @@ local stage12Tab = window:CreateTab("Stage 12")
 local miscSection = stage12Tab:CreateSection("Misc")
 
 local skipStageButtonStage12 = stage12Tab:CreateButton({
-    Name = "Skip Stage (Idk How To Stop The Bridge From Fading Away)",
+    Name = "Skip Stage (Idk How To Stop Bridge From Fading Away)",
     SectionParent = miscSection,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
