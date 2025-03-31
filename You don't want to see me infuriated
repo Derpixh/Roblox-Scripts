@@ -49,8 +49,8 @@ local freezeObbyButton = stage1Tab:CreateButton({
 
 local miscStage1Section = stage1Tab:CreateSection("Misc")
 
-local winObbyButtonStage1 = stage1Tab:CreateButton({
-    Name = "Win Obby (Shortcut For Lazy Players)",
+local skipStageButtonStage1 = stage1Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
     SectionParent = miscStage1Section,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
@@ -96,8 +96,8 @@ local openQuizDoorsButton = stage2Tab:CreateButton({
 
 local miscStage2Section = stage2Tab:CreateSection("Misc")
 
-local winObbyButtonStage2 = stage2Tab:CreateButton({
-    Name = "Win Obby (For Those Who Want A Shortcut)",
+local skipStageButtonStage2 = stage2Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
     SectionParent = miscStage2Section,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
@@ -142,8 +142,8 @@ local landminesButton = stage3Tab:CreateButton({
 
 local miscStage3Section = stage3Tab:CreateSection("Misc")
 
-local winObbyButtonStage3 = stage3Tab:CreateButton({
-    Name = "Win Obby (If You Are Too Lazy)",
+local skipStageButtonStage3 = stage3Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
     SectionParent = miscStage3Section,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
@@ -163,11 +163,11 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
 
 local stage4Tab = window:CreateTab("Stage 4")
 
-local fruitObbySection = stage4Tab:CreateSection("Fruit Obby")
+local miscStage4Section = stage4Tab:CreateSection("Misc")
 
-local winObbyButton = stage4Tab:CreateButton({
-    Name = "Win Obby (Idk How To Remove The Jumpscares)",
-    SectionParent = fruitObbySection,
+local skipStageButtonStage4 = stage4Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscStage4Section,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
         if obbyStages then
@@ -242,22 +242,22 @@ local autoRemoveShopToggle = stage5Tab:CreateToggle({
     end
 })
 
-local miscSection = stage5Tab:CreateSection("Misc")
+local miscStage5Section = stage5Tab:CreateSection("Misc")
 
-local winObbyButtonStage5 = stage5Tab:CreateButton({
-    Name = "Win Obby (For Lazy Players)",
-    SectionParent = miscSection,
+local skipStageButtonStage5 = stage5Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscStage5Section,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
         if obbyStages then
-            local part5 = obbyStages:FindFirstChild("6")
-            if part5 and part5:IsA("Part") then
-                local touchInterest = part5:FindFirstChild("TouchInterest")
+            local part6 = obbyStages:FindFirstChild("6")
+            if part6 and part6:IsA("Part") then
+                local touchInterest = part6:FindFirstChild("TouchInterest")
                 if touchInterest then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part5, 0)
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part5, 1)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part6, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part6, 1)
                 end
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part5.CFrame
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part6.CFrame
             end
         end
     end
