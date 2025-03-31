@@ -688,3 +688,51 @@ local skipStageButtonStage9 = stage9Tab:CreateButton({
         end
     end
 })
+
+local stage11Tab = window:CreateTab("Stage 11")
+
+local mainSection = stage11Tab:CreateSection("Main")
+
+local removeFruitsToggle = stage11Tab:CreateToggle({
+    Name = "Remove Fruits (You Can Add Them Back Too With The Toggle)",
+    SectionParent = mainSection,
+    CurrentValue = false,
+    Flag = "RemoveFruits",
+    Callback = function(Value)
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder11 = stageParts:FindFirstChild("11")
+            if folder11 then
+                local button = folder11:FindFirstChild("Button")
+                if button and button:IsA("Part") then
+                    local touchInterest = button:FindFirstChild("TouchInterest")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, button, 0)
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, button, 1)
+                    end
+                end
+            end
+        end
+    end,
+})
+
+local miscSection = stage11Tab:CreateSection("Misc")
+
+local skipStageButtonStage11 = stage11Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part12 = obbyStages:FindFirstChild("12")
+            if part12 and part12:IsA("Part") then
+                local touchInterest = part12:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part12, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part12, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part12.CFrame
+            end
+        end
+    end
+})
