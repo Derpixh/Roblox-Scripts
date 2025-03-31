@@ -304,7 +304,7 @@ local walkspeedSection = stage6Tab:CreateSection("Walkspeed")
 local fixWalkspeedToggleActive = false
 
 local autoFixWalkspeedToggle = stage6Tab:CreateToggle({
-    Name = "Automatically Fix Walkspeed",
+    Name = "Automatically Fix Walkspeed (You Need To Turn It Off when You Get To Stage 7)",
     SectionParent = walkspeedSection,
     CurrentValue = false,
     Flag = "AutoFixWalkspeed",
@@ -318,8 +318,6 @@ local autoFixWalkspeedToggle = stage6Tab:CreateToggle({
                     local localPlayer = players.LocalPlayer
                     if localPlayer then
                         local playerModel = workspace:FindFirstChild(localPlayer.Name)
-                        local part = workspace.StageParts["6"]:GetChildren()[3]
-
                         if playerModel and playerModel:IsA("Model") then
                             local humanoid = playerModel:FindFirstChild("Humanoid")
                             if humanoid and humanoid:IsA("Humanoid") then
@@ -327,18 +325,31 @@ local autoFixWalkspeedToggle = stage6Tab:CreateToggle({
                                     humanoid.WalkSpeed = 16
                                 end
                             end
-
-                            if playerModel.PrimaryPart and playerModel.PrimaryPart ~= part then
-                                autoFixWalkspeedToggle:Set(false)
-                                fixWalkspeedToggleActive = false
-                            end
-                        else
-                            autoFixWalkspeedToggle:Set(false)
-                            fixWalkspeedToggleActive = false
                         end
                     end
                 end
             end)
         end
     end,
+})
+
+local miscSection = stage6Tab:CreateSection("Misc")
+
+local skipStageButtonStage6 = stage6Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part7 = obbyStages:FindFirstChild("7")
+            if part7 and part7:IsA("Part") then
+                local touchInterest = part7:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part7, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part7, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part7.CFrame
+            end
+        end
+    end
 })
