@@ -736,3 +736,52 @@ local skipStageButtonStage11 = stage11Tab:CreateButton({
         end
     end
 })
+
+local stage12Tab = window:CreateTab("Stage 12")
+
+local bridgeSection = stage12Tab:CreateSection("Bridge")
+
+local antiFadeBridgeButton = stage12Tab:CreateButton({
+    Name = "Anti Fade Bridge",
+    SectionParent = bridgeSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder12 = stageParts:FindFirstChild("12")
+            if folder12 then
+                local bridgePartsFolder = folder12:FindFirstChild("BridgeParts")
+                if bridgePartsFolder then
+                    for _, part in ipairs(bridgePartsFolder:GetChildren()) do
+                        if part:IsA("Part") then
+                            local touchInterest = part:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                touchInterest:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local miscSection = stage12Tab:CreateSection("Misc")
+
+local skipStageButtonStage12 = stage12Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part13 = obbyStages:FindFirstChild("13")
+            if part13 and part13:IsA("Part") then
+                local touchInterest = part13:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part13, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part13, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part13.CFrame
+            end
+        end
+    end
+})
