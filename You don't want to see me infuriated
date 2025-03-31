@@ -157,3 +157,32 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
         end
     end
 })
+
+local stage4Tab = window:CreateTab("Stage 4")
+
+local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
+
+local autoRemoveToggle = stage4Tab:CreateToggle({
+    Name = "Auto Remove Fruit Jumpscares",
+    SectionParent = fruitJumpscaresSection,
+    Default = false,
+    Callback = function(state)
+        if state then
+            RunService:BindToRenderStep("RemoveJumpscares", Enum.RenderPriority.Last.Value, function()
+                local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+                if playerGui then
+                    local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
+                    local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
+                    if fruitJumpscare then
+                        fruitJumpscare:Destroy()
+                    end
+                    if goldenJumpscare then
+                        goldenJumpscare:Destroy()
+                    end
+                end
+            end)
+        else
+            RunService:UnbindFromRenderStep("RemoveJumpscares")
+        end
+    end
+})
