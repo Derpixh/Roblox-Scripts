@@ -298,3 +298,42 @@ local autoDisableCaptchaToggle = stage6Tab:CreateToggle({
         end
     end,
 })
+
+local walkspeedSection = stage6Tab:CreateSection("Walkspeed")
+
+local fixWalkspeedToggleActive = false
+
+local autoFixWalkspeedToggle = stage6Tab:CreateToggle({
+    Name = "Automatically Fix Walkspeed",
+    SectionParent = walkspeedSection,
+    CurrentValue = false,
+    Flag = "AutoFixWalkspeed",
+    Callback = function(Value)
+        fixWalkspeedToggleActive = Value
+        if fixWalkspeedToggleActive then
+            spawn(function()
+                while fixWalkspeedToggleActive do
+                    wait()
+                    local players = game:GetService("Players")
+                    local localPlayer = players.LocalPlayer
+                    if localPlayer then
+                        local playerModel = workspace:FindFirstChild(localPlayer.Name)
+                        local part = workspace.StageParts["6"]:GetChildren()[3]
+
+                        if playerModel and playerModel:IsA("Model") then
+                            local humanoid = playerModel:FindFirstChild("Humanoid")
+                            if humanoid and humanoid:IsA("Humanoid") then
+                                if humanoid.WalkSpeed ~= 16 then
+                                    humanoid.WalkSpeed = 16
+                                end
+                            end
+                        elseif fixWalkspeedToggleActive and playerModel ~= part then
+                            autoFixWalkspeedToggle:Set(false)
+                            fixWalkspeedToggleActive = false
+                        end
+                    end
+                end
+            end)
+        end
+    end,
+})
