@@ -25,6 +25,7 @@ local obbySection = stage1Tab:CreateSection("Obby")
 
 local freezeObbyButton = stage1Tab:CreateButton({
     Name = "Freeze Obby (Easier To Walk Across)",
+    SectionParent = obbySection,
     Callback = function()
         local stageParts = workspace:FindFirstChild("StageParts")
         if stageParts then
