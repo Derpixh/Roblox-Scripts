@@ -119,8 +119,8 @@ local stage3Tab = window:CreateTab("Stage 3")
 
 local landminesSection = stage3Tab:CreateSection("Landmines")
 
-local invincibilityButton = stage3Tab:CreateButton({
-    Name = "Invincibility To Landmines (You Can Do The Obby Without Dying)",
+local landminesButton = stage3Tab:CreateButton({
+    Name = "Remove Landmines (Easier Gameplay)",
     SectionParent = landminesSection,
     Callback = function()
         local stageParts = workspace:FindFirstChild("StageParts")
@@ -130,11 +130,8 @@ local invincibilityButton = stage3Tab:CreateButton({
                 local landminesFolder = folder3:FindFirstChild("Landmines")
                 if landminesFolder then
                     for _, landmine in ipairs(landminesFolder:GetChildren()) do
-                        if landmine.Name == "Landmine" and landmine:IsA("Part") then
-                            local touchInterest = landmine:FindFirstChild("TouchInterest")
-                            if touchInterest then
-                                touchInterest:Destroy()
-                            end
+                        if landmine:IsA("Part") then
+                            landmine:Destroy()
                         end
                     end
                 end
