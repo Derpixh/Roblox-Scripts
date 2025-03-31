@@ -456,3 +456,84 @@ local skipStageButtonStage7 = stage7Tab:CreateButton({
         end
     end
 })
+
+local stage8Tab = window:CreateTab("Stage 8")
+
+local sigmundSection = stage8Tab:CreateSection("Sigmund")
+
+local removeSigmundsButton = stage8Tab:CreateButton({
+    Name = "Remove Sigmunds",
+    SectionParent = sigmundSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                for _, part in ipairs(folder8:GetChildren()) do
+                    if part.Name == "Sigmund" and part:IsA("Part") then
+                        part:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local killbricksSection = stage8Tab:CreateSection("Killbricks")
+
+local removeKillbricksButton = stage8Tab:CreateButton({
+    Name = "Remove Killbricks",
+    SectionParent = killbricksSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local killBricksFolder = folder8:FindFirstChild("KillBricks")
+                if killBricksFolder then
+                    killBricksFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local landminesSection = stage8Tab:CreateSection("Landmines")
+
+local removeLandminesButton = stage8Tab:CreateButton({
+    Name = "Remove Landmines",
+    SectionParent = landminesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local landminesFolder = folder8:FindFirstChild("Landmines")
+                if landminesFolder then
+                    landminesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local miscSection = stage8Tab:CreateSection("Misc")
+
+local skipStageButtonStage8 = stage8Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part9 = obbyStages:FindFirstChild("9")
+            if part9 and part9:IsA("Part") then
+                local touchInterest = part9:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part9, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part9, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part9.CFrame
+            end
+        end
+    end
+})
