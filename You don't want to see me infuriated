@@ -246,7 +246,6 @@ local autoRemoveShopToggle = stage5Tab:CreateToggle({
     end,
 })
 
-local stage5Tab = window:CreateTab("Stage 5")
 local winObbySection = stage5Tab:CreateSection("Win Obby")
 
 local winObbyButtonStage5 = stage5Tab:CreateButton({
