@@ -479,25 +479,6 @@ local removeSigmundsButton = stage8Tab:CreateButton({
     end
 })
 
-local killbricksSection = stage8Tab:CreateSection("Killbricks")
-
-local removeKillbricksButton = stage8Tab:CreateButton({
-    Name = "Remove Killbricks",
-    SectionParent = killbricksSection,
-    Callback = function()
-        local stageParts = workspace:FindFirstChild("StageParts")
-        if stageParts then
-            local folder8 = stageParts:FindFirstChild("8")
-            if folder8 then
-                local killBricksFolder = folder8:FindFirstChild("KillBricks")
-                if killBricksFolder then
-                    killBricksFolder:Destroy()
-                end
-            end
-        end
-    end
-})
-
 local landminesSection = stage8Tab:CreateSection("Landmines")
 
 local removeLandminesButton = stage8Tab:CreateButton({
