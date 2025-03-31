@@ -46,3 +46,22 @@ local freezeObbyButton = stage1Tab:CreateButton({
         end
     end
 })
+
+local winObbyButton = stage1Tab:CreateButton({
+    Name = "Win Obby (If You Are Too Lazy)",
+    SectionParent = obbySection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part2 = obbyStages:FindFirstChild("2")
+            if part2 and part2:IsA("BasePart") then
+                local touchInterest = part2:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part2, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part2, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part2.CFrame
+            end
+        end
+    end
+})
