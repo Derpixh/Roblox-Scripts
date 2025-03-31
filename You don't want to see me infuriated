@@ -174,17 +174,24 @@ local autoRemoveToggle = stage4Tab:CreateToggle({
             spawn(function()
                 while toggleActive do
                     wait()
-                    local localPlayer = game.Players.LocalPlayer
-                    if localPlayer then
-                        local playerGui = localPlayer:FindFirstChild("PlayerGui")
-                        if playerGui then
-                            local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
-                            local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
-                            if fruitJumpscare then
-                                fruitJumpscare:Destroy()
-                            end
-                            if goldenJumpscare then
-                                goldenJumpscare:Destroy()
+                    local stageParts = workspace:FindFirstChild("StageParts")
+                    if stageParts then
+                        local folder4 = stageParts:FindFirstChild("4")
+                        if folder4 then
+                            local spawnerFolder = folder4:FindFirstChild("Spawner")
+                            if spawnerFolder then
+                                local projectilesFolder = spawnerFolder:FindFirstChild("Projectiles")
+                                if projectilesFolder then
+                                    for _, child in ipairs(projectilesFolder:GetChildren()) do
+                                        if (child:IsA("MeshPart") and (child.Name == "Apple" or child.Name == "Pear" or child.Name == "Banana" or child.Name == "Pineapple"))
+                                        or (child:IsA("Part") and child.Name == "GoldenFredball") then
+                                            local touchInterest = child:FindFirstChild("TouchInterest")
+                                            if touchInterest then
+                                                touchInterest:Destroy()
+                                            end
+                                        end
+                                    end
+                                end
                             end
                         end
                     end
