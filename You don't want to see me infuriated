@@ -327,7 +327,12 @@ local autoFixWalkspeedToggle = stage6Tab:CreateToggle({
                                     humanoid.WalkSpeed = 16
                                 end
                             end
-                        elseif fixWalkspeedToggleActive and playerModel ~= part then
+
+                            if playerModel.PrimaryPart and playerModel.PrimaryPart ~= part then
+                                autoFixWalkspeedToggle:Set(false)
+                                fixWalkspeedToggleActive = false
+                            end
+                        else
                             autoFixWalkspeedToggle:Set(false)
                             fixWalkspeedToggleActive = false
                         end
