@@ -65,3 +65,48 @@ local winObbyButton = stage1Tab:CreateButton({
         end
     end
 })
+
+local stage2Tab = window:CreateTab("Stage 2")
+
+local quizDoorsSection = stage2Tab:CreateSection("Quiz Doors")
+
+local openQuizDoorsButton = stage2Tab:CreateButton({
+    Name = "Open Quiz Doors (You Can Walk Through The Doors)",
+    SectionParent = quizDoorsSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder2 = stageParts:FindFirstChild("2")
+            if folder2 then
+                local doorsFolder = folder2:FindFirstChild("Doors")
+                if doorsFolder then
+                    for _, part in ipairs(doorsFolder:GetChildren()) do
+                        if part.Name == "Quiz Door" and part:IsA("Part") then
+                            part.Transparency = 1
+                            part.CanCollide = false
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local winObbyButtonStage2 = stage2Tab:CreateButton({
+    Name = "Win Obby (If You Are Too Lazy)",
+    SectionParent = quizDoorsSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part3 = obbyStages:FindFirstChild("3")
+            if part3 and part3:IsA("BasePart") then
+                local touchInterest = part3:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part3, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part3, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part3.CFrame
+            end
+        end
+    end
+})
