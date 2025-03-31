@@ -143,6 +143,7 @@ local invincibilityButton = stage3Tab:CreateButton({
     end
 })
 
+local stage3Tab = window:CreateTab("Stage 3")
 local miscStage3Section = stage3Tab:CreateSection("Misc")
 
 local winObbyButtonStage3 = stage3Tab:CreateButton({
@@ -151,14 +152,14 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
         if obbyStages then
-            local part3 = obbyStages:FindFirstChild("3")
-            if part3 and part3:IsA("Part") then
-                local touchInterest = part3:FindFirstChild("TouchInterest")
+            local part4 = obbyStages:FindFirstChild("4")
+            if part4 and part4:IsA("Part") then
+                local touchInterest = part4:FindFirstChild("TouchInterest")
                 if touchInterest then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part3, 0)
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part3, 1)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part4, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part4, 1)
                 end
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part3.CFrame
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part4.CFrame
             end
         end
     end
