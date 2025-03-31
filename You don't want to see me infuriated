@@ -665,3 +665,26 @@ local skipStageButtonStage8 = stage8Tab:CreateButton({
         end
     end
 })
+
+local stage9Tab = window:CreateTab("Stage 9")
+
+local stageSection = stage9Tab:CreateSection("Stage")
+
+local skipStageButtonStage9 = stage9Tab:CreateButton({
+    Name = "Skip Stage (Idk How To Support This Stage)",
+    SectionParent = stageSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part10 = obbyStages:FindFirstChild("10")
+            if part10 and part10:IsA("Part") then
+                local touchInterest = part10:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part10, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part10, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part10.CFrame
+            end
+        end
+    end
+})
