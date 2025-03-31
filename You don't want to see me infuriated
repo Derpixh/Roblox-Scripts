@@ -498,6 +498,104 @@ local removeLandminesButton = stage8Tab:CreateButton({
     end
 })
 
+local carSpawnerSection = stage8Tab:CreateSection("Car Spawner")
+
+local spawnCarButton = stage8Tab:CreateButton({
+    Name = "Spawn Car From Spawner 1",
+    SectionParent = carSpawnerSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local spawnersFolder = folder8:FindFirstChild("Spawners")
+                if spawnersFolder then
+                    local spawner = spawnersFolder:GetChildren()[4]
+                    if spawner and spawner.Name == "Spawner" and spawner:IsA("Part") then
+                        local touchInterest = spawner:FindFirstChild("TouchInterest")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 0)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local spawnCarButton2 = stage8Tab:CreateButton({
+    Name = "Spawn Car From Spawner 2",
+    SectionParent = carSpawnerSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local spawnersFolder = folder8:FindFirstChild("Spawners")
+                if spawnersFolder then
+                    local spawner = spawnersFolder:GetChildren()[1]
+                    if spawner and spawner.Name == "Spawner" and spawner:IsA("Part") then
+                        local touchInterest = spawner:FindFirstChild("TouchInterest")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 0)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local spawnCarButton3 = stage8Tab:CreateButton({
+    Name = "Spawn Car From Spawner 3",
+    SectionParent = carSpawnerSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local spawnersFolder = folder8:FindFirstChild("Spawners")
+                if spawnersFolder then
+                    local spawner = spawnersFolder:GetChildren()[2]
+                    if spawner and spawner.Name == "Spawner" and spawner:IsA("Part") then
+                        local touchInterest = spawner:FindFirstChild("TouchInterest")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 0)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local spawnCarButton4 = stage8Tab:CreateButton({
+    Name = "Spawn Car From Spawner 4",
+    SectionParent = carSpawnerSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local spawnersFolder = folder8:FindFirstChild("Spawners")
+                if spawnersFolder then
+                    local spawner = spawnersFolder:GetChildren()[3]
+                    if spawner and spawner.Name == "Spawner" and spawner:IsA("Part") then
+                        local touchInterest = spawner:FindFirstChild("TouchInterest")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 0)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, spawner, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local miscSection = stage8Tab:CreateSection("Misc")
 
 local skipStageButtonStage8 = stage8Tab:CreateButton({
