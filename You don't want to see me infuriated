@@ -358,44 +358,34 @@ local stage7Tab = window:CreateTab("Stage 7")
 
 local doorsSection = stage7Tab:CreateSection("Doors")
 
-local highlightToggleActive = false
-
 local autoHighlightDoorsToggle = stage7Tab:CreateToggle({
     Name = "Automatically Highlight Correct Doors (Turn This Off When You Get To Stage 8)",
     SectionParent = doorsSection,
     CurrentValue = false,
     Flag = "AutoHighlightDoors",
     Callback = function(Value)
-        highlightToggleActive = Value
-        if highlightToggleActive then
-            spawn(function()
-                while highlightToggleActive do
-                    wait()
-                    local stageParts = workspace:FindFirstChild("StageParts")
-                    if stageParts then
-                        local folder7 = stageParts:FindFirstChild("7")
-                        if folder7 then
-                            local doorsFolder = folder7:FindFirstChild("Doors")
-                            if doorsFolder then
-                                for _, doorFolder in ipairs({"1", "2", "3"}) do
-                                    local folder = doorsFolder:FindFirstChild(doorFolder)
-                                    if folder then
-                                        local part = folder:FindFirstChildOfClass("Part")
-                                        if part then
-                                            if not part:FindFirstChildOfClass("Highlight") then
-                                                local highlight = Instance.new("Highlight")
-                                                highlight.FillColor = Color3.fromRGB(0, 255, 0)
-                                                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                                                highlight.Parent = part
-                                            end
-                                        end
-                                    end
+        if Value then
+            local stageParts = workspace:FindFirstChild("StageParts")
+            if stageParts then
+                local folder7 = stageParts:FindFirstChild("7")
+                if folder7 then
+                    local doorsFolder = folder7:FindFirstChild("Doors")
+                    if doorsFolder then
+                        for _, doorFolder in ipairs({"1", "2", "3"}) do
+                            local folder = doorsFolder:FindFirstChild(doorFolder)
+                            if folder then
+                                local part = folder:FindFirstChildOfClass("Part")
+                                if part and not part:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Parent = part
                                 end
                             end
                         end
                     end
                 end
-            end)
+            end
         else
             local stageParts = workspace:FindFirstChild("StageParts")
             if stageParts then
