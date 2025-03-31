@@ -217,14 +217,13 @@ local invincibilityButton = stage5Tab:CreateButton({
 
 local gamepassShopSection = stage5Tab:CreateSection("Gamepass Shop")
 
-local toggleActive = false
-
 local autoRemoveShopToggle = stage5Tab:CreateToggle({
     Name = "Auto Remove Gamepass Shop UI (Annoying UI That Comes On Your Screen)",
+    SectionParent = gamepassShopSection,
     CurrentValue = false,
     Flag = "AutoRemoveShop",
     Callback = function(Value)
-        toggleActive = Value
+        local toggleActive = Value
         if toggleActive then
             spawn(function()
                 while toggleActive do
@@ -243,7 +242,7 @@ local autoRemoveShopToggle = stage5Tab:CreateToggle({
                 end
             end)
         end
-    end,
+    end
 })
 
 local winObbySection = stage5Tab:CreateSection("Win Obby")
