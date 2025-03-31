@@ -479,6 +479,29 @@ local removeSigmundsButton = stage8Tab:CreateButton({
     end
 })
 
+local wedgesSection = stage8Tab:CreateSection("Wedges")
+
+local removeWedgesButton = stage8Tab:CreateButton({
+    Name = "Remove Wedges",
+    SectionParent = wedgesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local killBricksFolder = folder8:FindFirstChild("KillBricks")
+                if killBricksFolder then
+                    for index, wedge in ipairs(killBricksFolder:GetChildren()) do
+                        if wedge.Name == "Wedge" and wedge:IsA("Part") and index ~= 1 and index ~= 13 then
+                            wedge:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local landminesSection = stage8Tab:CreateSection("Landmines")
 
 local removeLandminesButton = stage8Tab:CreateButton({
@@ -492,6 +515,32 @@ local removeLandminesButton = stage8Tab:CreateButton({
                 local landminesFolder = folder8:FindFirstChild("Landmines")
                 if landminesFolder then
                     landminesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local killbricksSection = stage8Tab:CreateSection("KillBricks")
+
+local invincibilityKillbricksButton = stage8Tab:CreateButton({
+    Name = "Invincibility To KillBricks",
+    SectionParent = killbricksSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder8 = stageParts:FindFirstChild("8")
+            if folder8 then
+                local killBricksFolder = folder8:FindFirstChild("KillBricks")
+                if killBricksFolder then
+                    for _, part in ipairs(killBricksFolder:GetChildren()) do
+                        if part.Name == "Baseplate" and part:IsA("Part") then
+                            local touchInterest = part:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                touchInterest:Destroy()
+                            end
+                        end
+                    end
                 end
             end
         end
