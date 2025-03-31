@@ -164,7 +164,7 @@ local connection
 local autoRemoveToggle = stage4Tab:CreateToggle({
     Name = "Auto Remove Fruit Jumpscares",
     CurrentValue = false,
-    Flag = "AutoRemoveFruitJumpscares", -- Unique flag for configuration saving
+    Flag = "AutoRemoveFruitJumpscares",
     Callback = function(Value)
         if Value then
             connection = RunService.Heartbeat:Connect(function()
