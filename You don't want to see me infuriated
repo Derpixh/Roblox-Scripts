@@ -180,3 +180,62 @@ local winObbyButton = stage4Tab:CreateButton({
         end
     end
 })
+
+local stage5Tab = window:CreateTab("Stage 5")
+
+local obbySection = stage5Tab:CreateSection("Obby")
+
+local invincibilityButton = stage5Tab:CreateButton({
+    Name = "Invincibility To Killbricks",
+    SectionParent = obbySection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder5 = stageParts:FindFirstChild("5")
+            if folder5 then
+                local killBricksFolder = folder5:FindFirstChild("KillBricks")
+                if killBricksFolder then
+                    for _, part in ipairs(killBricksFolder:GetChildren()) do
+                        if part.Name == "Kill brick" and part:IsA("Part") then
+                            local touchInterest = part:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                touchInterest:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local gamepassShopSection = stage5Tab:CreateSection("Gamepass Shop")
+
+local toggleActive = false
+
+local autoRemoveShopToggle = stage5Tab:CreateToggle({
+    Name = "Auto Remove Gamepass Shop UI (Annoying UI That Comes On Your Screen)",
+    CurrentValue = false,
+    Flag = "AutoRemoveShop",
+    Callback = function(Value)
+        toggleActive = Value
+        if toggleActive then
+            spawn(function()
+                while toggleActive do
+                    wait()
+                    local players = game:GetService("Players")
+                    local localPlayer = players.LocalPlayer
+                    if localPlayer then
+                        local playerGui = localPlayer:FindFirstChild("PlayerGui")
+                        if playerGui then
+                            local shopGui = playerGui:FindFirstChild("Shop")
+                            if shopGui then
+                                shopGui:Destroy()
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end,
+})
