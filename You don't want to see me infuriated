@@ -111,6 +111,10 @@ local winObbyButtonStage2 = stage2Tab:CreateButton({
     end
 })
 
+local stage3Tab = window:CreateTab("Stage 3")
+
+local landminesSection = stage3Tab:CreateSection("Landmines")
+
 local invincibilityButton = stage3Tab:CreateButton({
     Name = "Invincibility To Landmines (You Can Do The Obby Without Dying)",
     SectionParent = landminesSection,
