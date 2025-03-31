@@ -158,36 +158,38 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
     end
 })
 
-local RunService = game:GetService("RunService")
-local connection
+local stage4Tab = window:CreateTab("Stage 4")
+
+local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
+
+local toggleActive = false
 
 local autoRemoveToggle = stage4Tab:CreateToggle({
     Name = "Auto Remove Fruit Jumpscares",
     CurrentValue = false,
     Flag = "AutoRemoveFruitJumpscares",
     Callback = function(Value)
-        if Value then
-            connection = RunService.Heartbeat:Connect(function()
-                local localPlayer = game.Players.LocalPlayer
-                if localPlayer then
-                    local playerGui = localPlayer:FindFirstChild("PlayerGui")
-                    if playerGui then
-                        local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
-                        local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
-                        if fruitJumpscare then
-                            fruitJumpscare:Destroy()
-                        end
-                        if goldenJumpscare then
-                            goldenJumpscare:Destroy()
+        toggleActive = Value
+        if toggleActive then
+            spawn(function()
+                while toggleActive do
+                    wait(0.001)
+                    local localPlayer = game.Players.LocalPlayer
+                    if localPlayer then
+                        local playerGui = localPlayer:FindFirstChild("PlayerGui")
+                        if playerGui then
+                            local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
+                            local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
+                            if fruitJumpscare then
+                                fruitJumpscare:Destroy()
+                            end
+                            if goldenJumpscare then
+                                goldenJumpscare:Destroy()
+                            end
                         end
                     end
                 end
             end)
-        else
-            if connection then
-                connection:Disconnect()
-                connection = nil
-            end
         end
     end,
 })
