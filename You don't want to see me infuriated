@@ -262,3 +262,39 @@ local skipStageButtonStage5 = stage5Tab:CreateButton({
         end
     end
 })
+
+local stage6Tab = window:CreateTab("Stage 6")
+
+local captchaSection = stage6Tab:CreateSection("Captcha")
+
+local captchaToggleActive = false
+
+local autoDisableCaptchaToggle = stage6Tab:CreateToggle({
+    Name = "Automatically Disable Captcha (Annoying Popup)",
+    SectionParent = captchaSection,
+    CurrentValue = false,
+    Flag = "AutoDisableCaptcha",
+    Callback = function(Value)
+        captchaToggleActive = Value
+        if captchaToggleActive then
+            spawn(function()
+                while captchaToggleActive do
+                    wait()
+                    local players = game:GetService("Players")
+                    local localPlayer = players.LocalPlayer
+                    if localPlayer then
+                        local playerGui = localPlayer:FindFirstChild("PlayerGui")
+                        if playerGui then
+                            local captchaGui = playerGui:FindFirstChild("Captcha")
+                            if captchaGui and captchaGui:IsA("ScreenGui") then
+                                if captchaGui.Enabled then
+                                    captchaGui.Enabled = false
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end,
+})
