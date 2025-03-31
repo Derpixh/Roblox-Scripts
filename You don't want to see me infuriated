@@ -160,47 +160,23 @@ local winObbyButtonStage3 = stage3Tab:CreateButton({
 
 local stage4Tab = window:CreateTab("Stage 4")
 
-local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
+local fruitObbySection = stage4Tab:CreateSection("Fruit Obby")
 
-local toggleActive = false
-
-local autoRemoveToggle = stage4Tab:CreateToggle({
-    Name = "Auto Remove Fruit Jumpscares",
-    CurrentValue = false,
-    Flag = "AutoRemoveFruitJumpscares",
-    Callback = function(Value)
-        toggleActive = Value
-        if toggleActive then
-            spawn(function()
-                while toggleActive do
-                    wait()
-                    local stageParts = workspace:FindFirstChild("StageParts")
-                    if stageParts then
-                        local folder4 = stageParts:FindFirstChild("4")
-                        if folder4 then
-                            local spawnerFolder = folder4:FindFirstChild("Spawner")
-                            if spawnerFolder then
-                                local projectilesFolder = spawnerFolder:FindFirstChild("Projectiles")
-                                if projectilesFolder then
-                                    for _, child in ipairs(projectilesFolder:GetChildren()) do
-                                        if (child:IsA("MeshPart") and (child.Name == "Apple" or child.Name == "Pear" or child.Name == "Banana" or child.Name == "Pineapple"))
-                                        or (child:IsA("Part") and child.Name == "GoldenFredball") then
-                                            local touchInterest = child:FindFirstChild("TouchInterest")
-                                            if touchInterest then
-                                                touchInterest:Destroy()
-                                            end
-                                            local evilScript = child:FindFirstChild("EvilScript")
-                                            if evilScript then
-                                                evilScript:Destroy()
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
+local winObbyButton = stage4Tab:CreateButton({
+    Name = "Win Obby (Idk How To Remove The Jumpscares)",
+    SectionParent = fruitObbySection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part5 = obbyStages:FindFirstChild("5")
+            if part5 and part5:IsA("Part") then
+                local touchInterest = part5:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part5, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part5, 1)
                 end
-            end)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part5.CFrame
+            end
         end
-    end,
+    end
 })
