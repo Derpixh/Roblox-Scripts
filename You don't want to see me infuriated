@@ -245,11 +245,11 @@ local autoRemoveShopToggle = stage5Tab:CreateToggle({
     end
 })
 
-local winObbySection = stage5Tab:CreateSection("Win Obby")
+local miscSection = stage5Tab:CreateSection("Misc")
 
 local winObbyButtonStage5 = stage5Tab:CreateButton({
     Name = "Win Obby (For Lazy Players)",
-    SectionParent = winObbySection,
+    SectionParent = miscSection,
     Callback = function()
         local obbyStages = workspace:FindFirstChild("ObbyStages")
         if obbyStages then
