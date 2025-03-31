@@ -162,15 +162,13 @@ local stage4Tab = window:CreateTab("Stage 4")
 
 local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
 
-local connection
-
 local autoRemoveToggle = stage4Tab:CreateToggle({
     Name = "Auto Remove Fruit Jumpscares",
     SectionParent = fruitJumpscaresSection,
     Default = false,
     Callback = function(state)
         if state then
-            connection = RunService.RenderStepped:Connect(function()
+            connection = RunService.Heartbeat:Connect(function()
                 local localPlayer = game.Players.LocalPlayer
                 if localPlayer then
                     local playerGui = localPlayer:FindFirstChild("PlayerGui")
