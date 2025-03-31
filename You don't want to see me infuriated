@@ -162,27 +162,35 @@ local stage4Tab = window:CreateTab("Stage 4")
 
 local fruitJumpscaresSection = stage4Tab:CreateSection("Fruit Jumpscares")
 
+local connection
+
 local autoRemoveToggle = stage4Tab:CreateToggle({
     Name = "Auto Remove Fruit Jumpscares",
     SectionParent = fruitJumpscaresSection,
     Default = false,
     Callback = function(state)
         if state then
-            RunService:BindToRenderStep("RemoveJumpscares", Enum.RenderPriority.Last.Value, function()
-                local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-                if playerGui then
-                    local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
-                    local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
-                    if fruitJumpscare then
-                        fruitJumpscare:Destroy()
-                    end
-                    if goldenJumpscare then
-                        goldenJumpscare:Destroy()
+            connection = RunService.RenderStepped:Connect(function()
+                local localPlayer = game.Players.LocalPlayer
+                if localPlayer then
+                    local playerGui = localPlayer:FindFirstChild("PlayerGui")
+                    if playerGui then
+                        local fruitJumpscare = playerGui:FindFirstChild("FruitJumpscare")
+                        local goldenJumpscare = playerGui:FindFirstChild("GoldenJumpscare")
+                        if fruitJumpscare then
+                            fruitJumpscare:Destroy()
+                        end
+                        if goldenJumpscare then
+                            goldenJumpscare:Destroy()
+                        end
                     end
                 end
             end)
         else
-            RunService:UnbindFromRenderStep("RemoveJumpscares")
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
         end
     end
 })
