@@ -193,8 +193,8 @@ local freezeObbyKillersToggle = stage4Tab:CreateToggle({
                     table.insert(obbyKillers, npcModel)
                 end
             end
-            if #obbyKillers >= 6 then
-                for i = 4, 6 do
+            if #obbyKillers >= 5 then
+                for i = 3, 5 do
                     local obbyKillerModel = obbyKillers[i]
                     if obbyKillerModel then
                         local hitboxPart = obbyKillerModel:FindFirstChild("Hitbox")
