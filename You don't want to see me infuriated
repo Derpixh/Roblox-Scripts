@@ -1200,3 +1200,24 @@ local removeTerrariaGameButton = stage17Tab:CreateButton({
         end
     end
 })
+
+local miscSection = stage17Tab:CreateSection("Misc")
+
+local skipStageButtonStage17 = stage17Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part17 = obbyStages:FindFirstChild("17")
+            if part17 and part17:IsA("Part") then
+                local touchInterest = part17:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part17.CFrame
+            end
+        end
+    end
+})
