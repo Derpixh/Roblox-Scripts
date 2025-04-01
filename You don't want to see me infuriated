@@ -936,3 +936,121 @@ local skipStageButtonStage14 = stage14Tab:CreateButton({
         end
     end
 })
+
+local stage15Tab = window:CreateTab("Stage 15")
+
+local landminesSection = stage15Tab:CreateSection("Landmines")
+
+local removeLandminesButton = stage15Tab:CreateButton({
+    Name = "Remove Landmines",
+    SectionParent = landminesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder15 = stageParts:FindFirstChild("15")
+            if folder15 then
+                local landminesFolder = folder15:FindFirstChild("Landmines")
+                if landminesFolder then
+                    landminesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local highlightCorrectDoorsToggle = stage15Tab:CreateToggle({
+    Name = "Highlight Correct Doors (You Can Turn It Off/On)",
+    SectionParent = doorsSection,
+    CurrentValue = false,
+    Callback = function(Value)
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder15 = stageParts:FindFirstChild("15")
+            if folder15 then
+                local doorsFolder = folder15:FindFirstChild("Doors")
+                if doorsFolder then
+                    local foldersToHighlight = {doorsFolder:FindFirstChild("1"), doorsFolder:FindFirstChild("2")}
+                    for _, folder in ipairs(foldersToHighlight) do
+                        if folder and folder:IsA("Folder") then
+                            local part = folder:FindFirstChildOfClass("Part")
+                            if part then
+                                local existingHighlight = part:FindFirstChildOfClass("Highlight")
+                                if Value then
+                                    if not existingHighlight then
+                                        local highlight = Instance.new("Highlight")
+                                        highlight.FillColor = Color3.fromRGB(173, 216, 230)
+                                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                        highlight.Parent = part
+                                    end
+                                else
+                                    if existingHighlight then
+                                        existingHighlight:Destroy()
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local axesSection = stage15Tab:CreateSection("Axes")
+
+local removeSwingingAxesButton = stage15Tab:CreateButton({
+    Name = "Remove Swinging Axes",
+    SectionParent = axesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder15 = stageParts:FindFirstChild("15")
+            if folder15 then
+                local axesFolder = folder15:FindFirstChild("Axes")
+                if axesFolder then
+                    axesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local doorsSection = stage15Tab:CreateSection("Doors")
+
+local removeQuizDoorsButton = stage15Tab:CreateButton({
+    Name = "Remove Quiz Doors",
+    SectionParent = doorsSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder15 = stageParts:FindFirstChild("15")
+            if folder15 then
+                local quizDoorsFolder = folder15:FindFirstChild("QuizDoors")
+                if quizDoorsFolder then
+                    quizDoorsFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local miscSection = stage15Tab:CreateSection("Misc")
+
+local skipStageButtonStage15 = stage15Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part16 = obbyStages:FindFirstChild("16")
+            if part16 and part16:IsA("Part") then
+                local touchInterest = part16:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part16, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part16, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part16.CFrame
+            end
+        end
+    end
+})
