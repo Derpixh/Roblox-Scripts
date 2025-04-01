@@ -177,7 +177,39 @@ local removeTriggersButtonStage3 = stage3Tab:CreateButton({
 })
 
 local stage4Tab = window:CreateTab("Stage 4")
+
+local shopSection = stage4Tab:CreateSection("SHOP")
+
+local freezeObbyKillersToggle = stage4Tab:CreateToggle({
+    Name = "Freeze Obby Killers (You Can Turn It On And Off)",
+    SectionParent = shopSection,
+    CurrentValue = false,
+    Callback = function(toggleState)
+        local npcsFolder = game.Workspace:FindFirstChild("NPCs")
+        if npcsFolder then
+            local obbyKillers = {}
+            for _, npcModel in ipairs(npcsFolder:GetChildren()) do
+                if npcModel:IsA("Model") and npcModel.Name:match("^ObbyKiller_") then
+                    table.insert(obbyKillers, npcModel)
+                end
+            end
+            if #obbyKillers >= 6 then
+                for i = 4, 6 do
+                    local obbyKillerModel = obbyKillers[i]
+                    if obbyKillerModel then
+                        local hitboxPart = obbyKillerModel:FindFirstChild("Hitbox")
+                        if hitboxPart then
+                            hitboxPart.Anchored = toggleState
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local removeNpcSection = stage4Tab:CreateSection("Rocket Launcher")
+
 local removeRocketLauncherButton = stage4Tab:CreateButton({
     Name = "Remove Rocketeer's Rocket Launcher",
     SectionParent = removeNpcSection,
@@ -197,6 +229,7 @@ local removeRocketLauncherButton = stage4Tab:CreateButton({
 })
 
 local spikesSection = stage4Tab:CreateSection("Spikes")
+
 local invincibilityToSpikesButton = stage4Tab:CreateButton({
     Name = "Invincibility To Spikes",
     SectionParent = spikesSection,
@@ -272,6 +305,7 @@ local invincibilityToSpikesButton = stage4Tab:CreateButton({
 })
 
 local noclipSection = stage4Tab:CreateSection("Noclip")
+
 local noclipButton = stage4Tab:CreateButton({
     Name = "Noclip Through Traps",
     SectionParent = noclipSection,
@@ -310,5 +344,3 @@ local noclipButton = stage4Tab:CreateButton({
         end
     end
 })
-
-Rayfield:LoadConfiguration()
