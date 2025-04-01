@@ -1152,47 +1152,24 @@ local removeFruitCloudButton = stage16Tab:CreateButton({
     end
 })
 
-local miscSection = stage16Tab:CreateSection("Misc")
+local terrariaGameSection = stage16Tab:CreateSection("Terraria Game")
 
-local skipStageButtonStage16 = stage16Tab:CreateButton({
-    Name = "Skip Stage (Easy Way)",
-    SectionParent = miscSection,
-    Callback = function()
-        local obbyStages = workspace:FindFirstChild("ObbyStages")
-        if obbyStages then
-            local part17 = obbyStages:FindFirstChild("17")
-            if part17 and part17:IsA("Part") then
-                local touchInterest = part17:FindFirstChild("TouchInterest")
-                if touchInterest then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 0)
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 1)
-                end
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part17.CFrame
-            end
-        end
-    end
-})
-
-local stage17Tab = window:CreateTab("Stage 17")
-
-local terrariaGameSection = stage17Tab:CreateSection("Terraria Game")
-
-local removeTerrariaGameButton = stage17Tab:CreateButton({
+local removeTerrariaGameButton = stage16Tab:CreateButton({
     Name = "Remove Terraria Game",
     SectionParent = terrariaGameSection,
     Callback = function()
         local stageParts = workspace:FindFirstChild("StageParts")
         if stageParts then
-            local folder17 = stageParts:FindFirstChild("17")
-            if folder17 then
-                local portalModel = folder17:FindFirstChild("Portal")
+            local folder16 = stageParts:FindFirstChild("16")
+            if folder16 then
+                local portalModel = folder16:FindFirstChild("Portal")
                 if portalModel and portalModel:IsA("Model") then
                     local portalPart = portalModel:FindFirstChild("Portal")
                     if portalPart then
                         portalPart:Destroy()
                     end
                 end
-                local evilTModLoaderPart = folder17:FindFirstChild("EvilTModLoader")
+                local evilTModLoaderPart = folder16:FindFirstChild("EvilTModLoader")
                 if evilTModLoaderPart then
                     evilTModLoaderPart:Destroy()
                 end
@@ -1201,9 +1178,9 @@ local removeTerrariaGameButton = stage17Tab:CreateButton({
     end
 })
 
-local miscSection = stage17Tab:CreateSection("Misc")
+local miscSection = stage16Tab:CreateSection("Misc")
 
-local skipStageButtonStage17 = stage17Tab:CreateButton({
+local skipStageButtonStage16 = stage16Tab:CreateButton({
     Name = "Skip Stage (Easy Way)",
     SectionParent = miscSection,
     Callback = function()
