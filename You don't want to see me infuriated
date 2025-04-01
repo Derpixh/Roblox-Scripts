@@ -1172,3 +1172,31 @@ local skipStageButtonStage16 = stage16Tab:CreateButton({
         end
     end
 })
+
+local stage17Tab = window:CreateTab("Stage 17")
+
+local terrariaGameSection = stage17Tab:CreateSection("Terraria Game")
+
+local removeTerrariaGameButton = stage17Tab:CreateButton({
+    Name = "Remove Terraria Game",
+    SectionParent = terrariaGameSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder17 = stageParts:FindFirstChild("17")
+            if folder17 then
+                local portalModel = folder17:FindFirstChild("Portal")
+                if portalModel and portalModel:IsA("Model") then
+                    local portalPart = portalModel:FindFirstChild("Portal")
+                    if portalPart then
+                        portalPart:Destroy()
+                    end
+                end
+                local evilTModLoaderPart = folder17:FindFirstChild("EvilTModLoader")
+                if evilTModLoaderPart then
+                    evilTModLoaderPart:Destroy()
+                end
+            end
+        end
+    end
+})
