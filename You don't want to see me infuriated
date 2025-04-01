@@ -1073,3 +1073,102 @@ local skipStageButtonStage15 = stage15Tab:CreateButton({
         end
     end
 })
+
+local stage16Tab = window:CreateTab("Stage 16")
+
+local axesSection = stage16Tab:CreateSection("Axes")
+
+local removeSwingingAxesButton = stage16Tab:CreateButton({
+    Name = "Remove Swinging Axes",
+    SectionParent = axesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder16 = stageParts:FindFirstChild("16")
+            if folder16 then
+                local axesFolder = folder16:FindFirstChild("Axes")
+                if axesFolder then
+                    axesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local seaMinesSection = stage16Tab:CreateSection("Sea Mines")
+
+local removeSeaMinesButton = stage16Tab:CreateButton({
+    Name = "Remove Explosive Sea Mines",
+    SectionParent = seaMinesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder16 = stageParts:FindFirstChild("16")
+            if folder16 then
+                local seaMinesFolder = folder16:FindFirstChild("SeaMines")
+                if seaMinesFolder then
+                    seaMinesFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local fruitProjectilesSection = stage16Tab:CreateSection("Fruit Projectiles")
+
+local removeFruitProjectilesButton = stage16Tab:CreateButton({
+    Name = "Remove Fruit Projectiles",
+    SectionParent = fruitProjectilesSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder16 = stageParts:FindFirstChild("16")
+            if folder16 then
+                local spawnerFolder = folder16:FindFirstChild("Spawner")
+                if spawnerFolder then
+                    spawnerFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local fruitCloudSection = stage16Tab:CreateSection("Fruit Cloud")
+
+local removeFruitCloudButton = stage16Tab:CreateButton({
+    Name = "Remove Fruit Cloud",
+    SectionParent = fruitCloudSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder16 = stageParts:FindFirstChild("16")
+            if folder16 then
+                local fruitCloudPart = folder16:FindFirstChild("FruitCloud")
+                if fruitCloudPart then
+                    fruitCloudPart:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local miscSection = stage16Tab:CreateSection("Misc")
+
+local skipStageButtonStage16 = stage16Tab:CreateButton({
+    Name = "Skip Stage (Easy Way)",
+    SectionParent = miscSection,
+    Callback = function()
+        local obbyStages = workspace:FindFirstChild("ObbyStages")
+        if obbyStages then
+            local part17 = obbyStages:FindFirstChild("17")
+            if part17 and part17:IsA("Part") then
+                local touchInterest = part17:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part17, 1)
+                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part17.CFrame
+            end
+        end
+    end
+})
