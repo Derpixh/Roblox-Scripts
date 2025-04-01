@@ -1034,6 +1034,25 @@ local removeQuizDoorsButton = stage15Tab:CreateButton({
     end
 })
 
+local captchaSection = stage15Tab:CreateSection("Captcha")
+
+local removeCaptchaButton = stage15Tab:CreateButton({
+    Name = "Remove Annoying Captcha (Pernamently Removes it From The Stage)",
+    SectionParent = captchaSection,
+    Callback = function()
+        local stageParts = workspace:FindFirstChild("StageParts")
+        if stageParts then
+            local folder15 = stageParts:FindFirstChild("15")
+            if folder15 then
+                local evilCaptchaPart = folder15:FindFirstChild("EvilCaptcha")
+                if evilCaptchaPart then
+                    evilCaptchaPart:Destroy()
+                end
+            end
+        end
+    end
+})
+
 local miscSection = stage15Tab:CreateSection("Misc")
 
 local skipStageButtonStage15 = stage15Tab:CreateButton({
