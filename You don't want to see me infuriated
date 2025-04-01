@@ -978,7 +978,7 @@ local highlightCorrectDoorsToggle = stage15Tab:CreateToggle({
                                 if Value then
                                     if not existingHighlight then
                                         local highlight = Instance.new("Highlight")
-                                        highlight.FillColor = Color3.fromRGB(0, 0, 255)
+                                        highlight.FillColor = Color3.fromRGB(0, 255, 0)
                                         highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
                                         highlight.Parent = part
                                     end
