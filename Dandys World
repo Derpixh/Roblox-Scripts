@@ -85,60 +85,70 @@ local autoShowAlertsToggle = tabTwisteds:CreateToggle({
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
         local connections = {}
-
-        local function monitorChasingValue(model)
-            local chasingValue = model:FindFirstChild("ChasingValue")
-            if chasingValue and chasingValue:IsA("ObjectValue") then
-                local previousValue = chasingValue.Value
-                local connection
-                connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
-                    local currentValue = chasingValue.Value
-
-                    if previousValue == " " and currentValue == localPlayer.Name then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = model.Name .. " is currently chasing you!",
-                            Duration = 5
-                        })
-                    elseif previousValue == localPlayer.Name and currentValue == " " then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = model.Name .. " has stopped chasing you!",
-                            Duration = 5
-                        })
-                    end
-
-                    previousValue = currentValue
-                end)
-                table.insert(connections, connection)
-            end
-        end
+        local monitoring = false
 
         local function monitorMonsters()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if currentRoom then
-                for _, roomModel in pairs(currentRoom:GetChildren()) do
-                    if roomModel:IsA("Model") then
-                        local monstersFolder = roomModel:FindFirstChild("Monsters")
-                        if monstersFolder then
-                            for _, monster in pairs(monstersFolder:GetChildren()) do
-                                if monster:IsA("Model") then
-                                    monitorChasingValue(monster)
+            if not currentRoom then return {} end
+
+            local monsters = {}
+            for _, roomModel in pairs(currentRoom:GetChildren()) do
+                if roomModel:IsA("Model") then
+                    local monstersFolder = roomModel:FindFirstChild("Monsters")
+                    if monstersFolder then
+                        for _, monster in pairs(monstersFolder:GetChildren()) do
+                            if monster:IsA("Model") then
+                                local chasingValue = monster:FindFirstChild("ChasingValue")
+                                if chasingValue and chasingValue:IsA("ObjectValue") then
+                                    monsters[monster] = chasingValue
                                 end
                             end
                         end
                     end
                 end
             end
+            return monsters
+        end
+
+        local function startMonitoring()
+            local previousStates = {}
+
+            connections["Heartbeat"] = RunService.Heartbeat:Connect(function()
+                if not monitoring then return end
+
+                local monsters = monitorMonsters()
+                for monster, chasingValue in pairs(monsters) do
+                    local currentValue = chasingValue.Value
+                    local previousValue = previousStates[monster] or " "
+
+                    if previousValue == " " and currentValue == localPlayer.Name then
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Twisted Alerter",
+                            Text = monster.Name .. " is currently chasing you!",
+                            Duration = 5
+                        })
+                    elseif previousValue == localPlayer.Name and currentValue == " " then
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Twisted Alerter",
+                            Text = monster.Name .. " has stopped chasing you!",
+                            Duration = 5
+                        })
+                    end
+
+                    previousStates[monster] = currentValue
+                end
+            end)
         end
 
         if Value then
-            monitorMonsters()
+            monitoring = true
+            startMonitoring()
         else
-            for _, connection in pairs(connections) do
-                connection:Disconnect()
+            monitoring = false
+            if connections["Heartbeat"] then
+                connections["Heartbeat"]:Disconnect()
+                connections["Heartbeat"] = nil
             end
-            table.clear(connections)
         end
     end,
 })
