@@ -95,7 +95,8 @@ TextBox.FocusLost:Connect(function(enterPressed)
                 [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
                 [4972273297] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Regretevator",
                 [6403373529] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Slap%20Battles",
-                [9802429235] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/You%20don't%20want%20to%20see%20me%20infuriated"
+                [9802429235] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/You%20don't%20want%20to%20see%20me%20infuriated",
+                [16552821455] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Dandys%20World"
             }
             local gameId = game.PlaceId
             if gameScripts[gameId] then
@@ -114,6 +115,8 @@ TextBox.FocusLost:Connect(function(enterPressed)
                     notificationText = "Loading Slap Battles Hub..."
                 elseif gameId == 9802429235 then
                     notificationText = "Loading Infuriated Hub..."
+                elseif gameId == 16552821455 then
+                    notificationText = "Loading Dandys World Hub..."
                 end
                 game.StarterGui:SetCore("SendNotification", {
                     Title = "Game Supported",
