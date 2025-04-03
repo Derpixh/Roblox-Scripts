@@ -181,7 +181,7 @@ miscTab:CreateToggle({
                                         Title = "Ally Notifier",
                                         Content = player.Name .. " currently has the ball!",
                                         Duration = 5,
-                                        Image = nil,
+                                        Image = "rbxassetid://268617539",
                                         Actions = {}
                                     })
                                 else
@@ -189,7 +189,7 @@ miscTab:CreateToggle({
                                         Title = "Enemy Notifier",
                                         Content = player.Name .. " currently has the ball!",
                                         Duration = 5,
-                                        Image = nil,
+                                        Image = "rbxassetid://268617539",
                                         Actions = {}
                                     })
                                 end
