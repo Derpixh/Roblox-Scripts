@@ -67,55 +67,6 @@ basketballTab:CreateButton({
     SectionParent = shootingSection
 })
 
-
-basketballTab:CreateToggle({
-    Name = "Auto Spin Z And C (Press Z/C To Spin)",
-    SectionParent = shootingSection,
-    Default = false,
-    Callback = function(state)
-        local UserInputService = game:GetService("UserInputService")
-        local RunService = game:GetService("RunService")
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-
-        local keyPressed = {}
-        local lastUpdate = 0
-        local updateInterval = 0.08
-        local heartbeatConnection
-
-        if state then
-            heartbeatConnection = RunService.Heartbeat:Connect(function(deltaTime)
-                lastUpdate = lastUpdate + deltaTime
-                if lastUpdate >= updateInterval then
-                    lastUpdate = 0
-                    for keyCode, pressed in pairs(keyPressed) do
-                        if pressed then
-                            VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
-                            VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
-                        end
-                    end
-                end
-            end)
-
-            UserInputService.InputBegan:Connect(function(input)
-                if input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z then
-                    keyPressed[input.KeyCode] = true
-                end
-            end)
-
-            UserInputService.InputEnded:Connect(function(input)
-                if input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z then
-                    keyPressed[input.KeyCode] = false
-                end
-            end)
-        else
-            if heartbeatConnection then
-                heartbeatConnection:Disconnect()
-                heartbeatConnection = nil
-            end
-        end
-    end
-})
-
 local ballSection = basketballTab:CreateSection("Ball")
 
 basketballTab:CreateToggle({
