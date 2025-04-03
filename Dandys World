@@ -84,10 +84,10 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         local RunService = game:GetService("RunService")
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
-        local notificationConnection = nil
         local previousStates = {}
+        local notificationConnection = nil
 
-        local function checkChasingValues()
+        local function updatePreviousStates()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if not currentRoom then return end
 
@@ -126,7 +126,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         end
 
         if Value then
-            notificationConnection = RunService.Heartbeat:Connect(checkChasingValues)
+            notificationConnection = RunService.Heartbeat:Connect(updatePreviousStates)
         else
             if notificationConnection then
                 notificationConnection:Disconnect()
