@@ -122,7 +122,7 @@ local playerTab = window:CreateTab("Player", 4483362458)
 local hitboxSection = playerTab:CreateSection("Hitbox")
 
 playerTab:CreateButton({
-    Name = "Long Arms",
+    Name = "Long Arms (Makes It Easier To Steal The Ball)",
     Callback = function()
         local localPlayer = game:GetService("Players").LocalPlayer
         local model = game.Workspace:FindFirstChild(localPlayer.Name)
