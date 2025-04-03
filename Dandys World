@@ -73,25 +73,23 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
     end,
 })
 
-local sectionShowAlerts = tabTwisteds:CreateSection("Show Alerts")
+local sectionNotifications = tabTwisteds:CreateSection("Notifications")
 
-local autoShowAlertsToggle = tabTwisteds:CreateToggle({
-    Name = "Show Alerts",
+local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
+    Name = "Auto Notify Twisteds",
     CurrentValue = false,
-    Flag = "AutoShowAlerts",
-    Section = sectionShowAlerts,
+    Flag = "AutoNotifyTwisteds",
+    SectionParent = sectionNotifications,
     Callback = function(Value)
         local RunService = game:GetService("RunService")
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
-        local connections = {}
-        local monitoring = false
+        local notificationConnection = nil
 
-        local function monitorMonsters()
+        local function checkChasingValues()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if not currentRoom then return {} end
+            if not currentRoom then return end
 
-            local monsters = {}
             for _, roomModel in pairs(currentRoom:GetChildren()) do
                 if roomModel:IsA("Model") then
                     local monstersFolder = roomModel:FindFirstChild("Monsters")
@@ -100,54 +98,33 @@ local autoShowAlertsToggle = tabTwisteds:CreateToggle({
                             if monster:IsA("Model") then
                                 local chasingValue = monster:FindFirstChild("ChasingValue")
                                 if chasingValue and chasingValue:IsA("ObjectValue") then
-                                    monsters[monster] = chasingValue
+                                    if chasingValue.Value == localPlayer.Name then
+                                        Rayfield:Notify({
+                                            Title = "Twisted Notifier",
+                                            Content = monster.Name .. " is currently chasing you, get out of sight!",
+                                            Duration = 5
+                                        })
+                                    elseif chasingValue.Value ~= localPlayer.Name and chasingValue.Value ~= nil then
+                                        Rayfield:Notify({
+                                            Title = "Twisted Notifier",
+                                            Content = monster.Name .. " has lost sight of you, it is safe to proceed.",
+                                            Duration = 5
+                                        })
+                                    end
                                 end
                             end
                         end
                     end
                 end
             end
-            return monsters
-        end
-
-        local function startMonitoring()
-            local previousStates = {}
-
-            connections["Heartbeat"] = RunService.Heartbeat:Connect(function()
-                if not monitoring then return end
-
-                local monsters = monitorMonsters()
-                for monster, chasingValue in pairs(monsters) do
-                    local currentValue = chasingValue.Value
-                    local previousValue = previousStates[monster] or " "
-
-                    if previousValue == " " and currentValue == localPlayer.Name then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = monster.Name .. " is currently chasing you!",
-                            Duration = 5
-                        })
-                    elseif previousValue == localPlayer.Name and currentValue == " " then
-                        game.StarterGui:SetCore("SendNotification", {
-                            Title = "Twisted Alerter",
-                            Text = monster.Name .. " has stopped chasing you!",
-                            Duration = 5
-                        })
-                    end
-
-                    previousStates[monster] = currentValue
-                end
-            end)
         end
 
         if Value then
-            monitoring = true
-            startMonitoring()
+            notificationConnection = RunService.Heartbeat:Connect(checkChasingValues)
         else
-            monitoring = false
-            if connections["Heartbeat"] then
-                connections["Heartbeat"]:Disconnect()
-                connections["Heartbeat"] = nil
+            if notificationConnection then
+                notificationConnection:Disconnect()
+                notificationConnection = nil
             end
         end
     end,
