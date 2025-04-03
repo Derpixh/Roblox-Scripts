@@ -85,6 +85,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
         local notificationConnection = nil
+        local previousStates = {}
 
         local function checkChasingValues()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
@@ -98,19 +99,24 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
                             if monster:IsA("Model") then
                                 local chasingValue = monster:FindFirstChild("ChasingValue")
                                 if chasingValue and chasingValue:IsA("ObjectValue") then
-                                    if chasingValue.Value == localPlayer.Name then
+                                    local currentValue = chasingValue.Value
+                                    local previousValue = previousStates[monster] or "INITIAL_STATE"
+
+                                    if currentValue == localPlayer.Name and previousValue ~= localPlayer.Name then
                                         Rayfield:Notify({
                                             Title = "Twisted Notifier",
                                             Content = monster.Name .. " is currently chasing you, get out of sight!",
                                             Duration = 5
                                         })
-                                    elseif chasingValue.Value ~= localPlayer.Name and chasingValue.Value ~= nil then
+                                    elseif currentValue ~= localPlayer.Name and previousValue == localPlayer.Name then
                                         Rayfield:Notify({
                                             Title = "Twisted Notifier",
                                             Content = monster.Name .. " has lost sight of you, it is safe to proceed.",
                                             Duration = 5
                                         })
                                     end
+
+                                    previousStates[monster] = currentValue
                                 end
                             end
                         end
@@ -126,6 +132,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
                 notificationConnection:Disconnect()
                 notificationConnection = nil
             end
+            previousStates = {}
         end
     end,
 })
