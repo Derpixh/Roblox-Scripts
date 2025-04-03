@@ -87,7 +87,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         local previousStates = {}
         local notificationConnection = nil
 
-        local function updatePreviousStates()
+        local function checkChasingValues()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if not currentRoom then return end
 
@@ -100,7 +100,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
                                 local chasingValue = monster:FindFirstChild("ChasingValue")
                                 if chasingValue and chasingValue:IsA("ObjectValue") then
                                     local currentValue = chasingValue.Value
-                                    local previousValue = previousStates[monster] or "INITIAL_STATE"
+                                    local previousValue = previousStates[monster]
 
                                     if currentValue == localPlayer.Name and previousValue ~= localPlayer.Name then
                                         Rayfield:Notify({
@@ -126,7 +126,7 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         end
 
         if Value then
-            notificationConnection = RunService.Heartbeat:Connect(updatePreviousStates)
+            notificationConnection = RunService.Heartbeat:Connect(checkChasingValues)
         else
             if notificationConnection then
                 notificationConnection:Disconnect()
