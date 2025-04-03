@@ -171,11 +171,11 @@ miscTab:CreateToggle({
             heartbeatConnection = RunService.Heartbeat:Connect(function()
                 for _, player in ipairs(Players:GetPlayers()) do
                     local model = workspace:FindFirstChild(player.Name)
-                    if model and not notifiedModels[model] then
+                    if model then
                         local basketballTool = model:FindFirstChild("Basketball")
                         if basketballTool then
                             local attachPart = basketballTool:FindFirstChild("Attach")
-                            if attachPart then
+                            if attachPart and not notifiedModels[model] then
                                 if player.Team == localTeam then
                                     Rayfield:Notify({
                                         Title = "Ally Notifier",
@@ -195,9 +195,9 @@ miscTab:CreateToggle({
                                 end
                                 notifiedModels[model] = true
                             end
+                        elseif notifiedModels[model] then
+                            notifiedModels[model] = nil
                         end
-                    elseif model and not model:FindFirstChild("Basketball") then
-                        notifiedModels[model] = nil
                     end
                 end
             end)
