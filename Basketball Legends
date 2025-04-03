@@ -70,7 +70,7 @@ basketballTab:CreateButton({
 local ballSection = basketballTab:CreateSection("Ball")
 
 basketballTab:CreateToggle({
-    Name = "Auto Spin Z And C (Only Use When YOU Have The Ball)",
+    Name = "Auto Spin (Press Z To Spin Left And C To Spin Right)",
     SectionParent = ballSection,
     Default = false,
     Callback = function(state)
@@ -106,52 +106,6 @@ basketballTab:CreateToggle({
             UserInputService.InputEnded:Connect(function(input)
                 if input.KeyCode == Enum.KeyCode.C or input.KeyCode == Enum.KeyCode.Z then
                     keyPressed[input.KeyCode] = false
-                end
-            end)
-        else
-            if heartbeatConnection then
-                heartbeatConnection:Disconnect()
-                heartbeatConnection = nil
-            end
-        end
-    end
-})
-
-local autoGrabToggle = basketballTab:CreateToggle({
-    Name = "Auto Grab Ball (When Enemy Team Passes)",
-    SectionParent = ballSection,
-    Default = false,
-    Callback = function(state)
-        local RunService = game:GetService("RunService")
-        local Teams = game:GetService("Teams")
-        local Players = game:GetService("Players")
-
-        local localPlayer = Players.LocalPlayer
-        local localTeam = localPlayer.Team
-        local heartbeatConnection
-
-        if state then
-            heartbeatConnection = RunService.Heartbeat:Connect(function()
-                for _, player in ipairs(Players:GetPlayers()) do
-                    if player ~= localPlayer and player.Team ~= localTeam then
-                        local model = workspace:FindFirstChild(player.Name)
-                        if model then
-                            local basketballTool = model:FindFirstChild("Basketball")
-                            if basketballTool then
-                                local attachPart = basketballTool:FindFirstChild("Attach")
-                                if not attachPart then
-                                    local basketball = workspace:FindFirstChild("Basketball")
-                                    if basketball then
-                                        local touchInterest = basketball:FindFirstChild("TouchInterest")
-                                        if touchInterest then
-                                            firetouchinterest(localPlayer.Character, basketball, 0)
-                                            firetouchinterest(localPlayer.Character, basketball, 1)
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
                 end
             end)
         else
