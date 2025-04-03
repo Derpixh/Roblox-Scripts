@@ -160,8 +160,8 @@ miscTab:CreateToggle({
     Default = false,
     Callback = function(state)
         local RunService = game:GetService("RunService")
-        local Teams = game:GetService("Teams")
         local Players = game:GetService("Players")
+        local notifiedModels = {}
 
         local localPlayer = Players.LocalPlayer
         local localTeam = localPlayer.Team
@@ -170,13 +170,13 @@ miscTab:CreateToggle({
         if state then
             heartbeatConnection = RunService.Heartbeat:Connect(function()
                 for _, player in ipairs(Players:GetPlayers()) do
-                    if player.Team == localTeam then
-                        local model = workspace:FindFirstChild(player.Name)
-                        if model then
-                            local basketballTool = model:FindFirstChild("Basketball")
-                            if basketballTool then
-                                local attachPart = basketballTool:FindFirstChild("Attach")
-                                if attachPart then
+                    local model = workspace:FindFirstChild(player.Name)
+                    if model and not notifiedModels[model] then
+                        local basketballTool = model:FindFirstChild("Basketball")
+                        if basketballTool then
+                            local attachPart = basketballTool:FindFirstChild("Attach")
+                            if attachPart then
+                                if player.Team == localTeam then
                                     Rayfield:Notify({
                                         Title = "Ally Notifier",
                                         Content = player.Name .. " currently has the ball!",
@@ -184,16 +184,7 @@ miscTab:CreateToggle({
                                         Image = nil,
                                         Actions = {}
                                     })
-                                end
-                            end
-                        end
-                    elseif player.Team ~= localTeam then
-                        local model = workspace:FindFirstChild(player.Name)
-                        if model then
-                            local basketballTool = model:FindFirstChild("Basketball")
-                            if basketballTool then
-                                local attachPart = basketballTool:FindFirstChild("Attach")
-                                if attachPart then
+                                else
                                     Rayfield:Notify({
                                         Title = "Enemy Notifier",
                                         Content = player.Name .. " currently has the ball!",
@@ -202,8 +193,11 @@ miscTab:CreateToggle({
                                         Actions = {}
                                     })
                                 end
+                                notifiedModels[model] = true
                             end
                         end
+                    elseif model and not model:FindFirstChild("Basketball") then
+                        notifiedModels[model] = nil
                     end
                 end
             end)
@@ -212,6 +206,7 @@ miscTab:CreateToggle({
                 heartbeatConnection:Disconnect()
                 heartbeatConnection = nil
             end
+            notifiedModels = {}
         end
     end
 })
