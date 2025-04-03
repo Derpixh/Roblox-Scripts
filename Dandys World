@@ -84,8 +84,8 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         local RunService = game:GetService("RunService")
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
-        local previousStates = {}
         local notificationConnection = nil
+        local previousStates = {}
 
         local function checkChasingValues()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
@@ -102,13 +102,13 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
                                     local currentValue = chasingValue.Value
                                     local previousValue = previousStates[monster]
 
-                                    if currentValue == localPlayer.Name and previousValue ~= localPlayer.Name then
+                                    if currentValue == localPlayer and previousValue ~= localPlayer then
                                         Rayfield:Notify({
                                             Title = "Twisted Notifier",
                                             Content = monster.Name .. " is currently chasing you, get out of sight!",
                                             Duration = 5
                                         })
-                                    elseif currentValue ~= localPlayer.Name and previousValue == localPlayer.Name then
+                                    elseif currentValue ~= localPlayer and previousValue == localPlayer then
                                         Rayfield:Notify({
                                             Title = "Twisted Notifier",
                                             Content = monster.Name .. " has lost sight of you, it is safe to proceed.",
