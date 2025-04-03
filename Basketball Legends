@@ -150,4 +150,68 @@ playerTab:CreateButton({
     SectionParent = hitboxSection
 })
 
-Rayfield:LoadConfiguration()
+local miscTab = window:CreateTab("Misc", 4483362458)
+
+local notificationsSection = miscTab:CreateSection("Notifications")
+
+miscTab:CreateToggle({
+    Name = "Auto Notify Passing (Ally Or Enemy)",
+    SectionParent = notificationsSection,
+    Default = false,
+    Callback = function(state)
+        local RunService = game:GetService("RunService")
+        local Teams = game:GetService("Teams")
+        local Players = game:GetService("Players")
+
+        local localPlayer = Players.LocalPlayer
+        local localTeam = localPlayer.Team
+        local heartbeatConnection
+
+        if state then
+            heartbeatConnection = RunService.Heartbeat:Connect(function()
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player.Team == localTeam then
+                        local model = workspace:FindFirstChild(player.Name)
+                        if model then
+                            local basketballTool = model:FindFirstChild("Basketball")
+                            if basketballTool then
+                                local attachPart = basketballTool:FindFirstChild("Attach")
+                                if attachPart then
+                                    Rayfield:Notify({
+                                        Title = "Ally Notifier",
+                                        Content = player.Name .. " currently has the ball!",
+                                        Duration = 5,
+                                        Image = nil,
+                                        Actions = {}
+                                    })
+                                end
+                            end
+                        end
+                    elseif player.Team ~= localTeam then
+                        local model = workspace:FindFirstChild(player.Name)
+                        if model then
+                            local basketballTool = model:FindFirstChild("Basketball")
+                            if basketballTool then
+                                local attachPart = basketballTool:FindFirstChild("Attach")
+                                if attachPart then
+                                    Rayfield:Notify({
+                                        Title = "Enemy Notifier",
+                                        Content = player.Name .. " currently has the ball!",
+                                        Duration = 5,
+                                        Image = nil,
+                                        Actions = {}
+                                    })
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            if heartbeatConnection then
+                heartbeatConnection:Disconnect()
+                heartbeatConnection = nil
+            end
+        end
+    end
+})
