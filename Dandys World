@@ -75,6 +75,9 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
 
 local sectionNotifications = tabTwisteds:CreateSection("Notifications")
 
+local notificationConnection = nil
+local previousStates = {}
+
 local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
     Name = "Auto Notify Twisteds",
     CurrentValue = false,
@@ -84,8 +87,6 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         local RunService = game:GetService("RunService")
         local Players = game:GetService("Players")
         local localPlayer = Players.LocalPlayer
-        local notificationConnection = nil
-        local previousStates = {}
 
         local function checkChasingValues()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
@@ -126,13 +127,15 @@ local autoNotifyTwistedsToggle = tabTwisteds:CreateToggle({
         end
 
         if Value then
-            notificationConnection = RunService.Heartbeat:Connect(checkChasingValues)
+            if not notificationConnection then
+                notificationConnection = RunService.Heartbeat:Connect(checkChasingValues)
+            end
         else
             if notificationConnection then
                 notificationConnection:Disconnect()
                 notificationConnection = nil
             end
-            previousStates = {}
+            table.clear(previousStates)
         end
     end,
 })
