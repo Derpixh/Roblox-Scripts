@@ -19,7 +19,7 @@ local window = Rayfield:CreateWindow({
     }
 })
 
-local badgesTab = window:CreateTab("Badges")
+local badgesTab = Rayfield:CreateTab("Badges")
 local brickSection = badgesTab:CreateSection("Brick")
 
 local autoPlaceBricksToggle = badgesTab:CreateToggle({
@@ -67,6 +67,7 @@ local autoPlaceBricksToggle = badgesTab:CreateToggle({
         else
             if connection then
                 connection:Disconnect()
+                connection = nil
             end
         end
     end
