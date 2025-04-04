@@ -20,63 +20,11 @@ local window = Rayfield:CreateWindow({
 })
 
 local tabTwisteds = window:CreateTab("Twisteds")
-local sectionHighlightTwisteds = tabTwisteds:CreateSection("Highlight Twisteds")
-
-local autoHighlightToggle = tabTwisteds:CreateToggle({
-    Name = "Auto Highlight Twisteds",
-    CurrentValue = false,
-    Flag = "AutoHighlight",
-    Section = sectionHighlightTwisteds,
-    Callback = function(Value)
-        _G.AutoHighlight = Value
-
-        local RunService = game:GetService("RunService")
-        local function addHighlight(model)
-            if not model:FindFirstChildOfClass("Highlight") then
-                local highlight = Instance.new("Highlight")
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                highlight.Parent = model
-            end
-        end
-
-        local function removeHighlight(model)
-            local highlight = model:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
-            end
-        end
-
-        local function checkAndUpdateHighlights()
-            local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if currentRoom then
-                for _, roomModel in pairs(currentRoom:GetChildren()) do
-                    if roomModel:IsA("Model") then
-                        local monstersFolder = roomModel:FindFirstChild("Monsters")
-                        if monstersFolder then
-                            for _, monster in pairs(monstersFolder:GetChildren()) do
-                                if monster:IsA("Model") then
-                                    if _G.AutoHighlight then
-                                        addHighlight(monster)
-                                    else
-                                        removeHighlight(monster)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        RunService.Heartbeat:Connect(checkAndUpdateHighlights)
-    end,
-})
 
 local NotificationsSection = tabTwisteds:CreateSection("Notifications")
 
 local AutoNotifyToggle = tabTwisteds:CreateToggle({
-    Name = "Auto Notify Chasing Twisteds",
+    Name = "Auto Notify Twisteds",
     SectionParent = NotificationsSection,
     CurrentValue = false,
     Callback = function(Value)
@@ -89,46 +37,24 @@ local AutoNotifyToggle = tabTwisteds:CreateToggle({
             heartbeatConnection = RunService.Heartbeat:Connect(function()
                 local currentRoom = workspace:FindFirstChild("CurrentRoom")
                 if currentRoom then
-                    local model = currentRoom:FindFirstChildWhichIsA("Model")
-                    if model then
-                        local monstersFolder = model:FindFirstChild("Monsters")
-                        if monstersFolder then
-                            for _, monster in ipairs(monstersFolder:GetChildren()) do
-                                if monster:IsA("Model") then
-                                    local chasingValue = monster:FindFirstChild("ChasingValue")
-                                    if chasingValue and chasingValue:IsA("ObjectValue") then
-                                        local previousValue = chasingValue.Value
-                                        chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            local monstersFolder = model:FindFirstChild("Monsters")
+                            if monstersFolder then
+                                for _, monster in pairs(monstersFolder:GetChildren()) do
+                                    if monster:IsA("Model") then
+                                        local chasingValue = monster:FindFirstChild("ChasingValue")
+                                        if chasingValue and chasingValue:IsA("ObjectValue") then
                                             local currentValue = chasingValue.Value
-                                            if previousValue == "" and currentValue == LocalPlayer.Name then
+                                            if currentValue == LocalPlayer.Name then
                                                 Rayfield:Notify({
                                                     Title = "Twisted Notifier",
-                                                    Content = monster.Name .. " has found sight of you, hide!",
+                                                    Content = monster.Name .. " has detected you in sight, hide!",
                                                     Duration = 5,
                                                     Image = 4483362458,
-                                                    Actions = {
-                                                        Ignore = {
-                                                            Name = "Ignore",
-                                                            Callback = function() end
-                                                        },
-                                                    },
-                                                })
-                                            elseif previousValue == LocalPlayer.Name and currentValue == "" then
-                                                Rayfield:Notify({
-                                                    Title = "Twisted Notifier",
-                                                    Content = monster.Name .. " has lost sight of you.",
-                                                    Duration = 5,
-                                                    Image = 4483362458,
-                                                    Actions = {
-                                                        Ignore = {
-                                                            Name = "Ignore",
-                                                            Callback = function() end
-                                                        },
-                                                    },
                                                 })
                                             end
-                                            previousValue = currentValue
-                                        end)
+                                        end
                                     end
                                 end
                             end
