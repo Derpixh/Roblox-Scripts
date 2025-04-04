@@ -307,24 +307,23 @@ local autoPlaceBricksToggle = badgesTab:CreateToggle({
 
                 if characterModel then
                     local tool = characterModel:FindFirstChild("Brick")
-                    if tool then
-                        local glove = tool:FindFirstChild("Glove")
-                        if glove and glove:IsA("MeshPart") then
-                            local playerGui = player:FindFirstChild("PlayerGui")
-                            if playerGui then
-                                local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
-                                if brickCountGui then
-                                    local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
-                                    if imageLabel then
-                                        local textLabel = imageLabel:FindFirstChild("TextLabel")
-                                        if textLabel and tonumber(textLabel.Text) then
-                                            local brickCount = tonumber(textLabel.Text)
+                    local glove = tool and tool:FindFirstChild("Glove")
 
-                                            if brickCount < 1000 then
-                                                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-                                                wait(5)
-                                                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-                                            end
+                    if tool and glove and glove:IsA("MeshPart") then
+                        local playerGui = player:FindFirstChild("PlayerGui")
+                        if playerGui then
+                            local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
+                            if brickCountGui then
+                                local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel and tonumber(textLabel.Text) then
+                                        local brickCount = tonumber(textLabel.Text)
+
+                                        if brickCount < 1000 then
+                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                                            wait(5)
+                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
                                         end
                                     end
                                 end
