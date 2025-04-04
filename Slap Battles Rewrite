@@ -28,29 +28,35 @@ local autoPlaceBricksToggle = badgesTab:CreateToggle({
     CurrentValue = false,
     Flag = "AutoPlaceBricks",
     Callback = function(Value)
-        local player = game.Players.LocalPlayer
-        local monitoring = Value
+        local active = Value
 
-        task.spawn(function()
-            while monitoring and task.wait(0.01) do
-                local playerGui = player:FindFirstChild("PlayerGui")
-                if playerGui then
-                    local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
-                    if brickCountGui then
-                        local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
-                        if imageLabel then
-                            local textLabel = imageLabel:FindFirstChild("TextLabel")
-                            if textLabel and tonumber(textLabel.Text) then
-                                local brickCount = tonumber(textLabel.Text)
-                                if brickCount < 1000 then
-                                    game:GetService("ReplicatedStorage"):WaitForChild("lbrick"):FireServer()
-                                    wait(5)
+        if active then
+            task.spawn(function()
+                while active do
+                    local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+                    if playerGui then
+                        local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
+                        if brickCountGui then
+                            local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
+                            if imageLabel then
+                                local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                if textLabel and tonumber(textLabel.Text) then
+                                    local brickCount = tonumber(textLabel.Text)
+                                    if brickCount < 1000 then
+                                        game:GetService("ReplicatedStorage"):WaitForChild("lbrick"):FireServer()
+                                        task.wait(5)
+                                    else
+                                        break
+                                    end
                                 end
                             end
                         end
                     end
+                    task.wait(0.01)
                 end
-            end
-        end)
+            end)
+        else
+            active = false
+        end
     end
 })
