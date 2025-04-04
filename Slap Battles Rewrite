@@ -20,6 +20,7 @@ local window = Rayfield:CreateWindow({
 })
 
 local badgesTab = window:CreateTab("Badges")
+
 local brickSection = badgesTab:CreateSection("Brick")
 
 local autoPlaceBricksToggle = badgesTab:CreateToggle({
