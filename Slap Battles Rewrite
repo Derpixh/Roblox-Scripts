@@ -1,0 +1,54 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local badgesTab = Rayfield:CreateTab("Badges")
+local brickSection = badgesTab:CreateSection("Brick")
+
+local autoPlaceBricksToggle = badgesTab:CreateToggle({
+    Name = "Auto Place Bricks (You Can Get Trap)",
+    SectionParent = brickSection,
+    CurrentValue = false,
+    Flag = "AutoPlaceBricks",
+    Callback = function(Value)
+        local runService = game:GetService("RunService")
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        local connection
+
+        if Value then
+            connection = runService.Heartbeat:Connect(function()
+                local player = game.Players.LocalPlayer
+                local characterModel = workspace:FindFirstChild(player.Name)
+
+                if characterModel then
+                    local tool = characterModel:FindFirstChild("Brick")
+                    local glove = tool and tool:FindFirstChild("Glove")
+
+                    if tool and glove and glove:IsA("MeshPart") then
+                        local playerGui = player:FindFirstChild("PlayerGui")
+                        if playerGui then
+                            local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
+                            if brickCountGui then
+                                local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel and tonumber(textLabel.Text) then
+                                        local brickCount = tonumber(textLabel.Text)
+
+                                        if brickCount < 1000 then
+                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                                            wait(5)
+                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            if connection then
+                connection:Disconnect()
+            end
+        end
+    end
+})
