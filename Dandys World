@@ -73,9 +73,9 @@ local autoHighlightToggle = tabTwisteds:CreateToggle({
     end,
 })
 
-local NotificationsSection = TwistedsTab:CreateSection("Notifications")
+local NotificationsSection = tabTwisteds:CreateSection("Notifications")
 
-local AutoNotifyToggle = TwistedsTab:CreateToggle({
+local AutoNotifyToggle = tabTwisteds:CreateToggle({
     Name = "Auto Notify Chasing Twisteds",
     SectionParent = NotificationsSection,
     CurrentValue = false,
