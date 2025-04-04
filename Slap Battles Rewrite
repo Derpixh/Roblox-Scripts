@@ -1,6 +1,25 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local badgesTab = Rayfield:CreateTab("Badges")
+local window = Rayfield:CreateWindow({
+    Name = "Slap Battles - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Derpixh",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Derpixh's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local badgesTab = window:CreateTab("Badges")
 local brickSection = badgesTab:CreateSection("Brick")
 
 local autoPlaceBricksToggle = badgesTab:CreateToggle({
