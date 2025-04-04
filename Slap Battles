@@ -287,7 +287,6 @@ autoCollectSlapplesToggle = arenaTab:CreateToggle({
 })
 
 local badgesTab = Rayfield:CreateTab("Badges")
-
 local brickSection = badgesTab:CreateSection("Brick")
 
 local autoPlaceBricksToggle = badgesTab:CreateToggle({
