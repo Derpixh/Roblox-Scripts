@@ -286,7 +286,7 @@ autoCollectSlapplesToggle = arenaTab:CreateToggle({
     end
 })
 
-local badgesTab = Rayfield:CreateTab("Badges")
+local badgesTab = window:CreateTab("Badges")
 local brickSection = badgesTab:CreateSection("Brick")
 
 local autoPlaceBricksToggle = badgesTab:CreateToggle({
@@ -295,46 +295,35 @@ local autoPlaceBricksToggle = badgesTab:CreateToggle({
     CurrentValue = false,
     Flag = "AutoPlaceBricks",
     Callback = function(Value)
-        local runService = game:GetService("RunService")
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-        local connection
+        local active = Value
 
-        if Value then
-            connection = runService.Heartbeat:Connect(function()
-                local player = game.Players.LocalPlayer
-                local characterModel = workspace:FindFirstChild(player.Name)
-
-                if characterModel then
-                    local tool = characterModel:FindFirstChild("Brick")
-                    local glove = tool and tool:FindFirstChild("Glove")
-
-                    if tool and glove and glove:IsA("MeshPart") then
-                        local playerGui = player:FindFirstChild("PlayerGui")
-                        if playerGui then
-                            local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
-                            if brickCountGui then
-                                local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
-                                if imageLabel then
-                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
-                                    if textLabel and tonumber(textLabel.Text) then
-                                        local brickCount = tonumber(textLabel.Text)
-
-                                        if brickCount < 1000 then
-                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-                                            wait(5)
-                                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-                                        end
+        if active then
+            task.spawn(function()
+                while active do
+                    local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+                    if playerGui then
+                        local brickCountGui = playerGui:FindFirstChild("BRICKCOUNT")
+                        if brickCountGui then
+                            local imageLabel = brickCountGui:FindFirstChild("ImageLabel")
+                            if imageLabel then
+                                local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                if textLabel and tonumber(textLabel.Text) then
+                                    local brickCount = tonumber(textLabel.Text)
+                                    if brickCount < 1000 then
+                                        game:GetService("ReplicatedStorage"):WaitForChild("lbrick"):FireServer()
+                                        task.wait(5)
+                                    else
+                                        break
                                     end
                                 end
                             end
                         end
                     end
+                    task.wait(0.01)
                 end
             end)
         else
-            if connection then
-                connection:Disconnect()
-            end
+            active = false
         end
     end
 })
