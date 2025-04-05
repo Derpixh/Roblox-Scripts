@@ -1,0 +1,870 @@
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players:WaitForChild("LocalPlayer")
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local HttpService = game:GetService("HttpService")
+
+local LogGui = Instance.new("ScreenGui")
+LogGui.Name = "EventLoggerUI"
+LogGui.Parent = PlayerGui
+LogGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+LogGui.ResetOnSpawn = false
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0.4, 0, 0.85, 0)
+MainFrame.Position = UDim2.new(0.02, 0, 0.02, 0)
+MainFrame.AnchorPoint = Vector2.new(0, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = LogGui
+local MainFrameCorner = Instance.new("UICorner")
+MainFrameCorner.CornerRadius = UDim(0, 8)
+MainFrameCorner.Parent = MainFrame
+
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Size = UDim2.new(1, 0, 0.08, 0)
+TitleBar.Position = UDim2.new(0, 0, 0, 0)
+TitleBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TitleBar.BorderSizePixel = 0
+TitleBar.Draggable = true
+TitleBar.Parent = MainFrame
+local TitleBarCorner = Instance.new("UICorner")
+TitleBarCorner.CornerRadius = UDim(0, 8)
+TitleBarCorner.Parent = TitleBar
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Text = "Event Logger"
+TitleLabel.Size = UDim2.new(1, 0, 1, 0)
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.TextSize = 20
+TitleLabel.TextColor3 = Color3.White
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+TitleLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+TitleLabel.Parent = TitleBar
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0.1, 0, 1, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.AnchorPoint = Vector2.new(1, 0)
+CloseButton.Text = "X"
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextSize = 20
+CloseButton.TextColor3 = Color3.White
+CloseButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+CloseButton.BorderSizePixel = 0
+CloseButton.Parent = TitleBar
+local CloseButtonCorner = Instance.new("UICorner")
+CloseButtonCorner.CornerRadius = UDim(0, 4)
+CloseButtonCorner.Parent = CloseButton
+CloseButton.MouseButton1Click:Connect(function()
+    LogGui.Enabled = false
+end)
+
+local ControlsFrame = Instance.new("Frame")
+ControlsFrame.Name = "ControlsFrame"
+ControlsFrame.Size = UDim2.new(1, 0, 0.06, 0)
+ControlsFrame.Position = UDim2.new(0, 0, 0.08, 0)
+ControlsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+ControlsFrame.BorderSizePixel = 0
+ControlsFrame.Parent = MainFrame
+
+local ClearButton = Instance.new("TextButton")
+ClearButton.Name = "ClearButton"
+ClearButton.Size = UDim2.new(0.15, 0, 0.7, 0)
+ClearButton.Position = UDim2.new(0.02, 0, 0.15, 0)
+ClearButton.AnchorPoint = Vector2.new(0, 0.5)
+ClearButton.Text = "Clear"
+ClearButton.Font = Enum.Font.SourceSansBold
+ClearButton.TextSize = 14
+ClearButton.TextColor3 = Color3.White
+ClearButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+ClearButton.BorderSizePixel = 0
+ClearButton.Parent = ControlsFrame
+local ClearButtonCorner = Instance.new("UICorner")
+ClearButtonCorner.CornerRadius = UDim(0, 4)
+ClearButtonCorner.Parent = ClearButton
+ClearButton.MouseButton1Click:Connect(function()
+    ConfirmationFrame.Visible = true
+end)
+
+local FilterLabel = Instance.new("TextLabel")
+FilterLabel.Text = "Filter:"
+FilterLabel.Size = UDim2.new(0.1, 0, 0.7, 0)
+FilterLabel.Position = UDim2.new(0.18, 0, 0.15, 0)
+FilterLabel.AnchorPoint = Vector2.new(0, 0.5)
+FilterLabel.TextColor3 = Color3.White
+FilterLabel.BackgroundTransparency = 1
+FilterLabel.Font = Enum.Font.SourceSansBold
+FilterLabel.TextSize = 14
+FilterLabel.Parent = ControlsFrame
+
+local FilterDropdown = Instance.new("DropDownList")
+FilterDropdown.Name = "FilterDropdown"
+FilterDropdown.Size = UDim2.new(0.2, 0, 0.7, 0)
+FilterDropdown.Position = UDim2.new(0.28, 0, 0.15, 0)
+FilterDropdown.AnchorPoint = Vector2.new(0, 0.5)
+FilterDropdown.BackgroundTransparency = 0
+FilterDropdown.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+FilterDropdown.BorderColor3 = Color3.fromRGB(80, 80, 80)
+FilterDropdown.TextColor = Color3.White
+FilterDropdown.Font = Enum.Font.SourceSans
+FilterDropdown.TextSize = 14
+FilterDropdown.Items = {"All", "RemoteEvent", "RemoteFunction", "BindableEvent", "BindableFunction"}
+FilterDropdown.SelectedItem = "All"
+FilterDropdown.Parent = ControlsFrame
+
+local GoToBottomButton = Instance.new("TextButton")
+GoToBottomButton.Name = "GoToBottomButton"
+GoToBottomButton.Size = UDim2.new(0.15, 0, 0.7, 0)
+GoToBottomButton.Position = UDim2.new(0.5, 0, 0.15, 0)
+GoToBottomButton.AnchorPoint = Vector2.new(0, 0.5)
+GoToBottomButton.Text = "Bottom"
+GoToBottomButton.Font = Enum.Font.SourceSansBold
+GoToBottomButton.TextSize = 14
+GoToBottomButton.TextColor3 = Color3.White
+GoToBottomButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+GoToBottomButton.BorderSizePixel = 0
+GoToBottomButton.Parent = ControlsFrame
+local GoToBottomButtonCorner = Instance.new("UICorner")
+GoToBottomButtonCorner.CornerRadius = UDim(0, 4)
+GoToBottomButtonCorner.Parent = GoToBottomButton
+GoToBottomButton.MouseButton1Click:Connect(function()
+    updateLogDisplay(true)
+end)
+
+local AdvancedFilterToggleButton = Instance.new("TextButton")
+AdvancedFilterToggleButton.Name = "AdvancedFilterToggleButton"
+AdvancedFilterToggleButton.Size = UDim2.new(0.2, 0, 0.7, 0)
+AdvancedFilterToggleButton.Position = UDim2.new(0.66, 0, 0.15, 0)
+AdvancedFilterToggleButton.AnchorPoint = Vector2.new(0, 0.5)
+AdvancedFilterToggleButton.Text = "Advanced"
+AdvancedFilterToggleButton.Font = Enum.Font.SourceSansBold
+AdvancedFilterToggleButton.TextSize = 14
+AdvancedFilterToggleButton.TextColor3 = Color3.White
+AdvancedFilterToggleButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+AdvancedFilterToggleButton.BorderSizePixel = 0
+AdvancedFilterToggleButton.Parent = ControlsFrame
+local AdvancedFilterToggleButtonCorner = Instance.new("UICorner")
+AdvancedFilterToggleButtonCorner.CornerRadius = UDim(0, 4)
+AdvancedFilterToggleButtonCorner.Parent = AdvancedFilterToggleButton
+AdvancedFilterToggleButton.MouseButton1Click:Connect(function()
+    AdvancedFilterFrame.Visible = true
+end)
+
+local SaveLoadToggleButton = Instance.new("TextButton")
+SaveLoadToggleButton.Name = "SaveLoadToggleButton"
+SaveLoadToggleButton.Size = UDim2.new(0.15, 0, 0.7, 0)
+SaveLoadToggleButton.Position = UDim2.new(0.88, 0, 0.15, 0)
+SaveLoadToggleButton.AnchorPoint = Vector2.new(0, 0.5)
+SaveLoadToggleButton.Text = "Save/Load"
+SaveLoadToggleButton.Font = Enum.Font.SourceSansBold
+SaveLoadToggleButton.TextSize = 14
+SaveLoadToggleButton.TextColor3 = Color3.White
+SaveLoadToggleButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SaveLoadToggleButton.BorderSizePixel = 0
+SaveLoadToggleButton.Parent = ControlsFrame
+local SaveLoadToggleButtonCorner = Instance.new("UICorner")
+SaveLoadToggleButtonCorner.CornerRadius = UDim(0, 4)
+SaveLoadToggleButtonCorner.Parent = SaveLoadToggleButton
+SaveLoadToggleButton.MouseButton1Click:Connect(function()
+    SaveLoadFrame.Visible = true
+end)
+
+local LogDisplay = Instance.new("ScrollingFrame")
+LogDisplay.Name = "LogDisplay"
+LogDisplay.Size = UDim2.new(1, 0, 0.7, 0)
+LogDisplay.Position = UDim2.new(0, 0, 0.14, 0)
+LogDisplay.BackgroundTransparency = 1
+LogDisplay.CanvasSize = UDim2.new(0, 0, 1, 0)
+LogDisplay.ScrollBarThickness = 8
+LogDisplay.ScrollBarImageColor3 = Color3.fromRGB(70, 70, 70)
+LogDisplay.ScrollBarActiveImageColor3 = Color3.fromRGB(90, 90, 90)
+LogDisplay.Parent = MainFrame
+
+local DetailsFrame = Instance.new("Frame")
+DetailsFrame.Name = "DetailsFrame"
+DetailsFrame.Size = UDim2.new(1, 0, 0.15, 0)
+DetailsFrame.Position = UDim2.new(0, 0, 0.84, 0)
+DetailsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+DetailsFrame.BorderSizePixel = 0
+DetailsFrame.Visible = false
+DetailsFrame.Parent = MainFrame
+local DetailsFrameCorner = Instance.new("UICorner")
+DetailsFrameCorner.CornerRadius = UDim(0, 8)
+DetailsFrameCorner.Parent = DetailsFrame
+
+local DetailsTitle = Instance.new("TextLabel")
+DetailsTitle.Name = "DetailsTitle"
+DetailsTitle.Size = UDim2.new(1, 0, 0.3, 0)
+DetailsTitle.Position = UDim2.new(0, 0, 0, 0)
+DetailsTitle.Text = "Details:"
+DetailsTitle.Font = Enum.Font.SourceSansBold
+DetailsTitle.TextSize = 16
+DetailsTitle.TextColor3 = Color3.White
+DetailsTitle.BackgroundTransparency = 1
+DetailsTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+DetailsTitle.Position = UDim2.new(0.5, 0, 0.5, 0)
+DetailsTitle.Parent = DetailsFrame
+
+local DetailsText = Instance.new("TextBox")
+DetailsText.Name = "DetailsText"
+DetailsText.Size = UDim2.new(0.95, 0, 0.6, 0)
+DetailsText.Position = UDim2.new(0.025, 0, 0.35, 0)
+DetailsText.Font = Enum.Font.Monospace
+DetailsText.TextSize = 12
+DetailsText.TextColor3 = Color3.White
+DetailsText.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+DetailsText.BorderSizePixel = 0
+DetailsText.TextEditable = false
+DetailsText.TextWrapped = true
+DetailsText.Parent = DetailsFrame
+
+local ConfirmationFrame = Instance.new("Frame")
+ConfirmationFrame.Name = "ConfirmationFrame"
+ConfirmationFrame.Size = UDim2.new(0.3, 0, 0.2, 0)
+ConfirmationFrame.Position = UDim2.new(0.35, 0, 0.4, 0)
+ConfirmationFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ConfirmationFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ConfirmationFrame.BorderSizePixel = 0
+ConfirmationFrame.Visible = false
+ConfirmationFrame.Parent = MainFrame
+local ConfirmationFrameCorner = Instance.new("UICorner")
+ConfirmationFrameCorner.CornerRadius = UDim(0, 8)
+ConfirmationFrameCorner.Parent = ConfirmationFrame
+
+local ConfirmationLabel = Instance.new("TextLabel")
+ConfirmationLabel.Name = "ConfirmationLabel"
+ConfirmationLabel.Size = UDim2.new(0.9, 0, 0.4, 0)
+ConfirmationLabel.Position = UDim2.new(0.5, 0, 0.25, 0)
+ConfirmationLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ConfirmationLabel.Text = "Are you sure you want to clear the log?"
+ConfirmationLabel.Font = Enum.Font.SourceSansBold
+ConfirmationLabel.TextSize = 16
+ConfirmationLabel.TextColor3 = Color3.White
+ConfirmationLabel.BackgroundTransparency = 1
+ConfirmationLabel.Parent = ConfirmationFrame
+
+local YesButton = Instance.new("TextButton")
+YesButton.Name = "YesButton"
+YesButton.Size = UDim2.new(0.35, 0, 0.3, 0)
+YesButton.Position = UDim2.new(0.3, 0, 0.7, 0)
+YesButton.AnchorPoint = Vector2.new(0.5, 0.5)
+YesButton.Text = "Yes"
+YesButton.Font = Enum.Font.SourceSansBold
+YesButton.TextSize = 14
+YesButton.TextColor3 = Color3.White
+YesButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+YesButton.BorderSizePixel = 0
+YesButton.Parent = ConfirmationFrame
+local YesButtonCorner = Instance.new("UICorner")
+YesButtonCorner.CornerRadius = UDim(0, 4)
+YesButtonCorner.Parent = YesButton
+YesButton.MouseButton1Click:Connect(function()
+    loggedEntries = {}
+    logMessages = {}
+    updateLogDisplay(true)
+    DetailsFrame.Visible = false
+    DetailsText.Text = ""
+    ConfirmationFrame.Visible = false
+end)
+
+local NoButton = Instance.new("TextButton")
+NoButton.Name = "NoButton"
+NoButton.Size = UDim2.new(0.35, 0, 0.3, 0)
+NoButton.Position = UDim2.new(0.7, 0, 0.7, 0)
+NoButton.AnchorPoint = Vector2.new(0.5, 0.5)
+NoButton.Text = "No"
+NoButton.Font = Enum.Font.SourceSansBold
+NoButton.TextSize = 14
+NoButton.TextColor3 = Color3.White
+NoButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+NoButton.BorderSizePixel = 0
+NoButton.Parent = ConfirmationFrame
+local NoButtonCorner = Instance.new("UICorner")
+NoButtonCorner.CornerRadius = UDim(0, 4)
+NoButtonCorner.Parent = NoButton
+NoButton.MouseButton1Click:Connect(function()
+    ConfirmationFrame.Visible = false
+end)
+
+local SearchFrame = Instance.new("Frame")
+SearchFrame.Name = "SearchFrame"
+SearchFrame.Size = UDim2.new(1, 0, 0.06, 0)
+SearchFrame.Position = UDim2.new(0, 0, 0.92, 0)
+SearchFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SearchFrame.BorderSizePixel = 0
+SearchFrame.Parent = MainFrame
+
+local SearchLabel = Instance.new("TextLabel")
+SearchLabel.Text = "Search:"
+SearchLabel.Size = UDim2.new(0.15, 0, 0.7, 0)
+SearchLabel.Position = UDim2.new(0.02, 0, 0.15, 0)
+SearchLabel.AnchorPoint = Vector2.new(0, 0.5)
+SearchLabel.TextColor3 = Color3.White
+SearchLabel.BackgroundTransparency = 1
+SearchLabel.Font = Enum.Font.SourceSansBold
+SearchLabel.TextSize = 14
+SearchLabel.Parent = SearchFrame
+
+local SearchBar = Instance.new("TextBox")
+SearchBar.Name = "SearchBar"
+SearchBar.Size = UDim2.new(0.65, 0, 0.7, 0)
+SearchBar.Position = UDim2.new(0.18, 0, 0.15, 0)
+SearchBar.AnchorPoint = Vector2.new(0, 0.5)
+SearchBar.Font = Enum.Font.Monospace
+SearchBar.TextSize = 12
+SearchBar.TextColor3 = Color3.White
+SearchBar.PlaceholderText = "Search..."
+SearchBar.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SearchBar.BorderSizePixel = 0
+SearchBar.Parent = SearchFrame
+
+local CaseSensitiveToggle = Instance.new("TextButton")
+CaseSensitiveToggle.Name = "CaseSensitiveToggle"
+CaseSensitiveToggle.Size = UDim2.new(0.15, 0, 0.7, 0)
+CaseSensitiveToggle.Position = UDim2.new(0.85, 0, 0.15, 0)
+CaseSensitiveToggle.AnchorPoint = Vector2.new(0, 0.5)
+CaseSensitiveToggle.Text = "Aa"
+CaseSensitiveToggle.Font = Enum.Font.SourceSansBold
+CaseSensitiveToggle.TextSize = 14
+CaseSensitiveToggle.TextColor3 = Color3.White
+CaseSensitiveToggle.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+CaseSensitiveToggle.BorderSizePixel = 0
+CaseSensitiveToggle.Parent = SearchFrame
+local CaseSensitiveToggleCorner = Instance.new("UICorner")
+CaseSensitiveToggleCorner.CornerRadius = UDim(0, 4)
+CaseSensitiveToggleCorner.Parent = CaseSensitiveToggle
+
+local AdvancedFilterFrame = Instance.new("Frame")
+AdvancedFilterFrame.Name = "AdvancedFilterFrame"
+AdvancedFilterFrame.Size = UDim2.new(0.6, 0, 0.4, 0)
+AdvancedFilterFrame.Position = UDim2.new(0.2, 0, 0.3, 0)
+AdvancedFilterFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+AdvancedFilterFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+AdvancedFilterFrame.BorderSizePixel = 0
+AdvancedFilterFrame.Visible = false
+AdvancedFilterFrame.Parent = MainFrame
+local AdvancedFilterFrameCorner = Instance.new("UICorner")
+AdvancedFilterFrameCorner.CornerRadius = UDim(0, 8)
+AdvancedFilterFrameCorner.Parent = AdvancedFilterFrame
+
+local AdvancedFilterTitle = Instance.new("TextLabel")
+AdvancedFilterTitle.Name = "AdvancedFilterTitle"
+AdvancedFilterTitle.Size = UDim2.new(1, 0, 0.15, 0)
+AdvancedFilterTitle.Position = UDim2.new(0, 0, 0, 0)
+AdvancedFilterTitle.Text = "Advanced Filters"
+AdvancedFilterTitle.Font = Enum.Font.SourceSansBold
+AdvancedFilterTitle.TextSize = 20
+AdvancedFilterTitle.TextColor3 = Color3.White
+AdvancedFilterTitle.BackgroundTransparency = 1
+AdvancedFilterTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+AdvancedFilterTitle.Position = UDim2.new(0.5, 0, 0.5, 0)
+AdvancedFilterTitle.Parent = AdvancedFilterFrame
+
+local CloseAdvancedFilterButton = Instance.new("TextButton")
+CloseAdvancedFilterButton.Name = "CloseAdvancedFilterButton"
+CloseAdvancedFilterButton.Size = UDim2.new(0.1, 0, 0.15, 0)
+CloseAdvancedFilterButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseAdvancedFilterButton.AnchorPoint = Vector2.new(1, 0)
+CloseAdvancedFilterButton.Text = "X"
+CloseAdvancedFilterButton.Font = Enum.Font.SourceSansBold
+CloseAdvancedFilterButton.TextSize = 20
+CloseAdvancedFilterButton.TextColor3 = Color3.White
+CloseAdvancedFilterButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+CloseAdvancedFilterButton.BorderSizePixel = 0
+CloseAdvancedFilterButton.Parent = AdvancedFilterFrame
+local CloseAdvancedFilterButtonCorner = Instance.new("UICorner")
+CloseAdvancedFilterButtonCorner.CornerRadius = UDim(0, 4)
+CloseAdvancedFilterButtonCorner.Parent = CloseAdvancedFilterButton
+CloseAdvancedFilterButton.MouseButton1Click:Connect(function()
+    AdvancedFilterFrame.Visible = false
+end)
+
+local SourceLabel = Instance.new("TextLabel")
+SourceLabel.Text = "Source:"
+SourceLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+SourceLabel.Position = UDim2.new(0.05, 0, 0.2, 0)
+SourceLabel.AnchorPoint = Vector2.new(0, 0.5)
+SourceLabel.TextColor3 = Color3.White
+SourceLabel.BackgroundTransparency = 1
+SourceLabel.Font = Enum.Font.SourceSansBold
+SourceLabel.TextSize = 14
+SourceLabel.Parent = AdvancedFilterFrame
+
+local SourceTextBox = Instance.new("TextBox")
+SourceTextBox.Name = "SourceTextBox"
+SourceTextBox.Size = UDim2.new(0.6, 0, 0.1, 0)
+SourceTextBox.Position = UDim2.new(0.35, 0, 0.2, 0)
+SourceTextBox.AnchorPoint = Vector2.new(0, 0.5)
+SourceTextBox.Font = Enum.Font.Monospace
+SourceTextBox.TextSize = 12
+SourceTextBox.TextColor3 = Color3.White
+SourceTextBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SourceTextBox.BorderSizePixel = 0
+SourceTextBox.Parent = AdvancedFilterFrame
+
+local DestinationLabel = Instance.new("TextLabel")
+DestinationLabel.Text = "Destination:"
+DestinationLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+DestinationLabel.Position = UDim2.new(0.05, 0, 0.35, 0)
+DestinationLabel.AnchorPoint = Vector2.new(0, 0.5)
+DestinationLabel.TextColor3 = Color3.White
+DestinationLabel.BackgroundTransparency = 1
+DestinationLabel.Font = Enum.Font.SourceSansBold
+DestinationLabel.TextSize = 14
+DestinationLabel.Parent = AdvancedFilterFrame
+
+local DestinationTextBox = Instance.new("TextBox")
+DestinationTextBox.Name = "DestinationTextBox"
+DestinationTextBox.Size = UDim2.new(0.6, 0, 0.1, 0)
+DestinationTextBox.Position = UDim2.new(0.35, 0, 0.35, 0)
+DestinationTextBox.AnchorPoint = Vector2.new(0, 0.5)
+DestinationTextBox.Font = Enum.Font.Monospace
+DestinationTextBox.TextSize = 12
+DestinationTextBox.TextColor3 = Color3.White
+DestinationTextBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+DestinationTextBox.BorderSizePixel = 0
+DestinationTextBox.Parent = AdvancedFilterFrame
+
+local EventNameLabel = Instance.new("TextLabel")
+EventNameLabel.Text = "Event Name:"
+EventNameLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+EventNameLabel.Position = UDim2.new(0.05, 0, 0.5, 0)
+EventNameLabel.AnchorPoint = Vector2.new(0, 0.5)
+EventNameLabel.TextColor3 = Color3.White
+EventNameLabel.BackgroundTransparency = 1
+EventNameLabel.Font = Enum.Font.SourceSansBold
+EventNameLabel.TextSize = 14
+EventNameLabel.Parent = AdvancedFilterFrame
+
+local EventNameTextBox = Instance.new("TextBox")
+EventNameTextBox.Name = "EventNameTextBox"
+EventNameTextBox.Size = UDim2.new(0.6, 0, 0.1, 0)
+EventNameTextBox.Position = UDim2.new(0.35, 0, 0.5, 0)
+EventNameTextBox.AnchorPoint = Vector2.new(0, 0.5)
+EventNameTextBox.Font = Enum.Font.Monospace
+EventNameTextBox.TextSize = 12
+EventNameTextBox.TextColor3 = Color3.White
+EventNameTextBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+EventNameTextBox.BorderSizePixel = 0
+EventNameTextBox.Parent = AdvancedFilterFrame
+
+local AdvancedFilterApplyButton = Instance.new("TextButton")
+AdvancedFilterApplyButton.Name = "AdvancedFilterApplyButton"
+AdvancedFilterApplyButton.Size = UDim2.new(0.4, 0, 0.15, 0)
+AdvancedFilterApplyButton.Position = UDim2.new(0.3, 0, 0.7, 0)
+AdvancedFilterApplyButton.AnchorPoint = Vector2.new(0.5, 0.5)
+AdvancedFilterApplyButton.Text = "Apply Filters"
+AdvancedFilterApplyButton.Font = Enum.Font.SourceSansBold
+AdvancedFilterApplyButton.TextSize = 14
+AdvancedFilterApplyButton.TextColor3 = Color3.White
+AdvancedFilterApplyButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+AdvancedFilterApplyButton.BorderSizePixel = 0
+AdvancedFilterApplyButton.Parent = AdvancedFilterFrame
+local AdvancedFilterApplyButtonCorner = Instance.new("UICorner")
+AdvancedFilterApplyButtonCorner.CornerRadius = UDim(0, 4)
+AdvancedFilterApplyButtonCorner.Parent = AdvancedFilterApplyButton
+
+local SaveLoadFrame = Instance.new("Frame")
+SaveLoadFrame.Name = "SaveLoadFrame"
+SaveLoadFrame.Size = UDim2.new(0.4, 0, 0.3, 0)
+SaveLoadFrame.Position = UDim2.new(0.3, 0, 0.35, 0)
+SaveLoadFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+SaveLoadFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+SaveLoadFrame.BorderSizePixel = 0
+SaveLoadFrame.Visible = false
+SaveLoadFrame.Parent = MainFrame
+local SaveLoadFrameCorner = Instance.new("UICorner")
+SaveLoadFrameCorner.CornerRadius = UDim(0, 8)
+SaveLoadFrameCorner.Parent = SaveLoadFrame
+
+local SaveLoadTitle = Instance.new("TextLabel")
+SaveLoadTitle.Name = "SaveLoadTitle"
+SaveLoadTitle.Size = UDim2.new(1, 0, 0.2, 0)
+SaveLoadTitle.Position = UDim2.new(0, 0, 0, 0)
+SaveLoadTitle.Text = "Save / Load Logs"
+SaveLoadTitle.Font = Enum.Font.SourceSansBold
+SaveLoadTitle.TextSize = 20
+SaveLoadTitle.TextColor3 = Color3.White
+SaveLoadTitle.BackgroundTransparency = 1
+SaveLoadTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+SaveLoadTitle.Position = UDim2.new(0.5, 0, 0.5, 0)
+SaveLoadTitle.Parent = SaveLoadFrame
+
+local CloseSaveLoadButton = Instance.new("TextButton")
+CloseSaveLoadButton.Name = "CloseSaveLoadButton"
+CloseSaveLoadButton.Size = UDim2.new(0.1, 0, 0.2, 0)
+CloseSaveLoadButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseSaveLoadButton.AnchorPoint = Vector2.new(1, 0)
+CloseSaveLoadButton.Text = "X"
+CloseSaveLoadButton.Font = Enum.Font.SourceSansBold
+CloseSaveLoadButton.TextSize = 20
+CloseSaveLoadButton.TextColor3 = Color3.White
+CloseSaveLoadButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+CloseSaveLoadButton.BorderSizePixel = 0
+CloseSaveLoadButton.Parent = SaveLoadFrame
+local CloseSaveLoadButtonCorner = Instance.new("UICorner")
+CloseSaveLoadButtonCorner.CornerRadius = UDim(0, 4)
+CloseSaveLoadButtonCorner.Parent = CloseSaveLoadButton
+CloseSaveLoadButton.MouseButton1Click:Connect(function()
+    SaveLoadFrame.Visible = false
+end)
+
+local SaveButton = Instance.new("TextButton")
+SaveButton.Name = "SaveButton"
+SaveButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+SaveButton.Position = UDim2.new(0.1, 0, 0.3, 0)
+SaveButton.AnchorPoint = Vector2.new(0, 0.5)
+SaveButton.Text = "Save Logs"
+SaveButton.Font = Enum.Font.SourceSansBold
+SaveButton.TextSize = 16
+SaveButton.TextColor3 = Color3.White
+SaveButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SaveButton.BorderSizePixel = 0
+SaveButton.Parent = SaveLoadFrame
+local SaveButtonCorner = Instance.new("UICorner")
+SaveButtonCorner.CornerRadius = UDim(0, 4)
+SaveButtonCorner.Parent = SaveButton
+
+local LoadButton = Instance.new("TextButton")
+LoadButton.Name = "LoadButton"
+LoadButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+LoadButton.Position = UDim2.new(0.5, 0, 0.3, 0)
+LoadButton.AnchorPoint = Vector2.new(0, 0.5)
+LoadButton.Text = "Load Logs"
+LoadButton.Font = Enum.Font.SourceSansBold
+LoadButton.TextSize = 16
+LoadButton.TextColor3 = Color3.White
+LoadButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+LoadButton.BorderSizePixel = 0
+LoadButton.Parent = SaveLoadFrame
+local LoadButtonCorner = Instance.new("UICorner")
+LoadButtonCorner.CornerRadius = UDim(0, 4)
+LoadButtonCorner.Parent = LoadButton
+
+local SaveStatusLabel = Instance.new("TextLabel")
+SaveStatusLabel.Name = "SaveStatusLabel"
+SaveStatusLabel.Size = UDim2.new(0.8, 0, 0.2, 0)
+SaveStatusLabel.Position = UDim2.new(0.1, 0, 0.7, 0)
+SaveStatusLabel.AnchorPoint = Vector2.new(0, 0.5)
+SaveStatusLabel.Text = ""
+SaveStatusLabel.Font = Enum.Font.SourceSansBold
+SaveStatusLabel.TextSize = 14
+SaveStatusLabel.TextColor3 = Color3.White
+SaveStatusLabel.BackgroundTransparency = 1
+SaveStatusLabel.Parent = SaveLoadFrame
+
+local loggedEvents = {}
+local logMessages = {}
+local loggedEntries = {}
+local currentFilter = "All"
+local searchText = ""
+local isCaseSensitive = false
+local MAX_LOG_MESSAGES = 100
+local sourceFilter = ""
+local destinationFilter = ""
+local eventNameFilter = ""
+
+local function formatMessage(eventType, eventSource, eventName, args, destination)
+  local argString = ""
+  local argDetails = {}
+  if args then
+    for i, arg in ipairs(args) do
+      local argType = typeof(arg)
+      local argValue = ""
+      if argType == "Instance" then
+        argValue = arg:GetFullName()
+      elseif argType == "table" then
+        argValue = HttpService:JSONEncode(arg)
+      elseif argType == "string" then
+        argValue = "\"" .. arg .. "\""
+      else
+        argValue = tostring(arg)
+      end
+      argString = argString .. argValue .. ", "
+
+      local argDetail = {
+        Type = argType,
+        Value = arg,
+      }
+      table.insert(argDetails, argDetail)
+    end
+    argString = string.sub(argString, 1, #argString - 2)
+  end
+
+  local destinationString = ""
+  local destinationDetail = nil
+  if destination then
+    if typeof(destination) == "Instance" then
+      destinationString = "-> " .. destination:GetFullName()
+      destinationDetail = {
+        Type = "Instance",
+        Value = destination,
+      }
+    else
+      destinationString = "-> " .. tostring(destination)
+      destinationDetail = {
+        Type = typeof(destination),
+        Value = destination,
+      }
+    end
+  end
+
+  local message = string.format("%s: %s (%s) {%s} %s", eventType, eventSource, eventName, argString, destinationString)
+  
+  local details = {
+    EventType = eventType,
+    EventSource = eventSource,
+    EventName = eventName,
+    Arguments = argDetails,
+    Destination = destinationDetail,
+    Timestamp = os.time(),
+  }
+  return message, details
+end
+
+local function logEvent(eventType, eventSource, eventName, args, destination)
+  local message, details = formatMessage(eventType, eventSource, eventName, args, destination)
+  table.insert(logMessages, 1, message)
+   local logEntry = {
+    Message = message,
+    Details = details,
+  }
+  table.insert(loggedEntries, 1, logEntry)
+
+  if #logMessages > MAX_LOG_MESSAGES then
+    table.remove(logMessages)
+     table.remove(loggedEntries)
+  end
+  updateLogDisplay()
+end
+
+local function hookEvent(eventType, event)
+  if loggedEvents[event] then
+    return
+  end
+
+  local eventName = debug.getinfo(event, "n").name
+  if not eventName then
+    eventName = "unknown"
+  end
+
+  local eventSource = "Server"
+  if RunService:IsClient() then
+    eventSource = "Client"
+  end
+
+  local originalFunction = event.Event:Connect(function(...)
+    local args = {...}
+    local destination = nil
+     if eventType == "RemoteEvent" then
+        if eventSource == "Server" then
+          destination = Players:GetPlayerFromCharacter(args[1].Character)
+        else
+          destination = "Server"
+        end
+    elseif eventType == "RemoteFunction" then
+        if eventSource == "Server" then
+          destination = Players:GetPlayerFromCharacter(args[1].Character)
+        else
+          destination = "Server"
+        end
+    end
+    logEvent(eventType, eventSource, eventName, args, destination)
+  end)
+
+  loggedEvents[event] = originalFunction
+end
+
+local function hookFunction(eventType, func)
+  if loggedEvents[func] then
+    return
+  end
+
+  local eventName = debug.getinfo(func, "n").name
+  if not eventName then
+    eventName = "unknown"
+  end
+
+  local eventSource = "Server"
+  if RunService:IsClient() then
+    eventSource = "Client"
+  end
+
+  local originalFunction = func.OnInvoke:Connect(function(...)
+    local args = {...}
+    local destination = nil
+    if eventType == "BindableFunction" then
+        destination = "Same Script"
+    end
+    local result = func(...)
+    logEvent(eventType, eventSource, eventName, args, destination)
+    return result
+  end)
+  loggedEvents[func] = originalFunction
+end
+
+
+local function hookInstanceEvents(instance)
+  for _, child in pairs(instance:GetChildren()) do
+    if child:IsA("RemoteEvent") then
+      hookEvent("RemoteEvent", child)
+    elseif child:IsA("BindableEvent") then
+      hookEvent("BindableEvent", child)
+    elseif child:IsA("RemoteFunction") then
+      hookEvent("RemoteFunction", child)
+    elseif child:IsA("BindableFunction") then
+      hookFunction("BindableFunction", child)
+    end
+    hookInstanceEvents(child)
+  end
+end
+
+hookInstanceEvents(game)
+
+game.ReplicatedFirst.ChildAdded:Connect(function(child)
+  hookInstanceEvents(child)
+end)
+
+local function updateLogDisplay(goToBottom)
+    LogDisplay:Clear()
+    local filteredMessages = {}
+    local caseSensitive = isCaseSensitive
+    local searchTextLower = string.lower(searchText)
+
+    for i, logEntry in ipairs(loggedEntries) do
+        local messageLower = string.lower(logEntry.Message)
+        local matchesFilter = (currentFilter == "All" or string.find(logEntry.Message, currentFilter))
+        local matchesSearch = (searchText == "" or
+                                 (caseSensitive and string.find(logEntry.Message, searchText)) or
+                                 string.find(messageLower, searchTextLower))
+        local matchesAdvanced = checkAdvancedFilters(logEntry.Message)
+
+        if matchesFilter and matchesSearch and matchesAdvanced then
+            table.insert(filteredMessages, logEntry)
+        end
+    end
+
+    local displayCount = 0
+    for i = #filteredMessages, 1, -1 do
+        local logEntry = filteredMessages[i]
+        local message = logEntry.Message
+        local logEntryDisplay = Instance.new("TextLabel")
+        logEntryDisplay.Size = UDim2.new(1, 0, 0.1, 0)
+        logEntryDisplay.Font = Enum.Font.Monospace
+        logEntryDisplay.TextSize = 12
+        logEntryDisplay.TextColor3 = Color3.White
+        logEntryDisplay.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        logEntryDisplay.BackgroundTransparency = 0.8
+        logEntryDisplay.TextXAlignment = Enum.TextXAlignment.Left
+        logEntryDisplay.TextYAlignment = Enum.TextYAlignment.Top
+        logEntryDisplay.Position = UDim2.new(0, 0, displayCount * 0.1, 0)
+        logEntryDisplay.Text = message
+        logEntryDisplay.TextWrapped = true
+        logEntryDisplay.Parent = LogDisplay
+
+        logEntryDisplay.MouseButton1Click:Connect(function()
+            DetailsFrame.Visible = true
+            local detailsText = ""
+            local details = logEntry.Details
+            detailsText = detailsText .. "EventType: " .. details.EventType .. "\n"
+            detailsText = detailsText .. "EventSource: " .. details.EventSource .. "\n"
+            detailsText = detailsText .. "EventName: " .. details.EventName .. "\n"
+            detailsText = detailsText .. "Timestamp: " .. os.date("%Y-%m-%d %H:%M:%S", details.Timestamp) .. "\n"
+
+            detailsText = detailsText .. "Arguments:\n"
+            if #details.Arguments > 0 then
+                for i, arg in ipairs(details.Arguments) do
+                    detailsText = detailsText .. "  [" .. i .. "] Type: " .. arg.Type .. ", Value: " .. (typeof(arg.Value) == "table" and HttpService:JSONEncode(arg.Value) or tostring(arg.Value)) .. "\n"
+                end
+            else
+                detailsText = detailsText .. "  None\n"
+            end
+
+            detailsText = detailsText .. "Destination: " .. (details.Destination and details.Destination.Value or "None")
+
+            DetailsText.Text = detailsText
+        end)
+
+        displayCount = displayCount + 1
+    end
+
+    if goToBottom then
+        LogDisplay:SetCanvasPosition(Vector2.new(0, LogDisplay.CanvasSize.Y))
+    else
+        LogDisplay.CanvasSize = UDim2.new(0, 0, displayCount * 0.1, 0)
+    end
+end
+
+FilterDropdown.Changed:Connect(function()
+    currentFilter = FilterDropdown.SelectedItem
+    updateLogDisplay()
+end)
+
+SearchBar.Changed:Connect(function()
+    searchText = SearchBar.Text
+    updateLogDisplay()
+end)
+
+CaseSensitiveToggle.MouseButton1Click:Connect(function()
+    isCaseSensitive = not isCaseSensitive
+    CaseSensitiveToggle.Text = isCaseSensitive and "Aa" or "aa"
+    updateLogDisplay()
+end)
+
+AdvancedFilterApplyButton.MouseButton1Click:Connect(function()
+    sourceFilter = SourceTextBox.Text
+    destinationFilter = DestinationTextBox.Text
+    eventNameFilter = EventNameTextBox.Text
+    updateLogDisplay()
+    AdvancedFilterFrame.Visible = false
+end)
+
+local function SaveLogs()
+    if #loggedEntries > 0 then
+        local data = HttpService:JSONEncode(loggedEntries)
+        local success, err = pcall(function()
+            LocalPlayer:SetAttribute("EventLogs", data)
+        end)
+        if success then
+            SaveStatusLabel.Text = "Logs saved successfully!"
+        else
+            SaveStatusLabel.Text = "Error saving logs: " .. err
+        end
+    else
+        SaveStatusLabel.Text = "No logs to save."
+    end
+end
+
+local function LoadLogs()
+    local data = LocalPlayer:GetAttribute("EventLogs")
+    if data then
+        local success, decodedData = pcall(function()
+            loggedEntries = HttpService:JSONDecode(data)
+             logMessages = {}
+             for i, entry in ipairs(loggedEntries) do
+                table.insert(logMessages, entry.Message)
+             end
+        end)
+        if success then
+            updateLogDisplay(true)
+            SaveStatusLabel.Text = "Logs loaded successfully!"
+        else
+            SaveStatusLabel.Text = "Error loading logs (data corruption?)"
+            loggedEntries = {}
+            logMessages = {}
+        end
+    else
+        SaveStatusLabel.Text = "No saved logs found."
+        loggedEntries = {}
+        logMessages = {}
+    end
+    updateLogDisplay(true)
+end
+
+SaveButton.MouseButton1Click:Connect(SaveLogs)
+LoadButton.MouseButton1Click:Connect(LoadLogs)
