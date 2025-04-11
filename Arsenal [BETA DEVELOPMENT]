@@ -1,0 +1,151 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+local Mouse = LocalPlayer:GetMouse()
+
+local FOV_RADIUS = 120
+local UPDATE_RATE = 0.075
+local SMOOTHING_FACTOR = 0.35
+
+local circle = Drawing.new("Circle")
+circle.Visible = true
+circle.Radius = FOV_RADIUS
+circle.Color = Color3.fromRGB(255, 0, 0)
+circle.Thickness = 2
+circle.Transparency = 1
+circle.Filled = false
+
+local target = nil
+local lastTargetChange = 0
+local teamCheckEnabled = false
+local hasTeams = false
+
+local function CheckForTeams()
+    if LocalPlayer.Team ~= nil then
+        hasTeams = true
+        return true
+    end
+    
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Team ~= nil then
+            hasTeams = true
+            return true
+        end
+    end
+    
+    hasTeams = false
+    return false
+end
+
+local function IsValidTarget(player)
+    if player == LocalPlayer then return false end
+    if not player.Character then return false end
+    
+    local character = player.Character
+    if not character:FindFirstChild("Head") then return false end
+    if not character:FindFirstChild("Humanoid") then return false end
+    if character.Humanoid.Health <= 0 then return false end
+    
+    if hasTeams and player.Team == LocalPlayer.Team then
+        return false
+    end
+    
+    return true
+end
+
+local function IsTargetVisible(head)
+    local origin = Camera.CFrame.Position
+    local direction = (head.Position - origin).Unit
+    local raycastParams = RaycastParams.new()
+    
+    raycastParams.FilterDescendantsInstances = {LocalPlayer.Character, Camera}
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    raycastParams.IgnoreWater = true
+    
+    local raycastResult = Workspace:Raycast(origin, direction * 10000, raycastParams)
+    
+    if raycastResult then
+        local hitPart = raycastResult.Instance
+        return hitPart:IsDescendantOf(head.Parent)
+    end
+    
+    return false
+end
+
+local function FindBestTarget()
+    local bestTarget = nil
+    local closestDistance = FOV_RADIUS
+    local mousePos = Vector2.new(Mouse.X, Mouse.Y)
+    
+    for _, player in pairs(Players:GetPlayers()) do
+        if IsValidTarget(player) then
+            local head = player.Character.Head
+            local screenPos, onScreen = Camera:WorldToViewportPoint(head.Position)
+            
+            if onScreen then
+                local screenVec = Vector2.new(screenPos.X, screenPos.Y)
+                local distance = (mousePos - screenVec).Magnitude
+                
+                if distance < closestDistance and IsTargetVisible(head) then
+                    closestDistance = distance
+                    bestTarget = player
+                end
+            end
+        end
+    end
+    
+    return bestTarget
+end
+
+local function SmoothAim(targetHead)
+    local currentCFrame = Camera.CFrame
+    local targetPosition = targetHead.Position
+    local newCFrame = CFrame.new(currentCFrame.Position, targetPosition)
+    
+    -- Apply smoothing
+    Camera.CFrame = currentCFrame:Lerp(newCFrame, SMOOTHING_FACTOR)
+end
+
+local function UpdateFOVCircle()
+    circle.Position = Vector2.new(Mouse.X, Mouse.Y)
+end
+
+local function UpdateAim()
+    target = FindBestTarget()
+    
+    if target and target.Character and target.Character:FindFirstChild("Head") then
+        local head = target.Character.Head
+        if IsTargetVisible(head) then
+            SmoothAim(head)
+        else
+            target = nil
+        end
+    end
+end
+
+CheckForTeams()
+
+local lastUpdate = 0
+RunService.Heartbeat:Connect(function(deltaTime)
+    UpdateFOVCircle()
+    
+    lastUpdate = lastUpdate + deltaTime
+    if lastUpdate >= UPDATE_RATE then
+        lastUpdate = 0
+        UpdateAim()
+    end
+end)
+
+game:GetService("UserInputService").WindowFocusReleased:Connect(function()
+    circle:Remove()
+end)
+
+if not cloneref then
+    game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+        circle:Remove()
+    end)
+end
