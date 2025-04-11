@@ -106,7 +106,6 @@ local function SmoothAim(targetHead)
     local targetPosition = targetHead.Position
     local newCFrame = CFrame.new(currentCFrame.Position, targetPosition)
     
-    -- Apply smoothing
     Camera.CFrame = currentCFrame:Lerp(newCFrame, SMOOTHING_FACTOR)
 end
 
