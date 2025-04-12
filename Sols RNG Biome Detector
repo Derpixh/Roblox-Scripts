@@ -1,50 +1,42 @@
 local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 
 local BIOME_DETECTIONS = {
     {
         soundId = "rbxassetid://9044565954",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Windy Biome!",
-        exitMessage = "Windy Biome Has Ended!"
+        message = "Detected Windy Biome!"
     },
     {
         soundId = "rbxassetid://9046862941",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Normal Biome!",
-        exitMessage = "Normal Biome Has Ended!"
+        message = "Detected Normal Biome!"
     },
     {
         soundId = "rbxassetid://1837667693",
         soundGroup = "BackgroundMusic",
-        message = "Detected Null Biome!",
-        exitMessage = "Null Biome Has Ended!"
+        message = "Detected Null Biome!"
     },
     {
         soundId = "rbxassetid://9043887091",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Rainy Biome!",
-        exitMessage = "Rainy Biome Has Ended!"
+        message = "Detected Rainy Biome!"
     },
     {
         soundId = "rbxassetid://1837093849",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Hell Biome!",
-        exitMessage = "Hell Biome Has Ended!"
+        message = "Detected Hell Biome!"
     },
     {
         soundId = "rbxassetid://1837897153",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Corruption Biome!",
-        exitMessage = "Corruption Biome Has Ended!"
+        message = "Detected Corruption Biome!"
     },
     {
         soundId = "rbxassetid://1836349593",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Starfall Biome!",
-        exitMessage = "Starfall Biome Has Ended!"
+        message = "Detected Starfall Biome!"
     }
 }
 
@@ -54,20 +46,16 @@ local function showNotification(message)
     StarterGui:SetCore("SendNotification", {
         Title = "Biome Detector",
         Text = message,
-        Duration = 5,
-        Icon = ""
+        Duration = 5
     })
 end
 
 local function checkBiomes()
-    local currentlyPlaying = {}
-    
     for _, sound in ipairs(SoundService:GetDescendants()) do
         if sound:IsA("Sound") and sound.IsPlaying then
             local group = sound.SoundGroup and sound.SoundGroup.Name or "None"
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if sound.SoundId == biome.soundId and group == biome.soundGroup then
-                    currentlyPlaying[biome.soundId] = true
                     if not activeBiomes[biome.soundId] then
                         showNotification(biome.message)
                         activeBiomes[biome.soundId] = true
@@ -76,21 +64,6 @@ local function checkBiomes()
             end
         end
     end
-    
-    for soundId, _ in pairs(activeBiomes) do
-        if not currentlyPlaying[soundId] then
-            for _, biome in ipairs(BIOME_DETECTIONS) do
-                if biome.soundId == soundId then
-                    showNotification(biome.exitMessage)
-                    activeBiomes[soundId] = nil
-                    break
-                end
-            end
-        end
-    end
 end
 
-while true do
-    checkBiomes()
-    task.wait(0.5)
-end
+RunService.Heartbeat:Connect(checkBiomes)
