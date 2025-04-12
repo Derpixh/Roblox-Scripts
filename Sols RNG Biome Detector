@@ -1,53 +1,54 @@
-local SoundService = game:GetService("SoundService")
+\local SoundService = game:GetService("SoundService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 
 local BIOMES = {
-    Rainy = "rbxassetid://9043887091",
-    Normal = "rbxassetid://9046862941",
-    Snowy = "rbxassetid://1837101327",
-    Corruption = "rbxassetid://1837897153"
+    ["rbxassetid://9043887091"] = "Rainy",
+    ["rbxassetid://9046862941"] = "Normal",
+    ["rbxassetid://1837101327"] = "Snowy",
+    ["rbxassetid://1837897153"] = "Corruption"
 }
-local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
 
+local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
 local localPlayer = Players.LocalPlayer
-local lastBiome = nil
+local currentBiome = nil
+local lastNotificationTime = 0
 
 local function sendNotification(message)
-    StarterGui:SetCore("SendNotification", {
-        Title = "Biome Detector",
-        Text = message,
-        Duration = 5
-    })
+    local now = os.time()
+    if now - lastNotificationTime >= 1 then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Biome Detector",
+            Text = message,
+            Duration = 5
+        })
+        lastNotificationTime = now
+    end
 end
 
 local function checkSounds()
-    local currentBiome = nil
+    local foundBiome = nil
     
     for _, sound in ipairs(SoundService:GetDescendants()) do
         if sound:IsA("Sound") and sound.IsPlaying then
             if sound.SoundGroup and sound.SoundGroup.Name == TARGET_SOUND_GROUP then
-                local soundId = tostring(sound.SoundId)
-                
-                for biomeName, id in pairs(BIOMES) do
-                    if soundId == id then
-                        currentBiome = biomeName
-                        break
-                    end
+                local biomeName = BIOMES[tostring(sound.SoundId)]
+                if biomeName then
+                    foundBiome = biomeName
+                    break
                 end
-                if currentBiome then break end
             end
         end
     end
-    
-    if currentBiome ~= lastBiome then
-        if currentBiome then
-            sendNotification(currentBiome.." Biome Has Started!")
-        else
-            sendNotification(lastBiome.." Biome Has Ended!")
+
+    if foundBiome ~= currentBiome then
+        if foundBiome then
+            sendNotification(foundBiome .. " Biome Has Started!")
+        elseif currentBiome then
+            sendNotification(currentBiome .. " Biome Has Ended!")
         end
-        lastBiome = currentBiome
+        currentBiome = foundBiome
     end
 end
 
