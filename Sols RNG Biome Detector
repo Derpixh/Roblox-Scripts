@@ -2,48 +2,47 @@ local SoundService = game:GetService("SoundService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-local TARGET_SOUND_ID = "rbxassetid://9043887091"
+local RAINY_SOUND_ID = "rbxassetid://9043887091"
+local NORMAL_SOUND_ID = "rbxassetid://9046862941"
 local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
-local NOTIFICATION_TITLE = "Biome Detector"
-local RAINY_START_TEXT = "Rainy Biome Has Started!"
-local RAINY_END_TEXT = "Rainy Biome Has Ended!"
 
 local localPlayer = Players.LocalPlayer
-local lastSoundState = false
+local lastBiome = nil
 
 local function checkSounds()
-    local currentSoundState = false
+    local currentBiome = nil
     
     for _, sound in ipairs(SoundService:GetDescendants()) do
-        if sound:IsA("Sound") then
-            if tostring(sound.SoundId) == TARGET_SOUND_ID 
-               and sound.SoundGroup and sound.SoundGroup.Name == TARGET_SOUND_GROUP 
-               and sound.IsPlaying then
-                currentSoundState = true
-                break
+        if sound:IsA("Sound") and sound.IsPlaying then
+            if sound.SoundGroup and sound.SoundGroup.Name == TARGET_SOUND_GROUP then
+                local soundId = tostring(sound.SoundId)
+                
+                if soundId == RAINY_SOUND_ID then
+                    currentBiome = "Rainy"
+                    break
+                elseif soundId == NORMAL_SOUND_ID then
+                    currentBiome = "Normal"
+                    break
+                end
             end
         end
     end
     
-    if currentSoundState ~= lastSoundState then
-        if currentSoundState then
-            localPlayer:SetAttribute("BiomeStatus", "Rainy")
+    if currentBiome ~= lastBiome then
+        if currentBiome then
             localPlayer:SendNotification({
-                Title = NOTIFICATION_TITLE,
-                Text = RAINY_START_TEXT,
-                Icon = "",
+                Title = "Biome Detector",
+                Text = currentBiome .. " Biome Has Started!",
                 Duration = 5
             })
         else
-            localPlayer:SetAttribute("BiomeStatus", "None")
             localPlayer:SendNotification({
-                Title = NOTIFICATION_TITLE,
-                Text = RAINY_END_TEXT,
-                Icon = "",
+                Title = "Biome Detector",
+                Text = lastBiome .. " Biome Has Ended!",
                 Duration = 5
             })
         end
-        lastSoundState = currentSoundState
+        lastBiome = currentBiome
     end
 end
 
