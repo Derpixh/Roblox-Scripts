@@ -1,7 +1,6 @@
 local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
 local BIOME_DETECTIONS = {
@@ -50,27 +49,14 @@ local BIOME_DETECTIONS = {
 }
 
 local activeBiomes = {}
-local lastNotificationTime = 0
 
-local function sendNotification(message)
-    local currentTime = os.time()
-    if currentTime - lastNotificationTime >= 1 then
-        StarterGui:SetCore("SendNotification", {
-            Title = "Biome Detector",
-            Text = message,
-            Duration = 5
-        })
-        lastNotificationTime = currentTime
-    else
-        task.delay(1, function()
-            StarterGui:SetCore("SendNotification", {
-                Title = "Biome Detector",
-                Text = message,
-                Duration = 5
-            })
-            lastNotificationTime = os.time()
-        end)
-    end
+local function showNotification(message)
+    StarterGui:SetCore("SendNotification", {
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5,
+        Icon = ""
+    })
 end
 
 local function checkBiomes()
@@ -78,15 +64,14 @@ local function checkBiomes()
     
     for _, sound in ipairs(SoundService:GetDescendants()) do
         if sound:IsA("Sound") and sound.IsPlaying then
-            local soundGroupName = sound.SoundGroup and sound.SoundGroup.Name or "None"
+            local group = sound.SoundGroup and sound.SoundGroup.Name or "None"
             for _, biome in ipairs(BIOME_DETECTIONS) do
-                if sound.SoundId == biome.soundId and soundGroupName == biome.soundGroup then
+                if sound.SoundId == biome.soundId and group == biome.soundGroup then
                     currentlyPlaying[biome.soundId] = true
                     if not activeBiomes[biome.soundId] then
-                        sendNotification(biome.message)
+                        showNotification(biome.message)
                         activeBiomes[biome.soundId] = true
                     end
-                    break
                 end
             end
         end
@@ -96,7 +81,7 @@ local function checkBiomes()
         if not currentlyPlaying[soundId] then
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if biome.soundId == soundId then
-                    sendNotification(biome.exitMessage)
+                    showNotification(biome.exitMessage)
                     activeBiomes[soundId] = nil
                     break
                 end
@@ -105,6 +90,7 @@ local function checkBiomes()
     end
 end
 
-RunService.Heartbeat:Connect(function()
+while true do
     checkBiomes()
-end)
+    task.wait(0.5)
+end
