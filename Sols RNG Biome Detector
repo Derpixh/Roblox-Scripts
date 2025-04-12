@@ -1,13 +1,25 @@
 local SoundService = game:GetService("SoundService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
 
-local RAINY_SOUND_ID = "rbxassetid://9043887091"
-local NORMAL_SOUND_ID = "rbxassetid://9046862941"
+local BIOMES = {
+    Rainy = "rbxassetid://9043887091",
+    Normal = "rbxassetid://9046862941"
+}
 local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
 
 local localPlayer = Players.LocalPlayer
 local lastBiome = nil
+
+local function sendNotification(title, text)
+    StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = 5,
+        Icon = ""
+    })
+end
 
 local function checkSounds()
     local currentBiome = nil
@@ -17,30 +29,22 @@ local function checkSounds()
             if sound.SoundGroup and sound.SoundGroup.Name == TARGET_SOUND_GROUP then
                 local soundId = tostring(sound.SoundId)
                 
-                if soundId == RAINY_SOUND_ID then
-                    currentBiome = "Rainy"
-                    break
-                elseif soundId == NORMAL_SOUND_ID then
-                    currentBiome = "Normal"
-                    break
+                for biomeName, id in pairs(BIOMES) do
+                    if soundId == id then
+                        currentBiome = biomeName
+                        break
+                    end
                 end
+                if currentBiome then break end
             end
         end
     end
     
     if currentBiome ~= lastBiome then
         if currentBiome then
-            localPlayer:SendNotification({
-                Title = "Biome Detector",
-                Text = currentBiome .. " Biome Has Started!",
-                Duration = 5
-            })
+            sendNotification("Biome Detector", currentBiome.." Biome Has Started!")
         else
-            localPlayer:SendNotification({
-                Title = "Biome Detector",
-                Text = lastBiome .. " Biome Has Ended!",
-                Duration = 5
-            })
+            sendNotification("Biome Detector", lastBiome.." Biome Has Ended!")
         end
         lastBiome = currentBiome
     end
