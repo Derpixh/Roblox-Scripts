@@ -1,5 +1,7 @@
 local SoundService = game:GetService("SoundService")
 local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
 local BIOME_DETECTIONS = {
@@ -46,13 +48,14 @@ local function showNotification(message)
     StarterGui:SetCore("SendNotification", {
         Title = "Biome Detector",
         Text = message,
-        Duration = 5
+        Duration = 5,
+        Icon = ""
     })
 end
 
 local function checkBiomes()
     for _, sound in ipairs(SoundService:GetDescendants()) do
-        if sound:IsA("Sound") and sound.IsPlaying then
+        if sound:IsA("Sound") and sound.Playing then
             local group = sound.SoundGroup and sound.SoundGroup.Name or "None"
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if sound.SoundId == biome.soundId and group == biome.soundGroup then
@@ -66,4 +69,6 @@ local function checkBiomes()
     end
 end
 
-RunService.Heartbeat:Connect(checkBiomes)
+RunService.Heartbeat:Connect(function()
+    pcall(checkBiomes)
+end)
