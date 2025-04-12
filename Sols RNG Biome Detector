@@ -50,33 +50,38 @@ local BIOME_DETECTIONS = {
 }
 
 local activeBiomes = {}
-local lastNotificationTime = 0
-local notificationDelay = 1
+local notificationQueue = {}
+local isShowingNotification = false
 
-local function sendNotification(message)
-    local currentTime = tick()
-    if currentTime - lastNotificationTime >= notificationDelay then
-        StarterGui:SetCore("SendNotification", {
-            Title = "Biome Detector",
-            Text = message,
-            Duration = 5
-        })
-        lastNotificationTime = currentTime
+local function showNotification(message, callback)
+    isShowingNotification = true
+    StarterGui:SetCore("SendNotification", {
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5,
+        Callback = function()
+            isShowingNotification = false
+            if callback then callback() end
+            if #notificationQueue > 0 then
+                local nextNotif = table.remove(notificationQueue, 1)
+                showNotification(nextNotif.message, nextNotif.callback)
+            end
+        end
+    })
+end
+
+local function queueNotification(message, callback)
+    if isShowingNotification then
+        table.insert(notificationQueue, {message = message, callback = callback})
     else
-        task.delay(notificationDelay - (currentTime - lastNotificationTime), function()
-            StarterGui:SetCore("SendNotification", {
-                Title = "Biome Detector",
-                Text = message,
-                Duration = 5
-            })
-            lastNotificationTime = tick()
-        end)
+        showNotification(message, callback)
     end
 end
 
 local function checkBiomes()
     local currentlyPlaying = {}
-    
+    local newBiomes = {}
+
     for _, sound in ipairs(SoundService:GetDescendants()) do
         if sound:IsA("Sound") and sound.IsPlaying then
             local soundGroupName = sound.SoundGroup and sound.SoundGroup.Name or "None"
@@ -84,21 +89,26 @@ local function checkBiomes()
                 if sound.SoundId == biome.soundId and soundGroupName == biome.soundGroup then
                     currentlyPlaying[biome.soundId] = true
                     if not activeBiomes[biome.soundId] then
-                        sendNotification(biome.message)
-                        activeBiomes[biome.soundId] = true
+                        newBiomes[biome.soundId] = biome
                     end
                     break
                 end
             end
         end
     end
-    
+
+    for soundId, biome in pairs(newBiomes) do
+        activeBiomes[soundId] = true
+        queueNotification(biome.message, function() end)
+    end
+
     for soundId, _ in pairs(activeBiomes) do
         if not currentlyPlaying[soundId] then
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if biome.soundId == soundId then
-                    sendNotification(biome.exitMessage)
-                    activeBiomes[soundId] = nil
+                    queueNotification(biome.exitMessage, function()
+                        activeBiomes[soundId] = nil
+                    end)
                     break
                 end
             end
