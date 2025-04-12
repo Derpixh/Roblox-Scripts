@@ -8,68 +8,79 @@ local BIOME_DETECTIONS = {
     {
         soundId = "rbxassetid://9044565954",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Windy Biome!"
+        message = "Detected Windy Biome!",
+        exitMessage = "Windy Biome Has Ended!"
     },
     {
         soundId = "rbxassetid://9046862941",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Normal Biome!"
+        message = "Detected Normal Biome!",
+        exitMessage = "Normal Biome Has Ended!"
     },
     {
         soundId = "rbxassetid://1837667693",
         soundGroup = "BackgroundMusic",
-        message = "Detected Null Biome!"
+        message = "Detected Null Biome!",
+        exitMessage = "Null Biome Has Ended!"
     },
     {
         soundId = "rbxassetid://9043887091",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Rainy Biome!"
+        message = "Detected Rainy Biome!",
+        exitMessage = "Rainy Biome Has Ended!"
     },
     {
         soundId = "rbxassetid://1837093849",
         soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Hell Biome!"
+        message = "Detected Hell Biome!",
+        exitMessage = "Hell Biome Has Ended!"
+    },
+    {
+        soundId = "rbxassetid://1837897153",
+        soundGroup = "PlayerBackgroundMusic",
+        message = "Detected Corruption Biome!",
+        exitMessage = "Corruption Biome Has Ended!"
     }
 }
 
-local sentNotifications = {}
+local activeBiomes = {}
+
+local function sendNotification(message)
+    StarterGui:SetCore("SendNotification", {
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5,
+    })
+end
 
 local function checkBiomes()
-    for soundId, _ in pairs(sentNotifications) do
-        local stillPlaying = false
-        for _, sound in ipairs(SoundService:GetDescendants()) do
-            if sound:IsA("Sound") and sound.IsPlaying and sound.SoundId == soundId then
-                local groupName = sound.SoundGroup and sound.SoundGroup.Name or "None"
-                for _, biome in ipairs(BIOME_DETECTIONS) do
-                    if biome.soundId == soundId and biome.soundGroup == groupName then
-                        stillPlaying = true
-                        break
-                    end
-                end
-                if stillPlaying then break end
-            end
-        end
-        if not stillPlaying then
-            sentNotifications[soundId] = nil
-        end
-    end
+    local currentlyPlaying = {}
     
     for _, sound in ipairs(SoundService:GetDescendants()) do
         if sound:IsA("Sound") and sound.IsPlaying then
             local soundGroupName = sound.SoundGroup and sound.SoundGroup.Name or "None"
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if sound.SoundId == biome.soundId and soundGroupName == biome.soundGroup then
-                    if not sentNotifications[sound.SoundId] then
-                        StarterGui:SetCore("SendNotification", {
-                            Title = "Biome Detector",
-                            Text = biome.message,
-                            Duration = 5,
-                        })
-                        sentNotifications[sound.SoundId] = true
+                    currentlyPlaying[biome.soundId] = true
+                    if not activeBiomes[biome.soundId] then
+                        sendNotification(biome.message)
+                        activeBiomes[biome.soundId] = true
                     end
                     break
                 end
             end
+        end
+    end
+    
+    for soundId, _ in pairs(activeBiomes) do
+        if not currentlyPlaying[soundId] then
+            for _, biome in ipairs(BIOME_DETECTIONS) do
+                if biome.soundId == soundId then
+                    sendNotification(biome.exitMessage)
+                    break
+                end
+            end
+            activeBiomes[soundId] = nil
         end
     end
 end
