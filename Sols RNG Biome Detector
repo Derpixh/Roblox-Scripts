@@ -5,19 +5,20 @@ local StarterGui = game:GetService("StarterGui")
 
 local BIOMES = {
     Rainy = "rbxassetid://9043887091",
-    Normal = "rbxassetid://9046862941"
+    Normal = "rbxassetid://9046862941",
+    Snowy = "rbxassetid://1837101327",
+    Corruption = "rbxassetid://1837897153"
 }
 local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
 
 local localPlayer = Players.LocalPlayer
 local lastBiome = nil
 
-local function sendNotification(title, text)
+local function sendNotification(message)
     StarterGui:SetCore("SendNotification", {
-        Title = title,
-        Text = text,
-        Duration = 5,
-        Icon = ""
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5
     })
 end
 
@@ -42,9 +43,9 @@ local function checkSounds()
     
     if currentBiome ~= lastBiome then
         if currentBiome then
-            sendNotification("Biome Detector", currentBiome.." Biome Has Started!")
+            sendNotification(currentBiome.." Biome Has Started!")
         else
-            sendNotification("Biome Detector", lastBiome.." Biome Has Ended!")
+            sendNotification(lastBiome.." Biome Has Ended!")
         end
         lastBiome = currentBiome
     end
