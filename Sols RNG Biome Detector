@@ -40,17 +40,38 @@ local BIOME_DETECTIONS = {
         soundGroup = "PlayerBackgroundMusic",
         message = "Detected Corruption Biome!",
         exitMessage = "Corruption Biome Has Ended!"
+    },
+    {
+        soundId = "rbxassetid://1836349593",
+        soundGroup = "PlayerBackgroundMusic",
+        message = "Detected Starfall Biome!",
+        exitMessage = "Starfall Biome Has Ended!"
     }
 }
 
 local activeBiomes = {}
+local lastNotificationTime = 0
+local notificationDelay = 1
 
 local function sendNotification(message)
-    StarterGui:SetCore("SendNotification", {
-        Title = "Biome Detector",
-        Text = message,
-        Duration = 5
-    })
+    local currentTime = tick()
+    if currentTime - lastNotificationTime >= notificationDelay then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Biome Detector",
+            Text = message,
+            Duration = 5
+        })
+        lastNotificationTime = currentTime
+    else
+        task.delay(notificationDelay - (currentTime - lastNotificationTime), function()
+            StarterGui:SetCore("SendNotification", {
+                Title = "Biome Detector",
+                Text = message,
+                Duration = 5
+            })
+            lastNotificationTime = tick()
+        end)
+    end
 end
 
 local function checkBiomes()
