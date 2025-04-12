@@ -11,20 +11,14 @@ local BIOMES = {
 }
 
 local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
-local localPlayer = Players.LocalPlayer
 local currentBiome = nil
-local lastNotificationTime = 0
 
 local function sendNotification(message)
-    local now = os.time()
-    if now - lastNotificationTime >= 1 then
-        StarterGui:SetCore("SendNotification", {
-            Title = "Biome Detector",
-            Text = message,
-            Duration = 5
-        })
-        lastNotificationTime = now
-    end
+    StarterGui:SetCore("SendNotification", {
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5
+    })
 end
 
 local function checkSounds()
