@@ -1,74 +1,50 @@
 local SoundService = game:GetService("SoundService")
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
 
-local BIOME_DETECTIONS = {
-    {
-        soundId = "rbxassetid://9044565954",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Windy Biome!"
-    },
-    {
-        soundId = "rbxassetid://9046862941",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Normal Biome!"
-    },
-    {
-        soundId = "rbxassetid://1837667693",
-        soundGroup = "BackgroundMusic",
-        message = "Detected Null Biome!"
-    },
-    {
-        soundId = "rbxassetid://9043887091",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Rainy Biome!"
-    },
-    {
-        soundId = "rbxassetid://1837093849",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Hell Biome!"
-    },
-    {
-        soundId = "rbxassetid://1837897153",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Corruption Biome!"
-    },
-    {
-        soundId = "rbxassetid://1836349593",
-        soundGroup = "PlayerBackgroundMusic",
-        message = "Detected Starfall Biome!"
-    }
-}
+local TARGET_SOUND_ID = "rbxassetid://9043887091"
+local TARGET_SOUND_GROUP = "PlayerBackgroundMusic"
+local NOTIFICATION_TITLE = "Biome Detector"
+local RAINY_START_TEXT = "Rainy Biome Has Started!"
+local RAINY_END_TEXT = "Rainy Biome Has Ended!"
 
-local activeBiomes = {}
+local localPlayer = Players.LocalPlayer
+local lastSoundState = false
 
-local function showNotification(message)
-    StarterGui:SetCore("SendNotification", {
-        Title = "Biome Detector",
-        Text = message,
-        Duration = 5,
-        Icon = ""
-    })
-end
-
-local function checkBiomes()
+local function checkSounds()
+    local currentSoundState = false
+    
     for _, sound in ipairs(SoundService:GetDescendants()) do
-        if sound:IsA("Sound") and sound.Playing then
-            local group = sound.SoundGroup and sound.SoundGroup.Name or "None"
-            for _, biome in ipairs(BIOME_DETECTIONS) do
-                if sound.SoundId == biome.soundId and group == biome.soundGroup then
-                    if not activeBiomes[biome.soundId] then
-                        showNotification(biome.message)
-                        activeBiomes[biome.soundId] = true
-                    end
-                end
+        if sound:IsA("Sound") then
+            if tostring(sound.SoundId) == TARGET_SOUND_ID 
+               and sound.SoundGroup and sound.SoundGroup.Name == TARGET_SOUND_GROUP 
+               and sound.IsPlaying then
+                currentSoundState = true
+                break
             end
         end
     end
+    
+    if currentSoundState ~= lastSoundState then
+        if currentSoundState then
+            localPlayer:SetAttribute("BiomeStatus", "Rainy")
+            localPlayer:SendNotification({
+                Title = NOTIFICATION_TITLE,
+                Text = RAINY_START_TEXT,
+                Icon = "",
+                Duration = 5
+            })
+        else
+            localPlayer:SetAttribute("BiomeStatus", "None")
+            localPlayer:SendNotification({
+                Title = NOTIFICATION_TITLE,
+                Text = RAINY_END_TEXT,
+                Icon = "",
+                Duration = 5
+            })
+        end
+        lastSoundState = currentSoundState
+    end
 end
 
-RunService.Heartbeat:Connect(function()
-    pcall(checkBiomes)
-end)
+RunService.Heartbeat:Connect(checkSounds)
