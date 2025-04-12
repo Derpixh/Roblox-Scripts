@@ -44,34 +44,13 @@ local BIOME_DETECTIONS = {
 }
 
 local activeBiomes = {}
-local notificationQueue = {}
-local isShowingNotification = false
 
-local function showNextNotification()
-    if #notificationQueue > 0 and not isShowingNotification then
-        isShowingNotification = true
-        local notif = table.remove(notificationQueue, 1)
-        StarterGui:SetCore("SendNotification", {
-            Title = "Biome Detector",
-            Text = notif.message,
-            Duration = 5,
-            Callback = function()
-                isShowingNotification = false
-                if notif.callback then
-                    notif.callback()
-                end
-                showNextNotification()
-            end
-        })
-    end
-end
-
-local function queueNotification(message, callback)
-    table.insert(notificationQueue, {
-        message = message,
-        callback = callback
+local function sendNotification(message)
+    StarterGui:SetCore("SendNotification", {
+        Title = "Biome Detector",
+        Text = message,
+        Duration = 5
     })
-    showNextNotification()
 end
 
 local function checkBiomes()
@@ -84,8 +63,8 @@ local function checkBiomes()
                 if sound.SoundId == biome.soundId and soundGroupName == biome.soundGroup then
                     currentlyPlaying[biome.soundId] = true
                     if not activeBiomes[biome.soundId] then
+                        sendNotification(biome.message)
                         activeBiomes[biome.soundId] = true
-                        queueNotification(biome.message)
                     end
                     break
                 end
@@ -97,8 +76,8 @@ local function checkBiomes()
         if not currentlyPlaying[soundId] then
             for _, biome in ipairs(BIOME_DETECTIONS) do
                 if biome.soundId == soundId then
+                    sendNotification(biome.exitMessage)
                     activeBiomes[soundId] = nil
-                    queueNotification(biome.exitMessage)
                     break
                 end
             end
@@ -108,8 +87,4 @@ end
 
 RunService.Heartbeat:Connect(function()
     checkBiomes()
-end)
-
-StarterGui:GetPropertyChangedSignal("CurrentScreen"):Connect(function()
-    showNextNotification()
 end)
