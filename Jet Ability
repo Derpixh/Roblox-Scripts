@@ -1,0 +1,162 @@
+local player = game.Players.LocalPlayer
+local cooldown = false
+local toggleKey = Enum.KeyCode.LeftControl
+local guiVisible = true
+local selectedPlayer = nil
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "JetAbilityGUI"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.4, 0, 0.4, 0)
+frame.Position = UDim2.new(0.3, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = frame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0.2, 0)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "Jet Ability"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 26
+title.Parent = frame
+
+local dropdown = Instance.new("TextButton")
+dropdown.Size = UDim2.new(0.8, 0, 0.08, 0)
+dropdown.Position = UDim2.new(0.1, 0, 0.3, 0)
+dropdown.Text = "Select Player"
+dropdown.Font = Enum.Font.SourceSansBold
+dropdown.TextSize = 20
+dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+dropdown.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+dropdown.Parent = frame
+
+local dropdownCorner = Instance.new("UICorner")
+dropdownCorner.CornerRadius = UDim.new(0, 8)
+dropdownCorner.Parent = dropdown
+
+local dropdownMenu = Instance.new("ScrollingFrame")
+dropdownMenu.Size = UDim2.new(0.8, 0, 0.3, 0)
+dropdownMenu.Position = UDim2.new(0.1, 0, 0.4, 0)
+dropdownMenu.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+dropdownMenu.Visible = false
+dropdownMenu.ScrollBarThickness = 8
+dropdownMenu.CanvasSize = UDim2.new(0, 0, 0, 0)
+dropdownMenu.Parent = frame
+
+local dropdownMenuCorner = Instance.new("UICorner")
+dropdownMenuCorner.CornerRadius = UDim.new(0, 8)
+dropdownMenuCorner.Parent = dropdownMenu
+
+local uiList = Instance.new("UIListLayout")
+uiList.Parent = dropdownMenu
+
+local function slowScroll(input)
+    if input.UserInputType == Enum.UserInputType.MouseWheel then
+        dropdownMenu.CanvasPosition = dropdownMenu.CanvasPosition - Vector2.new(0, input.Position.Z * 0.5)
+    end
+end
+
+dropdown.MouseButton1Click:Connect(function()
+    dropdownMenu.Visible = not dropdownMenu.Visible
+end)
+
+local function updatePlayerList()
+    for _, child in pairs(dropdownMenu:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
+
+    for _, p in pairs(game.Players:GetPlayers()) do
+        local playerButton = Instance.new("TextButton")
+        playerButton.Size = UDim2.new(1, 0, 0, 25)
+        playerButton.Text = p.Name
+        playerButton.Font = Enum.Font.SourceSansBold
+        playerButton.TextSize = 18
+        playerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        playerButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        playerButton.Parent = dropdownMenu
+
+        local playerButtonCorner = Instance.new("UICorner")
+        playerButtonCorner.CornerRadius = UDim.new(0, 6)
+        playerButtonCorner.Parent = playerButton
+
+        playerButton.MouseButton1Click:Connect(function()
+            selectedPlayer = p
+            dropdown.Text = "Selected: " .. p.Name
+            dropdownMenu.Visible = false
+        end)
+    end
+
+    dropdownMenu.CanvasSize = UDim2.new(0, 0, 0, #dropdownMenu:GetChildren() * 25)
+end
+
+game.Players.PlayerAdded:Connect(updatePlayerList)
+game.Players.PlayerRemoving:Connect(updatePlayerList)
+updatePlayerList()
+
+dropdownMenu.InputChanged:Connect(slowScroll)
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0.4, 0, 0.1, 0)
+button.Position = UDim2.new(0.3, 0, 0.8, 0)
+button.Text = "Press Here"
+button.Font = Enum.Font.SourceSansBold
+button.TextSize = 20
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+button.Parent = frame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = button
+
+button.MouseButton1Click:Connect(function()
+    if cooldown then
+        return
+    end
+
+    if selectedPlayer then
+        local args = {
+            [1] = workspace:WaitForChild(selectedPlayer.Name)
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("AirStrike"):FireServer(unpack(args))
+
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Jet Ability",
+            Text = "Valid Player, using Ability now!",
+            Duration = 5
+        })
+    else
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Jet Ability",
+            Text = "No Player Selected",
+            Duration = 5
+        })
+    end
+
+    cooldown = true
+    for i = 5, 1, -1 do
+        button.Text = "Cooldown (" .. i .. "s)"
+        wait(1)
+    end
+    cooldown = false
+    button.Text = "Press Here"
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == toggleKey then
+        guiVisible = not guiVisible
+        gui.Enabled = guiVisible
+    end
+end)
