@@ -1,0 +1,84 @@
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game:GetService("CoreGui")
+
+local frame = Instance.new("Frame")
+frame.Parent = screenGui
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.Size = UDim2.new(0, 350, 0, 200)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.Parent = frame
+uiCorner.CornerRadius = UDim.new(0, 15)
+
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Parent = frame
+uiGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 50, 150)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 50, 200))
+}
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Parent = frame
+titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "Mail GUI (Slap Battles)"
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextSize = 24
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.BackgroundTransparency = 1
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = frame
+toggleButton.Size = UDim2.new(0.8, 0, 0.3, 0)
+toggleButton.Position = UDim2.new(0.1, 0, 0.3, 0)
+toggleButton.Text = "Enable"
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.TextSize = 20
+toggleButton.BackgroundColor3 = Color3.fromRGB(80, 170, 120)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.Parent = toggleButton
+buttonCorner.CornerRadius = UDim.new(0, 10)
+
+local creditsLabel = Instance.new("TextLabel")
+creditsLabel.Parent = frame
+creditsLabel.Size = UDim2.new(1, 0, 0.2, 0)
+creditsLabel.Position = UDim2.new(0, 0, 0.8, 0)
+creditsLabel.Text = "Credits To Zale"
+creditsLabel.Font = Enum.Font.GothamBold
+creditsLabel.TextSize = 24
+creditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+creditsLabel.BackgroundTransparency = 1
+
+local enabled = false
+toggleButton.MouseButton1Click:Connect(function()
+    enabled = not enabled
+    if enabled then
+        toggleButton.Text = "Disable"
+        toggleButton.BackgroundColor3 = Color3.fromRGB(220, 80, 80)
+        game:GetService("ReplicatedStorage"):WaitForChild("MailSend"):FireServer()
+        coroutine.wrap(function()
+            while enabled do
+                wait(3.5)
+                if enabled then
+                    game:GetService("ReplicatedStorage"):WaitForChild("MailSend"):FireServer()
+                end
+            end
+        end)()
+    else
+        toggleButton.Text = "Enable"
+        toggleButton.BackgroundColor3 = Color3.fromRGB(80, 170, 120)
+    end
+end)
+
+local guiVisible = true
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if not isProcessed and input.KeyCode == Enum.KeyCode.LeftControl then
+        guiVisible = not guiVisible
+        screenGui.Enabled = guiVisible
+    end
+end)
