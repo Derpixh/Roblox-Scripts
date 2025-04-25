@@ -3,7 +3,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local window = Rayfield:CreateWindow({
     Name = "Regretevator - Alpha Hax",
     LoadingTitle = "Loading Assets..",
-    LoadingSubtitle = "By Derpixh",
+    LoadingSubtitle = "Created By Luxx",
     ConfigurationSaving = {
         Enabled = false
     },
@@ -14,7 +14,7 @@ local window = Rayfield:CreateWindow({
     },
     KeySystem = true,
     KeySettings = {
-        Title = "Derpixh's Key System",
+        Title = "Luxx's Key System",
         Subtitle = "Enter Your Key",
         Note = "Rate The Features",
         FileName = "Sirius",
