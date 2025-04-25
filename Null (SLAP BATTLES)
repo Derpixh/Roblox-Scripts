@@ -2,14 +2,14 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local window = Rayfield:CreateWindow({
     Name = "Null - Alpha Hax",
     LoadingTitle = "Loading Assets..",
-    LoadingSubtitle = "Created By Derpixh",
+    LoadingSubtitle = "Created By Luxx",
     ConfigurationSaving = {
         Enabled = false,
         FileName = "Sirius"
     },
     KeySystem = true,
     KeySettings = {
-        Title = "Derpixh's Key System",
+        Title = "Luxx's Key System",
         Subtitle = "Enter Your Key",
         Note = "Rate The Features",
         FileName = "Sirius",
