@@ -331,21 +331,11 @@ local autoKeypadButton = lobbyTab:CreateButton({
 
         if localPlayer.Character then
             handleKeypad()
-        end
-        localPlayer.CharacterAdded:Connect(function()
-            wait(1)
-            handleKeypad()
-        end)
-        
-        -- Monitor for player count changes
-        while true do
-            wait(0.5)
-            if workspace:FindFirstChild("Keypad") then
-                local errorSound = workspace.Keypad:FindFirstChild("Backpiece") and workspace.Keypad.Backpiece:FindFirstChild("Error")
-                if errorSound and errorSound.Playing then
-                    handleKeypad()
-                end
-            end
+        else
+            localPlayer.CharacterAdded:Connect(function()
+                wait(1)
+                handleKeypad()
+            end)
         end
     end
 })
