@@ -238,6 +238,118 @@ local getKeypadCodeButton = lobbyTab:CreateButton({
     end
 })
 
+local autoKeypadButton = lobbyTab:CreateButton({
+    Name = "Auto Keypad",
+    SectionParent = eludeKeypadSection,
+    Callback = function()
+        local Players = game:GetService("Players")
+        local StarterGui = game:GetService("StarterGui")
+        local localPlayer = Players.LocalPlayer
+
+        local codeTable = {
+            [1] = 1118, [2] = 1143, [3] = 1168, [4] = 1193,
+            [5] = 1218, [6] = 1243, [7] = 1268, [8] = 1293,
+            [9] = 1318, [10] = 1343, [11] = 1368, [12] = 1393,
+            [13] = 1418, [14] = 1443, [15] = 1468, [16] = 1493
+        }
+
+        local function showNotification()
+            StarterGui:SetCore("SendNotification", {
+                Title = "Elude Keypad",
+                Text = "The Keypad Is Not Here!",
+                Duration = 5
+            })
+        end
+
+        local function handleKeypad()
+            if not workspace:FindFirstChild("Keypad") then
+                showNotification()
+                return false
+            end
+            
+            local errorSound = workspace.Keypad:FindFirstChild("Backpiece") and workspace.Keypad.Backpiece:FindFirstChild("Error")
+            if errorSound and errorSound.Playing then
+                local resetButton = workspace.Keypad.Buttons and workspace.Keypad.Buttons:FindFirstChild("Reset")
+                if resetButton and resetButton:FindFirstChild("ClickDetector") then
+                    fireclickdetector(resetButton.ClickDetector)
+                    wait(0.5)
+                end
+            end
+
+            local function teleportToKeypad()
+                if localPlayer.Character and workspace.Keypad.PrimaryPart then
+                    localPlayer.Character:SetPrimaryPartCFrame(workspace.Keypad.PrimaryPart.CFrame + Vector3.new(0, 0, -5))
+                end
+            end
+
+            local function pressButton(digit)
+                local button = workspace.Keypad.Buttons and workspace.Keypad.Buttons:FindFirstChild(tostring(digit))
+                if button and button:FindFirstChild("ClickDetector") then
+                    fireclickdetector(button.ClickDetector)
+                    return true
+                end
+                return false
+            end
+
+            local function inputCode()
+                local numPlayers = #Players:GetPlayers()
+                local code = codeTable[numPlayers]
+                if not code then return false end
+
+                for digit in tostring(code):gmatch(".") do
+                    if not pressButton(digit) then
+                        showNotification()
+                        return false
+                    end
+                    wait(0.2)
+                end
+
+                local enter = workspace.Keypad.Buttons and workspace.Keypad.Buttons:FindFirstChild("Enter")
+                if enter and enter:FindFirstChild("ClickDetector") then
+                    fireclickdetector(enter.ClickDetector)
+                end
+                return true
+            end
+
+            if workspace[localPlayer.Name] and workspace[localPlayer.Name].isInArena and workspace[localPlayer.Name].isInArena.Value then
+                teleportToKeypad()
+                wait(1)
+                return inputCode()
+            else
+                local teleport = workspace.Lobby and workspace.Lobby.Teleport1
+                if teleport and localPlayer.Character then
+                    firetouchinterest(localPlayer.Character.HumanoidRootPart, teleport, 0)
+                    firetouchinterest(localPlayer.Character.HumanoidRootPart, teleport, 1)
+                    wait(1)
+                    teleportToKeypad()
+                    wait(1)
+                    return inputCode()
+                end
+            end
+            return false
+        end
+
+        if localPlayer.Character then
+            handleKeypad()
+        end
+        localPlayer.CharacterAdded:Connect(function()
+            wait(1)
+            handleKeypad()
+        end)
+        
+        -- Monitor for player count changes
+        while true do
+            wait(0.5)
+            if workspace:FindFirstChild("Keypad") then
+                local errorSound = workspace.Keypad:FindFirstChild("Backpiece") and workspace.Keypad.Backpiece:FindFirstChild("Error")
+                if errorSound and errorSound.Playing then
+                    handleKeypad()
+                end
+            end
+        end
+    end
+})
+
 local arenaTab = window:CreateTab("Arena")
 local slapplesSection = arenaTab:CreateSection("Slapples")
 
