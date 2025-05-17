@@ -51,7 +51,7 @@ BottomLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
 BottomLabel.Position = UDim2.new(0.5, 0, 0.95, 0)
 BottomLabel.AnchorPoint = Vector2.new(0.5, 1)
 BottomLabel.BackgroundTransparency = 1
-BottomLabel.Text = "Credits to Luxxorh"
+BottomLabel.Text = "Credits To Derpixh"
 BottomLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 BottomLabel.TextSize = 25
 BottomLabel.TextScaled = true
@@ -99,7 +99,6 @@ TextBox.FocusLost:Connect(function(enterPressed)
                 [16552821455] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Dandys%20World",
                 [16993432698] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Impossible%20Squid%20Game!"
             }
-
             local gameId = game.PlaceId
             if gameScripts[gameId] then
                 local notificationText = ""
@@ -122,14 +121,26 @@ TextBox.FocusLost:Connect(function(enterPressed)
                 elseif gameId == 16993432698 then
                     notificationText = "Loading Impossible Squid Game Hub..."
                 end
-                StarterGui:SetCore("SendNotification", {Title = "Game Supported", Text = notificationText, Duration = 2})
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Game Supported",
+                    Text = notificationText,
+                    Duration = 2
+                })
                 wait(2)
                 loadstring(game:HttpGet(gameScripts[gameId], true))()
             else
-                StarterGui:SetCore("SendNotification", {Title = "Game Not Supported", Text = "Please wait for the developer to add support.", Duration = 5})
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Game Not Supported",
+                    Text = "Please wait for the developer to add support.",
+                    Duration = 5
+                })
             end
         end)
     elseif TextBox.Text ~= "" and enterPressed then
-        StarterGui:SetCore("SendNotification", {Title = "Incorrect Key!", Text = "Please try again.", Duration = 5})
+        StarterGui:SetCore("SendNotification", {
+            Title = "Incorrect Key!",
+            Text = "Please try again.",
+            Duration = 5
+        })
     end
 end)
