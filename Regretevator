@@ -1123,4 +1123,44 @@ local clickAllButtons = buttonCompetitionTab:CreateButton({
     end
 })
 
+local gsa4Tab = window:CreateTab("GSA4", 4483362458)
+
+local scriptSectionFoodz = gsa4Tab:CreateSection("Foodz")
+
+local autoStealExtractToggle = gsa4Tab:CreateToggle({
+    Name = "Auto Steal/Auto Extract",
+    SectionParent = scriptSectionFoodz,
+    Callback = function(enabled)
+        while enabled do
+            local stealablesFolder = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("Stealables")
+            if stealablesFolder then
+                for _, part in pairs(stealablesFolder:GetChildren()) do
+                    if part:IsA("Part") and part.Name == "Part" then
+                        local proximityPrompt = part:FindFirstChild("Thing")
+                        if proximityPrompt then
+                            proximityPrompt.HoldDuration = 0
+                            if proximityPrompt.Enabled then
+                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                                wait()
+                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                                
+                                local extractionPoint = workspace.GASA4.Build:FindFirstChild("ExtractionPoint")
+                                if extractionPoint then
+                                    local touchInterest = extractionPoint:FindFirstChild("TouchInterest")
+                                    if touchInterest then
+                                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, extractionPoint, 0)
+                                        wait()
+                                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, extractionPoint, 1)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
