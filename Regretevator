@@ -1197,4 +1197,69 @@ local autoPressButtons = jermpopFactoryTab:CreateButton({
     end
 })
 
+local theRockTab = window:CreateTab("THE ROCK", 4483362458)
+
+local scriptSectionButtons = theRockTab:CreateSection("Buttons")
+
+local autoPressButtons = theRockTab:CreateButton({
+    Name = "Auto Press Buttons",
+    SectionParent = scriptSectionButtons,
+    Callback = function()
+        while true do
+            local section1Folder = workspace:FindFirstChild("THEROCK") and workspace.THEROCK:FindFirstChild("Build") and workspace.THEROCK.Build:FindFirstChild("Buttons") and workspace.THEROCK.Build.Buttons:FindFirstChild("Section1")
+            if section1Folder then
+                for _, buttonModel in pairs(section1Folder:GetChildren()) do
+                    if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
+                        local collisionPart = buttonModel:FindFirstChild("Collision")
+                        if collisionPart then
+                            local touchInterest = collisionPart:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 1)
+                            end
+                        end
+                    end
+                end
+            end
+
+            local section2Folder = workspace:FindFirstChild("THEROCK") and workspace.THEROCK:FindFirstChild("Build") and workspace.THEROCK.Build:FindFirstChild("Buttons") and workspace.THEROCK.Build.Buttons:FindFirstChild("Section2")
+            if section2Folder then
+                for _, buttonModel in pairs(section2Folder:GetChildren()) do
+                    if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
+                        local collisionPart = buttonModel:FindFirstChild("Collision")
+                        if collisionPart then
+                            local touchInterest = collisionPart:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 1)
+                            end
+                        end
+                    end
+                end
+            end
+
+            local section3Folder = workspace:FindFirstChild("THEROCK") and workspace.THEROCK:FindFirstChild("Build") and workspace.THEROCK.Build:FindFirstChild("Buttons") and workspace.THEROCK.Build.Buttons:FindFirstChild("Section3")
+            if section3Folder then
+                for _, buttonModel in pairs(section3Folder:GetChildren()) do
+                    if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
+                        local collisionPart = buttonModel:FindFirstChild("Collision")
+                        if collisionPart then
+                            local touchInterest = collisionPart:FindFirstChild("TouchInterest")
+                            if touchInterest then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, collisionPart, 1)
+                            end
+                        end
+                    end
+                end
+            end
+
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
