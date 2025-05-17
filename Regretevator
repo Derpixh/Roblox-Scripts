@@ -1118,4 +1118,59 @@ local completeCheckpointsButton = infectedRacingTab:CreateButton({
     end
 })
 
+local buttonCompetitionTab = window:CreateTab("Button Competition", 4483362458)
+
+local scriptSectionButtons = buttonCompetitionTab:CreateSection("Buttons")
+
+local clickAllButtons = buttonCompetitionTab:CreateButton({
+    Name = "Click All Buttons",
+    SectionParent = scriptSectionButtons,
+    Callback = function()
+        while shouldContinueChecking do
+            checkAndFireClickDetectors()
+            wait(0.1)
+        end
+    end
+})
+
+local firedClickDetectors = {}
+local shouldContinueChecking = true
+
+local function checkAndFireClickDetectors()
+    local buttonCompetitionModel = workspace:FindFirstChild("ButtonCompetition")
+    if buttonCompetitionModel then
+        local buildModel = buttonCompetitionModel:FindFirstChild("Build")
+        if buildModel then
+            local buttonsModel = buildModel:FindFirstChild("Buttons")
+            if buttonsModel then
+                local clickDetectorFound = false
+
+                for _, buttonModel in pairs(buttonsModel:GetChildren()) do
+                    if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
+                        local buttonMeshPart = buttonModel:FindFirstChild("button")
+                        if buttonMeshPart then
+                            local clickDetector = buttonMeshPart:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector and not firedClickDetectors[clickDetector] then
+                                fireclickdetector(clickDetector)
+                                firedClickDetectors[clickDetector] = true
+                                clickDetectorFound = true
+                            end
+                        end
+                    end
+                end
+
+                if not clickDetectorFound then
+                    shouldContinueChecking = false
+                end
+            else
+                shouldContinueChecking = false
+            end
+        else
+            shouldContinueChecking = false
+        end
+    else
+        shouldContinueChecking = false
+    end
+}
+
 Rayfield:LoadConfiguration()
