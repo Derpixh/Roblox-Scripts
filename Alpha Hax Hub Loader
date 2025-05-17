@@ -99,29 +99,37 @@ TextBox.FocusLost:Connect(function(enterPressed)
                 [16552821455] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Dandys%20World",
                 [16993432698] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Impossible%20Squid%20Game!"
             }
+
             local gameId = game.PlaceId
             if gameScripts[gameId] then
-                local notificationText = "Loading " .. string.gsub(gameScripts[gameId], "^.+/(.+)$", "%1") .. " Hub..."
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Game Supported",
-                    Text = notificationText,
-                    Duration = 2
-                })
+                local notificationText = ""
+                if gameId == 11828384869 then
+                    notificationText = "Loading Elude Hub..."
+                elseif gameId == 14422118326 then
+                    notificationText = "Loading Null Hub..."
+                elseif gameId == 4601704679 then
+                    notificationText = "Loading Bakon Hub..."
+                elseif gameId == 14259168147 or gameId == 14386691987 then
+                    notificationText = "Loading Basketball Legends Hub..."
+                elseif gameId == 4972273297 then
+                    notificationText = "Loading Regretevator Hub..."
+                elseif gameId == 6403373529 then
+                    notificationText = "Loading Slap Battles Hub..."
+                elseif gameId == 9802429235 then
+                    notificationText = "Loading Infuriated Hub..."
+                elseif gameId == 16552821455 then
+                    notificationText = "Loading Dandys World Hub..."
+                elseif gameId == 16993432698 then
+                    notificationText = "Loading Impossible Squid Game Hub..."
+                end
+                StarterGui:SetCore("SendNotification", {Title = "Game Supported", Text = notificationText, Duration = 2})
                 wait(2)
                 loadstring(game:HttpGet(gameScripts[gameId], true))()
             else
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Game Not Supported",
-                    Text = "Please wait for the developer to add support.",
-                    Duration = 5
-                })
+                StarterGui:SetCore("SendNotification", {Title = "Game Not Supported", Text = "Please wait for the developer to add support.", Duration = 5})
             end
         end)
     elseif TextBox.Text ~= "" and enterPressed then
-        StarterGui:SetCore("SendNotification", {
-            Title = "Incorrect Key!",
-            Text = "Please try again.",
-            Duration = 5
-        })
+        StarterGui:SetCore("SendNotification", {Title = "Incorrect Key!", Text = "Please try again.", Duration = 5})
     end
 end)
