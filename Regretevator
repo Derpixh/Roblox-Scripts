@@ -94,7 +94,9 @@ local collectPagesButton = mazeTab:CreateButton({
 })
 
 local obbyTab = window:CreateTab("Obby", 4483362458)
+
 local scriptSectionObby = obbyTab:CreateSection("Script")
+
 local instantWinObbyButton = obbyTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
@@ -119,18 +121,9 @@ local instantWinObbyButton = obbyTab:CreateButton({
 local teleportToEndButton = obbyTab:CreateButton({
     Name = "Teleport To End (USE AFTER INSTANT WIN)",
     Callback = function()
-        local obbyModel = game.Workspace:FindFirstChild("Obby")
-        if obbyModel then
-            local buildModel = obbyModel:FindFirstChild("Build")
-            if buildModel then
-                local endPart = buildModel:FindFirstChild("EndPart")
-                if endPart then
-                    local part = endPart:FindFirstChild("Part")
-                    if part then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
-                    end
-                end
-            end
+        local endPart = workspace:FindFirstChild("Obby") and workspace.Obby:FindFirstChild("Build") and workspace.Obby.Build:FindFirstChild("EndPart")
+        if endPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endPart.CFrame
         end
     end
 })
