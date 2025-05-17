@@ -896,4 +896,32 @@ local removeCarsButton = highwayTab:CreateButton({
     end
 })
 
+local bugboTab = window:CreateTab("Bugbo", 4483362458)
+
+local scriptSectionRocks = bugboTab:CreateSection("Rocks")
+
+local collectAllRocksButton = bugboTab:CreateButton({
+    Name = "Collect All Rocks",
+    SectionParent = scriptSectionRocks,
+    Callback = function()
+        local bugboModel = game.Workspace:FindFirstChild("bugbo")
+        if bugboModel then
+            local buildModel = bugboModel:FindFirstChild("Build")
+            if buildModel then
+                local rocksFolder = buildModel:FindFirstChild("Rocks")
+                if rocksFolder then
+                    for _, rockMeshPart in pairs(rocksFolder:GetChildren()) do
+                        if rockMeshPart:IsA("MeshPart") and rockMeshPart.Name == "Rock" then
+                            local clickDetector = rockMeshPart:FindFirstChildOfClass("ClickDetector")
+                            if clickDetector then
+                                fireclickdetector(clickDetector)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
