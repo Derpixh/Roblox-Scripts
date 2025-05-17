@@ -228,39 +228,27 @@ local removeUFOsButton = forestCampTab:CreateButton({
     end
 })
 
+local scriptSectionFirewood = forestCampTab:CreateSection("Firewood")
+
 local autoPickupFirewoodButton = forestCampTab:CreateButton({
     Name = "Auto Pickup Firewood",
+    SectionParent = scriptSectionFirewood,
     Callback = function()
-        local function onProximityPromptTriggered(proximityPrompt)
-            local player = game.Players.LocalPlayer
-            local character = player.Character or player.CharacterAdded:Wait()
-            proximityPrompt.HoldDuration = 0
-            proximityPrompt:InputHoldBegin()
-            wait()
-            proximityPrompt:InputHoldEnd()
-        end
-
-        local function checkProximityPrompt()
-            local forestTwoStudCampModel = game.Workspace:FindFirstChild("Forest_TwoStudCamp")
-            if forestTwoStudCampModel then
-                local buildModel = forestTwoStudCampModel:FindFirstChild("Build")
-                if buildModel then
-                    local firewoodFolder = buildModel:FindFirstChild("Firewood")
-                    if firewoodFolder then
-                        local firewood = firewoodFolder:FindFirstChild("Firewood")
-                        if firewood and firewood:IsA("UnionOperation") then
-                            local proximityPrompt = firewood:FindFirstChildOfClass("ProximityPrompt")
-                            if proximityPrompt and proximityPrompt:IsDescendantOf(workspace.CurrentCamera) then
-                                onProximityPromptTriggered(proximityPrompt)
-                            end
+        local firewoodFolder = workspace:FindFirstChild("Forest_TwoStudCamp") and workspace.Forest_TwoStudCamp:FindFirstChild("Build") and workspace.Forest_TwoStudCamp.Build:FindFirstChild("Firewood")
+        if firewoodFolder then
+            for _, firewoodItem in pairs(firewoodFolder:GetChildren()) do
+                if firewoodItem:IsA("UnionOperation") and firewoodItem.Name == "Firewood" then
+                    local proximityPrompt = firewoodItem:FindFirstChildOfClass("ProximityPrompt")
+                    if proximityPrompt then
+                        proximityPrompt.HoldDuration = 0
+                        if proximityPrompt.Enabled then
+                            proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                            wait()
+                            proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
                         end
                     end
                 end
             end
-        end
-
-        while wait(0.1) do
-            checkProximityPrompt()
         end
     end
 })
