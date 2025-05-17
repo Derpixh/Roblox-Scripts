@@ -1002,4 +1002,39 @@ local instantWinButton = gumballMachineTab:CreateButton({
     end
 })
 
+local intenseObbyTab = window:CreateTab("Intense Obby", 4483362458)
+
+local scriptSectionIntenseObby = intenseObbyTab:CreateSection("Script")
+
+local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
+    Name = "Instant Win",
+    Callback = function()
+        local obbyModel = game.Workspace:FindFirstChild("IntenseObby")
+        if obbyModel then
+            local endBlock = obbyModel:FindFirstChild("ENDBLOCK")
+            if endBlock then
+                local touchInterest = endBlock:FindFirstChildOfClass("TouchTransmitter")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endBlock, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endBlock, 1)
+                end
+            end
+        end
+    end
+})
+
+local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
+    Name = "Teleport To End",
+    Callback = function()
+        local obbyModel = game.Workspace:FindFirstChild("IntenseObby")
+        if obbyModel then
+            local endBlock = obbyModel:FindFirstChild("ENDBLOCK")
+            if endBlock then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endBlock.CFrame
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
