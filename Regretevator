@@ -158,6 +158,30 @@ local instantWinButton = minefieldTab:CreateButton({
     end
 })
 
+local scriptSectionMinefield = minefieldTab:CreateSection("Mines")
+
+local removeAllMinesButton = minefieldTab:CreateButton({
+    Name = "Remove All Mines",
+    SectionParent = scriptSectionMinefield,
+    Callback = function()
+        local minefieldModel = game.Workspace:FindFirstChild("Minefield")
+        if minefieldModel then
+            local buildModel = minefieldModel:FindFirstChild("Build")
+            if buildModel then
+                local minesFolder = buildModel:FindFirstChild("MinesFolder")
+                if minesFolder then
+                    minesFolder:Destroy()
+                end
+                
+                local roombasFolder = buildModel:FindFirstChild("RoombasFolder")
+                if roombasFolder then
+                    roombasFolder:Destroy()
+                end
+            end
+        end
+    end
+})
+
 local intenseObbyTab = window:CreateTab("Intense Obby", 4483362458)
 local scriptSectionIntenseObby = intenseObbyTab:CreateSection("Script")
 local instantWinIntenseObbyButton = intenseObbyTab:CreateButton({
