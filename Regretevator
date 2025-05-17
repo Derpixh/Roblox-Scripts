@@ -305,6 +305,24 @@ local instantWinButton = superDropperTab:CreateButton({
     end
 })
 
+local scriptSectionRespawnCenter = superDropperTab:CreateSection("Respawn Center")
+
+local respawnButton = superDropperTab:CreateButton({
+    Name = "Respawn (You Can Do The Dropper Again)",
+    SectionParent = scriptSectionRespawnCenter,
+    Callback = function()
+        local returnPortal = workspace:FindFirstChild("SuperDropper") and workspace.SuperDropper:FindFirstChild("RespawnCenter") and workspace.SuperDropper.RespawnCenter:FindFirstChild("ReturnPortal")
+        if returnPortal then
+            local touchInterest = returnPortal:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, returnPortal, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, returnPortal, 1)
+            end
+        end
+    end
+})
+
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
 local scriptSectionTeapotDodgeball = teapotDodgeballTab:CreateSection("Script")
 
