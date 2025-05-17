@@ -943,7 +943,7 @@ local antiFallButton = danceFloorTab:CreateButton({
     Name = "Anti-Fall",
     SectionParent = scriptSectionFloor,
     Callback = function()
-        local function setTransparencyToZero()
+        local function modifyFPParts()
             local danceModel = workspace:FindFirstChild("Dance")
             if danceModel then
                 local buildModel = danceModel:FindFirstChild("Build")
@@ -951,14 +951,15 @@ local antiFallButton = danceFloorTab:CreateButton({
                     local danceFloorFolder = buildModel:FindFirstChild("DanceFloor")
                     if danceFloorFolder then
                         local partsFound = false
-                        
+
                         for _, part in pairs(danceFloorFolder:GetChildren()) do
                             if part:IsA("Part") and part.Name == "FP" then
                                 part.Transparency = 0
+                                part.CanCollide = false
                                 partsFound = true
                             end
                         end
-                        
+
                         return partsFound
                     end
                 end
@@ -967,7 +968,7 @@ local antiFallButton = danceFloorTab:CreateButton({
         end
 
         while true do
-            if not setTransparencyToZero() then
+            if not modifyFPParts() then
                 break
             end
             wait(0.1)
