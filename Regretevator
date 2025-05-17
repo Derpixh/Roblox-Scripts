@@ -502,30 +502,19 @@ local teleportToEndLongRoomButton = longRoomTab:CreateButton({
 })
 
 local stanleyRoomTab = window:CreateTab("Stanley Room", 4483362458)
+
 local scriptSectionStanleyRoom = stanleyRoomTab:CreateSection("Script")
 
 local instantWinStanleyRoomButton = stanleyRoomTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
-        local stanleyRoomModel = game.Workspace:FindFirstChild("StanleyRoom")
-        if stanleyRoomModel then
-            local buildModel = stanleyRoomModel:FindFirstChild("Build")
-            if buildModel then
-                local generatedModel = buildModel:FindFirstChild("Generated")
-                if generatedModel then
-                    local endingModel = generatedModel:FindFirstChild("Ending")
-                    if endingModel then
-                        local endTouchPart = endingModel:FindFirstChild("EndTouch")
-                        if endTouchPart then
-                            local touchInterest = endTouchPart:FindFirstChildOfClass("TouchTransmitter")
-                            if touchInterest then
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 0)
-                                wait()
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 1)
-                            end
-                        end
-                    end
-                end
+        local endTouchPart = workspace:FindFirstChild("StanelyRoom") and workspace.StanelyRoom:FindFirstChild("Build") and workspace.StanelyRoom.Build:FindFirstChild("Generated") and workspace.StanelyRoom.Build.Generated:FindFirstChild("Ending") and workspace.StanelyRoom.Build.Generated.Ending:FindFirstChild("EndTouch")
+        if endTouchPart then
+            local touchInterest = endTouchPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endTouchPart, 1)
             end
         end
     end
