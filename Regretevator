@@ -982,4 +982,24 @@ local antiFallButton = danceFloorTab:CreateButton({
     end
 })
 
+local gumballMachineTab = window:CreateTab("Gumball Machine", 4483362458)
+
+local scriptSectionWin = gumballMachineTab:CreateSection("Win")
+
+local instantWinButton = gumballMachineTab:CreateButton({
+    Name = "Instant Win",
+    SectionParent = scriptSectionWin,
+    Callback = function()
+        local winPart = workspace:FindFirstChild("GumballMachine") and workspace.GumballMachine:FindFirstChild("Build") and workspace.GumballMachine.Build:FindFirstChild("Generated") and workspace.GumballMachine.Build.Generated:FindFirstChild("EndColumn") and workspace.GumballMachine.Build.Generated.EndColumn:FindFirstChild("WinPart")
+        if winPart then
+            local touchInterest = winPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
