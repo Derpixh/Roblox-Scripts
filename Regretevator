@@ -704,25 +704,21 @@ local teleportToEndButton = wipeoutTab:CreateButton({
         end
     end
 })
+
 local wallOfTab = window:CreateTab("WALL_OF", 4483362458)
+
 local scriptSectionWallOf = wallOfTab:CreateSection("Script")
 
 local instantWinWallOfButton = wallOfTab:CreateButton({
     Name = "Instant Win Obby",
     Callback = function()
-        local wallOfModel = game.Workspace:FindFirstChild("WALL_OF")
-        if wallOfModel then
-            local buildModel = wallOfModel:FindFirstChild("Build")
-            if buildModel then
-                local youWinPart = buildModel:FindFirstChild("YOU_WIN")
-                if youWinPart then
-                    local touchInterest = youWinPart:FindFirstChildOfClass("TouchTransmitter")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, youWinPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, youWinPart, 1)
-                    end
-                end
+        local endCheckpointPart = workspace:FindFirstChild("WALL_OF") and workspace.WALL_OF:FindFirstChild("Checkpoints") and workspace.WALL_OF.Checkpoints:FindFirstChild("EndCheckpoint")
+        if endCheckpointPart then
+            local touchInterest = endCheckpointPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpointPart, 1)
             end
         end
     end
