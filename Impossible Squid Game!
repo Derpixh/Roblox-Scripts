@@ -1,0 +1,90 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Impossible Squid Game! - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "sirius",
+        RememberJoins = true
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local obbyTab = window:CreateTab("Obby", 4483362458)
+local glassSection = obbyTab:CreateSection("Glass")
+
+local originalColors = {}
+
+local toggleGlass = obbyTab:CreateToggle({
+    Name = "Show Correct/Incorrect Glass",
+    CurrentValue = false,
+    Flag = "ShowGlassToggle",
+    SectionParent = glassSection,
+    Callback = function(enabled)
+        local LIME_GREEN = Color3.fromRGB(0, 255, 0)
+        local REALLY_RED = Color3.fromRGB(255, 0, 0)
+        local MAX_SEGMENTS = 55
+
+        local workspace = game:GetService("Workspace")
+        local segmentSystem = workspace:FindFirstChild("segmentSystem")
+
+        if not segmentSystem then return end
+
+        local segmentsFolder = segmentSystem:FindFirstChild("Segments")
+        if not segmentsFolder then return end
+
+        for i = 1, MAX_SEGMENTS do
+            local segmentName = "Segment" .. i
+            local segment = segmentsFolder:FindFirstChild(segmentName)
+
+            if segment then
+                for _, folder in pairs(segment:GetChildren()) do
+                    if folder:IsA("Folder") then
+                        for _, part in pairs(folder:GetChildren()) do
+                            if part:IsA("Part") then
+                                local breakableValue = part:FindFirstChild("breakable")
+
+                                if not originalColors[part] then
+                                    originalColors[part] = part.Color
+                                end
+                                
+                                if enabled then
+                                    if not breakableValue or not breakableValue:IsA("BoolValue") then
+                                        part.Color = LIME_GREEN
+                                    else
+                                        part.Color = REALLY_RED
+                                    end
+                                else
+                                    part.Color = originalColors[part] or Color3.fromRGB(255, 255, 255)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local winSection = obbyTab:CreateSection("Win")
+
+local beatObbyButton = obbyTab:CreateButton({
+    Name = "Beat Obby (Will Only Work Every 5 Seconds)",
+    SectionParent = winSection,
+    Callback = function()
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ClaimReward"):FireServer()
+    end
+})
