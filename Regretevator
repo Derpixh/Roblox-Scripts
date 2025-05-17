@@ -942,4 +942,44 @@ local collectAllRocksButton = bugboTab:CreateButton({
     end
 })
 
+local danceFloorTab = window:CreateTab("Dance Floor", 4483362458)
+
+local scriptSectionFloor = danceFloorTab:CreateSection("Floor")
+
+local antiFallButton = danceFloorTab:CreateButton({
+    Name = "Anti-Fall",
+    SectionParent = scriptSectionFloor,
+    Callback = function()
+        local function setTransparencyToZero()
+            local danceModel = workspace:FindFirstChild("Dance")
+            if danceModel then
+                local buildModel = danceModel:FindFirstChild("Build")
+                if buildModel then
+                    local danceFloorFolder = buildModel:FindFirstChild("DanceFloor")
+                    if danceFloorFolder then
+                        local partsFound = false
+                        
+                        for _, part in pairs(danceFloorFolder:GetChildren()) do
+                            if part:IsA("Part") and part.Name == "FP" then
+                                part.Transparency = 0
+                                partsFound = true
+                            end
+                        end
+                        
+                        return partsFound
+                    end
+                end
+            end
+            return false
+        end
+
+        while true do
+            if not setTransparencyToZero() then
+                break
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
