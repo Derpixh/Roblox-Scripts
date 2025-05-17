@@ -450,24 +450,19 @@ local teleportToEndGeneratorButton = surviveArea51Tab:CreateButton({
 })
 
 local longRoomTab = window:CreateTab("Suspiciously Long Room", 4483362458)
+
 local scriptSectionLongRoom = longRoomTab:CreateSection("Script")
 
 local instantWinLongRoomButton = longRoomTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
-        local longRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
-        if longRoomModel then
-            local checkpointsModel = longRoomModel:FindFirstChild("Checkpoints")
-            if checkpointsModel then
-                local endCheckpoint = checkpointsModel:FindFirstChild("EndCheckpoint")
-                if endCheckpoint then
-                    local touchInterest = endCheckpoint:FindFirstChild("TouchInterest")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, endCheckpoint, 1)
-                    end
-                end
+        local winPoolPart = workspace:FindFirstChild("SuspiciouslyLongRoom") and workspace.SuspiciouslyLongRoom:FindFirstChild("Build") and workspace.SuspiciouslyLongRoom.Build:FindFirstChild("WinPool")
+        if winPoolPart then
+            local touchInterest = winPoolPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoolPart, 1)
             end
         end
     end
@@ -476,15 +471,9 @@ local instantWinLongRoomButton = longRoomTab:CreateButton({
 local teleportToEndLongRoomButton = longRoomTab:CreateButton({
     Name = "Teleport To End",
     Callback = function()
-        local longRoomModel = game.Workspace:FindFirstChild("SuspiciouslyLongRoom")
-        if longRoomModel then
-            local checkpointsModel = longRoomModel:FindFirstChild("Checkpoints")
-            if checkpointsModel then
-                local endCheckpoint = checkpointsModel:FindFirstChild("EndCheckpoint")
-                if endCheckpoint then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endCheckpoint.CFrame
-                end
-            end
+        local winPoolPart = workspace:FindFirstChild("SuspiciouslyLongRoom") and workspace.SuspiciouslyLongRoom:FindFirstChild("Build") and workspace.SuspiciouslyLongRoom.Build:FindFirstChild("WinPool")
+        if winPoolPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoolPart.CFrame
         end
     end
 })
