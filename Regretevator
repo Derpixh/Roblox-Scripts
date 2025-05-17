@@ -1065,4 +1065,31 @@ local antiFallButton = tntRunTab:CreateButton({
     end
 })
 
+local colorTheTilesTab = window:CreateTab("Color The Tiles", 4483362458)
+
+local scriptSectionTiles = colorTheTilesTab:CreateSection("Tiles")
+
+local colorAllTilesButton = colorTheTilesTab:CreateButton({
+    Name = "Color All Tiles",
+    SectionParent = scriptSectionTiles,
+    Callback = function()
+        local colorTheTilesModel = workspace:FindFirstChild("ColorTheTiles")
+        if colorTheTilesModel then
+            local tilesModel = colorTheTilesModel:FindFirstChild("Tiles")
+            if tilesModel then
+                for _, tilePart in pairs(tilesModel:GetChildren()) do
+                    if tilePart:IsA("Part") and tilePart.Name == "Tile" then
+                        local touchInterest = tilePart:FindFirstChild("TouchInterest")
+                        if touchInterest then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tilePart, 0)
+                            wait()
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tilePart, 1)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
