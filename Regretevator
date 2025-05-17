@@ -1096,4 +1096,37 @@ local colorAllTilesButton = colorTheTilesTab:CreateButton({
     end
 })
 
+local infectedRacingTab = window:CreateTab("Infected Racing", 4483362458)
+
+local scriptSectionCheckpoints = infectedRacingTab:CreateSection("Checkpoints")
+
+local completeCheckpointsButton = infectedRacingTab:CreateButton({
+    Name = "Complete Checkpoints",
+    SectionParent = scriptSectionCheckpoints,
+    Callback = function()
+        local infectedRacingModel = workspace:FindFirstChild("InfectedRacing")
+        if infectedRacingModel then
+            local buildModel = infectedRacingModel:FindFirstChild("Build")
+            if buildModel then
+                local checkpointsFolder = buildModel:FindFirstChild("Checkpoints")
+                if checkpointsFolder then
+                    for _, checkpointModel in pairs(checkpointsFolder:GetChildren()) do
+                        if checkpointModel:IsA("Model") and checkpointModel.Name == "Checkpoint" then
+                            local hitDetectPart = checkpointModel:FindFirstChild("HitDetect")
+                            if hitDetectPart then
+                                local touchInterest = hitDetectPart:FindFirstChild("TouchInterest")
+                                if touchInterest then
+                                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, hitDetectPart, 0)
+                                    wait()
+                                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, hitDetectPart, 1)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
