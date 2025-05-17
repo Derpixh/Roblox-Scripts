@@ -51,7 +51,7 @@ BottomLabel.Size = UDim2.new(0.4, 0, 0.1, 0)
 BottomLabel.Position = UDim2.new(0.5, 0, 0.95, 0)
 BottomLabel.AnchorPoint = Vector2.new(0.5, 1)
 BottomLabel.BackgroundTransparency = 1
-BottomLabel.Text = "Made By Luxx"
+BottomLabel.Text = "Credits to Luxxorh"
 BottomLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 BottomLabel.TextSize = 25
 BottomLabel.TextScaled = true
@@ -88,36 +88,20 @@ TextBox.FocusLost:Connect(function(enterPressed)
             ScreenGui:Destroy()
             
             local gameScripts = {
-                [11828384869] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Elude%20(SLAP%20BATTLES)",
-                [14422118326] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
-                [4601704679] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Bakon%20%5BBETA%20DEVELOPMENT%5D",
-                [14259168147] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
-                [14386691987] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
-                [4972273297] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Regretevator",
-                [6403373529] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Slap%20Battles",
-                [9802429235] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/You%20don't%20want%20to%20see%20me%20infuriated",
-                [16552821455] = "https://raw.githubusercontent.com/Derpixh/Roblox-Scripts/refs/heads/main/Dandys%20World"
+                [11828384869] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Elude%20(SLAP%20BATTLES)",
+                [14422118326] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Null%20(SLAP%20BATTLES)",
+                [4601704679] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Bakon%20%5BBETA%20DEVELOPMENT%5D",
+                [14259168147] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
+                [14386691987] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Basketball%20Legends",
+                [4972273297] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Regretevator",
+                [6403373529] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Slap%20Battles",
+                [9802429235] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/You%20don't%20want%20to%20see%20me%20infuriated",
+                [16552821455] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Dandys%20World",
+                [16993432698] = "https://raw.githubusercontent.com/Luxxorh/Roblox-Scripts/refs/heads/main/Impossible%20Squid%20Game!"
             }
             local gameId = game.PlaceId
             if gameScripts[gameId] then
-                local notificationText = ""
-                if gameId == 11828384869 then
-                    notificationText = "Loading Elude Hub..."
-                elseif gameId == 14422118326 then
-                    notificationText = "Loading Null Hub..."
-                elseif gameId == 4601704679 then
-                    notificationText = "Loading Bakon Hub..."
-                elseif gameId == 14259168147 or gameId == 14386691987 then
-                    notificationText = "Loading Basketball Legends Hub..."
-                elseif gameId == 4972273297 then
-                    notificationText = "Loading Regretevator Hub..."
-                elseif gameId == 6403373529 then
-                    notificationText = "Loading Slap Battles Hub..."
-                elseif gameId == 9802429235 then
-                    notificationText = "Loading Infuriated Hub..."
-                elseif gameId == 16552821455 then
-                    notificationText = "Loading Dandys World Hub..."
-                end
+                local notificationText = "Loading " .. string.gsub(gameScripts[gameId], "^.+/(.+)$", "%1") .. " Hub..."
                 game.StarterGui:SetCore("SendNotification", {
                     Title = "Game Supported",
                     Text = notificationText,
