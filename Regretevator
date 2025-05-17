@@ -1128,19 +1128,21 @@ local clickAllButtons = buttonCompetitionTab:CreateButton({
     Callback = function()
         while true do
             local buttonCompetitionModel = workspace:FindFirstChild("ButtonCompetition")
-            if buttonCompetitionModel then
-                local buildModel = buttonCompetitionModel:FindFirstChild("Build")
-                if buildModel then
-                    local buttonsModel = buildModel:FindFirstChild("Buttons")
-                    if buttonsModel then
-                        for _, buttonModel in pairs(buttonsModel:GetChildren()) do
-                            if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
-                                local buttonMeshPart = buttonModel:FindFirstChild("button")
-                                if buttonMeshPart then
-                                    local clickDetector = buttonMeshPart:FindFirstChildOfClass("ClickDetector")
-                                    if clickDetector then
-                                        fireclickdetector(clickDetector)
-                                    end
+            if not buttonCompetitionModel then
+                break
+            end
+
+            local buildModel = buttonCompetitionModel:FindFirstChild("Build")
+            if buildModel then
+                local buttonsModel = buildModel:FindFirstChild("Buttons")
+                if buttonsModel then
+                    for _, buttonModel in pairs(buttonsModel:GetChildren()) do
+                        if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
+                            local buttonMeshPart = buttonModel:FindFirstChild("button")
+                            if buttonMeshPart then
+                                local clickDetector = buttonMeshPart:FindFirstChildOfClass("ClickDetector")
+                                if clickDetector then
+                                    fireclickdetector(clickDetector)
                                 end
                             end
                         end
