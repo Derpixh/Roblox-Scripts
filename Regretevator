@@ -520,24 +520,15 @@ local instantWinStanleyRoomButton = stanleyRoomTab:CreateButton({
     end
 })
 
+local tpToEndSectionStanleyRoom = stanleyRoomTab:CreateSection("End")
+
 local teleportToEndStanleyRoomButton = stanleyRoomTab:CreateButton({
     Name = "Teleport To End",
+SectionParent = tpToEndSectionStanleyRoom,
     Callback = function()
-        local stanleyRoomModel = game.Workspace:FindFirstChild("StanleyRoom")
-        if stanleyRoomModel then
-            local buildModel = stanleyRoomModel:FindFirstChild("Build")
-            if buildModel then
-                local generatedModel = buildModel:FindFirstChild("Generated")
-                if generatedModel then
-                    local endingModel = generatedModel:FindFirstChild("Ending")
-                    if endingModel then
-                        local endTouchPart = endingModel:FindFirstChild("EndTouch")
-                        if endTouchPart then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endTouchPart.CFrame
-                        end
-                    end
-                end
-            end
+        local endTouchPart = workspace:FindFirstChild("StanelyRoom") and workspace.StanelyRoom:FindFirstChild("Build") and workspace.StanelyRoom.Build:FindFirstChild("Generated") and workspace.StanelyRoom.Build.Generated:FindFirstChild("Ending") and workspace.StanelyRoom.Build.Generated.Ending:FindFirstChild("EndTouch")
+        if endTouchPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endTouchPart.CFrame
         end
     end
 })
