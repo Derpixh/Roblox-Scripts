@@ -1149,15 +1149,17 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
     Name = "Auto Press Buttons",
     SectionParent = scriptSectionJermpopFactory,
     Callback = function()
-        while true do
-            local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
-            if cleanupButtonsFolder then
+        local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
+        if cleanupButtonsFolder then
+            while true do
+                local foundEnabledPrompt = false
                 for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
                     if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
                         local primPart = buttonUnit:FindFirstChild("Prim")
                         if primPart then
                             local proximityPrompt = primPart:FindFirstChild("ProximityPrompt")
                             if proximityPrompt and proximityPrompt.Enabled then
+                                foundEnabledPrompt = true
                                 proximityPrompt.HoldDuration = 0
                                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = primPart.CFrame
                                 wait(0.7)
@@ -1166,12 +1168,13 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
                                 wait()
                                 proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
 
-                                repeat wait(0.1) until not proximityPrompt.Enabled
                                 wait(0.7)
                             end
                         end
                     end
                 end
+
+                if not foundEnabledPrompt then break end
             end
         end
     end
