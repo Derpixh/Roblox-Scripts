@@ -1332,17 +1332,17 @@ local destructEverythingButton = birthdayTab:CreateButton({
 
 local redballTempleTab = window:CreateTab("Redball Temple", 4483362458)
 
-local scriptSectionAutoPickupSpray = redballTempleTab:CreateSection("Auto Pickup Spray")
+local scriptSectionSpray = redballTempleTab:CreateSection("Spray")
 
 local autoPickupSprayButton = redballTempleTab:CreateButton({
     Name = "Auto Pickup Spray",
-    SectionParent = scriptSectionAutoPickupSpray,
+    SectionParent = scriptSectionSpray,
     Callback = function()
         local claimPart = workspace:FindFirstChild("RedBallTemple") and workspace.RedBallTemple:FindFirstChild("Build") and workspace.RedBallTemple.Build:FindFirstChild("Claim")
         if claimPart then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = claimPart.CFrame
             wait(0.5)
-            
+
             local proximityPrompt = claimPart:FindFirstChild("ItemStockProximityPrompt")
             if proximityPrompt then
                 proximityPrompt.HoldDuration = 0
@@ -1351,6 +1351,13 @@ local autoPickupSprayButton = redballTempleTab:CreateButton({
                     wait()
                     proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
                 end
+            end
+
+            wait(0.5)
+
+            local metallicFloor = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("MetallicFloor")
+            if metallicFloor then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = metallicFloor.CFrame
             end
         end
     end
