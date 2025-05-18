@@ -312,25 +312,30 @@ local respawnButton = superDropperTab:CreateButton({
 })
 
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
+
 local scriptSectionTeapotDodgeball = teapotDodgeballTab:CreateSection("Script")
 
 local instantWinButton = teapotDodgeballTab:CreateButton({
-    Name = "Instant Win",
+    Name = "Instant/Automatic Win",
+    SectionParent = scriptSectionTeapotDodgeball,
     Callback = function()
-        local teapotDodgeballModel = game.Workspace:FindFirstChild("TeapotDodgeball")
-        if teapotDodgeballModel then
-            local buildModel = teapotDodgeballModel:FindFirstChild("Build")
-            if buildModel then
-                local finishPart = buildModel:FindFirstChild("Finish")
-                if finishPart then
-                    local touchInterest = finishPart:FindFirstChildOfClass("TouchTransmitter")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
-                    end
+        while true do
+            local teapotDodgeballModel = workspace:FindFirstChild("TeapotDodgeball")
+            if not teapotDodgeballModel then
+                break
+            end
+
+            local winPart = teapotDodgeballModel:FindFirstChild("WinPart")
+            if winPart then
+                local touchInterest = winPart:FindFirstChild("TouchInterest")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
                 end
             end
+
+            wait(0.1)
         end
     end
 })
@@ -1218,6 +1223,26 @@ local autoPressButtons = theRockTab:CreateButton({
             end
 
             wait(0.1)
+        end
+    end
+})
+
+local slideTab = window:CreateTab("Slide Down 9999999 Feet", 4483362458)
+
+local scriptSectionWin = slideTab:CreateSection("Win")
+
+local instantWinButton = slideTab:CreateButton({
+    Name = "Instant Win",
+    SectionParent = scriptSectionWin,
+    Callback = function()
+        local middleRingPart = workspace:FindFirstChild("SLIDE_9999999999_FEET_DOWN_RAINBOW") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW:FindFirstChild("Build") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build:FindFirstChild("Target") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target:FindFirstChild("MiddleRing")
+        if middleRingPart then
+            local touchInterest = middleRingPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 1)
+            end
         end
     end
 })
