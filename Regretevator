@@ -1293,4 +1293,26 @@ local autoPressResetPromptButton = redballDinerTab:CreateButton({
     end
 })
 
+local birthdayTab = window:CreateTab("Birthday", 4483362458)
+
+local scriptSectionDestructible = birthdayTab:CreateSection("Destructible")
+
+local destructEverythingButton = birthdayTab:CreateButton({
+    Name = "Destruct Everything",
+    SectionParent = scriptSectionDestructible,
+    Callback = function()
+        local destructibleFolder = workspace:FindFirstChild("Birthday") and workspace.Birthday:FindFirstChild("Build") and workspace.Birthday.Build:FindFirstChild("destructible")
+        if destructibleFolder then
+            for _, destructibleModel in pairs(destructibleFolder:GetChildren()) do
+                if destructibleModel:IsA("Model") then
+                    local clickDetector = destructibleModel:FindFirstChildOfClass("ClickDetector")
+                    if clickDetector then
+                        fireclickdetector(clickDetector)
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
