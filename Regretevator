@@ -1105,42 +1105,38 @@ local clickAllButtons = buttonCompetitionTab:CreateButton({
     end
 })
 
-local gsa4Tab = window:CreateTab("GSA4", 4483362458)
+local gasa4Tab = window:CreateTab("GASA4", 4483362458)
 
-local scriptSectionFoodz = gsa4Tab:CreateSection("Foodz")
+local scriptSectionGASA4 = gasa4Tab:CreateSection("Steal & Extract")
 
-local autoStealExtractToggle = gsa4Tab:CreateToggle({
-    Name = "Auto Steal/Auto Extract",
-    SectionParent = scriptSectionFoodz,
-    Callback = function(enabled)
-        while enabled do
-            local stealablesFolder = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("Stealables")
-            if stealablesFolder then
-                for _, part in pairs(stealablesFolder:GetChildren()) do
-                    if part:IsA("Part") and part.Name == "Part" then
-                        local proximityPrompt = part:FindFirstChild("Thing")
-                        if proximityPrompt then
-                            proximityPrompt.HoldDuration = 0
-                            if proximityPrompt.Enabled then
-                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                                wait()
-                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                                
-                                local extractionPoint = workspace.GASA4.Build:FindFirstChild("ExtractionPoint")
-                                if extractionPoint then
-                                    local touchInterest = extractionPoint:FindFirstChild("TouchInterest")
-                                    if touchInterest then
-                                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, extractionPoint, 0)
-                                        wait()
-                                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, extractionPoint, 1)
-                                    end
-                                end
-                            end
+local autoStealExtractButton = gasa4Tab:CreateButton({
+    Name = "Auto Steal & Extract",
+    SectionParent = scriptSectionGASA4,
+    Callback = function()
+        local stealablesFolder = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("Stealables")
+        if stealablesFolder then
+            for _, stealablePart in pairs(stealablesFolder:GetChildren()) do
+                if stealablePart:IsA("Part") then
+                    local proximityPrompt = stealablePart:FindFirstChild("ProximityPrompt")
+                    if proximityPrompt and proximityPrompt.Enabled then
+                        proximityPrompt.HoldDuration = 0
+
+                        proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                        wait()
+                        proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+
+                        repeat wait(0.1) until not proximityPrompt.Enabled
+
+                        wait(0.7)
+
+                        local extractionPoint = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("ExtractionPoint")
+                        if extractionPoint then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = extractionPoint.CFrame
+                            wait(0.7)
                         end
                     end
                 end
             end
-            wait(0.1)
         end
     end
 })
@@ -1153,23 +1149,26 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
     Name = "Auto Press Buttons",
     SectionParent = scriptSectionJermpopFactory,
     Callback = function()
-        local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
-        if cleanupButtonsFolder then
-            for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
-                if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
-                    local primPart = buttonUnit:FindFirstChild("Prim")
-                    if primPart then
-                        local proximityPrompt = primPart:FindFirstChild("ProximityPrompt")
-                        if proximityPrompt and proximityPrompt.Enabled then
-                            proximityPrompt.HoldDuration = 0
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = primPart.CFrame
-                            wait(0.7)
+        while true do
+            local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
+            if cleanupButtonsFolder then
+                for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
+                    if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
+                        local primPart = buttonUnit:FindFirstChild("Prim")
+                        if primPart then
+                            local proximityPrompt = primPart:FindFirstChild("ProximityPrompt")
+                            if proximityPrompt and proximityPrompt.Enabled then
+                                proximityPrompt.HoldDuration = 0
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = primPart.CFrame
+                                wait(0.7)
 
-                            proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                            wait()
-                            proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                                wait()
+                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
 
-                            repeat wait(0.1) until not proximityPrompt.Enabled
+                                repeat wait(0.1) until not proximityPrompt.Enabled
+                                wait(0.7)
+                            end
                         end
                     end
                 end
