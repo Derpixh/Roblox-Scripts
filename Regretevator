@@ -1315,4 +1315,29 @@ local destructEverythingButton = birthdayTab:CreateButton({
     end
 })
 
+local redballTempleTab = window:CreateTab("Redball Temple", 4483362458)
+
+local scriptSectionAutoPickupSpray = redballTempleTab:CreateSection("Auto Pickup Spray")
+
+local autoPickupSprayButton = redballTempleTab:CreateButton({
+    Name = "Auto Pickup Spray",
+    SectionParent = scriptSectionAutoPickupSpray,
+    Callback = function()
+        local claimPart = workspace:FindFirstChild("RedBallTemple") and workspace.RedBallTemple:FindFirstChild("Build") and workspace.RedBallTemple.Build:FindFirstChild("Claim")
+        if claimPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = claimPart.CFrame
+            
+            local proximityPrompt = claimPart:FindFirstChild("ItemStockProximityPrompt")
+            if proximityPrompt then
+                proximityPrompt.HoldDuration = 0
+                if proximityPrompt.Enabled then
+                    proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                    wait()
+                    proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
