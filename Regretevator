@@ -640,23 +640,15 @@ local teleportToRoofButton = tpotTab:CreateButton({
 })
 
 local jeremyTab = window:CreateTab("Jeremy", 4483362458)
+
 local scriptSectionJeremy = jeremyTab:CreateSection("Script")
 
 local teleportToEndJeremyButton = jeremyTab:CreateButton({
     Name = "Teleport To End",
     Callback = function()
-        local jeremyModel = game.Workspace:FindFirstChild("Jeremy")
-        if jeremyModel then
-            local buildModel = jeremyModel:FindFirstChild("Build")
-            if buildModel then
-                local buttonModel = buildModel:FindFirstChild("Button")
-                if buttonModel then
-                    local player = game.Players.LocalPlayer
-                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        player.Character.HumanoidRootPart.CFrame = buttonModel.CFrame
-                    end
-                end
-            end
+        local clickerPart = workspace:FindFirstChild("Jeremy") and workspace.Jeremy:FindFirstChild("Build") and workspace.Jeremy.Build:FindFirstChild("Button") and workspace.Jeremy.Build.Button:FindFirstChild("Clicker")
+        if clickerPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = clickerPart.CFrame
         end
     end
 })
@@ -984,34 +976,6 @@ local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
             local endBlock = obbyModel:FindFirstChild("ENDBLOCK")
             if endBlock then
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = endBlock.CFrame
-            end
-        end
-    end
-})
-
-local tntRunTab = window:CreateTab("TNT Run", 4483362458)
-
-local scriptSectionTNT = tntRunTab:CreateSection("TNT")
-
-local antiFallButton = tntRunTab:CreateButton({
-    Name = "Anti-Fall",
-    SectionParent = scriptSectionTNT,
-    Callback = function()
-        local tntRunModel = workspace:FindFirstChild("TNTRun")
-        if tntRunModel then
-            local buildModel = tntRunModel:FindFirstChild("Build")
-            if buildModel then
-                local tntFolder = buildModel:FindFirstChild("TNT")
-                if tntFolder then
-                    for _, tntPart in pairs(tntFolder:GetChildren()) do
-                        if tntPart:IsA("Part") and tntPart.Name == "tnt" then
-                            local touchInterest = tntPart:FindFirstChild("TouchInterest")
-                            if touchInterest then
-                                touchInterest:Destroy()
-                            end
-                        end
-                    end
-                end
             end
         end
     end
