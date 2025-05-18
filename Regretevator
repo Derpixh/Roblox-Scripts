@@ -1340,4 +1340,39 @@ local autoPickupSprayButton = redballTempleTab:CreateButton({
     end
 })
 
+local infectionApartmentTab = window:CreateTab("Infection Apartment", 4483362458)
+
+local scriptSectionPowerBoxes = infectionApartmentTab:CreateSection("Power Boxes")
+
+local autoPressPromptButton = infectionApartmentTab:CreateButton({
+    Name = "Auto Press Prompt",
+    SectionParent = scriptSectionPowerBoxes,
+    Callback = function()
+        while true do
+            local powerBoxesFolder = workspace:FindFirstChild("InfectionApartment") and workspace.InfectionApartment:FindFirstChild("Immune") and workspace.InfectionApartment.Immune:FindFirstChild("PowerBoxes")
+            if powerBoxesFolder then
+                for _, powerBoxModel in pairs(powerBoxesFolder:GetChildren()) do
+                    if powerBoxModel:IsA("Model") and powerBoxModel.Name == "PowerBox" then
+                        local valvePart = powerBoxModel:FindFirstChild("Valve")
+                        if valvePart then
+                            local valvePromptPart = valvePart:FindFirstChild("ValvePrompt")
+                            if valvePromptPart then
+                                local proximityPrompt = valvePromptPart:FindFirstChild("ProximityPrompt")
+                                if proximityPrompt and proximityPrompt.Enabled then
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = powerBoxModel:GetPivot()
+                                    wait(0.5)
+                                    proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                                    wait()
+                                    proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
