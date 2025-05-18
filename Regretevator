@@ -1222,6 +1222,16 @@ local autoPressButtons = theRockTab:CreateButton({
                 end
             end
 
+            local winPart = workspace:FindFirstChild("THEROCK") and workspace.THEROCK:FindFirstChild("WinPart")
+            if winPart then
+                local winTouchInterest = winPart:FindFirstChild("TouchInterest")
+                if winTouchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
+                end
+            end
+
             wait(0.1)
         end
     end
