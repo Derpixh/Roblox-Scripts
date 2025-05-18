@@ -584,6 +584,28 @@ local teleportToOtherSideButton = findThePathTab:CreateButton({
     end
 })
 
+local scriptSectionPrototype = findThePathTab:CreateSection("Prototype")
+
+local autoPullLeverButton = findThePathTab:CreateButton({
+    Name = "Auto Pull Lever",
+    SectionParent = scriptSectionPrototype,
+    Callback = function()
+        local clickPart = workspace:FindFirstChild("FindThePath") and workspace.FindThePath:FindFirstChild("Build") and workspace.FindThePath.Build:FindFirstChild("End") and workspace.FindThePath.Build.End:FindFirstChild("Lever") and workspace.FindThePath.Build.End.Lever:FindFirstChild("ClickPart")
+        if clickPart then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = clickPart.CFrame
+            wait(0.7)
+
+            local proximityPrompt = clickPart:FindFirstChild("ProximityPrompt")
+            if proximityPrompt then
+                proximityPrompt.HoldDuration = 0
+                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                wait()
+                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+            end
+        end
+    end
+})
+
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
 local scriptSectionJaoba = jaobaTab:CreateSection("Script")
 
