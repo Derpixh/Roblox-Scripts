@@ -1342,29 +1342,30 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
     Name = "Auto Power-Boxes",
     SectionParent = scriptSectionPowerBoxes,
     Callback = function()
-        while true do
-            local powerBoxesFolder = workspace:FindFirstChild("InfectionApartment") and workspace.InfectionApartment:FindFirstChild("Immune") and workspace.InfectionApartment.Immune:FindFirstChild("PowerBoxes")
-            if powerBoxesFolder then
-                for _, powerBoxModel in pairs(powerBoxesFolder:GetChildren()) do
-                    if powerBoxModel:IsA("Model") and powerBoxModel.Name == "PowerBox" then
-                        local valvePart = powerBoxModel:FindFirstChild("Valve")
-                        if valvePart then
-                            local valvePromptPart = valvePart:FindFirstChild("ValvePrompt")
-                            if valvePromptPart then
-                                local proximityPrompt = valvePromptPart:FindFirstChild("ProximityPrompt")
-                                if proximityPrompt and proximityPrompt.Enabled then
-                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = powerBoxModel:GetPivot()
-                                    wait(0.5)
-                                    proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                                    wait()
-                                    proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                                end
+        local powerBoxesFolder = workspace:FindFirstChild("InfectionApartment") and workspace.InfectionApartment:FindFirstChild("Immune") and workspace.InfectionApartment.Immune:FindFirstChild("PowerBoxes")
+        if powerBoxesFolder then
+            for _, powerBoxModel in pairs(powerBoxesFolder:GetChildren()) do
+                if powerBoxModel:IsA("Model") and powerBoxModel.Name == "PowerBox" then
+                    local valvePart = powerBoxModel:FindFirstChild("Valve")
+                    if valvePart then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = valvePart:GetPivot()
+                        wait(0.5)
+
+                        local valvePromptPart = valvePart:FindFirstChild("ValvePrompt")
+                        if valvePromptPart then
+                            local proximityPrompt = valvePromptPart:FindFirstChild("ProximityPrompt")
+                            if proximityPrompt and proximityPrompt.Enabled then
+                                proximityPrompt.HoldDuration = 0
+                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                                wait()
+                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+
+                                repeat wait(0.1) until not proximityPrompt.Enabled
                             end
                         end
                     end
                 end
             end
-            wait(0.1)
         end
     end
 })
