@@ -1247,4 +1247,40 @@ local instantWinButton = slideTab:CreateButton({
     end
 })
 
+local redballDinerTab = window:CreateTab("Redball Diner", 4483362458)
+
+local scriptSectionReset = redballDinerTab:CreateSection("Reset")
+
+local autoPressResetPromptButton = redballDinerTab:CreateButton({
+    Name = "Auto Press Reset Prompt",
+    SectionParent = scriptSectionReset,
+    Callback = function()
+        while true do
+            local redballDinerModel = workspace:FindFirstChild("RedballDiner")
+            if not redballDinerModel then
+                break
+            end
+
+            local reddyModel = redballDinerModel:FindFirstChild("Build") and redballDinerModel.Build:FindFirstChild("Animatronics") and redballDinerModel.Build.Animatronics:FindFirstChild("Reddy")
+            if reddyModel then
+                local humanoidRootPart = reddyModel:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+                    local resetPrompt = humanoidRootPart:FindFirstChild("ResetPrompt")
+                    if resetPrompt then
+                        resetPrompt.HoldDuration = 0
+                        resetPrompt.Enabled = true
+                        if resetPrompt.Enabled then
+                            resetPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                            wait()
+                            resetPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                        end
+                    end
+                end
+            end
+
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
