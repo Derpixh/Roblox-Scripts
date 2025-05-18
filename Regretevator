@@ -504,24 +504,19 @@ SectionParent = tpToEndSectionStanleyRoom,
 })
 
 local hotelFloor6Tab = window:CreateTab("Hotel Floor 6", 4483362458)
+
 local scriptSectionHotelFloor6 = hotelFloor6Tab:CreateSection("Script")
 
 local instantWinHotelFloor6Button = hotelFloor6Tab:CreateButton({
     Name = "Instant Win",
     Callback = function()
-        local hotelFloor6Model = game.Workspace:FindFirstChild("HotelFloor6")
-        if hotelFloor6Model then
-            local buildModel = hotelFloor6Model:FindFirstChild("Build")
-            if buildModel then
-                local winPart = buildModel:FindFirstChild("WinPart")
-                if winPart then
-                    local touchInterest = winPart:FindFirstChildOfClass("TouchTransmitter")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
-                    end
-                end
+        local winPart = workspace:FindFirstChild("HotelFloor6") and workspace.HotelFloor6:FindFirstChild("Build") and workspace.HotelFloor6.Build:FindFirstChild("WinPart")
+        if winPart then
+            local touchInterest = winPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
             end
         end
     end
