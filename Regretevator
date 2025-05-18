@@ -1147,30 +1147,33 @@ local autoStealExtractToggle = gsa4Tab:CreateToggle({
 
 local jermpopFactoryTab = window:CreateTab("Jermpop Factory", 4483362458)
 
-local scriptSectionButtons = jermpopFactoryTab:CreateSection("Buttons")
+local scriptSectionJermpopFactory = jermpopFactoryTab:CreateSection("Script")
 
-local autoPressButtons = jermpopFactoryTab:CreateButton({
+local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
     Name = "Auto Press Buttons",
-    SectionParent = scriptSectionButtons,
+    SectionParent = scriptSectionJermpopFactory,
     Callback = function()
-        while true do
-            local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
-            if cleanupButtonsFolder then
-                for _, buttonUnitModel in pairs(cleanupButtonsFolder:GetChildren()) do
-                    if buttonUnitModel:IsA("Model") and buttonUnitModel.Name == "ButtonUnit" then
-                        local primPart = buttonUnitModel:FindFirstChild("Prim")
-                        if primPart then
-                            local proximityPrompt = primPart:FindFirstChild("Prompt")
-                            if proximityPrompt and proximityPrompt.Enabled then
-                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                                wait()
-                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                            end
+        local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
+        if cleanupButtonsFolder then
+            for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
+                if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
+                    local primPart = buttonUnit:FindFirstChild("Prim")
+                    if primPart then
+                        local proximityPrompt = primPart:FindFirstChild("ProximityPrompt")
+                        if proximityPrompt and proximityPrompt.Enabled then
+                            proximityPrompt.HoldDuration = 0
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = primPart.CFrame
+                            wait(0.7)
+
+                            proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                            wait()
+                            proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
+
+                            repeat wait(0.1) until not proximityPrompt.Enabled
                         end
                     end
                 end
             end
-            wait(0.1)
         end
     end
 })
