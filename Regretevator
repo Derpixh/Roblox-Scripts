@@ -395,6 +395,7 @@ local function teleportToGenerator(roomName)
     local generatorPart = workspace:FindFirstChild("SurvivalTheArea51") and workspace.SurvivalTheArea51:FindFirstChild("Build") and workspace.SurvivalTheArea51.Build:FindFirstChild(roomName) and workspace.SurvivalTheArea51.Build[roomName]:FindFirstChild("Generator")
     if generatorPart then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = generatorPart.CFrame
+        wait(0.5)
 
         local proximityPrompt = generatorPart:FindFirstChild("ProximityPrompt")
         if proximityPrompt then
