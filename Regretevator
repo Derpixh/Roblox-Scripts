@@ -1060,7 +1060,7 @@ local removeObstaclesButton = infectedRacingTab:CreateButton({
             for _, obstacleModel in pairs(obstaclesFolder:GetChildren()) do
                 if obstacleModel:IsA("Model") then
                     local modelName = obstacleModel.Name:lower()
-                    if modelName:find("bump") or modelName:find("bumpy") or modelName:find("wall") or modelName:find("crousher") then
+                    if modelName:find("bump") or modelName:find("bumpy") or modelName:find("wall") or modelName:find("crousher") or modelName:find("fafa") or modelName:find("pepperoni") then
                         obstacleModel:Destroy()
                     end
                 end
