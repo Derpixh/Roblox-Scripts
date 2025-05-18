@@ -319,23 +319,14 @@ local instantWinButton = teapotDodgeballTab:CreateButton({
     Name = "Instant/Automatic Win",
     SectionParent = scriptSectionTeapotDodgeball,
     Callback = function()
-        while true do
-            local teapotDodgeballModel = workspace:FindFirstChild("TeapotDodgeball")
-            if not teapotDodgeballModel then
-                break
+        local finishPart = workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish")
+        if finishPart then
+            local touchInterest = finishPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
             end
-
-            local winPart = teapotDodgeballModel:FindFirstChild("WinPart")
-            if winPart then
-                local touchInterest = winPart:FindFirstChild("TouchInterest")
-                if touchInterest then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 0)
-                    wait()
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPart, 1)
-                end
-            end
-
-            wait(0.1)
         end
     end
 })
