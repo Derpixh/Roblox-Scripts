@@ -230,24 +230,25 @@ local removeUFOsButton = forestCampTab:CreateButton({
 
 local scriptSectionFirewood = forestCampTab:CreateSection("Firewood")
 
-local autoPickupFirewoodButton = forestCampTab:CreateButton({
-    Name = "Auto Pickup Firewood",
+local autoCollectFirewoodButton = forestCampTab:CreateButton({
+    Name = "Auto Collect Firewood",
     SectionParent = scriptSectionFirewood,
     Callback = function()
-        local firewoodFolder = workspace:FindFirstChild("Forest_TwoStudCamp") and workspace.Forest_TwoStudCamp:FindFirstChild("Build") and workspace.Forest_TwoStudCamp.Build:FindFirstChild("Firewood")
+        local firewoodFolder = workspace:FindFirstChild("ForestCamp") and workspace.ForestCamp:FindFirstChild("Build") and workspace.ForestCamp.Build:FindFirstChild("Firewood")
         if firewoodFolder then
-            for _, firewoodItem in pairs(firewoodFolder:GetChildren()) do
-                if firewoodItem:IsA("UnionOperation") and firewoodItem.Name == "Firewood" then
-                    local proximityPrompt = firewoodItem:FindFirstChildOfClass("ProximityPrompt")
-                    if proximityPrompt then
-                        proximityPrompt.HoldDuration = 0
-                        if proximityPrompt.Enabled then
+            while true do
+                for _, firewood in pairs(firewoodFolder:GetChildren()) do
+                    if firewood.Name == "Firewood" then
+                        local proximityPrompt = firewood:FindFirstChild("ProximityPrompt")
+                        if proximityPrompt and proximityPrompt.Enabled and proximityPrompt.Root:IsDescendantOf(game.Players.LocalPlayer.Character) then
+                            proximityPrompt.HoldDuration = 0
                             proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
                             wait()
                             proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
                         end
                     end
                 end
+                wait(0.1)
             end
         end
     end
