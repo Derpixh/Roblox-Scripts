@@ -1049,6 +1049,26 @@ local completeCheckpointsButton = infectedRacingTab:CreateButton({
     end
 })
 
+local scriptSectionObstacles = infectedRacingTab:CreateSection("Obstacles")
+
+local removeObstaclesButton = infectedRacingTab:CreateButton({
+    Name = "Remove Obstacles",
+    SectionParent = scriptSectionObstacles,
+    Callback = function()
+        local obstaclesFolder = workspace:FindFirstChild("InfectedRacing") and workspace.InfectedRacing:FindFirstChild("Build") and workspace.InfectedRacing.Build:FindFirstChild("Obstacles")
+        if obstaclesFolder then
+            for _, obstacleModel in pairs(obstaclesFolder:GetChildren()) do
+                if obstacleModel:IsA("Model") then
+                    local modelName = obstacleModel.Name:lower()
+                    if modelName:find("bump") or modelName:find("bumpy") or modelName:find("wall") or modelName:find("crousher") then
+                        obstacleModel:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
 local buttonCompetitionTab = window:CreateTab("Button Competition", 4483362458)
 
 local scriptSectionButtons = buttonCompetitionTab:CreateSection("Buttons")
