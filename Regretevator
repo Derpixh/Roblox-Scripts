@@ -1424,4 +1424,40 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
     end
 })
 
+local follyFightTab = window:CreateTab("Folly Fight", 4483362458)
+
+local scriptSectionMirrors = follyFightTab:CreateSection("Mirrors")
+
+local highlightFollyMirrorToggle = follyFightTab:CreateToggle({
+    Name = "Highlight Folly Mirror",
+    SectionParent = scriptSectionMirrors,
+    Callback = function(enabled)
+        while enabled do
+            local mirrorsFolder = workspace:FindFirstChild("FollyFight") and workspace.FollyFight:FindFirstChild("Build") and workspace.FollyFight.Build:FindFirstChild("Mirrors")
+            if mirrorsFolder then
+                for _, follyMirrorModel in pairs(mirrorsFolder:GetChildren()) do
+                    if follyMirrorModel:IsA("Model") and follyMirrorModel.Name == "FollyMirror" then
+                        local mirrorModel = follyMirrorModel:FindFirstChild("Mirror")
+                        if mirrorModel then
+                            local glassPart = mirrorModel:FindFirstChild("Glass")
+                            if glassPart and glassPart:IsA("Part") and glassPart.BrickColor == BrickColor.new("Crimson") then
+                                if not mirrorModel:FindFirstChild("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.Parent = mirrorModel
+                                end
+                            else
+                                local existingHighlight = mirrorModel:FindFirstChild("Highlight")
+                                if existingHighlight then
+                                    existingHighlight:Destroy()
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
