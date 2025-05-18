@@ -1344,8 +1344,8 @@ local infectionApartmentTab = window:CreateTab("Infection Apartment", 4483362458
 
 local scriptSectionPowerBoxes = infectionApartmentTab:CreateSection("Power Boxes")
 
-local autoPressPromptButton = infectionApartmentTab:CreateButton({
-    Name = "Auto Press Prompt",
+local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
+    Name = "Auto Power-Boxes",
     SectionParent = scriptSectionPowerBoxes,
     Callback = function()
         while true do
