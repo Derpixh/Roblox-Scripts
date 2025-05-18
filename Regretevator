@@ -392,24 +392,20 @@ local teleportToEndButton = hallOfTab:CreateButton({
 })
 
 local surviveArea51Tab = window:CreateTab("Survive Area 51", 4483362458)
+
 local scriptSectionSurviveArea51 = surviveArea51Tab:CreateSection("Script")
 
-local function teleportToGenerator(folderName)
-    local survivalModel = workspace:FindFirstChild("SurvivalTheArea51")
-    if survivalModel then
-        local buildModel = survivalModel:FindFirstChild("Build")
-        if buildModel then
-            local folder = buildModel:FindFirstChild(folderName)
-            if folder then
-                local generatorPart = folder:FindFirstChild("Generator")
-                if generatorPart then
-                    local player = game.Players.LocalPlayer
-                    local character = player.Character or player.CharacterAdded:Wait()
-                    if character then
-                        character:MoveTo(generatorPart.Position)
-                    end
-                end
-            end
+local function teleportToGenerator(roomName)
+    local generatorPart = workspace:FindFirstChild("SurvivalTheArea51") and workspace.SurvivalTheArea51:FindFirstChild("Build") and workspace.SurvivalTheArea51.Build:FindFirstChild(roomName) and workspace.SurvivalTheArea51.Build[roomName]:FindFirstChild("Generator")
+    if generatorPart then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = generatorPart.CFrame
+
+        local proximityPrompt = generatorPart:FindFirstChild("ProximityPrompt")
+        if proximityPrompt then
+            proximityPrompt.HoldDuration = 0
+            proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
+            wait()
+            proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
         end
     end
 end
