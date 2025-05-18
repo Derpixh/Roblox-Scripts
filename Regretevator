@@ -1323,6 +1323,7 @@ local autoPickupSprayButton = redballTempleTab:CreateButton({
         local claimPart = workspace:FindFirstChild("RedBallTemple") and workspace.RedBallTemple:FindFirstChild("Build") and workspace.RedBallTemple.Build:FindFirstChild("Claim")
         if claimPart then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = claimPart.CFrame
+            wait(0.5)
             
             local proximityPrompt = claimPart:FindFirstChild("ItemStockProximityPrompt")
             if proximityPrompt then
