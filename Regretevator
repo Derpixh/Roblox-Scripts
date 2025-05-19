@@ -1509,4 +1509,51 @@ local autoGetPizzasButton = pizzaTab:CreateButton({
     end
 })
 
+local petCaptureTab = window:CreateTab("Pet Capture Deluxe", 4483362458)
+local petsSection = petCaptureTab:CreateSection("Pets")
+
+local autoCapturePetsButton = petCaptureTab:CreateButton({
+    Name = "Auto Capture Pets",
+    SectionParent = petsSection,
+    Callback = function()
+        local function getNearestEnabledPrompt()
+            local activeMonsters = workspace:FindFirstChild("PetCaptureDeluxe") and workspace.PetCaptureDeluxe:FindFirstChild("Build") and workspace.PetCaptureDeluxe.Build:FindFirstChild("ActiveMonsters")
+            local nearestPart, nearestPrompt, shortestDistance = nil, nil, math.huge
+
+            if activeMonsters then
+                for _, part in pairs(activeMonsters:GetChildren()) do
+                    if part:IsA("Part") then
+                        local prompt = part:FindFirstChildWhichIsA("ProximityPrompt")
+                        if prompt and prompt.Enabled then
+                            local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).Magnitude
+                            if distance < shortestDistance then
+                                nearestPart, nearestPrompt, shortestDistance = part, prompt, distance
+                            end
+                        end
+                    end
+                end
+            end
+
+            return nearestPart, nearestPrompt
+        end
+
+        while true do
+            local targetPart, targetPrompt = getNearestEnabledPrompt()
+            if targetPart and targetPrompt then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPart.CFrame
+                wait(0.7)
+                
+                while targetPrompt.Enabled do
+                    targetPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                    wait()
+                    targetPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                end
+            else
+                break
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
