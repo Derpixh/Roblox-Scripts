@@ -1417,7 +1417,8 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
                 if powerBoxModel:IsA("Model") and powerBoxModel.Name == "PowerBox" then
                     local valvePart = powerBoxModel:FindFirstChild("Valve")
                     if valvePart then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = valvePart:GetPivot()
+                        local targetPosition = valvePart.Position + valvePart.CFrame.LookVector * 1
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
                         wait(0.7)
 
                         local valvePromptPart = valvePart:FindFirstChild("ValvePrompt")
