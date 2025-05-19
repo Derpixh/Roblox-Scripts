@@ -1035,25 +1035,26 @@ local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
     end
 })
 
-local colorTilesTab = window:CreateTab("Color The Tiles", 4483362458)
-local scriptSectionTiles = colorTilesTab:CreateSection("Tiles")
+local colorPathTab = window:CreateTab("Color The Path", 4483362458)
+local scriptSectionPath = colorPathTab:CreateSection("Path")
 
-local autoColorTilesButton = colorTilesTab:CreateButton({
-    Name = "Auto Color Tiles",
-    SectionParent = scriptSectionTiles,
+local autoColorPathButton = colorPathTab:CreateButton({
+    Name = "Auto Color Path",
+    SectionParent = scriptSectionPath,
     Callback = function()
-        local colorTilesModel = workspace:FindFirstChild("ColorTheTiles")
-        while colorTilesModel do
-            for _, tile in pairs(colorTilesModel:GetChildren()) do
-                local touchTransmitter = tile:FindFirstChildWhichIsA("TouchTransmitter")
-                if touchTransmitter then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
-                    wait()
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+        while workspace:FindFirstChild("ColorTheTiles") and workspace.ColorTheTiles:FindFirstChild("Tiles") do
+            local tilesFolder = workspace.ColorTheTiles.Tiles
+            for _, tile in pairs(tilesFolder:GetChildren()) do
+                if tile:IsA("Part") and tile.Name == "Tile" then
+                    local touchTransmitter = tile:FindFirstChildWhichIsA("TouchTransmitter")
+                    if touchTransmitter then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                    end
                 end
             end
             wait(0.1)
-            colorTilesModel = workspace:FindFirstChild("ColorTheTiles")
         end
     end
 })
