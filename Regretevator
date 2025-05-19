@@ -1602,4 +1602,26 @@ local autoCapturePetsButton = petCaptureTab:CreateButton({
     end
 })
 
+local slimYimTab = window:CreateTab("Slim Yim", 4483362458)
+local attacksSection = slimYimTab:CreateSection("Attacks")
+
+local autoRemoveAttacksButton = slimYimTab:CreateButton({
+    Name = "Auto Remove Attacks",
+    SectionParent = attacksSection,
+    Callback = function()
+        local attacks = workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("RoomScript") and workspace.SlimYim.RoomScript:FindFirstChild("Attacks")
+        if attacks then
+            attacks:Destroy()
+        end
+
+        while true do
+            local challengeFrank = workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("ChallengeFrank")
+            if challengeFrank then
+                challengeFrank:Destroy()
+            end
+            wait(0.1)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
