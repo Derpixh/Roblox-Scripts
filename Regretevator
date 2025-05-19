@@ -1035,12 +1035,12 @@ local teleportToEndIntenseObbyButton = intenseObbyTab:CreateButton({
     end
 })
 
-local colorPathTab = window:CreateTab("Color The Path", 4483362458)
-local scriptSectionPath = colorPathTab:CreateSection("Path")
+local colorTilesTab = window:CreateTab("Color The Tiles", 4483362458)
+local scriptSectionTiles = colorTilesTab:CreateSection("Tiles")
 
-local autoColorPathButton = colorPathTab:CreateButton({
-    Name = "Auto Color Path",
-    SectionParent = scriptSectionPath,
+local autoColorTilesButton = colorTilesTab:CreateButton({
+    Name = "Auto Color Tiles",
+    SectionParent = scriptSectionTiles,
     Callback = function()
         while workspace:FindFirstChild("ColorTheTiles") and workspace.ColorTheTiles:FindFirstChild("Tiles") do
             local tilesFolder = workspace.ColorTheTiles.Tiles
