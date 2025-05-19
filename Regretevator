@@ -1187,29 +1187,42 @@ local autoStealExtractButton = gasa4Tab:CreateButton({
     Name = "Auto Steal & Extract",
     SectionParent = scriptSectionGASA4,
     Callback = function()
-        local stealablesFolder = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("Stealables")
-        if stealablesFolder then
-            for _, stealablePart in pairs(stealablesFolder:GetChildren()) do
-                if stealablePart:IsA("Part") then
-                    local proximityPrompt = stealablePart:FindFirstChild("ProximityPrompt")
-                    if proximityPrompt and proximityPrompt.Enabled then
+        while workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("Stealables") do
+            local stealablesFolder = workspace.GASA4.Build.Stealables
+            local extractionPoint = workspace.GASA4.Build:FindFirstChild("ExtractionPoint")
+            
+            local nearestPart, nearestPrompt, shortestDistance = nil, nil, math.huge
+            for _, part in pairs(stealablesFolder:GetChildren()) do
+                if part:IsA("Part") then
+                    local proximityPrompt = part:FindFirstChild("ThingButton")
+                    if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
                         proximityPrompt.HoldDuration = 0
-
-                        proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                        wait()
-                        proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-
-                        repeat wait(0.1) until not proximityPrompt.Enabled
-
-                        wait(0.7)
-
-                        local extractionPoint = workspace:FindFirstChild("GASA4") and workspace.GASA4:FindFirstChild("Build") and workspace.GASA4.Build:FindFirstChild("ExtractionPoint")
-                        if extractionPoint then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = extractionPoint.CFrame
-                            wait(0.7)
+                        local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).Magnitude
+                        if distance < shortestDistance then
+                            nearestPart, nearestPrompt, shortestDistance = part, proximityPrompt, distance
                         end
                     end
                 end
+            end
+            
+            if nearestPart and nearestPrompt then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestPart.CFrame
+                wait(0.6)
+
+                while nearestPrompt.Enabled do
+                    nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                    wait()
+                    nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                end
+
+                wait(0.6)
+
+                if extractionPoint then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = extractionPoint.CFrame
+                    wait(0.6)
+                end
+            else
+                break
             end
         end
     end
