@@ -1419,7 +1419,7 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
                     if valvePart then
                         local targetPosition = valvePart.Position + valvePart.CFrame.LookVector * 1
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-                        wait(0.7)
+                        wait(0.6)
 
                         local valvePromptPart = valvePart:FindFirstChild("ValvePrompt")
                         if valvePromptPart then
