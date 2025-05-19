@@ -1243,7 +1243,7 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
                 end
 
                 if nearestPrim and nearestPrompt then
-                    local targetPosition = nearestPrim.Position + nearestPrim.CFrame.LookVector * 1
+                    local targetPosition = nearestPrim.Position + nearestPrim.CFrame.LookVector * 3
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
                     wait(0.6)
 
@@ -1374,7 +1374,7 @@ local autoPressResetPromptButton = redballDinerTab:CreateButton({
             if reddyModel then
                 local humanoidRootPart = reddyModel:FindFirstChild("HumanoidRootPart")
                 if humanoidRootPart then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 1
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 3
                     wait(0.6)
 
                     local resetPrompt = humanoidRootPart:FindFirstChild("ResetPrompt")
