@@ -789,23 +789,21 @@ local teleportToLampertButton = lampertTab:CreateButton({
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
 
-local scriptSectionGiggler = gigglerTab:CreateSection("Script")
+local scriptSectionMaze = gigglerTab:CreateSection("Maze")
 
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
+    SectionParent = scriptSectionMaze,
     Callback = function()
-        local gigglerModel = workspace:FindFirstChild("RandomMazeWindows")
-        if gigglerModel then
-            local buildModel = gigglerModel:FindFirstChild("Build")
-            if buildModel then
-                local gigglerPart = buildModel:GetChildren()[6]
-                if gigglerPart then
-                    local touchInterest = gigglerPart:FindFirstChild("TouchInterest")
-                    if touchInterest then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, gigglerPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, gigglerPart, 1)
-                    end
+        local mazeObject = workspace:FindFirstChild("RandomMazeWindows") and workspace.RandomMazeWindows:FindFirstChild("Build")
+        if mazeObject then
+            local targetPart = mazeObject:GetChildren()[6]
+            if targetPart then
+                local touchTransmitter = targetPart:FindFirstChildWhichIsA("TouchTransmitter")
+                if touchTransmitter then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, targetPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, targetPart, 1)
                 end
             end
         end
@@ -1175,29 +1173,35 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
         local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
         if cleanupButtonsFolder then
             while true do
-                local foundEnabledPrompt = false
+                local nearestPrompt, nearestDistance = nil, math.huge
                 for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
                     if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
                         local primPart = buttonUnit:FindFirstChild("Prim")
                         if primPart then
-                            local proximityPrompt = primPart:FindFirstChild("ProximityPrompt")
-                            if proximityPrompt and proximityPrompt.Enabled then
-                                foundEnabledPrompt = true
-                                proximityPrompt.HoldDuration = 0
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = primPart.CFrame
-                                wait(0.7)
-
-                                proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                                wait()
-                                proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-
-                                wait(0.7)
+                            local proximityPrompt = primPart:FindFirstChild("Prompt")
+                            if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
+                                local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - primPart.Position).Magnitude
+                                if distance < nearestDistance then
+                                    nearestPrompt, nearestDistance = proximityPrompt, distance
+                                end
                             end
                         end
                     end
                 end
-
-                if not foundEnabledPrompt then break end
+                
+                if nearestPrompt then
+                    nearestPrompt.HoldDuration = 0
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestPrompt.Parent.CFrame
+                    wait(0.7)
+                    
+                    nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                    wait()
+                    nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                    
+                    wait(0.7)
+                else
+                    break
+                end
             end
         end
     end
