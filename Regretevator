@@ -1473,4 +1473,30 @@ local highlightFollyMirrorToggle = follyFightTab:CreateToggle({
     end
 })
 
+local pizzaTab = window:CreateTab("Pizza Delivery", 4483362458)
+
+local pizzaSection = pizzaTab:CreateSection("Pizza")
+
+local autoGetPizzasButton = pizzaTab:CreateButton({
+    Name = "Auto Get Pizzas",
+    SectionParent = pizzaSection,
+    Callback = function()
+        local pizzaBoxes = workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes")
+        if pizzaBoxes then
+            local count = 0
+            for _, meshPart in pairs(pizzaBoxes:GetChildren()) do
+                if meshPart:IsA("MeshPart") and meshPart.Name == "PizzaBox" then
+                    local touchTransmitter = meshPart:FindFirstChildWhichIsA("TouchTransmitter")
+                    if touchTransmitter and count < 10 then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                        wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                        count = count + 1
+                    end
+                end
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
