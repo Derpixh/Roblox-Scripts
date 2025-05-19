@@ -328,19 +328,40 @@ local respawnButton = superDropperTab:CreateButton({
 
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
 
-local scriptSectionTeapotDodgeball = teapotDodgeballTab:CreateSection("Script")
+local scriptSectionEasyMethod = teapotDodgeballTab:CreateSection("Easy Method")
 
 local instantWinButton = teapotDodgeballTab:CreateButton({
-    Name = "Instant/Automatic Win",
-    SectionParent = scriptSectionTeapotDodgeball,
+    Name = "Instant Win",
+    SectionParent = scriptSectionEasyMethod,
     Callback = function()
         local finishPart = workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish")
         if finishPart then
-            local touchInterest = finishPart:FindFirstChild("TouchInterest")
-            if touchInterest then
+            local touchTransmitter = finishPart:FindFirstChild("TouchTransmitter")
+            if touchTransmitter then
                 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
                 wait()
                 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
+            end
+        end
+    end
+})
+
+local scriptSectionAutomaticMethod = teapotDodgeballTab:CreateSection("Automatic Method")
+
+local autoWinButton = teapotDodgeballTab:CreateButton({
+    Name = "Automatically Win (Easier Than Instant)",
+    SectionParent = scriptSectionAutomaticMethod,
+    Callback = function()
+        local finishPart = workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish")
+        if finishPart then
+            local touchTransmitter = finishPart:FindFirstChild("TouchTransmitter")
+            if touchTransmitter then
+                while true do
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
+                    wait(0.1)
+                end
             end
         end
     end
