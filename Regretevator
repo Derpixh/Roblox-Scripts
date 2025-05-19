@@ -622,6 +622,7 @@ local autoPullLeverButton = findThePathTab:CreateButton({
 })
 
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
+
 local manualMethodSection = jaobaTab:CreateSection("Manual Method")
 
 local findJaobaButton = jaobaTab:CreateButton({
