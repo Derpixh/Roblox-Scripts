@@ -1173,7 +1173,6 @@ local autoStealExtractButton = gasa4Tab:CreateButton({
 })
 
 local jermpopFactoryTab = window:CreateTab("Jermpop Factory", 4483362458)
-
 local scriptSectionJermpopFactory = jermpopFactoryTab:CreateSection("Script")
 
 local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
@@ -1183,7 +1182,8 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
         local cleanupButtonsFolder = workspace:FindFirstChild("JermpopFactory") and workspace.JermpopFactory:FindFirstChild("Build") and workspace.JermpopFactory.Build:FindFirstChild("CleanupButtons")
         if cleanupButtonsFolder then
             while true do
-                local nearestPrompt, nearestDistance = nil, math.huge
+                local nearestPrim, nearestPrompt, shortestDistance = nil, nil, math.huge
+                
                 for _, buttonUnit in pairs(cleanupButtonsFolder:GetChildren()) do
                     if buttonUnit:IsA("Model") and buttonUnit.Name == "ButtonUnit" then
                         local primPart = buttonUnit:FindFirstChild("Prim")
@@ -1191,27 +1191,29 @@ local autoPressButtonsButton = jermpopFactoryTab:CreateButton({
                             local proximityPrompt = primPart:FindFirstChild("Prompt")
                             if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
                                 local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - primPart.Position).Magnitude
-                                if distance < nearestDistance then
-                                    nearestPrompt, nearestDistance = proximityPrompt, distance
+                                if distance < shortestDistance then
+                                    nearestPrim, nearestPrompt, shortestDistance = primPart, proximityPrompt, distance
                                 end
                             end
                         end
                     end
                 end
-                
-                if nearestPrompt then
-                    nearestPrompt.HoldDuration = 0
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestPrompt.Parent.CFrame
-                    wait(0.7)
-                    
-                    nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                    wait()
-                    nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                    
-                    wait(0.7)
+
+                if nearestPrim and nearestPrompt then
+                    local targetPosition = nearestPrim.Position + nearestPrim.CFrame.LookVector * 1
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+                    wait(0.6)
+
+                    while nearestPrompt.Enabled do
+                        nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                        wait()
+                        nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                    end
                 else
                     break
                 end
+
+                wait(0.1)
             end
         end
     end
@@ -1313,7 +1315,6 @@ local instantWinButton = slideTab:CreateButton({
 })
 
 local redballDinerTab = window:CreateTab("Redball Diner", 4483362458)
-
 local scriptSectionReset = redballDinerTab:CreateSection("Reset")
 
 local autoPressResetPromptButton = redballDinerTab:CreateButton({
@@ -1330,15 +1331,15 @@ local autoPressResetPromptButton = redballDinerTab:CreateButton({
             if reddyModel then
                 local humanoidRootPart = reddyModel:FindFirstChild("HumanoidRootPart")
                 if humanoidRootPart then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 1
+                    wait(0.6)
+
                     local resetPrompt = humanoidRootPart:FindFirstChild("ResetPrompt")
-                    if resetPrompt then
+                    if resetPrompt and resetPrompt.Enabled then
                         resetPrompt.HoldDuration = 0
-                        resetPrompt.Enabled = true
-                        if resetPrompt.Enabled then
-                            resetPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                            wait()
-                            resetPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                        end
+                        resetPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                        wait()
+                        resetPrompt:InputHoldEnd(game.Players.LocalPlayer)
                     end
                 end
             end
@@ -1485,16 +1486,16 @@ local highlightFollyMirrorToggle = follyFightTab:CreateToggle({
 })
 
 local pizzaTab = window:CreateTab("Pizza Delivery", 4483362458)
-
 local pizzaSection = pizzaTab:CreateSection("Pizza")
 
-local autoGetPizzasButton = pizzaTab:CreateButton({
-    Name = "Auto Get Pizzas",
+local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
+    Name = "Auto Get/Deliver Pizzas",
     SectionParent = pizzaSection,
     Callback = function()
-        local pizzaBoxes = workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes")
-        if pizzaBoxes then
+        while workspace:FindFirstChild("PizzaDelivery") and workspace.PizzaDelivery:FindFirstChild("Build") and workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes") do
+            local pizzaBoxes = workspace.PizzaDelivery.Build.PizzaBoxes
             local count = 0
+
             for _, meshPart in pairs(pizzaBoxes:GetChildren()) do
                 if meshPart:IsA("MeshPart") and meshPart.Name == "PizzaBox" then
                     local touchTransmitter = meshPart:FindFirstChildWhichIsA("TouchTransmitter")
@@ -1506,6 +1507,29 @@ local autoGetPizzasButton = pizzaTab:CreateButton({
                     end
                 end
             end
+
+            wait(0.6)
+
+            local pizzaDoors = workspace.PizzaDelivery.Build:FindFirstChild("PizzaDoors")
+            if pizzaDoors then
+                local doorCount = 0
+                for _, doorModel in pairs(pizzaDoors:GetChildren()) do
+                    if doorModel:IsA("Model") and string.find(doorModel.Name, "Door") then
+                        local touchPart = doorModel:FindFirstChild("Touch")
+                        if touchPart then
+                            local doorTransmitter = touchPart:FindFirstChildWhichIsA("TouchTransmitter")
+                            if doorTransmitter and doorCount < 10 then
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, doorTransmitter.Parent, 0)
+                                wait()
+                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, doorTransmitter.Parent, 1)
+                                doorCount = doorCount + 1
+                            end
+                        end
+                    end
+                end
+            end
+
+            wait(0.1)
         end
     end
 })
