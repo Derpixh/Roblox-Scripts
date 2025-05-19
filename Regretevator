@@ -179,6 +179,20 @@ local removeAllMinesButton = minefieldTab:CreateButton({
     end
 })
 
+local endSection = minefieldTab:CreateSection("End")
+
+local teleportToOtherSideButton = minefieldTab:CreateButton({
+    Name = "Teleport To Other Side",
+    SectionParent = endSection,
+    Callback = function()
+        local winPart = workspace:FindFirstChild("Minefield") and workspace.Minefield:FindFirstChild("Build") and workspace.Minefield.Build:FindFirstChild("WinPart")
+        if winPart then
+            local targetPosition = winPart.Position + winPart.CFrame.LookVector * 2
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
 local cardboardRoomTab = window:CreateTab("Cardboard Room", 4483362458)
 local scriptSectionCardboardRoom = cardboardRoomTab:CreateSection("Script")
 
