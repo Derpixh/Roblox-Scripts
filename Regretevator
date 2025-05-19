@@ -799,11 +799,11 @@ local findGigglerButton = gigglerTab:CreateButton({
         if mazeObject then
             local targetPart = mazeObject:GetChildren()[6]
             if targetPart then
-                local touchTransmitter = targetPart:FindFirstChildWhichIsA("TouchTransmitter")
-                if touchTransmitter then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, targetPart, 0)
-                    wait()
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, targetPart, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPart.CFrame
+                wait(0.5)
+                local floorPart = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("Floor")
+                if floorPart then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = floorPart.CFrame
                 end
             end
         end
