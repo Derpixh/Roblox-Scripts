@@ -622,10 +622,11 @@ local autoPullLeverButton = findThePathTab:CreateButton({
 })
 
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
-local scriptSectionJaoba = jaobaTab:CreateSection("Script")
+local manualMethodSection = jaobaTab:CreateSection("Manual Method")
 
 local findJaobaButton = jaobaTab:CreateButton({
     Name = "Find JAOBA",
+    SectionParent = manualMethodSection,
     Callback = function()
         local uesModel = game.Workspace:FindFirstChild("UES")
         if uesModel then
@@ -646,11 +647,11 @@ local findJaobaButton = jaobaTab:CreateButton({
     end
 })
 
-local easyMethodSection = jaobaTab:CreateSection("Easy Method")
+local autoMethodSection = jaobaTab:CreateSection("Auto Method")
 
 local autoFindJaobaButton = jaobaTab:CreateButton({
     Name = "Auto Find JAOBA",
-    SectionParent = easyMethodSection,
+    SectionParent = autoMethodSection,
     Callback = function()
         while workspace:FindFirstChild("UES") do
             local cardboardBox = workspace.UES:FindFirstChild("Build") and workspace.UES.Build:FindFirstChild("JAOBA") and workspace.UES.Build.JAOBA:FindFirstChild("cardboard_box")
