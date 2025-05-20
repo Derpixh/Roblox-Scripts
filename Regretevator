@@ -384,17 +384,17 @@ local autoWinButton = teapotDodgeballTab:CreateButton({
     Name = "Automatically Win (Easier Than Instant)",
     SectionParent = scriptSectionAutomaticMethod,
     Callback = function()
-        local finishPart = workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish")
-        if finishPart then
-            local touchTransmitter = finishPart:FindFirstChild("TouchTransmitter")
-            if touchTransmitter then
-                while true do
+        while workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish") do
+            local finishPart = workspace.TeapotDodgeball.Build.Finish
+            if finishPart then
+                local touchTransmitter = finishPart:FindFirstChild("TouchTransmitter")
+                if touchTransmitter then
                     firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
                     wait()
                     firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
-                    wait(0.1)
                 end
             end
+            wait(0.15)
         end
     end
 })
