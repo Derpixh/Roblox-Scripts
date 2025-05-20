@@ -268,6 +268,38 @@ local autoCollectFirewoodButton = forestCampTab:CreateButton({
     end
 })
 
+local pickupFirewoodButton = forestCampTab:CreateButton({
+    Name = "Pickup Firewood",
+    SectionParent = scriptSectionFirewood,
+    Callback = function()
+        local firewoodFolder = workspace:FindFirstChild("Forest_TwoStudCamp") and workspace.Forest_TwoStudCamp:FindFirstChild("Build") and workspace.Forest_TwoStudCamp.Build:FindFirstChild("Firewood")
+        if firewoodFolder then
+            local nearestPart, nearestPrompt, shortestDistance = nil, nil, math.huge
+            for _, firewood in pairs(firewoodFolder:GetChildren()) do
+                if firewood.Name == "Firewood" then
+                    local proximityPrompt = firewood:FindFirstChild("ProximityPrompt")
+                    if proximityPrompt and proximityPrompt.Enabled then
+                        proximityPrompt.HoldDuration = 0
+                        local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - firewood.Position).Magnitude
+                        if distance < shortestDistance then
+                            nearestPart, nearestPrompt, shortestDistance = firewood, proximityPrompt, distance
+                        end
+                    end
+                end
+            end
+            
+            if nearestPart and nearestPrompt then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestPart.CFrame
+                wait(0.6)
+
+                nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                wait()
+                nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+            end
+        end
+    end
+})
+
 local superDropperTab = window:CreateTab("Super Dropper", 4483362458)
 local scriptSectionSuperDropper = superDropperTab:CreateSection("Script")
 
