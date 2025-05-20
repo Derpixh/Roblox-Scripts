@@ -1719,4 +1719,24 @@ local autoRemoveAttacksButton = slimYimTab:CreateButton({
     end
 })
 
+local normalSpeedRunTab = window:CreateTab("Normal Speed Run", 4483362458)
+
+local scriptSectionWin = normalSpeedRunTab:CreateSection("Win")
+
+local instantWinButton = normalSpeedRunTab:CreateButton({
+    Name = "Instant Win",
+    SectionParent = scriptSectionWin,
+    Callback = function()
+        local winnerTeleportationPart = workspace:FindFirstChild("Normal_SpeedRun") and workspace.Normal_SpeedRun:FindFirstChild("Build") and workspace.Normal_SpeedRun.Build:FindFirstChild("WinnerTeleportation")
+        if winnerTeleportationPart then
+            local touchTransmitter = winnerTeleportationPart:FindFirstChild("TouchTransmitter")
+            if touchTransmitter then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winnerTeleportationPart, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winnerTeleportationPart, 1)
+            end
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
