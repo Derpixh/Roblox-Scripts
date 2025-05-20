@@ -244,37 +244,14 @@ local removeUFOsButton = forestCampTab:CreateButton({
 
 local scriptSectionFirewood = forestCampTab:CreateSection("Firewood")
 
-local autoCollectFirewoodButton = forestCampTab:CreateButton({
-    Name = "Auto Collect Firewood",
+local autoPickupPlaceFirewoodButton = forestCampTab:CreateButton({
+    Name = "Auto Pickup/Place Firewood",
     SectionParent = scriptSectionFirewood,
     Callback = function()
-        local firewoodFolder = workspace:FindFirstChild("ForestCamp") and workspace.ForestCamp:FindFirstChild("Build") and workspace.ForestCamp.Build:FindFirstChild("Firewood")
-        if firewoodFolder then
-            while true do
-                for _, firewood in pairs(firewoodFolder:GetChildren()) do
-                    if firewood.Name == "Firewood" then
-                        local proximityPrompt = firewood:FindFirstChild("ProximityPrompt")
-                        if proximityPrompt and proximityPrompt.Enabled and proximityPrompt.Root:IsDescendantOf(game.Players.LocalPlayer.Character) then
-                            proximityPrompt.HoldDuration = 0
-                            proximityPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                            wait()
-                            proximityPrompt:InputHoldEnd(game.Players.LocalPlayer)
-                        end
-                    end
-                end
-                wait(0.1)
-            end
-        end
-    end
-})
-
-local pickupFirewoodButton = forestCampTab:CreateButton({
-    Name = "Pickup Firewood",
-    SectionParent = scriptSectionFirewood,
-    Callback = function()
-        local firewoodFolder = workspace:FindFirstChild("Forest_TwoStudCamp") and workspace.Forest_TwoStudCamp:FindFirstChild("Build") and workspace.Forest_TwoStudCamp.Build:FindFirstChild("Firewood")
-        if firewoodFolder then
+        while workspace:FindFirstChild("Forest_TwoStudCamp") and workspace.Forest_TwoStudCamp:FindFirstChild("Build") and workspace.Forest_TwoStudCamp.Build:FindFirstChild("Firewood") do
+            local firewoodFolder = workspace.Forest_TwoStudCamp.Build.Firewood
             local nearestPart, nearestPrompt, shortestDistance = nil, nil, math.huge
+            
             for _, firewood in pairs(firewoodFolder:GetChildren()) do
                 if firewood.Name == "Firewood" then
                     local proximityPrompt = firewood:FindFirstChild("ProximityPrompt")
@@ -292,9 +269,33 @@ local pickupFirewoodButton = forestCampTab:CreateButton({
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestPart.CFrame
                 wait(0.6)
 
-                nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
-                wait()
-                nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                while nearestPrompt.Enabled do
+                    nearestPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                    wait()
+                    nearestPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                end
+
+                wait(0.6)
+
+                local cauldronPromptPart = workspace.Forest_TwoStudCamp.Build:FindFirstChild("Cauldron") and workspace.Forest_TwoStudCamp.Build.Cauldron:FindFirstChild("PromptPart")
+                if cauldronPromptPart then
+                    local cauldronPrompt = cauldronPromptPart:FindFirstChild("ProximityPrompt")
+                    if cauldronPrompt and cauldronPrompt.Enabled then
+                        cauldronPrompt.HoldDuration = 0
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cauldronPromptPart.CFrame + cauldronPromptPart.CFrame.LookVector * 3
+                        wait(0.6)
+
+                        while cauldronPrompt.Enabled do
+                            cauldronPrompt:InputHoldBegin(game.Players.LocalPlayer)
+                            wait()
+                            cauldronPrompt:InputHoldEnd(game.Players.LocalPlayer)
+                        end
+
+                        wait(0.6)
+                    end
+                end
+            else
+                break
             end
         end
     end
