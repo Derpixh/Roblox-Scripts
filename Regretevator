@@ -1483,7 +1483,6 @@ local destructEverythingButton = birthdayTab:CreateButton({
 })
 
 local redballTempleTab = window:CreateTab("Redball Temple", 4483362458)
-
 local scriptSectionSpray = redballTempleTab:CreateSection("Spray")
 
 local autoPickupSprayButton = redballTempleTab:CreateButton({
@@ -1509,7 +1508,8 @@ local autoPickupSprayButton = redballTempleTab:CreateButton({
 
             local metallicFloor = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("MetallicFloor")
             if metallicFloor then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = metallicFloor.CFrame
+                local targetPosition = metallicFloor.Position + Vector3.new(0, 1, 0)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
             end
         end
     end
@@ -1548,50 +1548,6 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
                     end
                 end
             end
-        end
-    end
-})
-
-local follyFightTab = window:CreateTab("Folly Fight", 4483362458)
-
-local scriptSectionMirrors = follyFightTab:CreateSection("Mirrors")
-
-local highlightFollyMirrorToggle = follyFightTab:CreateToggle({
-    Name = "Highlight Folly Mirror",
-    SectionParent = scriptSectionMirrors,
-    Callback = function(enabled)
-        while enabled do
-            local follyFightModel = workspace:FindFirstChild("FollyFight")
-            if follyFightModel then
-                local buildModel = follyFightModel:FindFirstChild("Build")
-                if buildModel then
-                    local follyModel = buildModel:FindFirstChild("Folly")
-                    if follyModel then
-                        local follyMeshPart = follyModel:FindFirstChildWhichIsA("MeshPart")
-                        if follyMeshPart then
-                            local mirrorsFolder = buildModel:FindFirstChild("Mirrors")
-                            if mirrorsFolder then
-                                for _, follyMirrorModel in pairs(mirrorsFolder:GetChildren()) do
-                                    if follyMirrorModel:IsA("Model") and follyMirrorModel.Name == "FollyMirror" then
-                                        if follyMeshPart.Position.X >= follyMirrorModel:GetPivot().X - 5 and follyMeshPart.Position.X <= follyMirrorModel:GetPivot().X + 5 then
-                                            if not follyMirrorModel:FindFirstChild("Highlight") then
-                                                local highlight = Instance.new("Highlight")
-                                                highlight.Parent = follyMirrorModel
-                                            end
-                                        else
-                                            local existingHighlight = follyMirrorModel:FindFirstChild("Highlight")
-                                            if existingHighlight then
-                                                existingHighlight:Destroy()
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            wait(0.1)
         end
     end
 })
