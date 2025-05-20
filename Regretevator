@@ -1653,7 +1653,7 @@ local slimYimTab = window:CreateTab("Slim Yim", 4483362458)
 local attacksSection = slimYimTab:CreateSection("Attacks")
 
 local autoRemoveAttacksButton = slimYimTab:CreateButton({
-    Name = "Auto Remove Attacks & Sillay",
+    Name = "Auto Remove Attacks",
     SectionParent = attacksSection,
     Callback = function()
         local attacks = workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("RoomScript") and workspace.SlimYim.RoomScript:FindFirstChild("Attacks")
@@ -1662,16 +1662,14 @@ local autoRemoveAttacksButton = slimYimTab:CreateButton({
         end
 
         while workspace:FindFirstChild("SlimYim") do
-            local challengeFrank = workspace.SlimYim:FindFirstChild("ChallengeFrank")
-            if challengeFrank then
-                challengeFrank:Destroy()
+            local buildModel = workspace.SlimYim:FindFirstChild("Build")
+            if buildModel then
+                for _, model in pairs(buildModel:GetChildren()) do
+                    if model:IsA("Model") and model:FindFirstChild("Strips") then
+                        model:Destroy()
+                    end
+                end
             end
-
-            local sillayPart = workspace.SlimYim:FindFirstChild("Sillay")
-            if sillayPart then
-                sillayPart:Destroy()
-            end
-            
             wait(0.1)
         end
     end
