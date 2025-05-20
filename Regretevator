@@ -757,10 +757,11 @@ local teleportToEndJeremyButton = jeremyTab:CreateButton({
     end
 })
 
-local wipeoutTab = window:CreateTab("Wipeout", 4483362458)
-local scriptSectionWipeout = wipeoutTab:CreateSection("Script")
+local splitsvilleWipeoutTab = window:CreateTab("Splitsville Wipeout", 4483362458)
 
-local instantWinWipeoutButton = wipeoutTab:CreateButton({
+local scriptSectionWipeout = splitsvilleWipeoutTab:CreateSection("Script")
+
+local instantWinWipeoutButton = splitsvilleWipeoutTab:CreateButton({
     Name = "Instant Win",
     Callback = function()
         local model = game.Workspace:FindFirstChild("Splitsville_Wipeout")
@@ -781,7 +782,7 @@ local instantWinWipeoutButton = wipeoutTab:CreateButton({
     end
 })
 
-local teleportToEndButton = wipeoutTab:CreateButton({
+local teleportToEndButton = splitsvilleWipeoutTab:CreateButton({
     Name = "Teleport To End",
     Callback = function()
         local model = game.Workspace:FindFirstChild("Splitsville_Wipeout")
