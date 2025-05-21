@@ -359,6 +359,40 @@ local respawnButton = superDropperTab:CreateButton({
     end
 })
 
+local automaticMethodSection = superDropperTab:CreateSection("Automatic Method")
+
+local autoFarmCoinsButton = superDropperTab:CreateButton({
+    Name = "Auto Farm Coins (Win + Respawn Method)",
+    SectionParent = automaticMethodSection,
+    Callback = function()
+        while workspace:FindFirstChild("SuperDropper") do
+            local winPool = workspace.SuperDropper:FindFirstChild("Build") and workspace.SuperDropper.Build:FindFirstChild("WinPool")
+            if winPool then
+                local touchTransmitter = winPool:FindFirstChildWhichIsA("TouchTransmitter")
+                if touchTransmitter then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                end
+            end
+
+            wait(0.3)
+
+            local returnPortal = workspace.SuperDropper:FindFirstChild("RespawnCenter") and workspace.SuperDropper.RespawnCenter:FindFirstChild("ReturnPortal")
+            if returnPortal then
+                local touchTransmitter = returnPortal:FindFirstChildWhichIsA("TouchTransmitter")
+                if touchTransmitter then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                end
+            end
+
+            wait(0.1)
+        end
+    end
+})
+
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
 
 local scriptSectionEasyMethod = teapotDodgeballTab:CreateSection("Easy Method")
