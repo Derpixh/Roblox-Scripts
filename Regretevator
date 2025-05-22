@@ -1444,15 +1444,12 @@ local autoWinFarmCoinsButton = slideTab:CreateButton({
     Name = "Auto Win (Farm Coins Method)",
     SectionParent = scriptSectionAutoWin,
     Callback = function()
-        while workspace:FindFirstChild("SLIDE_9999999999_FEET_DOWN_RAINBOW") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW:FindFirstChild("Build") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build:FindFirstChild("Target") do
-            local middleRingPart = workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target:FindFirstChild("MiddleRing")
-            if middleRingPart then
-                local touchTransmitter = middleRingPart:FindFirstChild("TouchTransmitter")
-                if touchTransmitter then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 0)
-                    wait()
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 1)
-                end
+        while workspace:FindFirstChild("SLIDE_9999999999_FEET_DOWN_RAINBOW") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW:FindFirstChild("Build") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build:FindFirstChild("Target") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target:FindFirstChild("MiddleRing") do
+            local touchTransmitter = workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target.MiddleRing:FindFirstChild("TouchTransmitter")
+            if touchTransmitter then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
             end
             wait(0.1)
         end
