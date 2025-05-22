@@ -1434,11 +1434,12 @@ local autoWinFarmCoinsButton = slideTab:CreateButton({
     SectionParent = scriptSectionAutoWin,
     Callback = function()
         while workspace:FindFirstChild("SLIDE_9999999999_FEET_DOWN_RAINBOW") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW:FindFirstChild("Build") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build:FindFirstChild("Target") and workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target:FindFirstChild("MiddleRing") do
-            local touchTransmitter = workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target.MiddleRing:FindFirstChild("TouchTransmitter")
-            if touchTransmitter then
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+            local middleRingPart = workspace.SLIDE_9999999999_FEET_DOWN_RAINBOW.Build.Target.MiddleRing
+            local touchInterest = middleRingPart:FindFirstChild("TouchInterest")
+            if touchInterest then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 0)
                 wait()
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, middleRingPart, 1)
             end
             wait(0.1)
         end
