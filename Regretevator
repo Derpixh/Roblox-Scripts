@@ -1707,12 +1707,9 @@ local autoRemoveAttacksButton = slimYimTab:CreateButton({
                 dieModel:Destroy()
             end
 
-            local buildModel = workspace.SlimYim:FindFirstChild("Build")
-            if buildModel then
-                for _, model in pairs(buildModel:GetChildren()) do
-                    if model:IsA("Model") and model:FindFirstChild("Strips") then
-                        model:Destroy()
-                    end
+            for _, model in pairs(workspace.SlimYim:GetChildren()) do
+                if model:IsA("Model") and model:FindFirstChild("Strips") then
+                    model:Destroy()
                 end
             end
             
