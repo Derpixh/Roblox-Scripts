@@ -764,6 +764,31 @@ local autoPullLeverButton = findThePathTab:CreateButton({
     end
 })
 
+local scriptSectionFindThePath = findThePathTab:CreateSection("ESP")
+
+local espCorrectTilesButton = findThePathTab:CreateButton({
+    Name = "ESP Correct Tiles",
+    SectionParent = scriptSectionFindThePath,
+    Callback = function()
+        while workspace:FindFirstChild("FindThePath") and workspace.FindThePath:FindFirstChild("Build") and workspace.FindThePath.Build:FindFirstChild("Tiles") do
+            local tiles = workspace.FindThePath.Build.Tiles
+
+            for _, tileTemplate in pairs(tiles:GetChildren()) do
+                if tileTemplate:IsA("Model") and tileTemplate.Name == "tile_template" then
+                    local collPart = tileTemplate:FindFirstChild("coll")
+                    if collPart and collPart:IsA("Part") and collPart.CanCollide then
+                        if not tileTemplate:FindFirstChildOfClass("Highlight") then
+                            local highlight = Instance.new("Highlight")
+                            highlight.Parent = tileTemplate
+                            highlight.FillColor = Color3.new(0, 1, 0)
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 local jaobaTab = window:CreateTab("JAOBA", 4483362458)
 
 local manualMethodSection = jaobaTab:CreateSection("Manual Method")
