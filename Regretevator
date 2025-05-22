@@ -1733,4 +1733,31 @@ local instantWinButton = normalSpeedRunTab:CreateButton({
     end
 })
 
+local statTab = window:CreateTab("STAT", 4483362458)
+local lasersSection = statTab:CreateSection("Lasers")
+
+local autoRemoveCapacitorLasersButton = statTab:CreateButton({
+    Name = "Auto Remove Capacitor Lasers",
+    SectionParent = lasersSection,
+    Callback = function()
+        while workspace:FindFirstChild("StatsDomain") and workspace.StatsDomain:FindFirstChild("Build") and workspace.StatsDomain.Build:FindFirstChild("ActiveUnits") do
+            local activeUnits = workspace.StatsDomain.Build.ActiveUnits
+            for _, capacitor in pairs(activeUnits:GetChildren()) do
+                if capacitor:IsA("Model") and capacitor.Name == "Capacitor" then
+                    local topLaser = capacitor:FindFirstChild("TopLaser")
+                    if topLaser then
+                        topLaser:Destroy()
+                    end
+
+                    local bottomLaser = capacitor:FindFirstChild("BottomLaser")
+                    if bottomLaser then
+                        bottomLaser:Destroy()
+                    end
+                end
+            end
+            wait(0.035)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
