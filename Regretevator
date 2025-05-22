@@ -642,6 +642,25 @@ SectionParent = tpToEndSectionStanleyRoom,
     end
 })
 
+local cementSection = stanleyRoomTab:CreateSection("Cement")
+
+local invincibilityToCementButton = stanleyRoomTab:CreateButton({
+    Name = "Invincibility To Cement",
+    SectionParent = cementSection,
+    Callback = function()
+        while workspace:FindFirstChild("StanelyRoom") and workspace.StanelyRoom:FindFirstChild("CementFloor") do
+            local cementFloor = workspace.StanelyRoom.CementFloor
+            local touchInterest = cementFloor:FindFirstChild("TouchInterest")
+            
+            if touchInterest then
+                touchInterest:Destroy()
+            end
+
+            wait(0.01)
+        end
+    end
+})
+
 local hotelFloor6Tab = window:CreateTab("Hotel Floor 6", 4483362458)
 
 local scriptSectionHotelFloor6 = hotelFloor6Tab:CreateSection("Script")
