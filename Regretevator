@@ -929,6 +929,7 @@ local findGigglerButton = gigglerTab:CreateButton({
 })
 
 local snowySlopeTab = window:CreateTab("Snow Slope", 4483362458)
+
 local scriptSectionSnowySlope = snowySlopeTab:CreateSection("Script")
 
 local instantWinButton = snowySlopeTab:CreateButton({
@@ -937,12 +938,7 @@ local instantWinButton = snowySlopeTab:CreateButton({
     Callback = function()
         local winPart = workspace:FindFirstChild("SnowySlope") and workspace.SnowySlope:FindFirstChild("WinPart")
         if winPart then
-            local touchTransmitter = winPart:FindFirstChildWhichIsA("TouchTransmitter")
-            if touchTransmitter then
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
-                wait()
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
-            end
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPart.CFrame
         end
     end
 })
