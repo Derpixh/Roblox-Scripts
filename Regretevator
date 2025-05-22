@@ -1017,43 +1017,45 @@ local collectAllRocksButton = bugboTab:CreateButton({
     end
 })
 
-local danceFloorTab = window:CreateTab("Dance Floor", 4483362458)
+local danceTab = window:CreateTab("Dance", 4483362458)
+local gameSection = danceTab:CreateSection("Game")
 
-local scriptSectionFloor = danceFloorTab:CreateSection("Floor")
-
-local antiFallButton = danceFloorTab:CreateButton({
-    Name = "Anti-Fall",
-    SectionParent = scriptSectionFloor,
+local autoBeatFloorButton = danceTab:CreateButton({
+    Name = "Auto Beat Floor",
+    SectionParent = gameSection,
     Callback = function()
-        local function modifyFPParts()
-            local danceModel = workspace:FindFirstChild("Dance")
-            if danceModel then
-                local buildModel = danceModel:FindFirstChild("Build")
-                if buildModel then
-                    local danceFloorFolder = buildModel:FindFirstChild("DanceFloor")
-                    if danceFloorFolder then
-                        local partsFound = false
+        while workspace:FindFirstChild("Dance") and workspace.Dance:FindFirstChild("Build") and workspace.Dance.Build:FindFirstChild("GameRelated") and workspace.Dance.Build.GameRelated:FindFirstChild("TV") and workspace.Dance.Build.GameRelated.TV:FindFirstChild("ColorScreen") and workspace.Dance.Build.GameRelated.TV.ColorScreen:FindFirstChild("SurfaceGui") and workspace.Dance.Build.GameRelated.TV.ColorScreen.SurfaceGui:FindFirstChild("ColorJ") do
+            local colorJ = workspace.Dance.Build.GameRelated.TV.ColorScreen.SurfaceGui.ColorJ
+            local colorValue = tonumber(colorJ.Text)
 
-                        for _, part in pairs(danceFloorFolder:GetChildren()) do
-                            if part:IsA("Part") and part.Name == "FP" then
-                                part.Transparency = 0
-                                part.CanCollide = false
-                                partsFound = true
+            if colorValue and colorValue >= 1 and colorValue <= 8 then
+                local danceFloor = workspace.Dance.Build:FindFirstChild("DanceFloor")
+                if danceFloor then
+                    local closestFP = nil
+                    local closestDistance = math.huge
+
+                    for _, part in pairs(danceFloor:GetChildren()) do
+                        if part:IsA("Part") and part.Name == "FP" then
+                            local labelGui = part:FindFirstChild("Gui") and part.Gui:FindFirstChild("Label")
+                            if labelGui then
+                                local labelValue = tonumber(labelGui.Text)
+                                if labelValue == colorValue then
+                                    local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).Magnitude
+                                    if distance < closestDistance then
+                                        closestDistance = distance
+                                        closestFP = part
+                                    end
+                                end
                             end
                         end
+                    end
 
-                        return partsFound
+                    if closestFP then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = closestFP.CFrame
                     end
                 end
             end
-            return false
-        end
-
-        while true do
-            if not modifyFPParts() then
-                break
-            end
-            wait(0.1)
+            wait(0.035)
         end
     end
 })
