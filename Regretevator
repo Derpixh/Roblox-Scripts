@@ -1771,7 +1771,7 @@ local autoKickOrbsButton = slimYimTab:CreateButton({
     Name = "Auto Kick Orbs (You Have To Walk To Them)",
     SectionParent = orbsSection,
     Callback = function()
-        while workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("Build") do
+        if workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("Build") then
             local buildModel = workspace.SlimYim.Build
             local closestOrb = nil
             local closestDistance = math.huge
@@ -1841,6 +1841,27 @@ local autoRemoveCapacitorLasersButton = statTab:CreateButton({
                 end
             end
             wait(0.035)
+        end
+    end
+})
+
+local follyFightTab = window:CreateTab("Folly Fight", 4483362458)
+local attacksSection = follyFightTab:CreateSection("Attacks")
+
+local autoRemoveAttacksButton = follyFightTab:CreateButton({
+    Name = "Auto Remove Attacks (Folly's, Lightning)",
+    SectionParent = attacksSection,
+    Callback = function()
+        while workspace:FindFirstChild("FollyFight") and workspace.FollyFight:FindFirstChild("Build") do
+            local buildModel = workspace.FollyFight.Build
+
+            for _, attackModel in pairs(buildModel:GetChildren()) do
+                if attackModel:IsA("Model") and (attackModel.Name == "Folly" or attackModel.Name == "Lightning") then
+                    attackModel:Destroy()
+                end
+            end
+            
+            wait(0.03)
         end
     end
 })
