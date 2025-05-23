@@ -1632,37 +1632,44 @@ local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
             local count = 0
             for _, meshPart in pairs(pizzaBoxes:GetChildren()) do
                 if meshPart:IsA("MeshPart") and meshPart.Name == "PizzaBox" and count < 10 then
-                    local touchTransmitter = meshPart:FindFirstChildWhichIsA("TouchTransmitter")
-                    if touchTransmitter then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                    local touchInterestPart = meshPart.Parent
+                    if touchInterestPart then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterestPart, 0)
                         wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterestPart, 1)
                         count = count + 1
                     end
                 end
             end
 
-            wait(1)
+            wait(0.3)
 
-            local doorCount = 0
             if pizzaDoors then
                 for _, doorModel in pairs(pizzaDoors:GetChildren()) do
-                    if doorModel:IsA("Model") and string.find(doorModel.Name, "Door") and doorCount < 10 then
-                        local touchPart = doorModel:FindFirstChild("Touch")
-                        if touchPart then
-                            local doorTransmitter = touchPart:FindFirstChildWhichIsA("TouchTransmitter")
-                            if doorTransmitter then
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, doorTransmitter.Parent, 0)
-                                wait()
-                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, doorTransmitter.Parent, 1)
-                                doorCount = doorCount + 1
+                    if doorModel:IsA("Model") and string.find(doorModel.Name, "Door") then
+                        local deliverPad = doorModel:FindFirstChild("DeliverPartPad")
+                        if deliverPad then
+                            local surfaceGui = deliverPad:FindFirstChild("SurfaceGui")
+                            if surfaceGui then
+                                for _, frame in pairs(surfaceGui:GetChildren()) do
+                                    if frame:IsA("Frame") and frame.Name == "Frame" then
+                                        if frame.BackgroundColor3 == Color3.new(0, 1, 0) then
+                                            local touchPart = doorModel:FindFirstChild("Touch")
+                                            if touchPart then
+                                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 0)
+                                                wait()
+                                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 1)
+                                            end
+                                        end
+                                    end
+                                end
                             end
                         end
                     end
                 end
             end
 
-            wait(1)
+            wait(0.3)
         end
     end
 })
