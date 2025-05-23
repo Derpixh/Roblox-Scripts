@@ -777,11 +777,9 @@ local espCorrectTilesButton = findThePathTab:CreateButton({
                 if tileTemplate:IsA("Model") and tileTemplate.Name == "tile_template" then
                     local collPart = tileTemplate:FindFirstChild("coll")
                     if collPart and collPart:IsA("Part") and collPart.CanCollide then
-                        if not tileTemplate:FindFirstChildOfClass("Highlight") then
-                            local highlight = Instance.new("Highlight")
-                            highlight.Parent = tileTemplate
-                            highlight.FillColor = Color3.new(0, 1, 0)
-                        end
+                        local highlight = Instance.new("Highlight")
+                        highlight.Parent = tileTemplate
+                        highlight.FillColor = Color3.new(0, 1, 0)
                     end
                 end
             end
