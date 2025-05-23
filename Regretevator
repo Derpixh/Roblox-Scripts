@@ -949,22 +949,21 @@ local teleportToLampertButton = lampertTab:CreateButton({
 })
 
 local gigglerTab = window:CreateTab("Giggler", 4483362458)
-
-local scriptSectionMaze = gigglerTab:CreateSection("Maze")
+local gigglerSection = gigglerTab:CreateSection("Giggler")
 
 local findGigglerButton = gigglerTab:CreateButton({
     Name = "Find Giggler",
-    SectionParent = scriptSectionMaze,
+    SectionParent = gigglerSection,
     Callback = function()
-        local mazeObject = workspace:FindFirstChild("RandomMazeWindows") and workspace.RandomMazeWindows:FindFirstChild("Build")
-        if mazeObject then
-            local targetPart = mazeObject:GetChildren()[6]
-            if targetPart then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPart.CFrame
-                wait(0.5)
-                local floorPart = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("Floor")
-                if floorPart then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = floorPart.CFrame
+        if workspace:FindFirstChild("RandomMazeWindows") and workspace.RandomMazeWindows:FindFirstChild("Build") then
+            local buildModel = workspace.RandomMazeWindows.Build
+
+            for _, part in pairs(buildModel:GetChildren()) do
+                if part:IsA("Part") and part:FindFirstChild("TouchInterest") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
+                    break
                 end
             end
         end
