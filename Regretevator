@@ -1761,7 +1761,6 @@ local autoRemoveAttacksButton = slimYimTab:CreateButton({
     end
 })
 
-local slimYimTab = window:CreateTab("Slim Yim", 4483362458)
 local orbsSection = slimYimTab:CreateSection("Orbs")
 
 local autoKickOrbsButton = slimYimTab:CreateButton({
