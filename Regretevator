@@ -770,7 +770,7 @@ local espCorrectTilesButton = findThePathTab:CreateButton({
     Name = "ESP Correct Tiles",
     SectionParent = scriptSectionFindThePath,
     Callback = function()
-        while workspace:FindFirstChild("FindThePath") and workspace.FindThePath:FindFirstChild("Build") and workspace.FindThePath.Build:FindFirstChild("Tiles") do
+        if workspace:FindFirstChild("FindThePath") and workspace.FindThePath:FindFirstChild("Build") and workspace.FindThePath.Build:FindFirstChild("Tiles") then
             local tiles = workspace.FindThePath.Build.Tiles
 
             for _, tileTemplate in pairs(tiles:GetChildren()) do
