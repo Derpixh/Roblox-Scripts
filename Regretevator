@@ -1613,14 +1613,13 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
 })
 
 local pizzaTab = window:CreateTab("Pizza Delivery", 4483362458)
-
 local pizzaSection = pizzaTab:CreateSection("Pizza")
 
 local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
     Name = "Auto Get/Deliver Pizzas",
     SectionParent = pizzaSection,
     Callback = function()
-        while workspace:FindFirstChild("PizzaDelivery") and workspace.PizzaDelivery:FindFirstChild("Build") and workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes") do
+        if workspace:FindFirstChild("PizzaDelivery") and workspace.PizzaDelivery:FindFirstChild("Build") and workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes") then
             local pizzaBoxes = workspace.PizzaDelivery.Build.PizzaBoxes
             local pizzaDoors = workspace.PizzaDelivery.Build:FindFirstChild("PizzaDoors")
 
@@ -1636,8 +1635,6 @@ local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
                     end
                 end
             end
-
-            wait(0.3)
 
             if pizzaDoors then
                 for _, doorModel in pairs(pizzaDoors:GetChildren()) do
@@ -1663,8 +1660,6 @@ local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
                     end
                 end
             end
-
-            wait(0.3)
         end
     end
 })
