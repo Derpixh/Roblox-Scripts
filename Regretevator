@@ -1765,28 +1765,20 @@ local autoKickOrbsButton = slimYimTab:CreateButton({
     Name = "Auto Kick Orbs (You Have To Walk To Them)",
     SectionParent = orbsSection,
     Callback = function()
-        if workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("Build") then
-            local buildModel = workspace.SlimYim.Build
-            local closestOrb = nil
-            local closestDistance = math.huge
-
-            for _, orb in pairs(buildModel:GetChildren()) do
+        local slimYimBuild = workspace:FindFirstChild("SlimYim") and workspace.SlimYim:FindFirstChild("Build")
+        if slimYimBuild then
+            for _, orb in pairs(slimYimBuild:GetChildren()) do
                 if orb:IsA("Model") and orb.Name == "Orb" then
-                    local proximityPrompt = orb:FindFirstChildOfClass("ProximityPrompt")
+                    local proximityPrompt = orb:FindFirstChild("ProximityPrompt")
                     if proximityPrompt then
-                        local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - orb.PrimaryPart.Position).Magnitude
-                        if distance < proximityPrompt.MaxActivationDistance and distance < closestDistance then
-                            closestDistance = distance
-                            closestOrb = proximityPrompt
+                        local playerDistance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - orb:GetPivot().Position).Magnitude
+                        if playerDistance <= proximityPrompt.MaxActivationDistance then
+                            proximityPrompt:InputHoldBegin()
+                            wait()
+                            proximityPrompt:InputHoldEnd()
                         end
                     end
                 end
-            end
-
-            if closestOrb then
-                closestOrb:InputHoldBegin()
-                wait()
-                closestOrb:InputHoldEnd()
             end
         end
     end
