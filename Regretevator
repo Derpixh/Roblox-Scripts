@@ -30,14 +30,16 @@ local invincibilityRailsButton = elevatorTab:CreateButton({
     Name = "Invincibility To Burning Rails",
     SectionParent = railsSection,
     Callback = function()
-        local collisionFixers = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("CollisionFixers")
-        
-        if collisionFixers then
+        while workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("CollisionFixers") do
+            local collisionFixers = workspace.Elevator.CollisionFixers
+            
             for _, part in pairs(collisionFixers:GetChildren()) do
                 if part:IsA("Part") and part:FindFirstChild("TouchInterest") then
                     part.TouchInterest:Destroy()
                 end
             end
+            
+            wait(0.02)
         end
     end
 })
@@ -1859,4 +1861,5 @@ local autoRemoveAttacksButton = follyFightTab:CreateButton({
         end
     end
 })
+
 Rayfield:LoadConfiguration()
