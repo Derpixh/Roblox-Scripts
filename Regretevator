@@ -467,6 +467,53 @@ local autoFarmCoinsButton = superDropperTab:CreateButton({
     end
 })
 
+local superHighwayTab = window:CreateTab("Super Highway", 4483362458)
+local scriptSectionHighway = superHighwayTab:CreateSection("Script")
+
+local instantWinHighwayButton = superHighwayTab:CreateButton({
+    Name = "Instant Win Highway",
+    Callback = function()
+        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
+            if winPoint then
+                local touchInterest = winPoint:FindFirstChildOfClass("TouchTransmitter")
+                if touchInterest then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 1)
+                end
+            end
+        end
+    end
+})
+
+local teleportToFinishButton = superHighwayTab:CreateButton({
+    Name = "Teleport To Finish",
+    Callback = function()
+        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
+            if winPoint then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoint.CFrame
+            end
+        end
+    end
+})
+
+local removeCarsButton = superHighwayTab:CreateButton({
+    Name = "Remove Cars",
+    Callback = function()
+        local superhighwayModel = workspace:FindFirstChild("Superhighway")
+        if superhighwayModel then
+            local activeCarsFolder = superhighwayModel:FindFirstChild("ActiveCars")
+            if activeCarsFolder then
+                activeCarsFolder:Destroy()
+            end
+        end
+    end
+})
+
 local teapotDodgeballTab = window:CreateTab("Teapot Dodgeball", 4483362458)
 
 local scriptSectionEasyMethod = teapotDodgeballTab:CreateSection("Easy Method")
@@ -1081,53 +1128,6 @@ local instantWinButton = snowySlopeTab:CreateButton({
         local winPart = workspace:FindFirstChild("SnowySlope") and workspace.SnowySlope:FindFirstChild("WinPart")
         if winPart then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPart.CFrame
-        end
-    end
-})
-
-local highwayTab = window:CreateTab("Highway", 4483362458)
-local scriptSectionHighway = highwayTab:CreateSection("Script")
-
-local instantWinHighwayButton = highwayTab:CreateButton({
-    Name = "Instant Win Highway",
-    Callback = function()
-        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
-        if superhighwayModel then
-            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
-            if winPoint then
-                local touchInterest = winPoint:FindFirstChildOfClass("TouchTransmitter")
-                if touchInterest then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 0)
-                    wait()
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, winPoint, 1)
-                end
-            end
-        end
-    end
-})
-
-local teleportToFinishButton = highwayTab:CreateButton({
-    Name = "Teleport To Finish",
-    Callback = function()
-        local superhighwayModel = game.Workspace:FindFirstChild("Superhighway")
-        if superhighwayModel then
-            local winPoint = superhighwayModel:FindFirstChild("WinPoint")
-            if winPoint then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = winPoint.CFrame
-            end
-        end
-    end
-})
-
-local removeCarsButton = highwayTab:CreateButton({
-    Name = "Remove Cars",
-    Callback = function()
-        local superhighwayModel = workspace:FindFirstChild("Superhighway")
-        if superhighwayModel then
-            local activeCarsFolder = superhighwayModel:FindFirstChild("ActiveCars")
-            if activeCarsFolder then
-                activeCarsFolder:Destroy()
-            end
         end
     end
 })
