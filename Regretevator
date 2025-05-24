@@ -1906,4 +1906,29 @@ local collectAllCoinsButton = gmFlatgrassTab:CreateButton({
         end
     end
 })
+
+local tntRunTab = window:CreateTab("TNT Run", 4483362458)
+local tntSection = tntRunTab:CreateSection("TNT")
+
+local antiTNTFallButton = tntRunTab:CreateButton({
+    Name = "Anti TNT Fall",
+    SectionParent = tntSection,
+    Callback = function()
+        while workspace:FindFirstChild("TNTRun") and workspace.TNTRun:FindFirstChild("Build") and workspace.TNTRun.Build:FindFirstChild("TNT") do
+            local tntFolder = workspace.TNTRun.Build.TNT
+            
+            for _, tntPart in pairs(tntFolder:GetChildren()) do
+                if tntPart:IsA("Part") and tntPart.Name == "tnt" then
+                    local touchInterest = tntPart:FindFirstChild("TouchInterest")
+                    if touchInterest then
+                        touchInterest:Destroy()
+                    end
+                end
+            end
+            
+            wait()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
