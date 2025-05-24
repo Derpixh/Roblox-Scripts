@@ -1650,44 +1650,56 @@ local autoPowerBoxesButton = infectionApartmentTab:CreateButton({
 local pizzaTab = window:CreateTab("Pizza Delivery", 4483362458)
 local pizzaSection = pizzaTab:CreateSection("Pizza")
 
-local autoGetDeliverPizzasButton = pizzaTab:CreateButton({
+pizzaTab:CreateButton({
     Name = "Auto Get/Deliver Pizzas",
     SectionParent = pizzaSection,
     Callback = function()
-        if workspace:FindFirstChild("PizzaDelivery") and workspace.PizzaDelivery:FindFirstChild("Build") and workspace.PizzaDelivery.Build:FindFirstChild("PizzaBoxes") then
-            local pizzaBoxes = workspace.PizzaDelivery.Build.PizzaBoxes
-            local pizzaDoors = workspace.PizzaDelivery.Build:FindFirstChild("PizzaDoors")
+        local player = Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local rootPart = character:WaitForChild("HumanoidRootPart")
 
+        local function safeTouch(part)
+            firetouchinterest(rootPart, part, 0)
+            task.wait(0.050)
+            firetouchinterest(rootPart, part, 1)
+        end
+
+        local delivery = workspace:FindFirstChild("PizzaDelivery")
+        if not delivery then return end
+
+        local build = delivery:FindFirstChild("Build")
+        if not build then return end
+
+        local pizzaBoxes = build:FindFirstChild("PizzaBoxes")
+        local pizzaDoors = build:FindFirstChild("PizzaDoors")
+
+        if pizzaBoxes then
             local count = 0
-            for _, meshPart in pairs(pizzaBoxes:GetChildren()) do
+            for _, meshPart in ipairs(pizzaBoxes:GetChildren()) do
                 if meshPart:IsA("MeshPart") and meshPart.Name == "PizzaBox" and count < 10 then
-                    local touchInterestPart = meshPart.Parent
-                    if touchInterestPart then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterestPart, 0)
-                        wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterestPart, 1)
-                        count = count + 1
+                    local touchPart = meshPart.Parent
+                    if touchPart and touchPart:IsA("Part") then
+                        safeTouch(touchPart)
+                        count += 1
+                        task.wait(0.050)
                     end
                 end
             end
+        end
 
-            if pizzaDoors then
-                for _, doorModel in pairs(pizzaDoors:GetChildren()) do
-                    if doorModel:IsA("Model") and string.find(doorModel.Name, "Door") then
-                        local deliverPad = doorModel:FindFirstChild("DeliverPartPad")
-                        if deliverPad then
-                            local surfaceGui = deliverPad:FindFirstChild("SurfaceGui")
-                            if surfaceGui then
-                                for _, frame in pairs(surfaceGui:GetChildren()) do
-                                    if frame:IsA("Frame") and frame.Name == "Frame" then
-                                        if frame.BackgroundColor3 == Color3.new(0, 1, 0) then
-                                            local touchPart = doorModel:FindFirstChild("Touch")
-                                            if touchPart then
-                                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 0)
-                                                wait()
-                                                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchPart, 1)
-                                            end
-                                        end
+        if pizzaDoors then
+            for _, door in ipairs(pizzaDoors:GetChildren()) do
+                if door:IsA("Model") and door.Name:find("Door") then
+                    local pad = door:FindFirstChild("DeliverPartPad")
+                    if pad then
+                        local gui = pad:FindFirstChild("SurfaceGui")
+                        if gui then
+                            for _, frame in ipairs(gui:GetChildren()) do
+                                if frame:IsA("Frame") and frame.Name == "Frame" and frame.BackgroundColor3 == Color3.new(0, 1, 0) then
+                                    local touchPart = door:FindFirstChild("Touch")
+                                    if touchPart and touchPart:IsA("Part") then
+                                        safeTouch(touchPart)
+                                        task.wait(0.050)
                                     end
                                 end
                             end
