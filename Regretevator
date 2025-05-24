@@ -457,11 +457,14 @@ local instantWinButton = teapotDodgeballTab:CreateButton({
     Name = "Instant Win",
     SectionParent = scriptSectionEasyMethod,
     Callback = function()
-        local touchInterest = workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish") and workspace.TeapotDodgeball.Build.Finish:FindFirstChild("TouchInterest")
-        if touchInterest then
-            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 0)
+        local finishPart = workspace:FindFirstChild("TeapotDodgeball")
+            and workspace.TeapotDodgeball:FindFirstChild("Build")
+            and workspace.TeapotDodgeball.Build:FindFirstChild("Finish")
+
+        if finishPart and finishPart:IsA("Part") then
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
             wait()
-            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 1)
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
         end
     end
 })
@@ -473,13 +476,13 @@ local autoWinButton = teapotDodgeballTab:CreateButton({
     SectionParent = scriptSectionAutomaticMethod,
     Callback = function()
         while workspace:FindFirstChild("TeapotDodgeball") and workspace.TeapotDodgeball:FindFirstChild("Build") and workspace.TeapotDodgeball.Build:FindFirstChild("Finish") do
-            local touchInterest = workspace.TeapotDodgeball.Build.Finish:FindFirstChild("TouchInterest")
-            if touchInterest then
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 0)
+            local finishPart = workspace.TeapotDodgeball.Build.Finish
+            if finishPart and finishPart:IsA("Part") then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 0)
                 wait()
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchInterest.Parent, 1)
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, finishPart, 1)
             end
-            wait(0.15)
+            wait()
         end
     end
 })
