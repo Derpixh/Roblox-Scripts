@@ -19,41 +19,29 @@ local window = Rayfield:CreateWindow({
     }
 })
 
-local tabTwisteds = window:CreateTab("Twisteds")
+local twistedsTab = window:CreateTab("Twisteds")
+local twistedsSection = twistedsTab:CreateSection("Twisteds")
 
-local NotificationsSection = tabTwisteds:CreateSection("Notifications")
-
-local AutoNotifyToggle = tabTwisteds:CreateToggle({
-    Name = "Auto Notify Twisteds",
-    SectionParent = NotificationsSection,
+local highlightToggle = twistedsTab:CreateToggle({
+    Name = "Highlight Twisteds (You Can Enable/Disable It)",
+    SectionParent = twistedsSection,
     CurrentValue = false,
     Callback = function(Value)
-        local RunService = game:GetService("RunService")
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
-        local heartbeatConnection
-
         if Value then
-            heartbeatConnection = RunService.Heartbeat:Connect(function()
+            while Value do
                 local currentRoom = workspace:FindFirstChild("CurrentRoom")
                 if currentRoom then
                     for _, model in ipairs(currentRoom:GetChildren()) do
                         if model:IsA("Model") then
                             local monstersFolder = model:FindFirstChild("Monsters")
                             if monstersFolder then
-                                for _, monster in pairs(monstersFolder:GetChildren()) do
+                                for _, monster in ipairs(monstersFolder:GetChildren()) do
                                     if monster:IsA("Model") then
-                                        local chasingValue = monster:FindFirstChild("ChasingValue")
-                                        if chasingValue and chasingValue:IsA("ObjectValue") then
-                                            local currentValue = chasingValue.Value
-                                            if currentValue == LocalPlayer.Name then
-                                                Rayfield:Notify({
-                                                    Title = "Twisted Notifier",
-                                                    Content = monster.Name .. " has detected you in sight, hide!",
-                                                    Duration = 5,
-                                                    Image = 4483362458,
-                                                })
-                                            end
+                                        if not monster:FindFirstChildOfClass("Highlight") then
+                                            local highlight = Instance.new("Highlight")
+                                            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                            highlight.Parent = monster
                                         end
                                     end
                                 end
@@ -61,57 +49,20 @@ local AutoNotifyToggle = tabTwisteds:CreateToggle({
                         end
                     end
                 end
-            end)
+                wait()
+            end
         else
-            if heartbeatConnection then
-                heartbeatConnection:Disconnect()
-                heartbeatConnection = nil
-            end
-        end
-    end,
-})
-
-local tabItems = window:CreateTab("Items")
-
-local sectionHighlightItems = tabItems:CreateSection("Highlight Items")
-
-local autoHighlightItemsToggle = tabItems:CreateToggle({
-    Name = "Auto Highlight Items",
-    CurrentValue = false,
-    Flag = "AutoHighlightItems",
-    Section = sectionHighlightItems,
-    Callback = function(Value)
-        local RunService = game:GetService("RunService")
-
-        local function addHighlight(model)
-            if not model:FindFirstChildOfClass("Highlight") then
-                local highlight = Instance.new("Highlight")
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillColor = Color3.fromRGB(255, 165, 0)
-                highlight.Parent = model
-            end
-        end
-
-        local function removeHighlight(model)
-            local highlight = model:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
-            end
-        end
-
-        local function checkAndUpdateItems()
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if currentRoom then
-                for _, roomModel in pairs(currentRoom:GetChildren()) do
-                    if roomModel:IsA("Model") then
-                        local itemsFolder = roomModel:FindFirstChild("Items")
-                        if itemsFolder then
-                            for _, item in pairs(itemsFolder:GetChildren()) do
-                                if item:IsA("Model") then
-                                    if Value then
-                                        addHighlight(item)
-                                    else
-                                        removeHighlight(item)
+                for _, model in ipairs(currentRoom:GetChildren()) do
+                    if model:IsA("Model") then
+                        local monstersFolder = model:FindFirstChild("Monsters")
+                        if monstersFolder then
+                            for _, monster in ipairs(monstersFolder:GetChildren()) do
+                                if monster:IsA("Model") then
+                                    local highlight = monster:FindFirstChildOfClass("Highlight")
+                                    if highlight then
+                                        highlight:Destroy()
                                     end
                                 end
                             end
@@ -120,220 +71,5 @@ local autoHighlightItemsToggle = tabItems:CreateToggle({
                 end
             end
         end
-
-        if Value then
-            itemHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdateItems)
-        else
-            if itemHighlightConnection then
-                itemHighlightConnection:Disconnect()
-                itemHighlightConnection = nil
-                local currentRoom = workspace:FindFirstChild("CurrentRoom")
-                if currentRoom then
-                    for _, roomModel in pairs(currentRoom:GetChildren()) do
-                        if roomModel:IsA("Model") then
-                            local itemsFolder = roomModel:FindFirstChild("Items")
-                            if itemsFolder then
-                                for _, item in pairs(itemsFolder:GetChildren()) do
-                                    if item:IsA("Model") then
-                                        removeHighlight(item)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-})
-
-local sectionPickUpItems = tabItems:CreateSection("Pick-Up Items")
-
-local autoPickUpItemsToggle = tabItems:CreateToggle({
-    Name = "Auto Pick-Up Items",
-    CurrentValue = false,
-    Flag = "AutoPickUpItems",
-    Section = sectionPickUpItems,
-    Callback = function(Value)
-        local RunService = game:GetService("RunService")
-        local Players = game:GetService("Players")
-        local localPlayer = Players.LocalPlayer
-
-        local function pickUpItem(model)
-            local promptPart = model:FindFirstChild("Prompt")
-            if promptPart and promptPart:IsA("Part") then
-                local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-                if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") and proximityPrompt.Enabled then
-                    proximityPrompt:InputHoldBegin()
-                    proximityPrompt:InputHoldEnd()
-                end
-            end
-        end
-
-        local function checkAndPickUpItems()
-            local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if currentRoom then
-                for _, roomModel in pairs(currentRoom:GetChildren()) do
-                    if roomModel:IsA("Model") then
-                        local itemsFolder = roomModel:FindFirstChild("Items")
-                        if itemsFolder then
-                            for _, item in pairs(itemsFolder:GetChildren()) do
-                                if item:IsA("Model") then
-                                    pickUpItem(item)
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        if Value then
-            pickUpItemsConnection = RunService.Heartbeat:Connect(checkAndPickUpItems)
-        else
-            if pickUpItemsConnection then
-                pickUpItemsConnection:Disconnect()
-                pickUpItemsConnection = nil
-            end
-        end
-    end,
-})
-
-local tabGenerators = window:CreateTab("Generators")
-
-local sectionHighlightGenerators = tabGenerators:CreateSection("Highlight Generators")
-
-local autoHighlightGeneratorsToggle = tabGenerators:CreateToggle({
-    Name = "Auto Highlight Generators",
-    CurrentValue = false,
-    Flag = "AutoHighlightGenerators",
-    Section = sectionHighlightGenerators,
-    Callback = function(Value)
-        local RunService = game:GetService("RunService")
-
-        local function addHighlight(model)
-            if not model:FindFirstChildOfClass("Highlight") then
-                local highlight = Instance.new("Highlight")
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillColor = Color3.fromRGB(0, 255, 255)
-                highlight.Parent = model
-            end
-        end
-
-        local function removeHighlight(model)
-            local highlight = model:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
-            end
-        end
-
-        local function checkAndUpdateGenerators()
-            local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if currentRoom then
-                for _, roomModel in pairs(currentRoom:GetChildren()) do
-                    if roomModel:IsA("Model") then
-                        local generatorsFolder = roomModel:FindFirstChild("Generators")
-                        if generatorsFolder then
-                            for _, generator in pairs(generatorsFolder:GetChildren()) do
-                                if generator:IsA("Model") and generator.Name == "Generator" then
-                                    if Value then
-                                        addHighlight(generator)
-                                    else
-                                        removeHighlight(generator)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        if Value then
-            generatorHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdateGenerators)
-        else
-            if generatorHighlightConnection then
-                generatorHighlightConnection:Disconnect()
-                generatorHighlightConnection = nil
-                local currentRoom = workspace:FindFirstChild("CurrentRoom")
-                if currentRoom then
-                    for _, roomModel in pairs(currentRoom:GetChildren()) do
-                        if roomModel:IsA("Model") then
-                            local generatorsFolder = roomModel:FindFirstChild("Generators")
-                            if generatorsFolder then
-                                for _, generator in pairs(generatorsFolder:GetChildren()) do
-                                    if generator:IsA("Model") and generator.Name == "Generator" then
-                                        removeHighlight(generator)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end,
-})
-
-local tabPlayers = window:CreateTab("Players")
-
-local sectionHighlightPlayers = tabPlayers:CreateSection("Highlight Players")
-
-local autoHighlightPlayersToggle = tabPlayers:CreateToggle({
-    Name = "Auto Highlight Players",
-    CurrentValue = false,
-    Flag = "AutoHighlightPlayers",
-    Section = sectionHighlightPlayers,
-    Callback = function(Value)
-        local RunService = game:GetService("RunService")
-        local connections = {}
-
-        local function addHighlight(model)
-            if not model:FindFirstChildOfClass("Highlight") then
-                local highlight = Instance.new("Highlight")
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillColor = Color3.fromRGB(0, 255, 0)
-                highlight.Parent = model
-            end
-        end
-
-        local function removeHighlight(model)
-            local highlight = model:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
-            end
-        end
-
-        local function checkAndUpdatePlayers()
-            local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
-            if inGamePlayersFolder then
-                for _, playerModel in pairs(inGamePlayersFolder:GetChildren()) do
-                    if playerModel:IsA("Model") then
-                        if Value then
-                            addHighlight(playerModel)
-                        else
-                            removeHighlight(playerModel)
-                        end
-                    end
-                end
-            end
-        end
-
-        if Value then
-            playerHighlightConnection = RunService.Heartbeat:Connect(checkAndUpdatePlayers)
-        else
-            if playerHighlightConnection then
-                playerHighlightConnection:Disconnect()
-                playerHighlightConnection = nil
-                local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
-                if inGamePlayersFolder then
-                    for _, playerModel in pairs(inGamePlayersFolder:GetChildren()) do
-                        if playerModel:IsA("Model") then
-                            removeHighlight(playerModel)
-                        end
-                    end
-                end
-            end
-        end
-    end,
+    end
 })
