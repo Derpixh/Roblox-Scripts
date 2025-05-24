@@ -1785,7 +1785,7 @@ local autoRemoveAttacksButton = slimYimTab:CreateButton({
                 end
             end
             
-            wait(0.050)
+            wait()
         end
     end
 })
@@ -1857,7 +1857,7 @@ local autoRemoveCapacitorLasersButton = statTab:CreateButton({
                     end
                 end
             end
-            wait(0.035)
+            wait()
         end
     end
 })
@@ -1878,7 +1878,7 @@ local autoRemoveAttacksButton = follyFightTab:CreateButton({
                 end
             end
             
-            wait(0.03)
+            wait()
         end
     end
 })
