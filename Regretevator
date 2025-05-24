@@ -1306,7 +1306,7 @@ local autoClickButtons = buttonCompetitionTab:CreateButton({
                 end
             end
             
-            wait(0.1)
+            wait()
         end
     end
 })
