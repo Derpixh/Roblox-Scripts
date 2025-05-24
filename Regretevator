@@ -112,7 +112,6 @@ local teleportToFinishButton = floodFillMinesTab:CreateButton({
     end
 })
 
-
 local funnyMazeTab = window:CreateTab("Funny Maze", 4483362458)
 local pagesSection = funnyMazeTab:CreateSection("Pages")
 
