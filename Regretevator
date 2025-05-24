@@ -1245,36 +1245,25 @@ local removeObstaclesButton = infectedRacingTab:CreateButton({
 })
 
 local buttonCompetitionTab = window:CreateTab("Button Competition", 4483362458)
-
 local scriptSectionButtons = buttonCompetitionTab:CreateSection("Buttons")
 
-local clickAllButtons = buttonCompetitionTab:CreateButton({
-    Name = "Click All Buttons",
+local autoClickButtons = buttonCompetitionTab:CreateButton({
+    Name = "Auto Click Buttons",
     SectionParent = scriptSectionButtons,
     Callback = function()
-        while true do
-            local buttonCompetitionModel = workspace:FindFirstChild("ButtonCompetition")
-            if not buttonCompetitionModel then
-                break
-            end
-
-            local buildModel = buttonCompetitionModel:FindFirstChild("Build")
-            if buildModel then
-                local buttonsModel = buildModel:FindFirstChild("Buttons")
-                if buttonsModel then
-                    for _, buttonModel in pairs(buttonsModel:GetChildren()) do
-                        if buttonModel:IsA("Model") and buttonModel.Name == "Button" then
-                            local buttonMeshPart = buttonModel:FindFirstChild("button")
-                            if buttonMeshPart then
-                                local clickDetector = buttonMeshPart:FindFirstChildOfClass("ClickDetector")
-                                if clickDetector then
-                                    fireclickdetector(clickDetector)
-                                end
-                            end
-                        end
+        while workspace:FindFirstChild("ButtonCompetition") and workspace.ButtonCompetition:FindFirstChild("Build") and workspace.ButtonCompetition.Build:FindFirstChild("Buttons") do
+            local buttonsFolder = workspace.ButtonCompetition.Build.Buttons
+            
+            for _, buttonModel in pairs(buttonsFolder:GetChildren()) do
+                if buttonModel:IsA("Model") and buttonModel:FindFirstChild("Button") then
+                    local buttonPart = buttonModel.Button
+                    local clickDetector = buttonPart:FindFirstChildOfClass("ClickDetector")
+                    if clickDetector then
+                        fireclickdetector(clickDetector)
                     end
                 end
             end
+            
             wait(0.1)
         end
     end
