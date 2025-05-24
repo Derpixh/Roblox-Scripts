@@ -1508,14 +1508,14 @@ local autoPressResetPromptButton = redballDinerTab:CreateButton({
             resetPromptPath.Enabled = true
             resetPromptPath.HoldDuration = 0
 
-            while resetPromptPath.Enabled do
+            repeat
                 local playerDistance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - resetPromptPath.Parent.Position).Magnitude
                 if playerDistance <= resetPromptPath.MaxActivationDistance then
                     resetPromptPath:InputHoldBegin()
                     wait()
                     resetPromptPath:InputHoldEnd()
                 end
-            end
+            until not resetPromptPath.Enabled
         end
     end
 })
