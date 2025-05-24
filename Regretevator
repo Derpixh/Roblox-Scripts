@@ -1491,31 +1491,35 @@ local autoWinFarmCoinsButton = slideTab:CreateButton({
 })
 
 local redballDinerTab = window:CreateTab("Redball Diner", 4483362458)
-local scriptSectionReset = redballDinerTab:CreateSection("Reset")
+local reddySection = redballDinerTab:CreateSection("Reddy")
 
 local autoPressResetPromptButton = redballDinerTab:CreateButton({
     Name = "Auto Press Reset Prompt",
-    SectionParent = scriptSectionReset,
+    SectionParent = reddySection,
     Callback = function()
-        local resetPromptPath = workspace:FindFirstChild("RedballDiner") 
-            and workspace.RedballDiner:FindFirstChild("Build") 
-            and workspace.RedballDiner.Build:FindFirstChild("Animatronics") 
-            and workspace.RedballDiner.Build.Animatronics:FindFirstChild("Reddy") 
-            and workspace.RedballDiner.Build.Animatronics.Reddy:FindFirstChild("HumanoidRootPart") 
+        local resetPrompt = workspace:FindFirstChild("RedballDiner")
+            and workspace.RedballDiner:FindFirstChild("Build")
+            and workspace.RedballDiner.Build:FindFirstChild("Animatronics")
+            and workspace.RedballDiner.Build.Animatronics:FindFirstChild("Reddy")
+            and workspace.RedballDiner.Build.Animatronics.Reddy:FindFirstChild("HumanoidRootPart")
             and workspace.RedballDiner.Build.Animatronics.Reddy.HumanoidRootPart:FindFirstChild("ResetPrompt")
         
-        if resetPromptPath then
-            resetPromptPath.Enabled = true
-            resetPromptPath.HoldDuration = 0
+        if resetPrompt then
+            resetPrompt.Enabled = true
+            resetPrompt.HoldDuration = 0
+            
+            local reddyPosition = workspace.RedballDiner.Build.Animatronics.Reddy.HumanoidRootPart.Position
+            local forwardOffset = workspace.RedballDiner.Build.Animatronics.Reddy.HumanoidRootPart.CFrame.LookVector * 3
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(reddyPosition + forwardOffset)
 
             repeat
-                local playerDistance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - resetPromptPath.Parent.Position).Magnitude
-                if playerDistance <= resetPromptPath.MaxActivationDistance then
-                    resetPromptPath:InputHoldBegin()
+                local playerDistance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - resetPrompt.Parent.Position).Magnitude
+                if playerDistance <= resetPrompt.MaxActivationDistance then
+                    resetPrompt:InputHoldBegin()
                     wait()
-                    resetPromptPath:InputHoldEnd()
+                    resetPrompt:InputHoldEnd()
                 end
-            until not resetPromptPath.Enabled
+            until not resetPrompt.Enabled
         end
     end
 })
