@@ -132,6 +132,7 @@ local teleportToFinishButton = floodTab:CreateButton({
 })
 
 local funnyMazeTab = window:CreateTab("Funny Maze", 4483362458)
+
 local pagesSection = funnyMazeTab:CreateSection("Pages")
 
 local collectPagesButton = funnyMazeTab:CreateButton({
