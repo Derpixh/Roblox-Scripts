@@ -712,7 +712,7 @@ local invincibilityToCementButton = stanleyRoomTab:CreateButton({
                 touchInterest:Destroy()
             end
 
-            wait(0.01)
+            wait()
         end
     end
 })
@@ -854,15 +854,15 @@ local autoColorTilesButton = colorTilesTab:CreateButton({
             local tilesFolder = workspace.ColorTheTiles.Tiles
             for _, tile in pairs(tilesFolder:GetChildren()) do
                 if tile:IsA("Part") and tile.Name == "Tile" then
-                    local touchTransmitter = tile:FindFirstChildWhichIsA("TouchTransmitter")
-                    if touchTransmitter then
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 0)
+                    local touchInterest = tile:FindFirstChild("TouchInterest")
+                    if touchInterest then
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 0)
                         wait()
-                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, touchTransmitter.Parent, 1)
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, tile, 1)
                     end
                 end
             end
-            wait(0.1)
+            wait()
         end
     end
 })
@@ -908,7 +908,7 @@ local autoFindJaobaButton = jaobaTab:CreateButton({
                     fireclickdetector(clickDetector)
                 end
             end
-            wait(0.1)
+            wait()
         end
     end
 })
