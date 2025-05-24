@@ -1885,7 +1885,11 @@ local autoRemoveAttacksButton = follyFightTab:CreateButton({
             local buildModel = workspace.FollyFight.Build
 
             for _, attackModel in pairs(buildModel:GetChildren()) do
-                if attackModel:IsA("Model") and (attackModel.Name == "Folly" or attackModel.Name == "Lightning") then
+                if attackModel:IsA("Model") and attackModel.Name == "Folly" then
+                    if attackModel:FindFirstChild("trail_claw_left") or attackModel:FindFirstChild("trail_claw_right") then
+                        attackModel:Destroy()
+                    end
+                elseif attackModel:IsA("Model") and attackModel.Name == "Lightning" then
                     attackModel:Destroy()
                 end
             end
