@@ -44,6 +44,24 @@ local invincibilityRailsButton = elevatorTab:CreateButton({
     end
 })
 
+local spudSection = elevatorTab:CreateSection("Spud")
+
+local autoClickSpudButton = elevatorTab:CreateButton({
+    Name = "Auto Click Spud (HE WILL EXPLODE)",
+    SectionParent = spudSection,
+    Callback = function()
+        while workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("Npc") and workspace.Elevator.Npc:FindFirstChild("Npcs") and workspace.Elevator.Npc.Npcs:FindFirstChild("Spud!") do
+            local spudClickDetector = workspace.Elevator.Npc.Npcs["Spud!"]:FindFirstChild("ClickDetector")
+            
+            if spudClickDetector then
+                fireclickdetector(spudClickDetector)
+            end
+            
+            wait()
+        end
+    end
+})
+
 local floodTab = window:CreateTab("Flood", 4483362458)
 local scriptSectionFlood = floodTab:CreateSection("Script")
 
