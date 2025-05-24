@@ -23,6 +23,25 @@ local window = Rayfield:CreateWindow({
     }
 })
 
+local elevatorTab = window:CreateTab("Elevator", 4483362458)
+local railsSection = elevatorTab:CreateSection("Rails")
+
+local invincibilityRailsButton = elevatorTab:CreateButton({
+    Name = "Invincibility To Burning Rails",
+    SectionParent = railsSection,
+    Callback = function()
+        local collisionFixers = workspace:FindFirstChild("Elevator") and workspace.Elevator:FindFirstChild("CollisionFixers")
+        
+        if collisionFixers then
+            for _, part in pairs(collisionFixers:GetChildren()) do
+                if part:IsA("Part") and part:FindFirstChild("TouchInterest") then
+                    part.TouchInterest:Destroy()
+                end
+            end
+        end
+    end
+})
+
 local floodTab = window:CreateTab("Flood", 4483362458)
 local scriptSectionFlood = floodTab:CreateSection("Script")
 
@@ -1840,5 +1859,4 @@ local autoRemoveAttacksButton = follyFightTab:CreateButton({
         end
     end
 })
-
 Rayfield:LoadConfiguration()
