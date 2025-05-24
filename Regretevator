@@ -62,11 +62,12 @@ local autoClickSpudButton = elevatorTab:CreateButton({
     end
 })
 
-local floodTab = window:CreateTab("Flood", 4483362458)
-local scriptSectionFlood = floodTab:CreateSection("Script")
+local floodFillMinesTab = window:CreateTab("Flood Fill Mines", 4483362458)
+local winSection = floodFillMinesTab:CreateSection("Win")
 
-local instantWinButton = floodTab:CreateButton({
+local instantWinButton = floodFillMinesTab:CreateButton({
     Name = "Instant Win",
+    SectionParent = winSection,
     Callback = function()
         local floodFillMineModel = game.Workspace:FindFirstChild("FloodFillMine")
         if floodFillMineModel then
@@ -82,6 +83,28 @@ local instantWinButton = floodTab:CreateButton({
                             wait()
                             firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, bubblePart, 1)
                         end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local endSection = floodFillMinesTab:CreateSection("End")
+
+local teleportToFinishButton = floodFillMinesTab:CreateButton({
+    Name = "Teleport To Finish",
+    SectionParent = endSection,
+    Callback = function()
+        local floodFillMineModel = game.Workspace:FindFirstChild("FloodFillMine")
+        if floodFillMineModel then
+            local buildModel = floodFillMineModel:FindFirstChild("Build")
+            if buildModel then
+                local shieldModel = buildModel:FindFirstChild("Shield")
+                if shieldModel then
+                    local bubblePart = shieldModel:FindFirstChild("Bubble")
+                    if bubblePart then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = bubblePart.CFrame
                     end
                 end
             end
@@ -108,11 +131,12 @@ local teleportToFinishButton = floodTab:CreateButton({
     end
 })
 
-local mazeTab = window:CreateTab("Maze", 4483362458)
-local scriptSectionMaze = mazeTab:CreateSection("Script")
+local funnyMazeTab = window:CreateTab("Funny Maze", 4483362458)
+local pagesSection = funnyMazeTab:CreateSection("Pages")
 
-local collectPagesButton = mazeTab:CreateButton({
+local collectPagesButton = funnyMazeTab:CreateButton({
     Name = "Collect Pages",
+    SectionParent = pagesSection,
     Callback = function()
         local funnyMaze = workspace:FindFirstChild("FunnyMaze")
         if funnyMaze then
