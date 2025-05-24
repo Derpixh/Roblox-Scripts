@@ -1161,44 +1161,21 @@ local collectAllRocksButton = bugboTab:CreateButton({
 })
 
 local danceTab = window:CreateTab("Dance", 4483362458)
-local gameSection = danceTab:CreateSection("Game")
+local safeSpotSection = danceTab:CreateSection("Safe Spot")
 
-local autoBeatFloorButton = danceTab:CreateButton({
-    Name = "Auto Beat Floor",
-    SectionParent = gameSection,
+local teleportToSafeSpotButton = danceTab:CreateButton({
+    Name = "Teleport To Safe Spot",
+    SectionParent = safeSpotSection,
     Callback = function()
-        while workspace:FindFirstChild("Dance") and workspace.Dance:FindFirstChild("Build") and workspace.Dance.Build:FindFirstChild("GameRelated") and workspace.Dance.Build.GameRelated:FindFirstChild("TV") and workspace.Dance.Build.GameRelated.TV:FindFirstChild("ColorScreen") and workspace.Dance.Build.GameRelated.TV.ColorScreen:FindFirstChild("SurfaceGui") and workspace.Dance.Build.GameRelated.TV.ColorScreen.SurfaceGui:FindFirstChild("ColorJ") do
-            local colorJ = workspace.Dance.Build.GameRelated.TV.ColorScreen.SurfaceGui.ColorJ
-            local colorValue = tonumber(colorJ.Text)
-
-            if colorValue and colorValue >= 1 and colorValue <= 8 then
-                local danceFloor = workspace.Dance.Build:FindFirstChild("DanceFloor")
-                if danceFloor then
-                    local closestFP = nil
-                    local closestDistance = math.huge
-
-                    for _, part in pairs(danceFloor:GetChildren()) do
-                        if part:IsA("Part") and part.Name == "FP" then
-                            local labelGui = part:FindFirstChild("Gui") and part.Gui:FindFirstChild("Label")
-                            if labelGui then
-                                local labelValue = tonumber(labelGui.Text)
-                                if labelValue == colorValue then
-                                    local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).Magnitude
-                                    if distance < closestDistance then
-                                        closestDistance = distance
-                                        closestFP = part
-                                    end
-                                end
-                            end
-                        end
-                    end
-
-                    if closestFP then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = closestFP.CFrame
-                    end
-                end
-            end
-            wait(0.035)
+        local disco = workspace:FindFirstChild("Dance") 
+            and workspace.Dance:FindFirstChild("Build") 
+            and workspace.Dance.Build:FindFirstChild("Decor") 
+            and workspace.Dance.Build.Decor:FindFirstChild("DiscoBall") 
+            and workspace.Dance.Build.Decor.DiscoBall:FindFirstChild("Disco")
+        
+        if disco and disco:IsA("MeshPart") then
+            disco.CanCollide = true
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = disco.CFrame
         end
     end
 })
@@ -1929,5 +1906,4 @@ local collectAllCoinsButton = gmFlatgrassTab:CreateButton({
         end
     end
 })
-
 Rayfield:LoadConfiguration()
