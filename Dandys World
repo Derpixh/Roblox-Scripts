@@ -84,10 +84,33 @@ local highlightToggle = twistedsTab:CreateToggle({
     end
 })
 
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Dandys World - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local twistedsTab = window:CreateTab("Twisteds")
 local notifySection = twistedsTab:CreateSection("Notify")
 
 local autoNotifyEnabled = false
 local localPlayer = game:GetService("Players").LocalPlayer
+local monitoringThread
 
 local function monitorChasingValues()
     while autoNotifyEnabled do
@@ -102,22 +125,23 @@ local function monitorChasingValues()
                                 local chasingValue = monster:FindFirstChild("ChasingValue")
                                 if chasingValue and chasingValue:IsA("ObjectValue") then
                                     local newValue = chasingValue.Value
-                                    
-                                    if newValue == localPlayer and monster:GetAttribute("Notified") ~= true then
+                                    local previousValue = monster:GetAttribute("PreviousChase") 
+
+                                    if newValue == localPlayer and previousValue ~= localPlayer.Name then
                                         Rayfield:Notify({
                                             Title = "Twisted Chasing Notifier",
                                             Content = monster.Name .. " is currently chasing you!",
                                             Duration = 3
                                         })
-                                        monster:SetAttribute("Notified", true)
+                                        monster:SetAttribute("PreviousChase", localPlayer.Name)
 
-                                    elseif newValue == nil and monster:GetAttribute("Notified") == true then
+                                    elseif newValue == nil and previousValue == localPlayer.Name then
                                         Rayfield:Notify({
                                             Title = "Twisted Chasing Notifier",
                                             Content = monster.Name .. " has stopped chasing you!",
                                             Duration = 3
                                         })
-                                        monster:SetAttribute("Notified", false)
+                                        monster:SetAttribute("PreviousChase", "")
                                     end
                                 end
                             end
@@ -137,10 +161,15 @@ local autoNotifyToggle = twistedsTab:CreateToggle({
     Callback = function(value)
         autoNotifyEnabled = value
         
-        if not value then
-            return
+        if value then
+            if not monitoringThread then
+                monitoringThread = task.spawn(monitorChasingValues)
+            end
+        else
+            autoNotifyEnabled = false
+            monitoringThread = nil
         end
-
-        monitorChasingValues()
     end
 })
+
+Rayfield:LoadConfiguration()
