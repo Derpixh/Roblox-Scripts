@@ -207,7 +207,9 @@ local validItems = {
     SkillCheckCandy = true,
     StealthCandy = true,
     ExtractionSpeedCandy = true,
-    Pop = true
+    Pop = true,
+    Gumball = true,
+    SpeedCandy = true
 }
 
 local keyMapping = {
