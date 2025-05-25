@@ -375,4 +375,33 @@ generatorsTab:CreateToggle({
     end
 })
 
+local function removeSkillCheck()
+    local localPlayer = game.Players.LocalPlayer
+    local playerGui = localPlayer:FindFirstChild("PlayerGui")
+    if playerGui then
+        local screenGui = playerGui:FindFirstChild("ScreenGui")
+        if screenGui then
+            local menuFrame = screenGui:FindFirstChild("Menu")
+            if menuFrame then
+                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                if skillCheckFrame then
+                    skillCheckFrame:Destroy()
+                end
+                local spaceBarPrompt = menuFrame:FindFirstChild("SpaceBarPromptText")
+                if spaceBarPrompt then
+                    spaceBarPrompt.TextTransparency = 1
+                end
+            end
+        end
+    end
+end
+
+generatorsTab:CreateButton({
+    Name = "Remove Skill Check (Easy + Blatant Method)",
+    SectionParent = skillCheckSection,
+    Callback = function()
+        removeSkillCheck()
+    end
+})
+
 Rayfield:LoadConfiguration()
