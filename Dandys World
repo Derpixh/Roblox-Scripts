@@ -201,8 +201,6 @@ itemsTab:CreateToggle({
 
 local useInventorySection = itemsTab:CreateSection("Use Inventory Items")
 local autoUseInventoryItems = false
-local prevInventorySlots = { Slot1 = "None", Slot2 = "None", Slot3 = "None" }
-local slotMapping = { Slot1 = "1", Slot2 = "2", Slot3 = "3" }
 local validItems = {
     Chocolate = true,
     ProteinBar = true,
@@ -219,16 +217,18 @@ local function monitorInventory()
             if playerModel then
                 local inventory = playerModel:FindFirstChild("Inventory")
                 if inventory then
-                    for _, slotName in ipairs({"Slot1", "Slot2", "Slot3"}) do
-                        local slotInstance = inventory:FindFirstChild(slotName)
+                    for _, slotInstance in ipairs({inventory:FindFirstChild("Slot1"), inventory:FindFirstChild("Slot2"), inventory:FindFirstChild("Slot3")}) do
                         if slotInstance then
-                            if prevInventorySlots[slotName] == "None" and validItems[slotInstance.Value] then
+                            local currentValue = slotInstance.Value
+                            if validItems[currentValue] then
                                 local vim = game:GetService("VirtualInputManager")
-                                vim:SendKeyEvent(true, slotMapping[slotName], false, game)
-                                wait()
-                                vim:SendKeyEvent(false, slotMapping[slotName], false, game)
+                                repeat
+                                    vim:SendKeyEvent(true, slotInstance.Name:sub(-1), false, game)
+                                    wait()
+                                    vim:SendKeyEvent(false, slotInstance.Name:sub(-1), false, game)
+                                    wait()
+                                until slotInstance.Value == "None"
                             end
-                            prevInventorySlots[slotName] = slotInstance.Value
                         end
                     end
                 end
@@ -243,12 +243,9 @@ itemsTab:CreateToggle({
     SectionParent = useInventorySection,
     CurrentValue = false,
     Callback = function(enabled)
+        autoUseInventoryItems = enabled
         if enabled then
-            autoUseInventoryItems = true
             spawn(monitorInventory)
-        else
-            autoUseInventoryItems = false
-            prevInventorySlots = { Slot1 = "None", Slot2 = "None", Slot3 = "None" }
         end
     end
 })
