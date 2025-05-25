@@ -53,6 +53,7 @@ local highlightToggle = twistedsTab:CreateToggle({
         highlightToggleEnabled = value
 
         if not value then
+            highlightToggleEnabled = false
             removeHighlights()
             return
         end
