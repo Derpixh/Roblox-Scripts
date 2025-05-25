@@ -85,9 +85,10 @@ local highlightToggle = twistedsTab:CreateToggle({
 })
 
 local itemsTab = window:CreateTab("Items")
-local highlightSection = itemsTab:CreateSection("Highlight")
-local autoHighlightFlag = false
 
+local itemsSection = itemsTab:CreateSection("Items")
+
+local autoHighlightFlag = false
 local function removeHighlights()
     local currentRoom = workspace:FindFirstChild("CurrentRoom")
     if currentRoom then
@@ -119,7 +120,7 @@ local function monitorItems()
                     for _, item in ipairs(itemsFolder:GetChildren()) do
                         if item:IsA("Model") and not item:FindFirstChildOfClass("Highlight") then
                             local hl = Instance.new("Highlight")
-                            hl.FillColor = Color3.fromRGB(144, 238, 144)
+                            hl.FillColor = Color3.fromRGB(0, 255, 0)
                             hl.OutlineColor = Color3.fromRGB(255, 255, 255)
                             hl.Parent = item
                         end
@@ -133,7 +134,7 @@ end
 
 itemsTab:CreateToggle({
     Name = "Auto Highlight Items",
-    SectionParent = highlightSection,
+    SectionParent = itemsSection,
     CurrentValue = false,
     Callback = function(enabled)
         if enabled then
