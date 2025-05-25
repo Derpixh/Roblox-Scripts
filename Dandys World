@@ -206,6 +206,8 @@ local validItems = {
     ProteinBar = true,
     SkillCheckCandy = true,
     StealthCandy = true,
+    ExtractionSpeedCandy = true,
+    Pop = true
 }
 
 local keyMapping = {
