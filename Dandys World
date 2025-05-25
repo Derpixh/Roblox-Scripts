@@ -208,6 +208,12 @@ local validItems = {
     StealthCandy = true,
 }
 
+local keyMapping = {
+    Slot1 = Enum.KeyCode.One,
+    Slot2 = Enum.KeyCode.Two,
+    Slot3 = Enum.KeyCode.Three
+}
+
 local function monitorInventory()
     while autoUseInventoryItems do
         local localPlayer = game.Players.LocalPlayer
@@ -217,15 +223,17 @@ local function monitorInventory()
             if playerModel then
                 local inventory = playerModel:FindFirstChild("Inventory")
                 if inventory then
-                    for _, slotInstance in ipairs({inventory:FindFirstChild("Slot1"), inventory:FindFirstChild("Slot2"), inventory:FindFirstChild("Slot3")}) do
+                    for _, slotName in ipairs({"Slot1", "Slot2", "Slot3"}) do
+                        local slotInstance = inventory:FindFirstChild(slotName)
                         if slotInstance then
                             local currentValue = slotInstance.Value
                             if validItems[currentValue] then
                                 local vim = game:GetService("VirtualInputManager")
+                                local keyCode = keyMapping[slotName]
                                 repeat
-                                    vim:SendKeyEvent(true, slotInstance.Name:sub(-1), false, game)
+                                    vim:SendKeyEvent(true, keyCode, false, game)
                                     wait()
-                                    vim:SendKeyEvent(false, slotInstance.Name:sub(-1), false, game)
+                                    vim:SendKeyEvent(false, keyCode, false, game)
                                     wait()
                                 until slotInstance.Value == "None"
                             end
