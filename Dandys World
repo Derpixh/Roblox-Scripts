@@ -137,18 +137,21 @@ local function removeHighlights()
 end
 
 local function monitorItems()
-    local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    local itemsFound = false
+    Rayfield:Notify({
+        Title = "Success!",
+        Content = "Successfully Highlighted Items!",
+        Duration = 5
+    })
 
-    if currentRoom then
-        local model = currentRoom:FindFirstChildWhichIsA("Model")
-        if model then
-            local itemsFolder = model:FindFirstChild("Items")
-            if itemsFolder then
-                for _, item in ipairs(itemsFolder:GetChildren()) do
-                    if item:IsA("Model") then
-                        itemsFound = true
-                        if not item:FindFirstChildOfClass("Highlight") then
+    while autoHighlightFlag do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            local model = currentRoom:FindFirstChildWhichIsA("Model")
+            if model then
+                local itemsFolder = model:FindFirstChild("Items")
+                if itemsFolder then
+                    for _, item in ipairs(itemsFolder:GetChildren()) do
+                        if item:IsA("Model") and not item:FindFirstChildOfClass("Highlight") then
                             local hl = Instance.new("Highlight")
                             hl.FillColor = Color3.fromRGB(0, 255, 0)
                             hl.OutlineColor = Color3.fromRGB(255, 255, 255)
@@ -158,25 +161,7 @@ local function monitorItems()
                 end
             end
         end
-    end
-
-    if itemsFound then
-        Rayfield:Notify({
-            Title = "Success!",
-            Content = "Successfully Highlighted Items!",
-            Duration = 5
-        })
-        while autoHighlightFlag do
-            monitorItems()
-            wait()
-        end
-    else
-        Rayfield:Notify({
-            Title = "Error.",
-            Content = "There are no Items found!",
-            Duration = 5
-        })
-        autoHighlightFlag = false
+        wait()
     end
 end
 
