@@ -326,4 +326,51 @@ generatorsTab:CreateToggle({
     end
 })
 
+local skillCheckSection = generatorsTab:CreateSection("Skill Check")
+local autoCompleteSkillCheck = false
+
+local function monitorSkillCheck()
+    while autoCompleteSkillCheck do
+        local localPlayer = game.Players.LocalPlayer
+        local playerGui = localPlayer:FindFirstChild("PlayerGui")
+        if playerGui then
+            local screenGui = playerGui:FindFirstChild("ScreenGui")
+            if screenGui then
+                local menuFrame = screenGui:FindFirstChild("Menu")
+                if menuFrame then
+                    local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                    if skillCheckFrame then
+                        local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
+                        local marker = skillCheckFrame:FindFirstChild("Marker")
+                        if goldArea and marker then
+                            local markerPosition = marker.AbsolutePosition.X
+                            local goldStart = goldArea.AbsolutePosition.X
+                            local goldEnd = goldStart + goldArea.AbsoluteSize.X
+                            if markerPosition >= goldStart and markerPosition <= goldEnd then
+                                local vim = game:GetService("VirtualInputManager")
+                                vim:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                                wait()
+                                vim:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+generatorsTab:CreateToggle({
+    Name = "Auto Complete Skill Check (Legit Method)",
+    SectionParent = skillCheckSection,
+    CurrentValue = false,
+    Callback = function(enabled)
+        autoCompleteSkillCheck = enabled
+        if enabled then
+            spawn(monitorSkillCheck)
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
