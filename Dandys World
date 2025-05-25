@@ -202,9 +202,7 @@ itemsTab:CreateToggle({
 local useInventorySection = itemsTab:CreateSection("Use Inventory Items")
 
 local autoUseInventoryItems = false
-
 local prevInventorySlots = {}
-
 local slotMapping = {Slot1 = "1", Slot2 = "2", Slot3 = "3"}
 
 local function monitorInventory()
@@ -217,9 +215,9 @@ local function monitorInventory()
                 local inventory = playerModel:FindFirstChild("Inventory")
                 if inventory then
                     for slotName, key in pairs(slotMapping) do
-                        local slot = inventory:FindFirstChild(slotName)
-                        if slot then
-                            local currentValue = slot.Value
+                        local slotInstance = inventory:FindFirstChild(slotName)
+                        if slotInstance then
+                            local currentValue = slotInstance.Value
                             if prevInventorySlots[slotName] == nil then
                                 prevInventorySlots[slotName] = currentValue
                             end
@@ -239,7 +237,7 @@ local function monitorInventory()
     end
 end
 
-useInventorySection:CreateToggle({
+itemsTab:CreateToggle({
     Name = "Auto Use Inventory Items",
     SectionParent = useInventorySection,
     CurrentValue = false,
