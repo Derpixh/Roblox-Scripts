@@ -263,4 +263,69 @@ itemsTab:CreateToggle({
     end
 })
 
+local generatorsTab = window:CreateTab("Generators")
+
+local generatorsSection = generatorsTab:CreateSection("Generators")
+
+local autoHighlightGenerators = false
+
+local function removeGeneratorHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        local roomModel = currentRoom:FindFirstChildWhichIsA("Model")
+        if roomModel then
+            local generatorsFolder = roomModel:FindFirstChild("Generators")
+            if generatorsFolder then
+                for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                    if generator:IsA("Model") then
+                        local highlight = generator:FindFirstChildOfClass("Highlight")
+                        if highlight then
+                            highlight:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function monitorGenerators()
+    while autoHighlightGenerators do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            local roomModel = currentRoom:FindFirstChildWhichIsA("Model")
+            if roomModel then
+                local generatorsFolder = roomModel:FindFirstChild("Generators")
+                if generatorsFolder then
+                    for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                        if generator:IsA("Model") and generator.Name == "Generator" then
+                            if not generator:FindFirstChildOfClass("Highlight") then
+                                local highlight = Instance.new("Highlight")
+                                highlight.FillColor = Color3.fromRGB(173, 216, 230)
+                                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                highlight.Parent = generator
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+generatorsTab:CreateToggle({
+    Name = "Auto Highlight Generators",
+    SectionParent = generatorsSection,
+    CurrentValue = false,
+    Callback = function(enabled)
+        autoHighlightGenerators = enabled
+        if enabled then
+            spawn(monitorGenerators)
+        else
+            removeGeneratorHighlights()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
