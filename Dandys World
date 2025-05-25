@@ -43,6 +43,38 @@ local function removeHighlights()
             end
         end
     end
+
+    Rayfield:Notify({
+        Title = "Success!",
+        Content = "Successfully Removed Highlight From Twisteds!",
+        Duration = 5
+    })
+end
+
+local function monitorTwisteds()
+    while highlightToggleEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local monstersFolder = model:FindFirstChild("Monsters")
+                    if monstersFolder then
+                        for _, monster in ipairs(monstersFolder:GetChildren()) do
+                            if monster:IsA("Model") then
+                                if not monster:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Parent = monster
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
 end
 
 local highlightToggle = twistedsTab:CreateToggle({
@@ -52,34 +84,15 @@ local highlightToggle = twistedsTab:CreateToggle({
     Callback = function(value)
         highlightToggleEnabled = value
 
-        if not value then
-            highlightToggleEnabled = false
+        if value then
+            spawn(monitorTwisteds)
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Successfully Highlighted Twisteds!",
+                Duration = 5
+            })
+        else
             removeHighlights()
-            return
-        end
-
-        while highlightToggleEnabled do
-            local currentRoom = workspace:FindFirstChild("CurrentRoom")
-            if currentRoom then
-                for _, model in ipairs(currentRoom:GetChildren()) do
-                    if model:IsA("Model") then
-                        local monstersFolder = model:FindFirstChild("Monsters")
-                        if monstersFolder then
-                            for _, monster in ipairs(monstersFolder:GetChildren()) do
-                                if monster:IsA("Model") then
-                                    if not monster:FindFirstChildOfClass("Highlight") then
-                                        local highlight = Instance.new("Highlight")
-                                        highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                                        highlight.Parent = monster
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            wait()
         end
     end
 })
