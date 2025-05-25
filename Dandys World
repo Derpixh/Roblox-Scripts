@@ -24,12 +24,39 @@ local twistedsSection = twistedsTab:CreateSection("Twisteds")
 
 local highlightToggleEnabled = false
 
+local function removeHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local monstersFolder = model:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monster in ipairs(monstersFolder:GetChildren()) do
+                        if monster:IsA("Model") then
+                            local highlight = monster:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 local highlightToggle = twistedsTab:CreateToggle({
     Name = "Highlight Twisteds (You Can Enable/Disable It)",
     SectionParent = twistedsSection,
     CurrentValue = false,
     Callback = function(value)
         highlightToggleEnabled = value
+
+        if not value then
+            removeHighlights()
+            return
+        end
+
         while highlightToggleEnabled do
             local currentRoom = workspace:FindFirstChild("CurrentRoom")
             if currentRoom then
@@ -39,18 +66,11 @@ local highlightToggle = twistedsTab:CreateToggle({
                         if monstersFolder then
                             for _, monster in ipairs(monstersFolder:GetChildren()) do
                                 if monster:IsA("Model") then
-                                    if value then
-                                        if not monster:FindFirstChildOfClass("Highlight") then
-                                            local highlight = Instance.new("Highlight")
-                                            highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                                            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                                            highlight.Parent = monster
-                                        end
-                                    else
-                                        local highlight = monster:FindFirstChildOfClass("Highlight")
-                                        if highlight then
-                                            highlight:Destroy()
-                                        end
+                                    if not monster:FindFirstChildOfClass("Highlight") then
+                                        local highlight = Instance.new("Highlight")
+                                        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                        highlight.Parent = monster
                                     end
                                 end
                             end
