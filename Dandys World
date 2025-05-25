@@ -200,10 +200,9 @@ itemsTab:CreateToggle({
 })
 
 local useInventorySection = itemsTab:CreateSection("Use Inventory Items")
-
 local autoUseInventoryItems = false
-local prevInventorySlots = {}
-local slotMapping = {Slot1 = "1", Slot2 = "2", Slot3 = "3"}
+local prevInventorySlots = { Slot1 = "None", Slot2 = "None", Slot3 = "None" }
+local slotMapping = { Slot1 = "1", Slot2 = "2", Slot3 = "3" }
 
 local function monitorInventory()
     while autoUseInventoryItems do
@@ -214,20 +213,16 @@ local function monitorInventory()
             if playerModel then
                 local inventory = playerModel:FindFirstChild("Inventory")
                 if inventory then
-                    for slotName, key in pairs(slotMapping) do
+                    for _, slotName in ipairs({"Slot1", "Slot2", "Slot3"}) do
                         local slotInstance = inventory:FindFirstChild(slotName)
                         if slotInstance then
-                            local currentValue = slotInstance.Value
-                            if prevInventorySlots[slotName] == nil then
-                                prevInventorySlots[slotName] = currentValue
-                            end
-                            if prevInventorySlots[slotName] == "None" and currentValue == "Chocolate" then
+                            if prevInventorySlots[slotName] == "None" and slotInstance.Value == "Chocolate" then
                                 local vim = game:GetService("VirtualInputManager")
-                                vim:SendKeyEvent(true, key, false, game)
+                                vim:SendKeyEvent(true, slotMapping[slotName], false, game)
                                 wait()
-                                vim:SendKeyEvent(false, key, false, game)
+                                vim:SendKeyEvent(false, slotMapping[slotName], false, game)
                             end
-                            prevInventorySlots[slotName] = currentValue
+                            prevInventorySlots[slotName] = slotInstance.Value
                         end
                     end
                 end
@@ -247,7 +242,7 @@ itemsTab:CreateToggle({
             spawn(monitorInventory)
         else
             autoUseInventoryItems = false
-            prevInventorySlots = {}
+            prevInventorySlots = { Slot1 = "None", Slot2 = "None", Slot3 = "None" }
         end
     end
 })
