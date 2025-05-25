@@ -109,7 +109,7 @@ twistedsTab:CreateToggle({
                             for _, monster in ipairs(monstersFolder:GetChildren()) do
                                 if monster:IsA("Model") and string.find(monster.Name, "Monster") then
                                     local chasingValue = monster:FindFirstChild("ChasingValue")
-                                    if chasingValue and chasingValue:IsA("StringValue") then
+                                    if chasingValue then
                                         local previousState = lastChasingValues[monster] or ""
                                         local currentState = chasingValue.Value
                                         if previousState ~= currentState then
