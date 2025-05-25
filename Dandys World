@@ -90,6 +90,35 @@ local autoNotifyEnabled = false
 local localPlayer = game:GetService("Players").LocalPlayer
 local connections = {}
 
+local function monitorChasingValue(monster)
+    local chasingValue = monster:FindFirstChild("ChasingValue")
+    if chasingValue and chasingValue:IsA("ObjectValue") then
+        local connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
+            local newValue = chasingValue.Value
+            local previousValue = monster:GetAttribute("PreviousChase")
+
+            if newValue == localPlayer and previousValue ~= localPlayer.Name then
+                Rayfield:Notify({
+                    Title = "Twisted Chasing Notifier",
+                    Content = monster.Name .. " is currently chasing you!",
+                    Duration = 3
+                })
+                monster:SetAttribute("PreviousChase", localPlayer.Name)
+
+            elseif newValue == nil and previousValue == localPlayer.Name then
+                Rayfield:Notify({
+                    Title = "Twisted Chasing Notifier",
+                    Content = monster.Name .. " has stopped chasing you!",
+                    Duration = 3
+                })
+                monster:SetAttribute("PreviousChase", "")
+            end
+        end)
+
+        connections[monster] = connection
+    end
+end
+
 local function startMonitoring()
     local currentRoom = workspace:FindFirstChild("CurrentRoom")
     if currentRoom then
@@ -99,28 +128,7 @@ local function startMonitoring()
                 if monstersFolder then
                     for _, monster in ipairs(monstersFolder:GetChildren()) do
                         if monster:IsA("Model") then
-                            local chasingValue = monster:FindFirstChild("ChasingValue")
-                            if chasingValue and chasingValue:IsA("ObjectValue") then
-                                local connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
-                                    local newValue = chasingValue.Value
-
-                                    if newValue == localPlayer then
-                                        Rayfield:Notify({
-                                            Title = "Twisted Chasing Notifier",
-                                            Content = monster.Name .. " is currently chasing you!",
-                                            Duration = 3
-                                        })
-                                    elseif newValue == nil then
-                                        Rayfield:Notify({
-                                            Title = "Twisted Chasing Notifier",
-                                            Content = monster.Name .. " has stopped chasing you!",
-                                            Duration = 3
-                                        })
-                                    end
-                                end)
-
-                                table.insert(connections, connection)
-                            end
+                            monitorChasingValue(monster)
                         end
                     end
                 end
@@ -130,7 +138,7 @@ local function startMonitoring()
 end
 
 local function stopMonitoring()
-    for _, connection in ipairs(connections) do
+    for monster, connection in pairs(connections) do
         connection:Disconnect()
     end
     connections = {}
