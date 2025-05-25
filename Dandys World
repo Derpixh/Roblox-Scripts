@@ -105,53 +105,56 @@ local window = Rayfield:CreateWindow({
     }
 })
 
-local twistedsTab = window:CreateTab("Twisteds")
 local notifySection = twistedsTab:CreateSection("Notify")
 
 local autoNotifyEnabled = false
 local localPlayer = game:GetService("Players").LocalPlayer
-local monitoringThread
+local connections = {}
 
-local function monitorChasingValues()
-    while autoNotifyEnabled do
-        local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        if currentRoom then
-            for _, model in ipairs(currentRoom:GetChildren()) do
-                if model:IsA("Model") then
-                    local monstersFolder = model:FindFirstChild("Monsters")
-                    if monstersFolder then
-                        for _, monster in ipairs(monstersFolder:GetChildren()) do
-                            if monster:IsA("Model") then
-                                local chasingValue = monster:FindFirstChild("ChasingValue")
-                                if chasingValue and chasingValue:IsA("ObjectValue") then
+local function startMonitoring()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local monstersFolder = model:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monster in ipairs(monstersFolder:GetChildren()) do
+                        if monster:IsA("Model") then
+                            local chasingValue = monster:FindFirstChild("ChasingValue")
+                            if chasingValue and chasingValue:IsA("ObjectValue") then
+                                local connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
                                     local newValue = chasingValue.Value
-                                    local previousValue = monster:GetAttribute("PreviousChase") 
 
-                                    if newValue == localPlayer and previousValue ~= localPlayer.Name then
+                                    if newValue == localPlayer then
                                         Rayfield:Notify({
                                             Title = "Twisted Chasing Notifier",
                                             Content = monster.Name .. " is currently chasing you!",
                                             Duration = 3
                                         })
-                                        monster:SetAttribute("PreviousChase", localPlayer.Name)
-
-                                    elseif newValue == nil and previousValue == localPlayer.Name then
+                                    elseif newValue == nil then
                                         Rayfield:Notify({
                                             Title = "Twisted Chasing Notifier",
                                             Content = monster.Name .. " has stopped chasing you!",
                                             Duration = 3
                                         })
-                                        monster:SetAttribute("PreviousChase", "")
                                     end
-                                end
+                                end)
+
+                                table.insert(connections, connection)
                             end
                         end
                     end
                 end
             end
         end
-        wait()
     end
+end
+
+local function stopMonitoring()
+    for _, connection in ipairs(connections) do
+        connection:Disconnect()
+    end
+    connections = {}
 end
 
 local autoNotifyToggle = twistedsTab:CreateToggle({
@@ -162,12 +165,9 @@ local autoNotifyToggle = twistedsTab:CreateToggle({
         autoNotifyEnabled = value
         
         if value then
-            if not monitoringThread then
-                monitoringThread = task.spawn(monitorChasingValues)
-            end
+            startMonitoring()
         else
-            autoNotifyEnabled = false
-            monitoringThread = nil
+            stopMonitoring()
         end
     end
 })
