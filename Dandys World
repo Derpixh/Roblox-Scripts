@@ -410,15 +410,21 @@ local autoHighlightPlayers = false
 
 local function removePlayerHighlights()
     local ingamePlayers = workspace:FindFirstChild("InGamePlayers")
+    local hasOtherPlayers = false
+
     if ingamePlayers then
         for _, playerModel in ipairs(ingamePlayers:GetChildren()) do
             if playerModel:IsA("Model") and playerModel.Name ~= game.Players.LocalPlayer.Name then
+                hasOtherPlayers = true
                 local highlight = playerModel:FindFirstChildOfClass("Highlight")
                 if highlight then
                     highlight:Destroy()
                 end
             end
         end
+    end
+
+    if hasOtherPlayers then
         Rayfield:Notify({
             Title = "Success!",
             Content = "Successfully Removed Highlight From Other Players!",
