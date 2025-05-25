@@ -203,6 +203,12 @@ local useInventorySection = itemsTab:CreateSection("Use Inventory Items")
 local autoUseInventoryItems = false
 local prevInventorySlots = { Slot1 = "None", Slot2 = "None", Slot3 = "None" }
 local slotMapping = { Slot1 = "1", Slot2 = "2", Slot3 = "3" }
+local validItems = {
+    Chocolate = true,
+    ProteinBar = true,
+    SkillCheckCandy = true,
+    StealthCandy = true,
+}
 
 local function monitorInventory()
     while autoUseInventoryItems do
@@ -216,7 +222,7 @@ local function monitorInventory()
                     for _, slotName in ipairs({"Slot1", "Slot2", "Slot3"}) do
                         local slotInstance = inventory:FindFirstChild(slotName)
                         if slotInstance then
-                            if prevInventorySlots[slotName] == "None" and slotInstance.Value == "Chocolate" then
+                            if prevInventorySlots[slotName] == "None" and validItems[slotInstance.Value] then
                                 local vim = game:GetService("VirtualInputManager")
                                 vim:SendKeyEvent(true, slotMapping[slotName], false, game)
                                 wait()
