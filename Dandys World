@@ -56,47 +56,34 @@ local function removeHighlights()
 end
 
 local function monitorTwisteds()
-    local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    local twistedsFound = false
+    Rayfield:Notify({
+        Title = "Success!",
+        Content = "Successfully Highlighted Twisteds!",
+        Duration = 5
+    })
 
-    if currentRoom then
-        for _, model in ipairs(currentRoom:GetChildren()) do
-            if model:IsA("Model") then
-                local monstersFolder = model:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monster in ipairs(monstersFolder:GetChildren()) do
-                        if monster:IsA("Model") then
-                            twistedsFound = true
-                            if not monster:FindFirstChildOfClass("Highlight") then
-                                local highlight = Instance.new("Highlight")
-                                highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                                highlight.Parent = monster
+    while highlightToggleEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local monstersFolder = model:FindFirstChild("Monsters")
+                    if monstersFolder then
+                        for _, monster in ipairs(monstersFolder:GetChildren()) do
+                            if monster:IsA("Model") then
+                                if not monster:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Parent = monster
+                                end
                             end
                         end
                     end
                 end
             end
         end
-    end
-
-    if twistedsFound then
-        Rayfield:Notify({
-            Title = "Success!",
-            Content = "Successfully Highlighted Twisteds!",
-            Duration = 5
-        })
-        while highlightToggleEnabled do
-            monitorTwisteds()
-            wait()
-        end
-    else
-        Rayfield:Notify({
-            Title = "Error.",
-            Content = "There are no Twisteds found!",
-            Duration = 5
-        })
-        highlightToggleEnabled = false
+        wait()
     end
 end
 
