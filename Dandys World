@@ -84,65 +84,64 @@ local highlightToggle = twistedsTab:CreateToggle({
     end
 })
 
-local notificationsSection = twistedsTab:CreateSection("Notifications")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+local itemsTab = window:CreateTab("Items")
+local highlightSection = itemsTab:CreateSection("Highlight")
+local autoHighlightFlag = false
 
-local monitoring = false
-local monitoringStates = {}
-
-local function monitorChasingValues()
-    while monitoring do
-        local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        if currentRoom then
-            local model = currentRoom:FindFirstChildWhichIsA("Model")
-            if model then
-                local monstersFolder = model:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monster in ipairs(monstersFolder:GetChildren()) do
-                        if monster:IsA("Model") then
-                            local chasingValue = monster:FindFirstChild("ChasingValue")
-                            if chasingValue then
-                                local lastValue = monitoringStates[monster] or chasingValue.Value
-                                if chasingValue.Value ~= lastValue then
-                                    if chasingValue.Value == LocalPlayer.Name and lastValue == "" then
-                                        Rayfield:Notify({
-                                            Title = "Twisted Chasing Notifier",
-                                            Content = monster.Name .. " is currently chasing you!",
-                                            Duration = 6.5,
-                                            Image = 4483362458
-                                        })
-                                    elseif lastValue == LocalPlayer.Name and chasingValue.Value == "" then
-                                        Rayfield:Notify({
-                                            Title = "Twisted Chasing Notifier",
-                                            Content = monster.Name .. " has stopped chasing you!",
-                                            Duration = 6.5,
-                                            Image = 4483362458
-                                        })
-                                    end
-                                    monitoringStates[monster] = chasingValue.Value
-                                end
-                            end
+local function removeHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        local model = currentRoom:FindFirstChildWhichIsA("Model")
+        if model then
+            local itemsFolder = model:FindFirstChild("Items")
+            if itemsFolder then
+                for _, item in ipairs(itemsFolder:GetChildren()) do
+                    if item:IsA("Model") then
+                        local hl = item:FindFirstChildOfClass("Highlight")
+                        if hl then
+                            hl:Destroy()
                         end
                     end
                 end
             end
         end
-        task.wait(0.025)
     end
 end
 
-twistedsTab:CreateToggle({
-    Name = "Auto Notify Chasing Twisteds",
-    SectionParent = notificationsSection,
+local function monitorItems()
+    while autoHighlightFlag do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            local model = currentRoom:FindFirstChildWhichIsA("Model")
+            if model then
+                local itemsFolder = model:FindFirstChild("Items")
+                if itemsFolder then
+                    for _, item in ipairs(itemsFolder:GetChildren()) do
+                        if item:IsA("Model") and not item:FindFirstChildOfClass("Highlight") then
+                            local hl = Instance.new("Highlight")
+                            hl.FillColor = Color3.fromRGB(144, 238, 144)
+                            hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+                            hl.Parent = item
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+itemsTab:CreateToggle({
+    Name = "Auto Highlight Items",
+    SectionParent = highlightSection,
     CurrentValue = false,
     Callback = function(enabled)
         if enabled then
-            monitoring = true
-            monitoringStates = {}
-            task.spawn(monitorChasingValues)
+            autoHighlightFlag = true
+            spawn(monitorItems)
         else
-            monitoring = false
+            autoHighlightFlag = false
+            removeHighlights()
         end
     end
 })
