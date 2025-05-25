@@ -87,11 +87,54 @@ local highlightToggle = twistedsTab:CreateToggle({
 local notificationsSection = twistedsTab:CreateSection("Notifications")
 
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 
-local autoNotifyConnection = nil
-local lastChasingValues = {}
+local connections = {}
+
+local function startMonitoring()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if not currentRoom then return end
+    local model = currentRoom:FindFirstChildWhichIsA("Model")
+    if not model then return end
+    local monstersFolder = model:FindFirstChild("Monsters")
+    if not monstersFolder then return end
+
+    for _, monster in ipairs(monstersFolder:GetChildren()) do
+        if monster:IsA("Model") then
+            local chasingValue = monster:FindFirstChild("ChasingValue")
+            if chasingValue then
+                local lastValue = chasingValue.Value
+                local conn = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
+                    local newValue = chasingValue.Value
+                    if newValue == LocalPlayer.Name and lastValue == "" then
+                        Rayfield:Notify({
+                            Title = "Twisted Chasing Notifier",
+                            Content = monster.Name .. " is currently chasing you!",
+                            Duration = 6.5,
+                            Image = 4483362458
+                        })
+                    elseif lastValue == LocalPlayer.Name and newValue == "" then
+                        Rayfield:Notify({
+                            Title = "Twisted Chasing Notifier",
+                            Content = monster.Name .. " has stopped chasing you!",
+                            Duration = 6.5,
+                            Image = 4483362458
+                        })
+                    end
+                    lastValue = newValue
+                end)
+                table.insert(connections, conn)
+            end
+        end
+    end
+end
+
+local function stopMonitoring()
+    for _, conn in ipairs(connections) do
+        conn:Disconnect()
+    end
+    connections = {}
+end
 
 twistedsTab:CreateToggle({
     Name = "Auto Notify Chasing Twisteds",
@@ -99,50 +142,9 @@ twistedsTab:CreateToggle({
     CurrentValue = false,
     Callback = function(enabled)
         if enabled then
-            autoNotifyConnection = RunService.Heartbeat:Connect(function()
-                local currentRoom = workspace:FindFirstChild("CurrentRoom")
-                if currentRoom then
-                    local model = currentRoom:FindFirstChildWhichIsA("Model")
-                    if model then
-                        local monstersFolder = model:FindFirstChild("Monsters")
-                        if monstersFolder then
-                            for _, monster in ipairs(monstersFolder:GetChildren()) do
-                                if monster:IsA("Model") then
-                                    local chasingValue = monster:FindFirstChild("ChasingValue")
-                                    if chasingValue then
-                                        local previousState = lastChasingValues[monster] or ""
-                                        local currentState = chasingValue.Value
-                                        if previousState ~= currentState then
-                                            if currentState == LocalPlayer.Name and previousState == "" then
-                                                Rayfield:Notify({
-                                                    Title = "Twisted Chasing Notifier",
-                                                    Content = monster.Name .. " is currently chasing you!",
-                                                    Duration = 6.5,
-                                                    Image = 4483362458
-                                                })
-                                            elseif previousState == LocalPlayer.Name and currentState == "" then
-                                                Rayfield:Notify({
-                                                    Title = "Twisted Chasing Notifier",
-                                                    Content = monster.Name .. " has stopped chasing you!",
-                                                    Duration = 6.5,
-                                                    Image = 4483362458
-                                                })
-                                            end
-                                            lastChasingValues[monster] = currentState
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end)
+            startMonitoring()
         else
-            if autoNotifyConnection then
-                autoNotifyConnection:Disconnect()
-                autoNotifyConnection = nil
-            end
-            lastChasingValues = {}
+            stopMonitoring()
         end
     end
 })
