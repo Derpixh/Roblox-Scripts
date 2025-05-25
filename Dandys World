@@ -404,4 +404,73 @@ generatorsTab:CreateButton({
     end
 })
 
+local playersTab = window:CreateTab("Players")
+local playersSection = playersTab:CreateSection("Players")
+local autoHighlightPlayers = false
+
+local function removePlayerHighlights()
+    local ingamePlayers = workspace:FindFirstChild("InGamePlayers")
+    if ingamePlayers then
+        for _, playerModel in ipairs(ingamePlayers:GetChildren()) do
+            if playerModel:IsA("Model") and playerModel.Name ~= game.Players.LocalPlayer.Name then
+                local highlight = playerModel:FindFirstChildOfClass("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+            end
+        end
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Successfully Removed Highlight From Other Players!",
+            Duration = 5
+        })
+    end
+end
+
+local function monitorPlayers()
+    while autoHighlightPlayers do
+        local ingamePlayers = workspace:FindFirstChild("InGamePlayers")
+        if ingamePlayers and #ingamePlayers:GetChildren() > 1 then
+            for _, playerModel in ipairs(ingamePlayers:GetChildren()) do
+                if playerModel:IsA("Model") and playerModel.Name ~= game.Players.LocalPlayer.Name then
+                    if not playerModel:FindFirstChildOfClass("Highlight") then
+                        local highlight = Instance.new("Highlight")
+                        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                        highlight.Parent = playerModel
+                    end
+                end
+            end
+        else
+            Rayfield:Notify({
+                Title = "Error.",
+                Content = "There is no other players in your game!",
+                Duration = 5
+            })
+            autoHighlightPlayers = false
+            return
+        end
+        wait()
+    end
+end
+
+playersTab:CreateToggle({
+    Name = "Highlight Players (Doesn't Apply To You)",
+    SectionParent = playersSection,
+    CurrentValue = false,
+    Callback = function(enabled)
+        autoHighlightPlayers = enabled
+        if enabled then
+            spawn(monitorPlayers)
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Successfully Highlighted Other Players!",
+                Duration = 5
+            })
+        else
+            removePlayerHighlights()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
