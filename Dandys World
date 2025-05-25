@@ -98,12 +98,13 @@ local highlightToggle = twistedsTab:CreateToggle({
 })
 
 local itemsTab = window:CreateTab("Items")
-
 local itemsSection = itemsTab:CreateSection("Items")
-
 local autoHighlightFlag = false
+
 local function removeHighlights()
     local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    local itemsFound = false
+
     if currentRoom then
         local model = currentRoom:FindFirstChildWhichIsA("Model")
         if model then
@@ -111,6 +112,7 @@ local function removeHighlights()
             if itemsFolder then
                 for _, item in ipairs(itemsFolder:GetChildren()) do
                     if item:IsA("Model") then
+                        itemsFound = true
                         local hl = item:FindFirstChildOfClass("Highlight")
                         if hl then
                             hl:Destroy()
@@ -120,18 +122,29 @@ local function removeHighlights()
             end
         end
     end
+
+    if itemsFound then
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Successfully Removed Highlight From Items!",
+            Duration = 5
+        })
+    end
 end
 
 local function monitorItems()
-    while autoHighlightFlag do
-        local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        if currentRoom then
-            local model = currentRoom:FindFirstChildWhichIsA("Model")
-            if model then
-                local itemsFolder = model:FindFirstChild("Items")
-                if itemsFolder then
-                    for _, item in ipairs(itemsFolder:GetChildren()) do
-                        if item:IsA("Model") and not item:FindFirstChildOfClass("Highlight") then
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    local itemsFound = false
+
+    if currentRoom then
+        local model = currentRoom:FindFirstChildWhichIsA("Model")
+        if model then
+            local itemsFolder = model:FindFirstChild("Items")
+            if itemsFolder then
+                for _, item in ipairs(itemsFolder:GetChildren()) do
+                    if item:IsA("Model") then
+                        itemsFound = true
+                        if not item:FindFirstChildOfClass("Highlight") then
                             local hl = Instance.new("Highlight")
                             hl.FillColor = Color3.fromRGB(0, 255, 0)
                             hl.OutlineColor = Color3.fromRGB(255, 255, 255)
@@ -141,7 +154,25 @@ local function monitorItems()
                 end
             end
         end
-        wait()
+    end
+
+    if itemsFound then
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Successfully Highlighted Items!",
+            Duration = 5
+        })
+        while autoHighlightFlag do
+            monitorItems()
+            wait()
+        end
+    else
+        Rayfield:Notify({
+            Title = "Error.",
+            Content = "There are no Items found!",
+            Duration = 5
+        })
+        autoHighlightFlag = false
     end
 end
 
@@ -150,11 +181,10 @@ itemsTab:CreateToggle({
     SectionParent = itemsSection,
     CurrentValue = false,
     Callback = function(enabled)
+        autoHighlightFlag = enabled
         if enabled then
-            autoHighlightFlag = true
             spawn(monitorItems)
         else
-            autoHighlightFlag = false
             removeHighlights()
         end
     end
