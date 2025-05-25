@@ -210,7 +210,9 @@ local validItems = {
     Pop = true,
     Gumball = true,
     SpeedCandy = true,
-    Jawbreaker = true
+    Jawbreaker = true,
+    StaminaCandy = true,
+    ChocolateBox = true
 }
 
 local keyMapping = {
