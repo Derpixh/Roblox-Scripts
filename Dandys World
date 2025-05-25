@@ -84,79 +84,65 @@ local highlightToggle = twistedsTab:CreateToggle({
     end
 })
 
-local notifySection = twistedsTab:CreateSection("Notify")
+local notificationsSection = twistedsTab:CreateSection("Notifications")
 
-local monitoring = false
-local monitoringThreads = {}
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
 
-local function startMonitoring()
-    for _, t in ipairs(monitoringThreads) do
-        if t and coroutine.status(t) ~= "dead" then
-            coroutine.close(t)
-        end
-    end
-    monitoringThreads = {}
-
-    local success = pcall(function()
-        local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        if not currentRoom then return end
-
-        local model = currentRoom:FindFirstChildWhichIsA("Model")
-        if not model then return end
-
-        local monstersFolder = model:FindFirstChild("Monsters")
-        if not monstersFolder then return end
-
-        for _, monster in ipairs(monstersFolder:GetChildren()) do
-            local chasingValue = monster:FindFirstChild("ChasingValue")
-            if chasingValue and chasingValue:IsA("StringValue") then
-                local lastState = chasingValue.Value
-
-                local thread = coroutine.create(function()
-                    while monitoring do
-                        if chasingValue.Value ~= lastState then
-                            if chasingValue.Value == LocalPlayer.Name then
-                                Rayfield:Notify({
-                                    Title = "Twisted Chasing Notifier",
-                                    Content = monster.Name .. " is currently chasing you!",
-                                    Duration = 6.5,
-                                    Image = 4483362458,
-                                })
-                            elseif lastState == LocalPlayer.Name and chasingValue.Value == "" then
-                                Rayfield:Notify({
-                                    Title = "Twisted Chasing Notifier",
-                                    Content = monster.Name .. " has stopped chasing you!",
-                                    Duration = 6.5,
-                                    Image = 4483362458,
-                                })
-                            end
-                            lastState = chasingValue.Value
-                        end
-                        task.wait()
-                    end
-                end)
-                coroutine.resume(thread)
-                table.insert(monitoringThreads, thread)
-            end
-        end
-    end)
-end
+local autoNotifyConnection = nil
+local lastChasingValues = {}
 
 twistedsTab:CreateToggle({
-    Name = "Auto Notify Twisteds (When It Chases You)",
+    Name = "Auto Notify Chasing Twisteds",
+    SectionParent = notificationsSection,
     CurrentValue = false,
-    SectionParent = notifySection,
-    Callback = function(Value)
-        monitoring = Value
-        if Value then
-            startMonitoring()
-        else
-            for _, t in ipairs(monitoringThreads) do
-                if t and coroutine.status(t) ~= "dead" then
-                    coroutine.close(t)
+    Callback = function(enabled)
+        if enabled then
+            autoNotifyConnection = RunService.Heartbeat:Connect(function()
+                local currentRoom = workspace:FindFirstChild("CurrentRoom")
+                if currentRoom then
+                    local model = currentRoom:FindFirstChildWhichIsA("Model")
+                    if model then
+                        local monstersFolder = model:FindFirstChild("Monsters")
+                        if monstersFolder then
+                            for _, monster in ipairs(monstersFolder:GetChildren()) do
+                                if monster:IsA("Model") and string.find(monster.Name, "Monster") then
+                                    local chasingValue = monster:FindFirstChild("ChasingValue")
+                                    if chasingValue and chasingValue:IsA("StringValue") then
+                                        local previousState = lastChasingValues[monster] or ""
+                                        local currentState = chasingValue.Value
+                                        if previousState ~= currentState then
+                                            if currentState == LocalPlayer.Name and previousState == "" then
+                                                Rayfield:Notify({
+                                                    Title = "Twisted Chasing Notifier",
+                                                    Content = monster.Name .. " is currently chasing you!",
+                                                    Duration = 6.5,
+                                                    Image = 4483362458
+                                                })
+                                            elseif previousState == LocalPlayer.Name and currentState == "" then
+                                                Rayfield:Notify({
+                                                    Title = "Twisted Chasing Notifier",
+                                                    Content = monster.Name .. " has stopped chasing you!",
+                                                    Duration = 6.5,
+                                                    Image = 4483362458
+                                                })
+                                            end
+                                            lastChasingValues[monster] = currentState
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
                 end
+            end)
+        else
+            if autoNotifyConnection then
+                autoNotifyConnection:Disconnect()
+                autoNotifyConnection = nil
             end
-            monitoringThreads = {}
+            lastChasingValues = {}
         end
     end
 })
