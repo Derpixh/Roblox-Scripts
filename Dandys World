@@ -183,18 +183,24 @@ local pickupSection = itemsTab:CreateSection("Pick-Up Items")
 local autoPickupFlag = false
 
 local function monitorPickUpItems()
+    Rayfield:Notify({
+        Title = "Successfully Enabled!",
+        Content = "Auto Pick-Up Items Enabled!",
+        Duration = 5
+    })
+
     while autoPickupFlag do
         local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        local itemsFolderFound = false
-
         if currentRoom then
             local roomModel = currentRoom:FindFirstChildWhichIsA("Model")
             if roomModel then
                 local itemsFolder = roomModel:FindFirstChild("Items")
-                if itemsFolder and #itemsFolder:GetChildren() > 0 then
-                    itemsFolderFound = true
+                if itemsFolder then
+                    local itemsFound = false
+
                     for _, item in ipairs(itemsFolder:GetChildren()) do
                         if item:IsA("Model") then
+                            itemsFound = true
                             if item.Name == "FakeCapsule" then
                                 continue
                             end
@@ -216,20 +222,19 @@ local function monitorPickUpItems()
                             end
                         end
                     end
+
+                    if not itemsFound then
+                        Rayfield:Notify({
+                            Title = "Error.",
+                            Content = "Items not found!",
+                            Duration = 5
+                        })
+                        autoPickupFlag = false
+                        return
+                    end
                 end
             end
         end
-
-        if not itemsFolderFound then
-            Rayfield:Notify({
-                Title = "Error.",
-                Content = "Items not found!",
-                Duration = 5
-            })
-            autoPickupFlag = false
-            return
-        end
-
         wait()
     end
 end
@@ -239,25 +244,9 @@ itemsTab:CreateToggle({
     SectionParent = pickupSection,
     CurrentValue = false,
     Callback = function(enabled)
-        local currentRoom = workspace:FindFirstChild("CurrentRoom")
-        local roomModel = currentRoom and currentRoom:FindFirstChildWhichIsA("Model")
-        local itemsFolder = roomModel and roomModel:FindFirstChild("Items")
-
-        if enabled and itemsFolder and #itemsFolder:GetChildren() > 0 then
-            autoPickupFlag = true
+        autoPickupFlag = enabled
+        if enabled then
             spawn(monitorPickUpItems)
-            Rayfield:Notify({
-                Title = "Successfully Enabled!",
-                Content = "Auto Pick-Up Items Enabled!",
-                Duration = 5
-            })
-        elseif enabled then
-            Rayfield:Notify({
-                Title = "Error.",
-                Content = "Items not found!",
-                Duration = 5
-            })
-            autoPickupFlag = false
         else
             Rayfield:Notify({
                 Title = "Successfully Disabled!",
