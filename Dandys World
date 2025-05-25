@@ -84,27 +84,6 @@ local highlightToggle = twistedsTab:CreateToggle({
     end
 })
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local window = Rayfield:CreateWindow({
-    Name = "Dandys World - Alpha Hax",
-    LoadingTitle = "Loading Assets..",
-    LoadingSubtitle = "Created By Luxx",
-    ConfigurationSaving = {
-        Enabled = false,
-        FileName = "Sirius"
-    },
-    KeySystem = true,
-    KeySettings = {
-        Title = "Luxx's Key System",
-        Subtitle = "Enter Your Key",
-        Note = "Rate The Features",
-        FileName = "Sirius",
-        SaveKey = false,
-        Key = "2025"
-    }
-})
-
 local notifySection = twistedsTab:CreateSection("Notify")
 
 local autoNotifyEnabled = false
