@@ -264,9 +264,7 @@ itemsTab:CreateToggle({
 })
 
 local generatorsTab = window:CreateTab("Generators")
-
 local generatorsSection = generatorsTab:CreateSection("Generators")
-
 local autoHighlightGenerators = false
 
 local function removeGeneratorHighlights()
@@ -301,7 +299,7 @@ local function monitorGenerators()
                         if generator:IsA("Model") and generator.Name == "Generator" then
                             if not generator:FindFirstChildOfClass("Highlight") then
                                 local highlight = Instance.new("Highlight")
-                                highlight.FillColor = Color3.fromRGB(173, 216, 230)
+                                highlight.FillColor = Color3.fromRGB(0, 0, 255)
                                 highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
                                 highlight.Parent = generator
                             end
