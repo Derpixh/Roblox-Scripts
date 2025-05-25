@@ -86,75 +86,77 @@ local highlightToggle = twistedsTab:CreateToggle({
 
 local notifySection = twistedsTab:CreateSection("Notify")
 
-local autoNotifyEnabled = false
-local localPlayer = game:GetService("Players").LocalPlayer
-local connections = {}
-
-local function monitorChasingValue(monster)
-    local chasingValue = monster:FindFirstChild("ChasingValue")
-    if chasingValue and chasingValue:IsA("ObjectValue") then
-        local connection = chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
-            local newValue = chasingValue.Value
-            local previousValue = monster:GetAttribute("PreviousChase")
-
-            if newValue == localPlayer and previousValue ~= localPlayer.Name then
-                Rayfield:Notify({
-                    Title = "Twisted Chasing Notifier",
-                    Content = monster.Name .. " is currently chasing you!",
-                    Duration = 3
-                })
-                monster:SetAttribute("PreviousChase", localPlayer.Name)
-
-            elseif newValue == nil and previousValue == localPlayer.Name then
-                Rayfield:Notify({
-                    Title = "Twisted Chasing Notifier",
-                    Content = monster.Name .. " has stopped chasing you!",
-                    Duration = 3
-                })
-                monster:SetAttribute("PreviousChase", "")
-            end
-        end)
-
-        connections[monster] = connection
-    end
-end
+local monitoring = false
+local monitoringThreads = {}
 
 local function startMonitoring()
-    local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    if currentRoom then
-        for _, model in ipairs(currentRoom:GetChildren()) do
-            if model:IsA("Model") then
-                local monstersFolder = model:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monster in ipairs(monstersFolder:GetChildren()) do
-                        if monster:IsA("Model") then
-                            monitorChasingValue(monster)
-                        end
-                    end
-                end
-            end
+    for _, t in ipairs(monitoringThreads) do
+        if t and coroutine.status(t) ~= "dead" then
+            coroutine.close(t)
         end
     end
+    monitoringThreads = {}
+
+    local success = pcall(function()
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if not currentRoom then return end
+
+        local model = currentRoom:FindFirstChildWhichIsA("Model")
+        if not model then return end
+
+        local monstersFolder = model:FindFirstChild("Monsters")
+        if not monstersFolder then return end
+
+        for _, monster in ipairs(monstersFolder:GetChildren()) do
+            local chasingValue = monster:FindFirstChild("ChasingValue")
+            if chasingValue and chasingValue:IsA("StringValue") then
+                local lastState = chasingValue.Value
+
+                local thread = coroutine.create(function()
+                    while monitoring do
+                        if chasingValue.Value ~= lastState then
+                            if chasingValue.Value == LocalPlayer.Name then
+                                Rayfield:Notify({
+                                    Title = "Twisted Chasing Notifier",
+                                    Content = monster.Name .. " is currently chasing you!",
+                                    Duration = 6.5,
+                                    Image = 4483362458,
+                                })
+                            elseif lastState == LocalPlayer.Name and chasingValue.Value == "" then
+                                Rayfield:Notify({
+                                    Title = "Twisted Chasing Notifier",
+                                    Content = monster.Name .. " has stopped chasing you!",
+                                    Duration = 6.5,
+                                    Image = 4483362458,
+                                })
+                            end
+                            lastState = chasingValue.Value
+                        end
+                        task.wait()
+                    end
+                end)
+                coroutine.resume(thread)
+                table.insert(monitoringThreads, thread)
+            end
+        end
+    end)
 end
 
-local function stopMonitoring()
-    for monster, connection in pairs(connections) do
-        connection:Disconnect()
-    end
-    connections = {}
-end
-
-local autoNotifyToggle = twistedsTab:CreateToggle({
+twistedsTab:CreateToggle({
     Name = "Auto Notify Twisteds (When It Chases You)",
-    SectionParent = notifySection,
     CurrentValue = false,
-    Callback = function(value)
-        autoNotifyEnabled = value
-        
-        if value then
+    SectionParent = notifySection,
+    Callback = function(Value)
+        monitoring = Value
+        if Value then
             startMonitoring()
         else
-            stopMonitoring()
+            for _, t in ipairs(monitoringThreads) do
+                if t and coroutine.status(t) ~= "dead" then
+                    coroutine.close(t)
+                end
+            end
+            monitoringThreads = {}
         end
     end
 })
