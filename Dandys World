@@ -22,17 +22,36 @@ local window = Rayfield:CreateWindow({
 local twistedsTab = window:CreateTab("Twisteds")
 local twistedsSection = twistedsTab:CreateSection("Twisteds")
 
-local highlightEnabled = false
+local highlightToggleEnabled = false
 
-local function highlightTwisteds()
+local function removeHighlights()
     local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    local appliedHighlight = false
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local monstersFolder = model:FindFirstChild("Monsters Folder")
+                if monstersFolder then
+                    for _, monster in ipairs(monstersFolder:GetChildren()) do
+                        if monster:IsA("Model") then
+                            local highlight = monster:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
-    while highlightEnabled do
+local function monitorTwisteds()
+    while highlightToggleEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
         if currentRoom then
             for _, model in ipairs(currentRoom:GetChildren()) do
                 if model:IsA("Model") then
-                    local monstersFolder = model:FindFirstChild("Monsters")
+                    local monstersFolder = model:FindFirstChild("Monsters Folder")
                     if monstersFolder then
                         for _, monster in ipairs(monstersFolder:GetChildren()) do
                             if monster:IsA("Model") then
@@ -41,7 +60,6 @@ local function highlightTwisteds()
                                     highlight.FillColor = Color3.fromRGB(255, 0, 0)
                                     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
                                     highlight.Parent = monster
-                                    appliedHighlight = true
                                 end
                             end
                         end
@@ -51,44 +69,6 @@ local function highlightTwisteds()
         end
         wait()
     end
-
-    if appliedHighlight then
-        Rayfield:Notify({
-            Title = "Success!",
-            Content = "Dynamically Highlight Twisteds Enabled!"
-        })
-    end
-end
-
-local function removeTwistedsHighlights()
-    local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    local removedHighlight = false
-
-    if currentRoom then
-        for _, model in ipairs(currentRoom:GetChildren()) do
-            if model:IsA("Model") then
-                local monstersFolder = model:FindFirstChild("Monsters")
-                if monstersFolder then
-                    for _, monster in ipairs(monstersFolder:GetChildren()) do
-                        if monster:IsA("Model") then
-                            local highlight = monster:FindFirstChildOfClass("Highlight")
-                            if highlight then
-                                highlight:Destroy()
-                                removedHighlight = true
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    if removedHighlight then
-        Rayfield:Notify({
-            Title = "Success!",
-            Content = "Dynamically Highlight Twisteds Disabled!"
-        })
-    end
 end
 
 local highlightToggle = twistedsTab:CreateToggle({
@@ -96,12 +76,21 @@ local highlightToggle = twistedsTab:CreateToggle({
     SectionParent = twistedsSection,
     CurrentValue = false,
     Callback = function(value)
-        if value and not highlightEnabled then
-            highlightEnabled = true
-            spawn(highlightTwisteds)
-        elseif not value and highlightEnabled then
-            highlightEnabled = false
-            removeTwistedsHighlights()
+        highlightToggleEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Twisteds Enabled!",
+                Duration = 5
+            })
+            spawn(monitorTwisteds)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Twisteds Disabled!",
+                Duration = 5
+            })
+            removeHighlights()
         end
     end
 })
