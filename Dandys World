@@ -29,7 +29,7 @@ local function removeHighlights()
     if currentRoom then
         for _, model in ipairs(currentRoom:GetChildren()) do
             if model:IsA("Model") then
-                local monstersFolder = model:FindFirstChild("Monsters Folder")
+                local monstersFolder = model:FindFirstChild("Monsters")
                 if monstersFolder then
                     for _, monster in ipairs(monstersFolder:GetChildren()) do
                         if monster:IsA("Model") then
@@ -51,7 +51,7 @@ local function monitorTwisteds()
         if currentRoom then
             for _, model in ipairs(currentRoom:GetChildren()) do
                 if model:IsA("Model") then
-                    local monstersFolder = model:FindFirstChild("Monsters Folder")
+                    local monstersFolder = model:FindFirstChild("Monsters")
                     if monstersFolder then
                         for _, monster in ipairs(monstersFolder:GetChildren()) do
                             if monster:IsA("Model") then
