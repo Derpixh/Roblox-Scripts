@@ -22,21 +22,85 @@ local window = Rayfield:CreateWindow({
 local twistedsTab = window:CreateTab("Twisteds")
 local twistedsSection = twistedsTab:CreateSection("Twisteds")
 
+local highlightEnabled = false
+
+local function highlightTwisteds()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    local appliedHighlight = false
+
+    while highlightEnabled do
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local monstersFolder = model:FindFirstChild("Monsters")
+                    if monstersFolder then
+                        for _, monster in ipairs(monstersFolder:GetChildren()) do
+                            if monster:IsA("Model") then
+                                if not monster:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Parent = monster
+                                    appliedHighlight = true
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+
+    if appliedHighlight then
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Dynamically Highlight Twisteds Enabled!"
+        })
+    end
+end
+
+local function removeTwistedsHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    local removedHighlight = false
+
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local monstersFolder = model:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monster in ipairs(monstersFolder:GetChildren()) do
+                        if monster:IsA("Model") then
+                            local highlight = monster:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                                removedHighlight = true
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if removedHighlight then
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Dynamically Highlight Twisteds Disabled!"
+        })
+    end
+end
+
 local highlightToggle = twistedsTab:CreateToggle({
     Name = "Dynamically Highlight Twisteds",
     SectionParent = twistedsSection,
     CurrentValue = false,
     Callback = function(value)
+        highlightEnabled = value
         if value then
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Dynamically Highlight Twisteds Enabled!"
-            })
+            spawn(highlightTwisteds)
         else
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Dynamically Highlight Twisteds Disabled!"
-            })
+            removeTwistedsHighlights()
         end
     end
 })
