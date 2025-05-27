@@ -26,9 +26,9 @@ local highlightEnabled = false
 
 local function highlightTwisteds()
     local currentRoom = workspace:FindFirstChild("CurrentRoom")
-    local appliedHighlight = false
 
     while highlightEnabled do
+        local appliedHighlight = false
         if currentRoom then
             for _, model in ipairs(currentRoom:GetChildren()) do
                 if model:IsA("Model") then
@@ -49,14 +49,13 @@ local function highlightTwisteds()
                 end
             end
         end
+        if appliedHighlight then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Twisteds Enabled!"
+            })
+        end
         wait()
-    end
-
-    if appliedHighlight then
-        Rayfield:Notify({
-            Title = "Success!",
-            Content = "Dynamically Highlight Twisteds Enabled!"
-        })
     end
 end
 
