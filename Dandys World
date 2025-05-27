@@ -59,6 +59,7 @@ local function monitorTwisteds()
                                     local highlight = Instance.new("Highlight")
                                     highlight.FillColor = Color3.fromRGB(255, 0, 0)
                                     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Adornee = monster
                                     highlight.Parent = monster
                                 end
                             end
