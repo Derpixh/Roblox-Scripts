@@ -443,4 +443,58 @@ local skillCheckToggle = generatorsTab:CreateToggle({
     end
 })
 
+local skillCheckToggleWhite = generatorsTab:CreateToggle({
+    Name = "Dynamically Complete Skill Check (Always White)",
+    SectionParent = skillCheckSection,
+    CurrentValue = false,
+    Callback = function(value)
+        skillCheckEnabledWhite = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check (Always White) Enabled!",
+                Duration = 5
+            })
+            spawn(function()
+                while skillCheckEnabledWhite do
+                    local player = game.Players.LocalPlayer
+                    local playerGui = player:FindFirstChild("PlayerGui")
+                    if playerGui then
+                        local screenGui = playerGui:FindFirstChild("ScreenGui")
+                        if screenGui then
+                            local menuFrame = screenGui:FindFirstChild("Menu")
+                            if menuFrame then
+                                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                                if skillCheckFrame then
+                                    local marker = skillCheckFrame:FindFirstChild("Marker")
+                                    local requiredArea = skillCheckFrame:FindFirstChild("RequiredArea")
+                                    if marker and requiredArea then
+                                        local markerPos = marker.AbsolutePosition
+                                        local requiredAreaPos = requiredArea.AbsolutePosition
+                                        local requiredAreaSize = requiredArea.AbsoluteSize
+
+                                        if markerPos.X >= requiredAreaPos.X and markerPos.X <= (requiredAreaPos.X + requiredAreaSize.X) then
+                                            local virtualInputManager = game:GetService("VirtualInputManager")
+                                            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                                            wait()
+                                            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    wait()
+                end
+            end)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check (Always White) Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
