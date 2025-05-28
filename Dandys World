@@ -173,4 +173,70 @@ local itemsHighlightToggle = itemsTab:CreateToggle({
     end
 })
 
+local pickUpSection = itemsTab:CreateSection("Pick Up Items")
+
+local pickUpItemsEnabled = false
+
+local function monitorPickUpItems()
+    while pickUpItemsEnabled do
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local currentRoom = workspace:FindFirstChild("CurrentRoom")
+                if currentRoom then
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            local itemsFolder = model:FindFirstChild("Items")
+                            if itemsFolder then
+                                for _, item in ipairs(itemsFolder:GetChildren()) do
+                                    if item:IsA("Model") then
+                                        local promptPart = item:FindFirstChild("Prompt")
+                                        if promptPart then
+                                            local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                                            if proximityPrompt then
+                                                local distance = (humanoidRootPart.Position - promptPart.Position).Magnitude
+                                                if distance <= proximityPrompt.MaxActivationDistance then
+                                                    proximityPrompt:InputHoldBegin()
+                                                    wait()
+                                                    proximityPrompt:InputHoldEnd()
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local pickUpItemsToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Pick Up Items",
+    SectionParent = pickUpSection,
+    CurrentValue = false,
+    Callback = function(value)
+        pickUpItemsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Pick Up Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorPickUpItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Pick Up Items Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
