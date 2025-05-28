@@ -242,7 +242,7 @@ local pickUpItemsToggle = itemsTab:CreateToggle({
 local inventorySection = itemsTab:CreateSection("Inventory Items")
 
 local useInventoryItemsEnabled = false
-local validItems = { "Gumball", "Chocolate", "StaminaCandy", "StealthCandy", "SpeedCandy", "SkillCheckCandy", "ProteinBar", "Pop" }
+local validItems = { "Gumball", "Chocolate", "StaminaCandy", "StealthCandy", "SpeedCandy", "SkillCheckCandy", "ProteinBar", "Pop", "ExtractionSpeedCandy" }
 
 local function monitorInventoryItems()
     local player = game.Players.LocalPlayer
