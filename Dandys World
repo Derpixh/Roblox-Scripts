@@ -421,7 +421,7 @@ local function monitorSkillCheck()
 end
 
 local skillCheckToggle = generatorsTab:CreateToggle({
-    Name = "Dynamically Complete Skill Check",
+    Name = "Dynamically Complete Skill Check (Always Gold)",
     SectionParent = skillCheckSection,
     CurrentValue = false,
     Callback = function(value)
