@@ -82,14 +82,14 @@ local highlightToggle = twistedsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Twisteds Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(monitorTwisteds)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Twisteds Disabled!",
-                Duration = 5
+                Duration = 3
             })
             removeHighlights()
         end
@@ -159,14 +159,14 @@ local itemsHighlightToggle = itemsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Items Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(monitorItems)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Items Disabled!",
-                Duration = 5
+                Duration = 3
             })
             removeItemHighlights()
         end
@@ -226,14 +226,14 @@ local pickUpItemsToggle = itemsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Pick Up Items Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(monitorPickUpItems)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Pick Up Items Disabled!",
-                Duration = 5
+                Duration = 3
             })
         end
     end
@@ -291,14 +291,14 @@ local useInventoryItemsToggle = itemsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Use Inventory Items Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(monitorInventoryItems)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Use Inventory Items Disabled!",
-                Duration = 5
+                Duration = 3
             })
         end
     end
@@ -367,14 +367,14 @@ local generatorsHighlightToggle = generatorsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Generators Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(monitorGenerators)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Highlight Generators Disabled!",
-                Duration = 5
+                Duration = 3
             })
             removeGeneratorHighlights()
         end
@@ -429,15 +429,15 @@ local skillCheckToggle = generatorsTab:CreateToggle({
         if value then
             Rayfield:Notify({
                 Title = "Success!",
-                Content = "Dynamically Complete Skill Check Enabled!",
-                Duration = 5
+                Content = "Dynamically Complete Skill Check (Always Gold) Enabled!",
+                Duration = 3
             })
             spawn(monitorSkillCheck)
         else
             Rayfield:Notify({
                 Title = "Success!",
-                Content = "Dynamically Complete Skill Check Disabled!",
-                Duration = 5
+                Content = "Dynamically Complete Skill Check (Always Gold) Disabled!",
+                Duration = 3
             })
         end
     end
@@ -453,7 +453,7 @@ local skillCheckToggleWhite = generatorsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Complete Skill Check (Always White) Enabled!",
-                Duration = 5
+                Duration = 3
             })
             spawn(function()
                 while skillCheckEnabledWhite do
@@ -491,7 +491,7 @@ local skillCheckToggleWhite = generatorsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Dynamically Complete Skill Check (Always White) Disabled!",
-                Duration = 5
+                Duration = 3
             })
         end
     end
