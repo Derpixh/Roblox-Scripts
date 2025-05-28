@@ -381,4 +381,66 @@ local generatorsHighlightToggle = generatorsTab:CreateToggle({
     end
 })
 
+local skillCheckSection = generatorsTab:CreateSection("Skill Check")
+
+local skillCheckEnabled = false
+
+local function monitorSkillCheck()
+    local player = game.Players.LocalPlayer
+    local playerGui = player:FindFirstChild("PlayerGui")
+    if not playerGui then return end
+
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+    if not screenGui then return end
+
+    local menuFrame = screenGui:FindFirstChild("Menu")
+    if not menuFrame then return end
+
+    local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+    if not skillCheckFrame then return end
+
+    local marker = skillCheckFrame:FindFirstChild("Marker")
+    local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
+
+    local virtualInputManager = game:GetService("VirtualInputManager")
+
+    while skillCheckEnabled do
+        if marker and goldArea then
+            local markerPos = marker.AbsolutePosition
+            local goldAreaPos = goldArea.AbsolutePosition
+            local goldAreaSize = goldArea.AbsoluteSize
+
+            if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
+                virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                wait()
+                virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            end
+        end
+        wait()
+    end
+end
+
+local skillCheckToggle = generatorsTab:CreateToggle({
+    Name = "Dynamically Complete Skill Check",
+    SectionParent = skillCheckSection,
+    CurrentValue = false,
+    Callback = function(value)
+        skillCheckEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check Enabled!",
+                Duration = 5
+            })
+            spawn(monitorSkillCheck)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
