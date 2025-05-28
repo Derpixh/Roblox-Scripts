@@ -239,4 +239,69 @@ local pickUpItemsToggle = itemsTab:CreateToggle({
     end
 })
 
+local inventorySection = itemsTab:CreateSection("Inventory Items")
+
+local useInventoryItemsEnabled = false
+local validItems = { "Gumball" }
+
+local function monitorInventoryItems()
+    local player = game.Players.LocalPlayer
+    local playerModel = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(player.Name)
+    if not playerModel then return end
+
+    local inventoryFolder = playerModel:FindFirstChild("Inventory")
+    if not inventoryFolder then return end
+
+    local slot1 = inventoryFolder:FindFirstChild("Slot1")
+    local slot2 = inventoryFolder:FindFirstChild("Slot2")
+    local slot3 = inventoryFolder:FindFirstChild("Slot3")
+
+    local virtualInputManager = game:GetService("VirtualInputManager")
+
+    while useInventoryItemsEnabled do
+        if slot1 and table.find(validItems, slot1.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.One, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.One, false, game)
+        end
+
+        if slot2 and table.find(validItems, slot2.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
+        end
+
+        if slot3 and table.find(validItems, slot3.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Three, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Three, false, game)
+        end
+
+        wait()
+    end
+end
+
+local useInventoryItemsToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Use Inventory Items",
+    SectionParent = inventorySection,
+    CurrentValue = false,
+    Callback = function(value)
+        useInventoryItemsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Use Inventory Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorInventoryItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Use Inventory Items Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
