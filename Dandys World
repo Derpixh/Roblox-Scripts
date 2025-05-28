@@ -304,4 +304,81 @@ local useInventoryItemsToggle = itemsTab:CreateToggle({
     end
 })
 
+local generatorsTab = window:CreateTab("Generators")
+local espSection = generatorsTab:CreateSection("ESP")
+
+local generatorsHighlightEnabled = false
+
+local function removeGeneratorHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local generatorsFolder = model:FindFirstChild("Generators")
+                if generatorsFolder then
+                    for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                        if generator:IsA("Model") and generator.Name == "Generator" then
+                            local highlight = generator:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function monitorGenerators()
+    while generatorsHighlightEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local generatorsFolder = model:FindFirstChild("Generators")
+                    if generatorsFolder then
+                        for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                            if generator:IsA("Model") and generator.Name == "Generator" then
+                                if not generator:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(0, 255, 255) -- Cyan
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White
+                                    highlight.Adornee = generator
+                                    highlight.Parent = generator
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local generatorsHighlightToggle = generatorsTab:CreateToggle({
+    Name = "Dynamically Highlight Generators",
+    SectionParent = espSection,
+    CurrentValue = false,
+    Callback = function(value)
+        generatorsHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Generators Enabled!",
+                Duration = 5
+            })
+            spawn(monitorGenerators)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Generators Disabled!",
+                Duration = 5
+            })
+            removeGeneratorHighlights()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
