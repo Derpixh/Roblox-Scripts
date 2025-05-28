@@ -96,4 +96,81 @@ local highlightToggle = twistedsTab:CreateToggle({
     end
 })
 
+local itemsTab = window:CreateTab("Items")
+local espSection = itemsTab:CreateSection("ESP")
+
+local itemsHighlightEnabled = false
+
+local function removeItemHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local itemsFolder = model:FindFirstChild("Items")
+                if itemsFolder then
+                    for _, item in ipairs(itemsFolder:GetChildren()) do
+                        if item:IsA("Model") then
+                            local highlight = item:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function monitorItems()
+    while itemsHighlightEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local itemsFolder = model:FindFirstChild("Items")
+                    if itemsFolder then
+                        for _, item in ipairs(itemsFolder:GetChildren()) do
+                            if item:IsA("Model") then
+                                if not item:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Adornee = item
+                                    highlight.Parent = item
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local itemsHighlightToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Highlight Items",
+    SectionParent = espSection,
+    CurrentValue = false,
+    Callback = function(value)
+        itemsHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Items Disabled!",
+                Duration = 5
+            })
+            removeItemHighlights()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
