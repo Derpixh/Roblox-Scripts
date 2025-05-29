@@ -62,7 +62,9 @@ local messageInput = chatTab:CreateInput({
             [":joy:"] = "😂"
         }
 
-        text = emojiReplacements[text] or text
+        for code, emoji in pairs(emojiReplacements) do
+            text = text:gsub(code, emoji)
+        end
 
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
