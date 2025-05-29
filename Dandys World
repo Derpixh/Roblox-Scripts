@@ -497,4 +497,36 @@ local skillCheckToggleWhite = generatorsTab:CreateToggle({
     end
 })
 
+local playersTab = window:CreateTab("Players")
+local localPlayerSection = playersTab:CreateSection("LocalPlayer")
+
+local speedValue = 15
+local player = game.Players.LocalPlayer
+
+local function monitorSpeedChange()
+    while true do
+        local playerModel = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(player.Name)
+        if playerModel then
+            local humanoid = playerModel:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = speedValue
+            end
+        end
+        wait()
+    end
+end
+
+spawn(monitorSpeedChange)
+
+local speedSlider = playersTab:CreateSlider({
+    Name = "Change Speed",
+    SectionParent = localPlayerSection,
+    Min = 0,
+    Max = 100,
+    Default = 15,
+    Callback = function(value)
+        speedValue = value
+    end
+})
+
 Rayfield:LoadConfiguration()
