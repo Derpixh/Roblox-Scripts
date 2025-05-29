@@ -1,0 +1,47 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Chat Message Sender - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local chatTab = window:CreateTab("Chat")
+local chatSection = chatTab:CreateSection("Chat")
+
+local messageTextBox = chatTab:CreateTextBox({
+    Name = "Send Chat Message",
+    SectionParent = chatSection,
+    PlaceholderText = "Type a message...",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(text)
+        local TextChatService = game:GetService("TextChatService")
+        local chatChannel = TextChatService.TextChannels.RBXGeneral
+
+        if chatChannel then
+            chatChannel:SendAsync(text)
+        else
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local sayMessageEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):FindFirstChild("SayMessageRequest")
+
+            if sayMessageEvent then
+                sayMessageEvent:FireServer(text, "All")
+            end
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
