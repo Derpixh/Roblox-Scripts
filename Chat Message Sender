@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local window = Rayfield:CreateWindow({
-    Name = "Chat Message Sender - Alpha Hax",
+    Name = "Text Message - Alpha Hax",
     LoadingTitle = "Loading Assets..",
     LoadingSubtitle = "Created By Luxx",
     ConfigurationSaving = {
@@ -22,11 +22,12 @@ local window = Rayfield:CreateWindow({
 local chatTab = window:CreateTab("Chat")
 local chatSection = chatTab:CreateSection("Chat")
 
-local messageTextBox = chatTab:CreateTextBox({
+local messageInput = chatTab:CreateInput({
     Name = "Send Chat Message",
-    SectionParent = chatSection,
+    CurrentValue = "",
     PlaceholderText = "Type a message...",
     RemoveTextAfterFocusLost = false,
+    Flag = "Input1",
     Callback = function(text)
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
@@ -43,5 +44,7 @@ local messageTextBox = chatTab:CreateTextBox({
         end
     end
 })
+
+messageInput:Set("New Text")
 
 Rayfield:LoadConfiguration()
