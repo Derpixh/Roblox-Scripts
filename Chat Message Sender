@@ -29,6 +29,10 @@ local messageInput = chatTab:CreateInput({
     RemoveTextAfterFocusLost = false,
     Flag = "Input1",
     Callback = function(text)
+        if text == ":skull:" then
+            text = "💀"
+        end
+
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
 
@@ -44,5 +48,3 @@ local messageInput = chatTab:CreateInput({
         end
     end
 })
-
-Rayfield:LoadConfiguration()
