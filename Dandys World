@@ -521,17 +521,14 @@ local speedSlider = playersTab:CreateSlider({
     SectionParent = localPlayerSection,
     Min = 0,
     Max = 100,
-    Default = 15,
+    Default = 1,
     Callback = function(value)
-        speedValue = value
-        speedSlider:Set(value)
-        local playerModel = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(player.Name)
-        if playerModel then
-            local humanoid = playerModel:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.WalkSpeed = speedValue
-            end
+        if value == 0 then
+            speedValue = 15
+        else
+            speedValue = value
         end
+        speedSlider:Set(1)
     end
 })
 
