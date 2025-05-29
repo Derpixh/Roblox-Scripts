@@ -59,7 +59,8 @@ local messageInput = chatTab:CreateInput({
             [":robot:"] = "🤖",
             [":beaming_face:"] = "😁",
             [":slightly_smiling:"] = "🙂",
-            [":joy:"] = "😂"
+            [":joy:"] = "😂",
+            [":wilted_flower:"] = "🥀"
         }
 
         for code, emoji in pairs(emojiReplacements) do
