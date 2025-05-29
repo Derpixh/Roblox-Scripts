@@ -29,9 +29,12 @@ local messageInput = chatTab:CreateInput({
     RemoveTextAfterFocusLost = false,
     Flag = "Input1",
     Callback = function(text)
-        if text == ":skull:" then
-            text = "💀"
-        end
+        local emojiReplacements = {
+            [":skull:"] = "💀",
+            [":exploding_head:"] = "🤯"
+        }
+
+        text = emojiReplacements[text] or text
 
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
