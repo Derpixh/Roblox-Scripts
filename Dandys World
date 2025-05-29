@@ -526,6 +526,7 @@ local speedSlider = playersTab:CreateSlider({
     Default = 15,
     Callback = function(value)
         speedValue = value
+        speedSlider:Set(value)
     end
 })
 
