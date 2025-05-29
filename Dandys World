@@ -516,8 +516,6 @@ local function monitorSpeedChange()
     end
 end
 
-spawn(monitorSpeedChange)
-
 local speedSlider = playersTab:CreateSlider({
     Name = "Change Speed",
     SectionParent = localPlayerSection,
@@ -527,7 +525,16 @@ local speedSlider = playersTab:CreateSlider({
     Callback = function(value)
         speedValue = value
         speedSlider:Set(value)
+        local playerModel = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(player.Name)
+        if playerModel then
+            local humanoid = playerModel:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = speedValue
+            end
+        end
     end
 })
+
+spawn(monitorSpeedChange)
 
 Rayfield:LoadConfiguration()
