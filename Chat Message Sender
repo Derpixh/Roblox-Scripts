@@ -62,19 +62,22 @@ local messageInput = chatTab:CreateInput({
             [":joy:"] = "😂"
         }
 
-        text = emojiReplacements[text] or text
+        local formattedText = text
+        for code, emoji in pairs(emojiReplacements) do
+            formattedText = formattedText:gsub(code, emoji)
+        end
 
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
 
         if chatChannel then
-            chatChannel:SendAsync(text)
+            chatChannel:SendAsync(formattedText)
         else
             local ReplicatedStorage = game:GetService("ReplicatedStorage")
             local sayMessageEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):FindFirstChild("SayMessageRequest")
 
             if sayMessageEvent then
-                sayMessageEvent:FireServer(text, "All")
+                sayMessageEvent:FireServer(formattedText, "All")
             end
         end
     end
