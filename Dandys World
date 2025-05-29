@@ -19,65 +19,482 @@ local window = Rayfield:CreateWindow({
     }
 })
 
-local chatTab = window:CreateTab("Chat")
-local chatSection = chatTab:CreateSection("Chat")
+local twistedsTab = window:CreateTab("Twisteds")
+local twistedsSection = twistedsTab:CreateSection("Twisteds")
 
-local messageInput = chatTab:CreateInput({
-    Name = "Send Chat Message",
-    CurrentValue = "",
-    PlaceholderText = "Type a message...",
-    RemoveTextAfterFocusLost = false,
-    Flag = "Input1",
-    Callback = function(text)
-        local emojiReplacements = {
-            [":skull:"] = "💀",
-            [":exploding_head:"] = "🤯",
-            [":nerd:"] = "🤓",
-            [":thinking:"] = "🤔",
-            [":x:"] = "❌",
-            [":moai:"] = "🗿",
-            [":smiling_imp:"] = "😈",
-            [":clown:"] = "🤡",
-            [":broken_heart:"] = "💔",
-            [":cap:"] = "🧢",
-            [":fire:"] = "🔥",
-            [":sunglasses:"] = "😎",
-            [":cold_face:"] = "🥶",
-            [":eyes:"] = "👀",
-            [":sob:"] = "😭",
-            [":cry:"] = "😢",
-            [":pray:"] = "🙏",
-            [":heart:"] = "❤️",
-            [":shush:"] = "🤫",
-            [":rat:"] = "🐀",
-            [":raised_eyebrow:"] = "🤨",
-            [":check_mark:"] = "✅",
-            [":stuck_out_tounge:"] = "😛",
-            [":poop:"] = "💩",
-            [":money_face:"] = "🤑",
-            [":angry:"] = "😠",
-            [":robot:"] = "🤖",
-            [":beaming_face:"] = "😁",
-            [":slightly_smiling:"] = "🙂",
-            [":joy:"] = "😂"
-        }
+local highlightToggleEnabled = false
 
-        for code, emoji in pairs(emojiReplacements) do
-            text = text:gsub(code, emoji)
-        end
-
-        local TextChatService = game:GetService("TextChatService")
-        local chatChannel = TextChatService.TextChannels.RBXGeneral
-
-        if chatChannel then
-            chatChannel:SendAsync(text)
-        else
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local sayMessageEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):FindFirstChild("SayMessageRequest")
-
-            if sayMessageEvent then
-                sayMessageEvent:FireServer(text, "All")
+local function removeHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local monstersFolder = model:FindFirstChild("Monsters")
+                if monstersFolder then
+                    for _, monster in ipairs(monstersFolder:GetChildren()) do
+                        if monster:IsA("Model") then
+                            local highlight = monster:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
             end
         end
     end
+end
+
+local function monitorTwisteds()
+    while highlightToggleEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local monstersFolder = model:FindFirstChild("Monsters")
+                    if monstersFolder then
+                        for _, monster in ipairs(monstersFolder:GetChildren()) do
+                            if monster:IsA("Model") then
+                                if not monster:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Adornee = monster
+                                    highlight.Parent = monster
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local highlightToggle = twistedsTab:CreateToggle({
+    Name = "Dynamically Highlight Twisteds",
+    SectionParent = twistedsSection,
+    CurrentValue = false,
+    Callback = function(value)
+        highlightToggleEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Twisteds Enabled!",
+                Duration = 5
+            })
+            spawn(monitorTwisteds)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Twisteds Disabled!",
+                Duration = 5
+            })
+            removeHighlights()
+        end
+    end
 })
+
+local itemsTab = window:CreateTab("Items")
+local espSection = itemsTab:CreateSection("ESP")
+
+local itemsHighlightEnabled = false
+
+local function removeItemHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local itemsFolder = model:FindFirstChild("Items")
+                if itemsFolder then
+                    for _, item in ipairs(itemsFolder:GetChildren()) do
+                        if item:IsA("Model") then
+                            local highlight = item:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function monitorItems()
+    while itemsHighlightEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local itemsFolder = model:FindFirstChild("Items")
+                    if itemsFolder then
+                        for _, item in ipairs(itemsFolder:GetChildren()) do
+                            if item:IsA("Model") then
+                                if not item:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                    highlight.Adornee = item
+                                    highlight.Parent = item
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local itemsHighlightToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Highlight Items",
+    SectionParent = espSection,
+    CurrentValue = false,
+    Callback = function(value)
+        itemsHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Items Disabled!",
+                Duration = 5
+            })
+            removeItemHighlights()
+        end
+    end
+})
+
+local pickUpSection = itemsTab:CreateSection("Pick Up Items")
+
+local pickUpItemsEnabled = false
+
+local function monitorPickUpItems()
+    while pickUpItemsEnabled do
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local currentRoom = workspace:FindFirstChild("CurrentRoom")
+                if currentRoom then
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            local itemsFolder = model:FindFirstChild("Items")
+                            if itemsFolder then
+                                for _, item in ipairs(itemsFolder:GetChildren()) do
+                                    if item:IsA("Model") then
+                                        local promptPart = item:FindFirstChild("Prompt")
+                                        if promptPart then
+                                            local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                                            if proximityPrompt then
+                                                local distance = (humanoidRootPart.Position - promptPart.Position).Magnitude
+                                                if distance <= proximityPrompt.MaxActivationDistance then
+                                                    proximityPrompt:InputHoldBegin()
+                                                    wait()
+                                                    proximityPrompt:InputHoldEnd()
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local pickUpItemsToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Pick Up Items",
+    SectionParent = pickUpSection,
+    CurrentValue = false,
+    Callback = function(value)
+        pickUpItemsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Pick Up Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorPickUpItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Pick Up Items Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
+local inventorySection = itemsTab:CreateSection("Inventory Items")
+
+local useInventoryItemsEnabled = false
+local validItems = { "Gumball", "Chocolate", "StaminaCandy", "StealthCandy", "SpeedCandy", "SkillCheckCandy", "ProteinBar", "Pop", "ExtractionSpeedCandy" }
+
+local function monitorInventoryItems()
+    local player = game.Players.LocalPlayer
+    local playerModel = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(player.Name)
+    if not playerModel then return end
+
+    local inventoryFolder = playerModel:FindFirstChild("Inventory")
+    if not inventoryFolder then return end
+
+    local slot1 = inventoryFolder:FindFirstChild("Slot1")
+    local slot2 = inventoryFolder:FindFirstChild("Slot2")
+    local slot3 = inventoryFolder:FindFirstChild("Slot3")
+
+    local virtualInputManager = game:GetService("VirtualInputManager")
+
+    while useInventoryItemsEnabled do
+        if slot1 and table.find(validItems, slot1.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.One, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.One, false, game)
+        end
+
+        if slot2 and table.find(validItems, slot2.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
+        end
+
+        if slot3 and table.find(validItems, slot3.Value) then
+            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Three, false, game)
+            wait()
+            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Three, false, game)
+        end
+
+        wait()
+    end
+end
+
+local useInventoryItemsToggle = itemsTab:CreateToggle({
+    Name = "Dynamically Use Inventory Items",
+    SectionParent = inventorySection,
+    CurrentValue = false,
+    Callback = function(value)
+        useInventoryItemsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Use Inventory Items Enabled!",
+                Duration = 5
+            })
+            spawn(monitorInventoryItems)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Use Inventory Items Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
+local generatorsTab = window:CreateTab("Generators")
+local espSection = generatorsTab:CreateSection("ESP")
+
+local generatorsHighlightEnabled = false
+
+local function removeGeneratorHighlights()
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if currentRoom then
+        for _, model in ipairs(currentRoom:GetChildren()) do
+            if model:IsA("Model") then
+                local generatorsFolder = model:FindFirstChild("Generators")
+                if generatorsFolder then
+                    for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                        if generator:IsA("Model") and generator.Name == "Generator" then
+                            local highlight = generator:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function monitorGenerators()
+    while generatorsHighlightEnabled do
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, model in ipairs(currentRoom:GetChildren()) do
+                if model:IsA("Model") then
+                    local generatorsFolder = model:FindFirstChild("Generators")
+                    if generatorsFolder then
+                        for _, generator in ipairs(generatorsFolder:GetChildren()) do
+                            if generator:IsA("Model") and generator.Name == "Generator" then
+                                if not generator:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.FillColor = Color3.fromRGB(0, 255, 255) -- Cyan
+                                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White
+                                    highlight.Adornee = generator
+                                    highlight.Parent = generator
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local generatorsHighlightToggle = generatorsTab:CreateToggle({
+    Name = "Dynamically Highlight Generators",
+    SectionParent = espSection,
+    CurrentValue = false,
+    Callback = function(value)
+        generatorsHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Generators Enabled!",
+                Duration = 5
+            })
+            spawn(monitorGenerators)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Highlight Generators Disabled!",
+                Duration = 5
+            })
+            removeGeneratorHighlights()
+        end
+    end
+})
+
+local skillCheckSection = generatorsTab:CreateSection("Skill Check")
+
+local skillCheckEnabled = false
+
+local function monitorSkillCheck()
+    local player = game.Players.LocalPlayer
+    local playerGui = player:FindFirstChild("PlayerGui")
+    if not playerGui then return end
+
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+    if not screenGui then return end
+
+    local menuFrame = screenGui:FindFirstChild("Menu")
+    if not menuFrame then return end
+
+    local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+    if not skillCheckFrame then return end
+
+    local marker = skillCheckFrame:FindFirstChild("Marker")
+    local goldArea = skillCheckFrame:FindFirstChild("GoldArea")
+
+    local virtualInputManager = game:GetService("VirtualInputManager")
+
+    while skillCheckEnabled do
+        if marker and goldArea then
+            local markerPos = marker.AbsolutePosition
+            local goldAreaPos = goldArea.AbsolutePosition
+            local goldAreaSize = goldArea.AbsoluteSize
+
+            if markerPos.X >= goldAreaPos.X and markerPos.X <= (goldAreaPos.X + goldAreaSize.X) then
+                virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                wait()
+                virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            end
+        end
+        wait()
+    end
+end
+
+local skillCheckToggle = generatorsTab:CreateToggle({
+    Name = "Dynamically Complete Skill Check (Always Gold)",
+    SectionParent = skillCheckSection,
+    CurrentValue = false,
+    Callback = function(value)
+        skillCheckEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check Enabled!",
+                Duration = 5
+            })
+            spawn(monitorSkillCheck)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
+local skillCheckToggleWhite = generatorsTab:CreateToggle({
+    Name = "Dynamically Complete Skill Check (Always White)",
+    SectionParent = skillCheckSection,
+    CurrentValue = false,
+    Callback = function(value)
+        skillCheckEnabledWhite = value
+        if value then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check (Always White) Enabled!",
+                Duration = 5
+            })
+            spawn(function()
+                while skillCheckEnabledWhite do
+                    local player = game.Players.LocalPlayer
+                    local playerGui = player:FindFirstChild("PlayerGui")
+                    if playerGui then
+                        local screenGui = playerGui:FindFirstChild("ScreenGui")
+                        if screenGui then
+                            local menuFrame = screenGui:FindFirstChild("Menu")
+                            if menuFrame then
+                                local skillCheckFrame = menuFrame:FindFirstChild("SkillCheckFrame")
+                                if skillCheckFrame then
+                                    local marker = skillCheckFrame:FindFirstChild("Marker")
+                                    local requiredArea = skillCheckFrame:FindFirstChild("RequiredArea")
+                                    if marker and requiredArea then
+                                        local markerPos = marker.AbsolutePosition
+                                        local requiredAreaPos = requiredArea.AbsolutePosition
+                                        local requiredAreaSize = requiredArea.AbsoluteSize
+
+                                        if markerPos.X >= requiredAreaPos.X and markerPos.X <= (requiredAreaPos.X + requiredAreaSize.X) then
+                                            local virtualInputManager = game:GetService("VirtualInputManager")
+                                            virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                                            wait()
+                                            virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    wait()
+                end
+            end)
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Dynamically Complete Skill Check (Always White) Disabled!",
+                Duration = 5
+            })
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
