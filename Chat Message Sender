@@ -1,6 +1,4 @@
-local HttpService = game:GetService("HttpService")
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
 local window = Rayfield:CreateWindow({
     Name = "Text Message - Alpha Hax",
     LoadingTitle = "Loading Assets..",
@@ -22,21 +20,6 @@ local window = Rayfield:CreateWindow({
 
 local chatTab = window:CreateTab("Chat")
 local chatSection = chatTab:CreateSection("Chat")
-
-local function checkGrammar(text)
-    local url = "https://api.languagetool.org/v2/check"
-    local data = { text = text, language = "en" }
-    local response = HttpService:PostAsync(url, HttpService:JSONEncode(data), Enum.HttpContentType.ApplicationJson)
-    local result = HttpService:JSONDecode(response)
-
-    if result.matches and #result.matches > 0 then
-        for _, match in ipairs(result.matches) do
-            text = text:gsub(match.context.text, match.replacements[1].value)
-        end
-    end
-
-    return text
-end
 
 local messageInput = chatTab:CreateInput({
     Name = "Send Chat Message",
@@ -83,8 +66,6 @@ local messageInput = chatTab:CreateInput({
             text = text:gsub(code, emoji)
         end
 
-        text = checkGrammar(text)
-
         local TextChatService = game:GetService("TextChatService")
         local chatChannel = TextChatService.TextChannels.RBXGeneral
 
@@ -93,7 +74,6 @@ local messageInput = chatTab:CreateInput({
         else
             local ReplicatedStorage = game:GetService("ReplicatedStorage")
             local sayMessageEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):FindFirstChild("SayMessageRequest")
-
             if sayMessageEvent then
                 sayMessageEvent:FireServer(text, "All")
             end
