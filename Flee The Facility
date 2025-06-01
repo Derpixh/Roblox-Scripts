@@ -26,14 +26,18 @@ local highlightEnabled = false
 
 local function highlightComputers()
     while highlightEnabled do
-        for _, model in ipairs(workspace:GetChildren()) do
-            if model:IsA("Model") and model.Name == "ComputerTable" then
-                if not model:FindFirstChildOfClass("Highlight") then
-                    local highlight = Instance.new("Highlight")
-                    highlight.FillColor = Color3.fromRGB(0, 255, 255) -- Cyan
-                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White
-                    highlight.Adornee = model
-                    highlight.Parent = model
+        for _, parentModel in ipairs(workspace:GetChildren()) do
+            if parentModel:IsA("Model") then
+                for _, model in ipairs(parentModel:GetChildren()) do
+                    if model:IsA("Model") and model.Name == "ComputerTable" then
+                        if not model:FindFirstChildOfClass("Highlight") then
+                            local highlight = Instance.new("Highlight")
+                            highlight.FillColor = Color3.fromRGB(0, 255, 255)
+                            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                            highlight.Adornee = model
+                            highlight.Parent = model
+                        end
+                    end
                 end
             end
         end
@@ -42,11 +46,15 @@ local function highlightComputers()
 end
 
 local function removeHighlights()
-    for _, model in ipairs(workspace:GetChildren()) do
-        if model:IsA("Model") and model.Name == "ComputerTable" then
-            local highlight = model:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
+    for _, parentModel in ipairs(workspace:GetChildren()) do
+        if parentModel:IsA("Model") then
+            for _, model in ipairs(parentModel:GetChildren()) do
+                if model:IsA("Model") and model.Name == "ComputerTable" then
+                    local highlight = model:FindFirstChildOfClass("Highlight")
+                    if highlight then
+                        highlight:Destroy()
+                    end
+                end
             end
         end
     end
