@@ -74,4 +74,49 @@ computersTab:CreateToggle({
     end
 })
 
+local circleSection = computersTab:CreateSection("Circle")
+
+local autoCircleCheckEnabled = false
+
+local function autoCircleCheck()
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    local player = game.Players.LocalPlayer
+    while autoCircleCheckEnabled do
+        local playerGui = player:FindFirstChild("PlayerGui")
+        if playerGui then
+            local screenGui = playerGui:FindFirstChild("ScreenGui")
+            if screenGui then
+                local timingCircle = screenGui:FindFirstChild("TimingCircle")
+                if timingCircle then
+                    local timingBase = timingCircle:FindFirstChild("TimingBase")
+                    local timingPin = timingCircle:FindFirstChild("TimingPin")
+                    if timingBase and timingPin then
+                        if timingPin.Position == timingBase.Position then
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                            wait(0.1)
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+                        end
+                    end
+                end
+            end
+        end
+        wait()
+    end
+end
+
+computersTab:CreateToggle({
+    Name = "Auto Complete Circle Check",
+    SectionParent = circleSection,
+    CurrentValue = false,
+    Callback = function(value)
+        autoCircleCheckEnabled = value
+        if value then
+            Rayfield:Notify({Title = "Success!", Content = "Auto Complete Circle Check Enabled!", Duration = 3})
+            spawn(autoCircleCheck)
+        else
+            Rayfield:Notify({Title = "Success!", Content = "Auto Complete Circle Check Disabled!", Duration = 3})
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
