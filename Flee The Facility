@@ -29,7 +29,8 @@ local function highlightComputers()
         local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or 
                     workspace:FindFirstChild("Arctic Station by CodedAbyss") or 
                     workspace:FindFirstChild("Homestead by MrWindy") or 
-                    workspace:FindFirstChild("Arcade by D4niel_Foxy")
+                    workspace:FindFirstChild("Arcade by D4niel_Foxy") or
+                    workspace:FindFirstChild("Nuclear Power Plant by SonicUnkn0wn and posyonose")
 
         if map then
             for _, model in ipairs(map:GetChildren()) do
@@ -52,7 +53,8 @@ local function removeHighlights()
     local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or 
                 workspace:FindFirstChild("Arctic Station by CodedAbyss") or 
                 workspace:FindFirstChild("Homestead by MrWindy") or 
-                workspace:FindFirstChild("Arcade by D4niel_Foxy")
+                workspace:FindFirstChild("Arcade by D4niel_Foxy") or
+                workspace:FindFirstChild("Nuclear Power Plant by SonicUnkn0wn and posyonose")
 
     if map then
         for _, model in ipairs(map:GetChildren()) do
