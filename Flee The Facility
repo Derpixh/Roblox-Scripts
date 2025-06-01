@@ -26,7 +26,7 @@ local highlightEnabled = false
 
 local function highlightComputers()
     while highlightEnabled do
-        local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or workspace:FindFirstChild("Arctic Station by CodedAbyss")
+        local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or workspace:FindFirstChild("Arctic Station by CodedAbyss") or workspace:FindFirstChild("Homestead by MrWindy")
         if map then
             for _, model in ipairs(map:GetChildren()) do
                 if model:IsA("Model") and model.Name == "ComputerTable" then
@@ -40,12 +40,12 @@ local function highlightComputers()
                 end
             end
         end
-        task.wait(0.5)
+        wait()
     end
 end
 
 local function removeHighlights()
-    local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or workspace:FindFirstChild("Arctic Station by CodedAbyss")
+    local map = workspace:FindFirstChild("Sewer Treatment Plant by Jackz0_o") or workspace:FindFirstChild("Arctic Station by CodedAbyss") or workspace:FindFirstChild("Homestead by MrWindy")
     if map then
         for _, model in ipairs(map:GetChildren()) do
             if model:IsA("Model") and model.Name == "ComputerTable" then
