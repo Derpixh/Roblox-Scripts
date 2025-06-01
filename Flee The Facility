@@ -1,0 +1,71 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Flee The Facility - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local computersTab = window:CreateTab("Computers")
+local espSection = computersTab:CreateSection("ESP")
+
+local highlightEnabled = false
+
+local function highlightComputers()
+    while highlightEnabled do
+        for _, model in ipairs(workspace:GetChildren()) do
+            if model:IsA("Model") and model.Name == "ComputerTable" then
+                if not model:FindFirstChildOfClass("Highlight") then
+                    local highlight = Instance.new("Highlight")
+                    highlight.FillColor = Color3.fromRGB(0, 255, 255) -- Cyan
+                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White
+                    highlight.Adornee = model
+                    highlight.Parent = model
+                end
+            end
+        end
+        wait()
+    end
+end
+
+local function removeHighlights()
+    for _, model in ipairs(workspace:GetChildren()) do
+        if model:IsA("Model") and model.Name == "ComputerTable" then
+            local highlight = model:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+        end
+    end
+end
+
+computersTab:CreateToggle({
+    Name = "Highlight Computers",
+    SectionParent = espSection,
+    CurrentValue = false,
+    Callback = function(value)
+        highlightEnabled = value
+        if value then
+            Rayfield:Notify({Title = "Success!", Content = "Highlight Computers Enabled!", Duration = 3})
+            spawn(highlightComputers)
+        else
+            Rayfield:Notify({Title = "Success!", Content = "Highlight Computers Disabled!", Duration = 3})
+            removeHighlights()
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
