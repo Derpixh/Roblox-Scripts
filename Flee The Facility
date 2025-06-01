@@ -30,17 +30,17 @@ local function highlightComputers()
         if map then
             for _, model in ipairs(map:GetChildren()) do
                 if model:IsA("Model") and model.Name == "ComputerTable" then
-                    if not model:FindFirstChildOfClass("Highlight") then
+                    if not model:FindFirstChild("Highlight") then
                         local highlight = Instance.new("Highlight")
                         highlight.FillColor = Color3.fromRGB(0, 255, 255)
                         highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                        highlight.Adornee = model
                         highlight.Parent = model
+                        highlight.Adornee = model
                     end
                 end
             end
         end
-        wait()
+        task.wait(0.5)
     end
 end
 
@@ -49,7 +49,7 @@ local function removeHighlights()
     if map then
         for _, model in ipairs(map:GetChildren()) do
             if model:IsA("Model") and model.Name == "ComputerTable" then
-                local highlight = model:FindFirstChildOfClass("Highlight")
+                local highlight = model:FindFirstChild("Highlight")
                 if highlight then
                     highlight:Destroy()
                 end
