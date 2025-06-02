@@ -97,25 +97,28 @@ local autoCircleCheckEnabled = false
 local function autoCircleCheck()
     local VirtualInputManager = game:GetService("VirtualInputManager")
     local player = game.Players.LocalPlayer
-    local playerGui = player:FindFirstChild("PlayerGui")
-
-    if playerGui then
-        local screenGui = playerGui:FindFirstChild("ScreenGui")
-        if screenGui then
-            local timingCircle = screenGui:FindFirstChild("TimingCircle")
-            if timingCircle then
-                local timingBase = timingCircle:FindFirstChild("TimingBase")
-                local timingPin = timingCircle:FindFirstChild("TimingPin")
-                
-                if timingBase and timingPin then
-                    if timingPin.Position == timingBase.Position then
-                        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-                        wait()
-                        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+    
+    while autoCircleCheckEnabled do
+        local playerGui = player:FindFirstChild("PlayerGui")
+        if playerGui then
+            local screenGui = playerGui:FindFirstChild("ScreenGui")
+            if screenGui then
+                local timingCircle = screenGui:FindFirstChild("TimingCircle")
+                if timingCircle then
+                    local timingBase = timingCircle:FindFirstChild("TimingBase")
+                    local timingPin = timingCircle:FindFirstChild("TimingPin")
+                    
+                    if timingBase and timingPin then
+                        if timingPin.Position.X == timingBase.Position.X then
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                            wait()
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+                        end
                     end
                 end
             end
         end
+        wait()
     end
 end
 
@@ -127,9 +130,10 @@ computersTab:CreateToggle({
         autoCircleCheckEnabled = value
         if value then
             Rayfield:Notify({Title = "Success!", Content = "Auto Complete Circle Check Enabled!", Duration = 3})
-            autoCircleCheck()
+            spawn(autoCircleCheck)
         else
             Rayfield:Notify({Title = "Success!", Content = "Auto Complete Circle Check Disabled!", Duration = 3})
+            autoCircleCheckEnabled = false
         end
     end
 })
