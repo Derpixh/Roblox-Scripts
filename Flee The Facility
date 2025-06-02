@@ -107,9 +107,9 @@ local function autoCircleCheck()
                 if timingCircle then
                     local timingBase = timingCircle:FindFirstChild("TimingBase")
                     local timingPin = timingCircle:FindFirstChild("TimingPin")
-                    
+
                     if timingBase and timingPin then
-                        if math.abs(timingPin.AbsoluteRotation - timingBase.AbsolutePosition.X) < 1 then
+                        if timingPin.AbsoluteRotation == timingBase.AbsoluteSize.X then
                             VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
                             wait()
                             VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
