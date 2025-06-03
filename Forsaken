@@ -23,6 +23,7 @@ local generatorsTab = window:CreateTab("Generators")
 local completeSection = generatorsTab:CreateSection("Complete")
 
 local autoCompleteActive = false
+
 local PROXIMITY_DISTANCE = 15
 
 local Players = game:GetService("Players")
@@ -37,7 +38,7 @@ local function getAllGenerators()
 
     for _, obj in ipairs(mapFolder:GetChildren()) do
         if obj:IsA("Model") and obj.Name == "Generator" then
-            local remotes = obj:WaitForChild("Remotes", 2)
+            local remotes = obj:FindFirstChild("Remotes")
             local remoteEvent = remotes and remotes:FindFirstChild("RE")
             if remoteEvent and remoteEvent:IsA("RemoteEvent") then
                 table.insert(generatorModels, {
@@ -81,15 +82,8 @@ local function autoCompleteGenerators()
         if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
             local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
             if nearestGen then
-                local pathToRemote = workspace:WaitForChild("Map")
-                    :WaitForChild("Ingame")
-                    :WaitForChild("Map")
-                    :FindFirstChild(nearestGen.model.Name)
-                    :WaitForChild("Remotes")
-                    :WaitForChild("RE")
-
-                pathToRemote:FireServer()
-                wait(0.5)
+                nearestGen.remote:FireServer()
+                wait(1)
             end
         end
     end
@@ -106,7 +100,7 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
                 Title = "Success!",
                 Content = "Auto Complete Generators Enabled!"
             })
-            autoCompleteGenerators()
+            task.spawn(autoCompleteGenerators)
         else
             Rayfield:Notify({
                 Title = "Success!",
@@ -115,3 +109,5 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
         end
     end
 })
+
+Rayfield:LoadConfiguration()
