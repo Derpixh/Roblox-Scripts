@@ -1,107 +1,75 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local PROXIMITY_DISTANCE = 15
 
-local window = Rayfield:CreateWindow({
-    Name = "Forsaken - Alpha Hax",
-    LoadingTitle = "Loading Assets..",
-    LoadingSubtitle = "Created By Luxx",
-    ConfigurationSaving = {
-        Enabled = false,
-        FileName = "Sirius"
-    },
-    KeySystem = true,
-    KeySettings = {
-        Title = "Luxx's Key System",
-        Subtitle = "Enter Your Key",
-        Note = "Rate The Features",
-        FileName = "Sirius",
-        SaveKey = false,
-        Key = "2025"
-    }
-})
+local Players = game:GetService("Players")
 
-local generatorsTab = window:CreateTab("Generators")
-local completeSection = generatorsTab:CreateSection("Complete")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local playerGui = player:WaitForChild("PlayerGui")
 
-local autoCompleteActive = false
+local map = workspace:WaitForChild("Map")
+local ingame = map:WaitForChild("Ingame")
 
-local function getNoobModel()
-    local playersFolder = workspace:FindFirstChild("Players")
-    if not playersFolder then return nil end
-
-    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
-    if not survivorsFolder then return nil end
-
-    return survivorsFolder:FindFirstChild("Noob")
+local function getMainModel()
+	for _, obj in ipairs(ingame:GetChildren()) do
+		if obj:IsA("Model") then
+			return obj
+		end
+	end
 end
 
-local function getNearestGenerator(playerModel)
-    if not playerModel then return nil end
-
-    local mapFolder = workspace:FindFirstChild("Map")
-    if not mapFolder then return nil end
-
-    local ingameFolder = mapFolder:FindFirstChild("Ingame")
-    if not ingameFolder then return nil end
-
-    local nearestGenerator = nil
-    local shortestDistance = math.huge
-    local playerPosition = playerModel:FindFirstChild("HumanoidRootPart") and playerModel.HumanoidRootPart.Position
-
-    for _, generator in ipairs(ingameFolder:GetChildren()) do
-        if generator:IsA("Model") and generator.Name == "Generator" then
-            local generatorPosition = generator:GetModelCFrame().Position
-            local distance = (generatorPosition - playerPosition).Magnitude
-
-            if distance < shortestDistance then
-                shortestDistance = distance
-                nearestGenerator = generator
-            end
-        end
-    end
-
-    return nearestGenerator
+local function getGenerators(mainModel)
+	local generators = {}
+	for _, gen in ipairs(mainModel:GetChildren()) do
+		if gen:IsA("Model") and gen.Name == "Generator" then
+			local remotes = gen:FindFirstChild("Remotes")
+			local remoteEvent = remotes and remotes:FindFirstChild("RE")
+			if remoteEvent and remoteEvent:IsA("RemoteEvent") then
+				table.insert(generators, {
+					model = gen,
+					remote = remoteEvent
+				})
+			end
+		end
+	end
+	return generators
 end
 
-local function autoCompleteGenerators()
-    while autoCompleteActive do
-        wait()
-        local playerModel = getNoobModel()
-        local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-        if not playerModel or not playerGui then continue end
+local function getNearestGenerator(generators, position)
+	local nearest = nil
+	local shortestDistance = math.huge
 
-        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-        local nearestGenerator = getNearestGenerator(playerModel)
+	for _, data in ipairs(generators) do
+		local genPos = data.model:GetModelCFrame().Position
+		local distance = (genPos - position).Magnitude
 
-        if nearestGenerator and puzzleUI and puzzleUI.Visible then
-            local remotesFolder = nearestGenerator:FindFirstChild("Remotes")
-            if remotesFolder then
-                local remoteEvent = remotesFolder:FindFirstChild("RE")
-                if remoteEvent then
-                    remoteEvent:FireServer()
-                    repeat wait() until not puzzleUI.Visible
-                end
-            end
-        end
-    end
+		if distance < shortestDistance then
+			shortestDistance = distance
+			nearest = data
+		end
+	end
+
+	if nearest and shortestDistance <= PROXIMITY_DISTANCE then
+		return nearest
+	end
+
+	return nil
 end
 
-local autoCompleteToggle = generatorsTab:CreateToggle({
-    Name = "Auto Complete Generators",
-    CurrentValue = false,
-    SectionParent = completeSection,
-    Callback = function(state)
-        autoCompleteActive = state
-        if state then
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Auto Complete Generators Enabled!"
-            })
-            autoCompleteGenerators()
-        else
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Auto Complete Generators Disabled!"
-            })
-        end
-    end
-})
+local mainModel = getMainModel()
+local generators = mainModel and getGenerators(mainModel) or {}
+
+task.spawn(function()
+	while true do
+		wait()
+
+		local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+		if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
+			local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
+			if nearestGen then
+				nearestGen.remote:FireServer()
+				wait(1)
+			end
+		end
+	end
+end)
