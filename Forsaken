@@ -54,14 +54,14 @@ local function monitorPuzzleUI()
     while connection do
         local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
 
-        while puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled do
+        repeat
             local nearestGen = getNearestGenerator()
             if nearestGen then
                 nearestGen:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
             end
             wait(1)
             puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-        end
+        until not (puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled)
 
         wait()
     end
