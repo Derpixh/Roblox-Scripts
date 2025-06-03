@@ -54,7 +54,7 @@ local function autoCompleteGenerators()
     end
 end
 
-local autoCompleteToggle = completeSection:CreateToggle({
+local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
     SectionParent = completeSection,
