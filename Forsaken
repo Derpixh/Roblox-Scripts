@@ -62,43 +62,24 @@ local function getNearestGenerator(generators, position)
 end
 
 local generators = getAllGenerators()
-local active = false
 
-local autoCompleteToggle = generatorsTab:CreateToggle({
+generatorsTab:CreateButton({
     Name = "Auto Complete Generators",
-    CurrentValue = false,
-    SectionParent = autoCompleteSection,
-    Callback = function(state)
-        active = state
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Success!",
+            Content = "Auto Complete Generators Activated!"
+        })
 
-        if active then
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Auto Complete Generators Enabled!"
-            })
-
-            spawn(function()
-                while active do
-                    local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-                    
-                    if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
-                        local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
-                        if nearestGen then
-                            nearestGen.remote:FireServer()
-                        end
-                    else
-                        active = false
-                        break
-                    end
-                    wait(1)
+        spawn(function()
+            while playerGui:FindFirstChild("PuzzleUI") and playerGui.PuzzleUI:IsA("ScreenGui") and playerGui.PuzzleUI.Enabled do
+                local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
+                if nearestGen then
+                    nearestGen.remote:FireServer()
                 end
-            end)
-        else
-            Rayfield:Notify({
-                Title = "Success!",
-                Content = "Auto Complete Generators Disabled!"
-            })
-        end
+                wait(1)
+            end
+        end)
     end
 })
 
