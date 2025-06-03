@@ -21,7 +21,6 @@ local window = Rayfield:CreateWindow({
 
 local generatorsTab = window:CreateTab("Generators")
 local autoCompleteSection = generatorsTab:CreateSection("Auto Complete")
-local autoCompleteActive = false
 
 local PROXIMITY_DISTANCE = 15
 
@@ -71,38 +70,39 @@ local function getNearestGenerator(generators, position)
     return nil
 end
 
-local function autoCompleteGenerators()
-    local generators = getAllGenerators()
-    while autoCompleteActive do
-        wait()
-        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-        if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
-            local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
-            if nearestGen then
-                nearestGen.remote:FireServer()
-                wait(1)
-            end
-        end
-    end
-end
+local generators = getAllGenerators()
+local connection
 
 local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
     SectionParent = autoCompleteSection,
     Callback = function(state)
-        autoCompleteActive = state
         if state then
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Auto Complete Generators Enabled!"
             })
-            task.spawn(autoCompleteGenerators)
+
+            connection = game:GetService("RunService").Heartbeat:Connect(function()
+                local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+                if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
+                    local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
+                    if nearestGen then
+                        nearestGen.remote:FireServer()
+                    end
+                end
+            end)
         else
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Auto Complete Generators Disabled!"
             })
+
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
         end
     end
 })
