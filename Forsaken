@@ -1,0 +1,78 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Forsaken - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local generatorsTab = window:CreateTab("Generators")
+local completeSection = generatorsTab:CreateSection("Complete")
+
+local autoCompleteActive = false
+
+local function autoCompleteGenerators()
+    while autoCompleteActive do
+        task.wait()
+        local mapFolder = workspace:FindFirstChild("Map")
+        if not mapFolder then continue end
+
+        local ingameFolder = mapFolder:FindFirstChild("Ingame")
+        if not ingameFolder then continue end
+
+        local localPlayer = game.Players.LocalPlayer
+        local playerGui = localPlayer:FindFirstChild("PlayerGui")
+        if not playerGui then continue end
+
+        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+
+        for _, generator in ipairs(ingameFolder:GetChildren()) do
+            if generator:IsA("Model") and generator.Name == "Generator" then
+                local remotesFolder = generator:FindFirstChild("Remotes")
+                if remotesFolder then
+                    local remoteEvent = remotesFolder:FindFirstChild("RE")
+                    if remoteEvent and puzzleUI and puzzleUI.Visible then
+                        remoteEvent:FireServer()
+                        repeat task.wait() until not puzzleUI.Visible
+                    end
+                end
+            end
+        end
+    end
+end
+
+local autoCompleteToggle = completeSection:CreateToggle({
+    Name = "Auto Complete Generators",
+    CurrentValue = false,
+    SectionParent = completeSection,
+    Callback = function(state)
+        autoCompleteActive = state
+        if state then
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Auto Complete Generators Enabled!"
+            })
+            autoCompleteGenerators()
+        else
+            Rayfield:Notify({
+                Title = "Success!",
+                Content = "Auto Complete Generators Disabled!"
+            })
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
