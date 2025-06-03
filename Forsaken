@@ -28,21 +28,23 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local playerGui = player:WaitForChild("PlayerGui")
+local connection
 
-local function getAllGenerators()
-    local generatorModels = {}
+local function locateObjects()
     local mapFolder = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map")
+    local generators = {}
 
     for _, obj in ipairs(mapFolder:GetChildren()) do
         if obj:IsA("Model") and obj.Name == "Generator" then
             local remotes = obj:FindFirstChild("Remotes")
             local remoteEvent = remotes and remotes:FindFirstChild("RE")
             if remoteEvent and remoteEvent:IsA("RemoteEvent") then
-                table.insert(generatorModels, { model = obj, remote = remoteEvent })
+                table.insert(generators, { model = obj, remote = remoteEvent })
             end
         end
     end
-    return generatorModels
+
+    return generators
 end
 
 local function getNearestGenerator(generators, position)
@@ -60,9 +62,21 @@ local function getNearestGenerator(generators, position)
     return nearest and shortestDistance <= PROXIMITY_DISTANCE and nearest or nil
 end
 
-local generators = getAllGenerators()
-local connection
-local lastExecution = tick()
+local function monitorPuzzleUI()
+    local generators = locateObjects()
+
+    while connection do
+        wait()
+        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+
+        if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
+            local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
+            if nearestGen then
+                nearestGen.remote:FireServer()
+            end
+        end
+    end
+end
 
 local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
@@ -71,22 +85,11 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
     Callback = function(state)
         if state then
             Rayfield:Notify({ Title = "Success!", Content = "Auto Complete Generators Enabled!" })
-            connection = game:GetService("RunService").Heartbeat:Connect(function()
-                if tick() - lastExecution >= 1 then
-                    lastExecution = tick()
-                    local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-                    if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
-                        local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
-                        if nearestGen then
-                            nearestGen.remote:FireServer()
-                        end
-                    end
-                end
-            end)
+            connection = task.spawn(monitorPuzzleUI)
         else
             Rayfield:Notify({ Title = "Success!", Content = "Auto Complete Generators Disabled!" })
             if connection then
-                connection:Disconnect()
+                task.cancel(connection)
                 connection = nil
             end
         end
