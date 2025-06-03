@@ -50,6 +50,23 @@ end
 
 local connection
 
+local function monitorPuzzleUI()
+    while connection do
+        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+
+        while puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled do
+            local nearestGen = getNearestGenerator()
+            if nearestGen then
+                nearestGen:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+            end
+            wait(1)
+            puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+        end
+
+        wait()
+    end
+end
+
 local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
@@ -57,19 +74,7 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
     Callback = function(state)
         if state then
             Rayfield:Notify({ Title = "Success!", Content = "Auto Complete Generators Enabled!" })
-            connection = task.spawn(function()
-                while true do
-                    wait(1)
-                    local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-
-                    if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
-                        local nearestGen = getNearestGenerator()
-                        if nearestGen then
-                            nearestGen:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
-                        end
-                    end
-                end
-            end)
+            connection = task.spawn(monitorPuzzleUI)
         else
             Rayfield:Notify({ Title = "Success!", Content = "Auto Complete Generators Disabled!" })
             if connection then
