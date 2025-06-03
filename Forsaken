@@ -24,30 +24,54 @@ local completeSection = generatorsTab:CreateSection("Complete")
 
 local autoCompleteActive = false
 
+local function getNearestGenerator()
+    local localPlayer = game.Players.LocalPlayer
+    if not localPlayer or not localPlayer.Character then return nil end
+
+    local mapFolder = workspace:FindFirstChild("Map")
+    if not mapFolder then return nil end
+
+    local ingameFolder = mapFolder:FindFirstChild("Ingame")
+    if not ingameFolder then return nil end
+
+    local nearestGenerator = nil
+    local shortestDistance = math.huge
+    local playerPosition = localPlayer.Character:FindFirstChild("HumanoidRootPart") and localPlayer.Character.HumanoidRootPart.Position
+
+    for _, generator in ipairs(ingameFolder:GetChildren()) do
+        if generator:IsA("Model") and generator.Name == "Generator" then
+            local generatorPosition = generator:GetModelCFrame().Position
+            local distance = (generatorPosition - playerPosition).Magnitude
+
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestGenerator = generator
+            end
+        end
+    end
+
+    return nearestGenerator
+end
+
 local function autoCompleteGenerators()
     while autoCompleteActive do
-        task.wait()
-        local mapFolder = workspace:FindFirstChild("Map")
-        if not mapFolder then continue end
-
-        local ingameFolder = mapFolder:FindFirstChild("Ingame")
-        if not ingameFolder then continue end
-
+        wait()
         local localPlayer = game.Players.LocalPlayer
+        if not localPlayer then continue end
+
         local playerGui = localPlayer:FindFirstChild("PlayerGui")
         if not playerGui then continue end
 
         local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+        local nearestGenerator = getNearestGenerator()
 
-        for _, generator in ipairs(ingameFolder:GetChildren()) do
-            if generator:IsA("Model") and generator.Name == "Generator" then
-                local remotesFolder = generator:FindFirstChild("Remotes")
-                if remotesFolder then
-                    local remoteEvent = remotesFolder:FindFirstChild("RE")
-                    if remoteEvent and puzzleUI and puzzleUI.Visible then
-                        remoteEvent:FireServer()
-                        repeat task.wait() until not puzzleUI.Visible
-                    end
+        if nearestGenerator and puzzleUI and puzzleUI.Visible then
+            local remotesFolder = nearestGenerator:FindFirstChild("Remotes")
+            if remotesFolder then
+                local remoteEvent = remotesFolder:FindFirstChild("RE")
+                if remoteEvent then
+                    remoteEvent:FireServer()
+                    repeat wait() until not puzzleUI.Visible
                 end
             end
         end
@@ -74,5 +98,3 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
         end
     end
 })
-
-Rayfield:LoadConfiguration()
