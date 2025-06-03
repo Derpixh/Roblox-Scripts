@@ -52,17 +52,19 @@ local connection
 
 local function monitorPuzzleUI()
     while connection do
-        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+        local puzzleUI = playerGui:WaitForChild("PuzzleUI")
 
-        repeat
-            local nearestGen = getNearestGenerator()
-            if nearestGen then
-                nearestGen:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+        while puzzleUI and puzzleUI:IsA("ScreenGui") do
+            if puzzleUI.Enabled then
+                local nearestGen = getNearestGenerator()
+                if nearestGen then
+                    nearestGen:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+                end
+                wait(1)
+            else
+                repeat wait() until puzzleUI.Enabled
             end
-            wait(1)
-            puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-        until not (puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled)
-
+        end
         wait()
     end
 end
