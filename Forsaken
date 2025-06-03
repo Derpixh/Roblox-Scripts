@@ -62,32 +62,35 @@ local function getNearestGenerator(generators, position)
 end
 
 local generators = getAllGenerators()
-local connection
+local active = false
 
 local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
     SectionParent = autoCompleteSection,
     Callback = function(state)
-        if state then
+        active = state
+
+        if active then
             Rayfield:Notify({
                 Title = "Success!",
                 Content = "Auto Complete Generators Enabled!"
             })
 
-            connection = game:GetService("RunService").Heartbeat:Connect(function()
-                local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-                
-                if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
-                    local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
-                    if nearestGen then
-                        nearestGen.remote:FireServer()
+            spawn(function()
+                while active do
+                    local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+                    
+                    if puzzleUI and puzzleUI:IsA("ScreenGui") and puzzleUI.Enabled then
+                        local nearestGen = getNearestGenerator(generators, humanoidRootPart.Position)
+                        if nearestGen then
+                            nearestGen.remote:FireServer()
+                        end
+                    else
+                        active = false
+                        break
                     end
-                else
-                    if connection then
-                        connection:Disconnect()
-                        connection = nil
-                    end
+                    wait(1)
                 end
             end)
         else
@@ -95,11 +98,6 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
                 Title = "Success!",
                 Content = "Auto Complete Generators Disabled!"
             })
-            
-            if connection then
-                connection:Disconnect()
-                connection = nil
-            end
         end
     end
 })
