@@ -24,22 +24,14 @@ local completeSection = generatorsTab:CreateSection("Complete")
 
 local autoCompleteActive = false
 
-local function getLocalPlayerModel()
+local function getNoobModel()
     local playersFolder = workspace:FindFirstChild("Players")
     if not playersFolder then return nil end
 
     local survivorsFolder = playersFolder:FindFirstChild("Survivors")
     if not survivorsFolder then return nil end
 
-    local localPlayerName = game.Players.LocalPlayer.Name
-
-    for _, model in ipairs(survivorsFolder:GetChildren()) do
-        if model:IsA("Model") and model:GetAttribute("Username") == localPlayerName then
-            return model
-        end
-    end
-
-    return nil
+    return survivorsFolder:FindFirstChild("Noob")
 end
 
 local function getNearestGenerator(playerModel)
@@ -73,7 +65,7 @@ end
 local function autoCompleteGenerators()
     while autoCompleteActive do
         wait()
-        local playerModel = getLocalPlayerModel()
+        local playerModel = getNoobModel()
         local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
         if not playerModel or not playerGui then continue end
 
@@ -113,5 +105,3 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
         end
     end
 })
-
-Rayfield:LoadConfiguration()
