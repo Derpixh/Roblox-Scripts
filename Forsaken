@@ -188,4 +188,83 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
     end
 })
 
+local playersTab = window:CreateTab("Players")
+local playersEspSection = playersTab:CreateSection("ESP")
+
+local function getSurvivorModels()
+    local survivors = {}
+    local playersFolder = workspace:FindFirstChild("Players")
+    if not playersFolder then return survivors end
+    
+    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
+    if not survivorsFolder then return survivors end
+    
+    local localPlayerName = game.Players.LocalPlayer.Name
+    
+    for _, model in pairs(survivorsFolder:GetChildren()) do
+        if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+            table.insert(survivors, model)
+        end
+    end
+    return survivors
+end
+
+local function applyPlayerHighlight(model)
+    if not model:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(255, 165, 0)
+        highlight.OutlineColor = Color3.fromRGB(255, 165, 0)
+        highlight.Parent = model
+    end
+end
+
+local function clearPlayerHighlights()
+    for _, model in pairs(getSurvivorModels()) do
+        local highlight = model:FindFirstChildOfClass("Highlight")
+        if highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+local function startPlayerHighlighting()
+    spawn(function()
+        while _G.AutoHighlightPlayersEnabled do
+            for _, model in pairs(getSurvivorModels()) do
+                if _G.AutoHighlightPlayersEnabled then
+                    applyPlayerHighlight(model)
+                end
+            end
+            wait()
+        end
+    end)
+end
+
+local autoHighlightPlayersToggle = playersTab:CreateToggle({
+    Name = "Auto Highlight Players (ENABLE IF YOU'RE THE KILLER)",
+    CurrentValue = false,
+    Flag = "AutoHighlightPlayers",
+    SectionParent = playersEspSection,
+    Callback = function(value)
+        _G.AutoHighlightPlayersEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Player ESP",
+                Content = "Player Highlighting Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startPlayerHighlighting()
+        else
+            Rayfield:Notify({
+                Title = "Player ESP",
+                Content = "Player Highlighting Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            clearPlayerHighlights()
+        end
+    end
+})
+
 Rayfield:LoadConfiguration()
