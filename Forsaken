@@ -78,7 +78,7 @@ spawn(function()
                 if generator then
                     while _G.AutoGeneratorsEnabled and playerGui:FindFirstChild("PuzzleUI") do
                         generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
-                        wait(1)
+                        wait(1.25)
                     end
                 end
             end
