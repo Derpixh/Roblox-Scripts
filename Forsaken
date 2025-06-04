@@ -1,12 +1,4 @@
-local Rayfield
-local success, err = pcall(function()
-    Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-end)
-
-if not success or not Rayfield then
-    warn("Failed to load Rayfield: " .. tostring(err))
-    return
-end
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local window = Rayfield:CreateWindow({
     Name = "Forsaken - Alpha Hax",
