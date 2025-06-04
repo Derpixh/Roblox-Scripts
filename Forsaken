@@ -191,38 +191,68 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
 local playersTab = window:CreateTab("Players")
 local playersEspSection = playersTab:CreateSection("ESP")
 
-local function getSurvivorModels()
-    local survivors = {}
+local function getTargetModels()
+    local targets = {}
     local playersFolder = workspace:FindFirstChild("Players")
-    if not playersFolder then return survivors end
-    
-    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
-    if not survivorsFolder then return survivors end
+    if not playersFolder then return targets end
     
     local localPlayerName = game.Players.LocalPlayer.Name
+    local isKiller = false
     
-    for _, model in pairs(survivorsFolder:GetChildren()) do
-        if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
-            table.insert(survivors, model)
+    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
+    if survivorsFolder then
+        for _, model in pairs(survivorsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") then
+                if model:GetAttribute("Username") == localPlayerName then
+                    isKiller = true
+                end
+            end
         end
     end
-    return survivors
+    
+    if survivorsFolder and not isKiller then
+        for _, model in pairs(survivorsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+                table.insert(targets, {model = model, isKiller = false})
+            end
+        end
+    end
+    
+    local killersFolder = playersFolder:FindFirstChild("Killers")
+    if killersFolder and isKiller then
+        for _, model in pairs(killersFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+                table.insert(targets, {model = model, isKiller = true})
+            end
+        end
+    end
+    
+    return targets
 end
 
-local function applyPlayerHighlight(model)
+local function applyPlayerHighlight(model, isKiller)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.fromRGB(255, 165, 0)
-        highlight.OutlineColor = Color3.fromRGB(255, 165, 0)
+        highlight.FillColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
+        highlight.OutlineColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
         highlight.Parent = model
     end
 end
 
 local function clearPlayerHighlights()
-    for _, model in pairs(getSurvivorModels()) do
-        local highlight = model:FindFirstChildOfClass("Highlight")
-        if highlight then
-            highlight:Destroy()
+    local playersFolder = workspace:FindFirstChild("Players")
+    if not playersFolder then return end
+    
+    local foldersToCheck = {"Survivors", "Killers"}
+    for _, folderName in pairs(foldersToCheck) do
+        local folder = playersFolder:FindFirstChild(folderName)
+        if folder then
+            for _, model in pairs(folder:GetChildren()) do
+                local highlight = model:FindFirstChildOfClass("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+            end
         end
     end
 end
@@ -230,18 +260,18 @@ end
 local function startPlayerHighlighting()
     spawn(function()
         while _G.AutoHighlightPlayersEnabled do
-            for _, model in pairs(getSurvivorModels()) do
+            for _, target in pairs(getTargetModels()) do
                 if _G.AutoHighlightPlayersEnabled then
-                    applyPlayerHighlight(model)
+                    applyPlayerHighlight(target.model, target.isKiller)
                 end
             end
             wait()
         end
-    end)
+    end
 end
 
 local autoHighlightPlayersToggle = playersTab:CreateToggle({
-    Name = "Auto Highlight Players (ENABLE IF YOU'RE THE KILLER)",
+    Name = "Auto Highlight Survivors/Killers (Depends If You're Killer Or Survivor)",
     CurrentValue = false,
     Flag = "AutoHighlightPlayers",
     SectionParent = playersEspSection,
