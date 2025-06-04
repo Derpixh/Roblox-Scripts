@@ -19,83 +19,98 @@ local window = Rayfield:CreateWindow({
     }
 })
 
-local GeneratorsTab = window:CreateTab("Generators")
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local AutoCompleteToggle = GeneratorsTab:CreateToggle({
+local window = Rayfield:CreateWindow({
+    Name = "Forsaken - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local generatorsTab = window:CreateTab("Generators")
+local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
-    Flag = "AutoCompleteGenerators",
-    Callback = function(Value)
-        if Value then
-            local player = game:GetService("Players").LocalPlayer
-            local runService = game:GetService("RunService")
-            local puzzleUIExists = false
-            local nearestGenerator = nil
-            local connection = nil
-            
-            local function findNearestGenerator()
-                local character = player.Character or player.CharacterAdded:Wait()
-                local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-                
-                local mapFolder = workspace:WaitForChild("Map")
-                local ingameFolder = mapFolder:WaitForChild("Ingame")
-                local mapModel = ingameFolder:WaitForChild("Map")
-                
-                local closestDistance = math.huge
-                local closestGenerator = nil
-                
-                for _, child in ipairs(mapModel:GetChildren()) do
-                    if child.Name == "Generator" and child:IsA("Model") then
-                        local generatorPart = child:FindFirstChildOfClass("Part")
-                        if generatorPart then
-                            local distance = (humanoidRootPart.Position - generatorPart.Position).Magnitude
-                            if distance < closestDistance then
-                                closestDistance = distance
-                                closestGenerator = child
-                            end
-                        end
-                    end
-                end
-                
-                return closestGenerator
-            end
-            
-            local function checkForPuzzleUI()
-                local playerGui = player:WaitForChild("PlayerGui")
-                local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
-                return puzzleUI ~= nil
-            end
-            
-            connection = runService.Heartbeat:Connect(function()
-                nearestGenerator = findNearestGenerator()
-                local currentPuzzleUIStatus = checkForPuzzleUI()
-                
-                if currentPuzzleUIStatus ~= puzzleUIExists then
-                    puzzleUIExists = currentPuzzleUIStatus
-                    
-                    if puzzleUIExists then
-                        while puzzleUIExists and AutoCompleteToggle.CurrentValue and nearestGenerator do
-                            local remotes = nearestGenerator:FindFirstChild("Remotes")
-                            if remotes then
-                                local re = remotes:FindFirstChild("RE")
-                                if re and re:IsA("RemoteEvent") then
-                                    re:FireServer()
-                                end
-                            end
-                            wait(1)
-                            puzzleUIExists = checkForPuzzleUI()
-                            nearestGenerator = findNearestGenerator()
-                        end
-                    end
-                end
-            end)
-            
-            AutoCompleteToggle.connection = connection
+    Flag = "AutoGenerators",
+    Callback = function(value)
+        _G.AutoGeneratorsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
         else
-            if AutoCompleteToggle.connection then
-                AutoCompleteToggle.connection:Disconnect()
-                AutoCompleteToggle.connection = nil
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+        end
+    end
+})
+
+local function startGeneratorAutoComplete()
+    local player = game:GetService("Players").LocalPlayer
+    local playerGui = player:WaitForChild("PlayerGui")
+    
+    while _G.AutoGeneratorsEnabled do
+        local puzzleUI = playerGui:FindFirstChild("PuzzleUI")
+        if puzzleUI and puzzleUI:IsA("ScreenGui") then
+            local mapFolder = workspace:WaitForChild("Map")
+            local inGameFolder = mapFolder:WaitForChild("Ingame")
+            local mapModel = inGameFolder:WaitForChild("Map")
+            
+            local nearestGenerator = nil
+            local shortestDistance = math.huge
+            local playerPos = player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.HumanoidRootPart.Position
+            
+            if playerPos then
+                for _, generator in ipairs(mapModel:GetChildren()) do
+                    if generator.Name == "Generator" and generator:FindFirstChild("Remotes") then
+                        local generatorPos = generator:GetPivot().Position
+                        local distance = (playerPos - generatorPos).Magnitude
+                        
+                        if distance < shortestDistance then
+                            shortestDistance = distance
+                            nearestGenerator = generator
+                        end
+                    end
+                end
+                
+                if nearestGenerator then
+                    local remotes = nearestGenerator:WaitForChild("Remotes")
+                    local re = remotes:WaitForChild("RE")
+                    re:FireServer()
+                end
             end
         end
-    end,
-})
+        wait(1)
+    end
+end
+
+spawn(function()
+    while true do
+        if _G.AutoGeneratorsEnabled then
+            startGeneratorAutoComplete()
+        end
+        wait(0.5)
+    end
+end)
+
+Rayfield:LoadConfiguration()
