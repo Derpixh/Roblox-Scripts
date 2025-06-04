@@ -86,4 +86,81 @@ spawn(function()
     end
 end)
 
+local espSection = generatorsTab:CreateSection("ESP")
+
+local autoHighlightToggle = generatorsTab:CreateToggle({
+    Name = "Auto Highlight Generators",
+    CurrentValue = false,
+    Flag = "AutoHighlight",
+    SectionParent = espSection,
+    Callback = function(value)
+        _G.AutoHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startHighlighting()
+        else
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            clearHighlights()
+        end
+    end
+})
+
+local function getGenerators()
+    local generators = {}
+    local success, map = pcall(function() return workspace:WaitForChild("Map") end)
+    if success then
+        local inGame = map:FindFirstChild("Ingame")
+        if inGame then
+            local mapModel = inGame:FindFirstChild("Map")
+            if mapModel then
+                for _, obj in pairs(mapModel:GetChildren()) do
+                    if obj.Name == "Generator" then
+                        table.insert(generators, obj)
+                    end
+                end
+            end
+        end
+    end
+    return generators
+end
+
+local function applyHighlight(generator)
+    if not generator:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(0, 255, 0)
+        highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
+        highlight.Parent = generator
+    end
+end
+
+local function clearHighlights()
+    for _, generator in pairs(getGenerators()) do
+        local highlight = generator:FindFirstChildOfClass("Highlight")
+        if highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+function startHighlighting()
+    spawn(function()
+        while _G.AutoHighlightEnabled do
+            for _, generator in pairs(getGenerators()) do
+                applyHighlight(generator)
+            end
+            wait()
+        end
+    end)
+end
+
 Rayfield:LoadConfiguration()
