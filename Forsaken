@@ -102,7 +102,10 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
                 Duration = 3,
                 Image = 4483362458
             })
-            startHighlighting()
+            if not _G.HighlightLoop then
+                _G.HighlightLoop = true
+                startHighlighting()
+            end
         else
             Rayfield:Notify({
                 Title = "ESP",
@@ -110,6 +113,7 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
                 Duration = 3,
                 Image = 4483362458
             })
+            _G.HighlightLoop = false
             clearHighlights()
         end
     end
@@ -140,7 +144,7 @@ local function monitorProgress(generator)
     local progress = generator:FindFirstChild("Progress")
     if not progress or not progress:IsA("NumberValue") then return end
     
-    while _G.AutoHighlightEnabled and generator.Parent do
+    while _G.AutoHighlightEnabled and _G.HighlightLoop and generator.Parent do
         if progress.Value == 100 then
             local highlight = generator:FindFirstChildOfClass("Highlight")
             if highlight then
@@ -148,7 +152,7 @@ local function monitorProgress(generator)
             end
             break
         end
-        wait()
+        wait(0.5)
     end
 end
 
@@ -178,11 +182,12 @@ end
 
 local function startHighlighting()
     spawn(function()
-        while _G.AutoHighlightEnabled do
+        while _G.AutoHighlightEnabled and _G.HighlightLoop do
             for _, generator in pairs(getGenerators()) do
+                if not _G.AutoHighlightEnabled or not _G.HighlightLoop then break end
                 applyHighlight(generator)
             end
-            wait()
+            wait(1)
         end
     end)
 end
