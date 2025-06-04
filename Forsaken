@@ -1,4 +1,12 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Rayfield
+local success, err = pcall(function()
+    Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end)
+
+if not success or not Rayfield then
+    warn("Failed to load Rayfield: " .. tostring(err))
+    return
+end
 
 local window = Rayfield:CreateWindow({
     Name = "Forsaken - Alpha Hax",
@@ -20,6 +28,7 @@ local window = Rayfield:CreateWindow({
 })
 
 local generatorsTab = window:CreateTab("Generators")
+
 local autoCompleteToggle = generatorsTab:CreateToggle({
     Name = "Auto Complete Generators",
     CurrentValue = false,
@@ -267,7 +276,7 @@ local function startPlayerHighlighting()
             end
             wait()
         end
-    end
+    end)
 end
 
 local autoHighlightPlayersToggle = playersTab:CreateToggle({
