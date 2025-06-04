@@ -44,24 +44,24 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
     end
 })
 
-local function getNearestGenerator()
-    local player = game:GetService("Players").LocalPlayer
+local function findNearestGenerator()
+    local player = game.Players.LocalPlayer
     local character = player.Character
     if not character then return nil end
     
     local rootPart = character:FindFirstChild("HumanoidRootPart")
     if not rootPart then return nil end
     
-    local map = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map")
+    local generators = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map"):GetChildren()
     local nearest = nil
-    local minDist = math.huge
+    local minDistance = math.huge
     
-    for _, generator in ipairs(map:GetChildren()) do
-        if generator.Name == "Generator" then
-            local dist = (rootPart.Position - generator:GetPivot().Position).Magnitude
-            if dist < minDist then
-                minDist = dist
-                nearest = generator
+    for _, obj in pairs(generators) do
+        if obj.Name == "Generator" and obj:FindFirstChild("Remotes") then
+            local distance = (rootPart.Position - obj:GetPivot().Position).Magnitude
+            if distance < minDistance then
+                minDistance = distance
+                nearest = obj
             end
         end
     end
@@ -70,16 +70,20 @@ local function getNearestGenerator()
 end
 
 spawn(function()
-    while true do
+    while wait() do
         if _G.AutoGeneratorsEnabled then
-            local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+            local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
             if playerGui:FindFirstChild("PuzzleUI") then
-                local generator = getNearestGenerator()
+                local generator = findNearestGenerator()
                 if generator then
-                    generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+                    while _G.AutoGeneratorsEnabled and playerGui:FindFirstChild("PuzzleUI") do
+                        generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+                        wait(1)
+                    end
                 end
             end
         end
-        wait(1)
     end
 end)
+
+Rayfield:LoadConfiguration()
