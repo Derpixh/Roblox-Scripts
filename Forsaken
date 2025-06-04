@@ -86,39 +86,6 @@ spawn(function()
     end
 end)
 
-local espSection = generatorsTab:CreateSection("ESP")
-
-local autoHighlightToggle = generatorsTab:CreateToggle({
-    Name = "Auto Highlight Generators",
-    CurrentValue = false,
-    Flag = "AutoHighlight",
-    SectionParent = espSection,
-    Callback = function(value)
-        _G.AutoHighlightEnabled = value
-        if value then
-            Rayfield:Notify({
-                Title = "ESP",
-                Content = "Auto Highlight Generators Enabled",
-                Duration = 3,
-                Image = 4483362458
-            })
-            if not _G.HighlightLoop then
-                _G.HighlightLoop = true
-                startHighlighting()
-            end
-        else
-            Rayfield:Notify({
-                Title = "ESP",
-                Content = "Auto Highlight Generators Disabled",
-                Duration = 3,
-                Image = 4483362458
-            })
-            _G.HighlightLoop = false
-            clearHighlights()
-        end
-    end
-})
-
 local function getGenerators()
     local generators = {}
     local success, map = pcall(function() return workspace:WaitForChild("Map") end)
@@ -144,7 +111,7 @@ local function monitorProgress(generator)
     local progress = generator:FindFirstChild("Progress")
     if not progress or not progress:IsA("NumberValue") then return end
     
-    while _G.AutoHighlightEnabled and _G.HighlightLoop and generator.Parent do
+    while _G.AutoHighlightEnabled and generator.Parent do
         if progress.Value == 100 then
             local highlight = generator:FindFirstChildOfClass("Highlight")
             if highlight then
@@ -152,7 +119,7 @@ local function monitorProgress(generator)
             end
             break
         end
-        wait(0.5)
+        wait()
     end
 end
 
@@ -182,14 +149,43 @@ end
 
 local function startHighlighting()
     spawn(function()
-        while _G.AutoHighlightEnabled and _G.HighlightLoop do
+        while _G.AutoHighlightEnabled do
             for _, generator in pairs(getGenerators()) do
-                if not _G.AutoHighlightEnabled or not _G.HighlightLoop then break end
+                if not _G.AutoHighlightEnabled then break end
                 applyHighlight(generator)
             end
-            wait(1)
+            wait()
         end
     end)
 end
+
+local espSection = generatorsTab:CreateSection("ESP")
+
+local autoHighlightToggle = generatorsTab:CreateToggle({
+    Name = "Auto Highlight Generators",
+    CurrentValue = false,
+    Flag = "AutoHighlight",
+    SectionParent = espSection,
+    Callback = function(value)
+        _G.AutoHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startHighlighting()
+        else
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            clearHighlights()
+        end
+    end
+})
 
 Rayfield:LoadConfiguration()
