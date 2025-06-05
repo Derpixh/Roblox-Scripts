@@ -20,40 +20,20 @@ local window = Rayfield:CreateWindow({
 })
 
 local generatorsTab = window:CreateTab("Generators")
-
-local autoCompleteToggle = generatorsTab:CreateToggle({
-    Name = "Auto Complete Generators",
-    CurrentValue = false,
-    Flag = "AutoGenerators",
-    Callback = function(value)
-        _G.AutoGeneratorsEnabled = value
-        if value then
-            Rayfield:Notify({
-                Title = "Generators",
-                Content = "Auto Generators Enabled",
-                Duration = 3,
-                Image = 4483362458
-            })
-        else
-            Rayfield:Notify({
-                Title = "Generators",
-                Content = "Auto Generators Disabled",
-                Duration = 3,
-                Image = 4483362458
-            })
-        end
-    end
-})
+local generatorsSection = generatorsTab:CreateSection("Generators")
 
 local function findNearestGenerator()
     local player = game.Players.LocalPlayer
     local character = player.Character
     if not character then return nil end
+    
     local rootPart = character:FindFirstChild("HumanoidRootPart")
     if not rootPart then return nil end
+    
     local generators = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map"):GetChildren()
     local nearest = nil
     local minDistance = math.huge
+    
     for _, obj in pairs(generators) do
         if obj.Name == "Generator" and obj:FindFirstChild("Remotes") then
             local distance = (rootPart.Position - obj:GetPivot().Position).Magnitude
@@ -63,34 +43,21 @@ local function findNearestGenerator()
             end
         end
     end
+    
     return nearest
 end
-
-spawn(function()
-    while wait() do
-        if _G.AutoGeneratorsEnabled then
-            local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-            if playerGui:FindFirstChild("PuzzleUI") then
-                local generator = findNearestGenerator()
-                if generator then
-                    while _G.AutoGeneratorsEnabled and playerGui:FindFirstChild("PuzzleUI") do
-                        generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
-                        wait(1.25)
-                    end
-                end
-            end
-        end
-    end
-end)
 
 local function getGenerators()
     local generators = {}
     local success, map = pcall(function() return workspace:WaitForChild("Map") end)
     if not success then return generators end
+    
     local inGame = map:FindFirstChild("Ingame")
     if not inGame then return generators end
+    
     local mapModel = inGame:FindFirstChild("Map")
     if not mapModel then return generators end
+    
     for _, obj in pairs(mapModel:GetChildren()) do
         if obj.Name == "Generator" then
             table.insert(generators, obj)
@@ -101,8 +68,10 @@ end
 
 local function monitorProgress(generator)
     if not generator or not generator.Parent then return end
+    
     local progress = generator:FindFirstChild("Progress")
     if not progress or not progress:IsA("NumberValue") then return end
+    
     while _G.AutoHighlightEnabled and generator.Parent do
         if progress.Value == 100 then
             local highlight = generator:FindFirstChildOfClass("Highlight")
@@ -117,8 +86,10 @@ end
 
 local function applyHighlight(generator)
     if not generator or generator:FindFirstChildOfClass("Highlight") then return end
+    
     local progress = generator:FindFirstChild("Progress")
     if not progress or not progress:IsA("NumberValue") then return end
+    
     if progress.Value < 100 then
         local highlight = Instance.new("Highlight")
         highlight.FillColor = Color3.fromRGB(0, 255, 0)
@@ -148,6 +119,47 @@ local function startHighlighting()
         end
     end)
 end
+
+local function startGeneratorAutoComplete()
+    spawn(function()
+        while _G.AutoGeneratorsEnabled do
+            local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            if playerGui:FindFirstChild("PuzzleUI") then
+                local generator = findNearestGenerator()
+                if generator then
+                    generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+                end
+            end
+            wait(1.25)
+        end
+    end)
+end
+
+local autoCompleteToggle = generatorsTab:CreateToggle({
+    Name = "Auto Complete Generators",
+    CurrentValue = false,
+    Flag = "AutoGenerators",
+    SectionParent = generatorsSection,
+    Callback = function(value)
+        _G.AutoGeneratorsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startGeneratorAutoComplete()
+        else
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+        end
+    end
+})
 
 local espSection = generatorsTab:CreateSection("ESP")
 
