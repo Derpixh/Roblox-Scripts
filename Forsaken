@@ -194,15 +194,6 @@ local function getPlayerRole()
     
     local localPlayerName = game.Players.LocalPlayer.Name
     
-    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
-    if survivorsFolder then
-        for _, model in pairs(survivorsFolder:GetChildren()) do
-            if model:IsA("Model") and model:GetAttribute("Username") == localPlayerName then
-                return "survivor"
-            end
-        end
-    end
-    
     local killersFolder = playersFolder:FindFirstChild("Killers")
     if killersFolder then
         for _, model in pairs(killersFolder:GetChildren()) do
@@ -212,83 +203,93 @@ local function getPlayerRole()
         end
     end
     
+    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
+    if survivorsFolder then
+        for _, model in pairs(survivorsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") == localPlayerName then
+                return "survivor"
+            end
+        end
+    end
+    
     return nil
 end
 
-local function getTargetModels()
-    local targets = {}
+local function getEnemyModels()
+    local enemies = {}
     local playersFolder = workspace:FindFirstChild("Players")
-    if not playersFolder then return targets end
+    if not playersFolder then return enemies end
     
     local role = getPlayerRole()
     local localPlayerName = game.Players.LocalPlayer.Name
     
-    if role == "survivor" then
-        local killersFolder = playersFolder:FindFirstChild("Killers")
-        if killersFolder then
-            for _, model in pairs(killersFolder:GetChildren()) do
-                if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
-                    table.insert(targets, {model = model, isKiller = true})
-                end
-            end
-        end
-    elseif role == "killer" then
+    if role == "killer" then
         local survivorsFolder = playersFolder:FindFirstChild("Survivors")
         if survivorsFolder then
             for _, model in pairs(survivorsFolder:GetChildren()) do
                 if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
-                    table.insert(targets, {model = model, isKiller = false})
+                    table.insert(enemies, {
+                        model = model,
+                        isKiller = false
+                    })
+                end
+            end
+        end
+    elseif role == "survivor" then
+        local killersFolder = playersFolder:FindFirstChild("Killers")
+        if killersFolder then
+            for _, model in pairs(killersFolder:GetChildren()) do
+                if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+                    table.insert(enemies, {
+                        model = model,
+                        isKiller = true
+                    })
                 end
             end
         end
     end
     
-    return targets
+    return enemies
 end
 
-local function applyPlayerHighlight(model, isKiller)
-    if not model:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
-        highlight.OutlineColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
-        highlight.Parent = model
-    end
+local function applyEnemyHighlight(model, isKiller)
+    if not model or not model.Parent then return end
+    
+    local highlight = model:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+    highlight.FillColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
+    highlight.OutlineColor = isKiller and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(200, 100, 0)
+    highlight.Parent = model
 end
 
-local function clearPlayerHighlights()
+local function clearAllHighlights()
     local playersFolder = workspace:FindFirstChild("Players")
     if not playersFolder then return end
     
-    local foldersToCheck = {"Survivors", "Killers"}
-    for _, folderName in pairs(foldersToCheck) do
+    for _, folderName in pairs({"Survivors", "Killers"}) do
         local folder = playersFolder:FindFirstChild(folderName)
         if folder then
             for _, model in pairs(folder:GetChildren()) do
-                local highlight = model:FindFirstChildOfClass("Highlight")
-                if highlight then
-                    highlight:Destroy()
+                if model:FindFirstChildOfClass("Highlight") then
+                    model:FindFirstChildOfClass("Highlight"):Destroy()
                 end
             end
         end
     end
 end
 
-local function monitorPlayerRoles()
-    spawn(function()
-        while _G.AutoHighlightPlayersEnabled do
-            local currentTargets = getTargetModels()
-            for _, target in pairs(currentTargets) do
-                if _G.AutoHighlightPlayersEnabled then
-                    applyPlayerHighlight(target.model, target.isKiller)
-                end
+local function updateEnemyHighlights()
+    while _G.AutoHighlightPlayersEnabled do
+        for _, enemy in pairs(getEnemyModels()) do
+            if enemy.model.Parent then
+                applyEnemyHighlight(enemy.model, enemy.isKiller)
             end
-            wait()
         end
-    end)
+        wait()
+    end
 end
 
 local autoHighlightPlayersToggle = playersTab:CreateToggle({
-    Name = "Auto Highlight Enemies/Survivors (Depends If You're A Survivor Or Killer)",
+    Name = "Auto Highlight Enemies/Survivors (Depends On Role)",
     CurrentValue = false,
     Flag = "AutoHighlightPlayers",
     SectionParent = playersEspSection,
@@ -297,19 +298,19 @@ local autoHighlightPlayersToggle = playersTab:CreateToggle({
         if value then
             Rayfield:Notify({
                 Title = "Player ESP",
-                Content = "Auto Highlight Enemies/Survivors Enabled",
+                Content = "Enemy Highlighting Enabled",
                 Duration = 3,
                 Image = 4483362458
             })
-            monitorPlayerRoles()
+            spawn(updateEnemyHighlights)
         else
             Rayfield:Notify({
                 Title = "Player ESP",
-                Content = "Auto Highlight Enemies/Survivors Disabled",
+                Content = "Enemy Highlighting Disabled",
                 Duration = 3,
                 Image = 4483362458
             })
-            clearPlayerHighlights()
+            clearAllHighlights()
         end
     end
 })
