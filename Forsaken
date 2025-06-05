@@ -47,79 +47,6 @@ local function findNearestGenerator()
     return nearest
 end
 
-local function getGenerators()
-    local generators = {}
-    local success, map = pcall(function() return workspace:WaitForChild("Map") end)
-    if not success then return generators end
-    
-    local inGame = map:FindFirstChild("Ingame")
-    if not inGame then return generators end
-    
-    local mapModel = inGame:FindFirstChild("Map")
-    if not mapModel then return generators end
-    
-    for _, obj in pairs(mapModel:GetChildren()) do
-        if obj.Name == "Generator" then
-            table.insert(generators, obj)
-        end
-    end
-    return generators
-end
-
-local function monitorProgress(generator)
-    if not generator or not generator.Parent then return end
-    
-    local progress = generator:FindFirstChild("Progress")
-    if not progress or not progress:IsA("NumberValue") then return end
-    
-    while _G.AutoHighlightEnabled and generator.Parent do
-        if progress.Value == 100 then
-            local highlight = generator:FindFirstChildOfClass("Highlight")
-            if highlight then
-                highlight:Destroy()
-            end
-            break
-        end
-        wait()
-    end
-end
-
-local function applyHighlight(generator)
-    if not generator or generator:FindFirstChildOfClass("Highlight") then return end
-    
-    local progress = generator:FindFirstChild("Progress")
-    if not progress or not progress:IsA("NumberValue") then return end
-    
-    if progress.Value < 100 then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.fromRGB(0, 255, 0)
-        highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
-        highlight.Parent = generator
-        spawn(function() monitorProgress(generator) end)
-    end
-end
-
-local function clearHighlights()
-    for _, generator in pairs(getGenerators()) do
-        local highlight = generator:FindFirstChildOfClass("Highlight")
-        if highlight then
-            highlight:Destroy()
-        end
-    end
-end
-
-local function startHighlighting()
-    spawn(function()
-        while _G.AutoHighlightEnabled do
-            for _, generator in pairs(getGenerators()) do
-                if not _G.AutoHighlightEnabled then break end
-                applyHighlight(generator)
-            end
-            wait()
-        end
-    end)
-end
-
 local function startGeneratorAutoComplete()
     spawn(function()
         while _G.AutoGeneratorsEnabled do
@@ -130,7 +57,7 @@ local function startGeneratorAutoComplete()
                     generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
                 end
             end
-            wait(1.25)
+            wait(3.75)
         end
     end)
 end
