@@ -281,7 +281,7 @@ local function monitorPlayerRoles()
 end
 
 local autoHighlightPlayersToggle = playersTab:CreateToggle({
-    Name = "Auto Highlight Enemies",
+    Name = "Auto Highlight Enemies/Survivors (Depends If You're A Survivor Or Killer)",
     CurrentValue = false,
     Flag = "AutoHighlightPlayers",
     SectionParent = playersEspSection,
@@ -290,7 +290,7 @@ local autoHighlightPlayersToggle = playersTab:CreateToggle({
         if value then
             Rayfield:Notify({
                 Title = "Player ESP",
-                Content = "Enemy Highlighting Enabled",
+                Content = "Auto Highlight Enemies/Survivors Enabled",
                 Duration = 3,
                 Image = 4483362458
             })
@@ -298,7 +298,7 @@ local autoHighlightPlayersToggle = playersTab:CreateToggle({
         else
             Rayfield:Notify({
                 Title = "Player ESP",
-                Content = "Enemy Highlighting Disabled",
+                Content = "Auto Highlight Enemies/Survivors Disabled",
                 Duration = 3,
                 Image = 4483362458
             })
