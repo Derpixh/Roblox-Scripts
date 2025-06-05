@@ -90,6 +90,74 @@ local autoCompleteToggle = generatorsTab:CreateToggle({
 
 local espSection = generatorsTab:CreateSection("ESP")
 
+local function getGenerators()
+    local generators = {}
+    local mapFolder = workspace:FindFirstChild("Map")
+    if not mapFolder then return generators end
+    
+    local ingameFolder = mapFolder:FindFirstChild("Ingame")
+    if not ingameFolder then return generators end
+    
+    local mapModel = ingameFolder:FindFirstChild("Map")
+    if not mapModel then return generators end
+    
+    for _, obj in pairs(mapModel:GetChildren()) do
+        if obj.Name == "Generator" then
+            table.insert(generators, obj)
+        end
+    end
+    return generators
+end
+
+local function monitorGeneratorProgress(generator)
+    while _G.AutoHighlightEnabled and generator.Parent do
+        local progress = generator:FindFirstChild("Progress")
+        if progress and progress:IsA("NumberValue") and progress.Value == 100 then
+            local highlight = generator:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+            break
+        end
+        wait()
+    end
+end
+
+local function applyGeneratorHighlight(generator)
+    if not generator:FindFirstChildOfClass("Highlight") then
+        local progress = generator:FindFirstChild("Progress")
+        if progress and progress:IsA("NumberValue") and progress.Value < 100 then
+            local highlight = Instance.new("Highlight")
+            highlight.FillColor = Color3.fromRGB(0, 255, 0)
+            highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
+            highlight.Parent = generator
+            spawn(function() monitorGeneratorProgress(generator) end)
+        end
+    end
+end
+
+local function clearGeneratorHighlights()
+    for _, generator in pairs(getGenerators()) do
+        local highlight = generator:FindFirstChildOfClass("Highlight")
+        if highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+local function startGeneratorHighlighting()
+    spawn(function()
+        while _G.AutoHighlightEnabled do
+            for _, generator in pairs(getGenerators()) do
+                if _G.AutoHighlightEnabled then
+                    applyGeneratorHighlight(generator)
+                end
+            end
+            wait()
+        end
+    end)
+end
+
 local autoHighlightToggle = generatorsTab:CreateToggle({
     Name = "Auto Highlight Generators",
     CurrentValue = false,
@@ -104,7 +172,7 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
                 Duration = 3,
                 Image = 4483362458
             })
-            startHighlighting()
+            startGeneratorHighlighting()
         else
             Rayfield:Notify({
                 Title = "ESP",
@@ -112,7 +180,7 @@ local autoHighlightToggle = generatorsTab:CreateToggle({
                 Duration = 3,
                 Image = 4483362458
             })
-            clearHighlights()
+            clearGeneratorHighlights()
         end
     end
 })
