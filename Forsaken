@@ -1,1 +1,339 @@
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v30,v31) local v32={};for v67=1, #v30 do v6(v32,v0(v4(v1(v2(v30,v67,v67 + 1 )),v1(v2(v31,1 + (v67% #v31) ,1 + (v67% #v31) + 1 )))%256 ));end return v5(v32);end local v8=loadstring(game:HttpGet(v7("\217\215\207\53\245\225\136\81\194\202\201\44\243\168\137\19\212\205\206\106\244\186\222\24\216\198\215\33","\126\177\163\187\69\134\219\167")))();local v9=v8:CreateWindow({[v7("\13\204\39\192","\156\67\173\74\165")]=v7("\18\184\91\5\189\45\67\58\247\4\86\157\42\86\60\182\9\62\189\62","\38\84\215\41\118\220\70"),[v7("\124\25\35\22\247\94\17\22\27\234\92\19","\158\48\118\66\114")]=v7("\135\43\17\50\122\171\252\235\5\3\37\118\177\232\229\106","\155\203\68\112\86\19\197"),[v7("\106\210\55\248\73\118\226\203\83\223\34\245\84\116\224","\152\38\189\86\156\32\24\133")]=v7("\223\69\162\71\232\82\163\6\222\78\231\106\233\79\191","\38\156\55\199"),[v7("\139\114\114\46\26\115\239\81\169\105\117\39\29\71\251\85\161\115\123","\35\200\29\28\72\115\20\154")]={[v7("\60\177\208\221\129\41\48","\84\121\223\177\191\237\76")]=false,[v7("\157\95\197\165\20\81\61\196","\161\219\54\169\192\90\48\80")]=v7("\122\75\18\44\92\81","\69\41\34\96")},[v7("\151\198\206\57\27\56\168\198\218","\75\220\163\183\106\98")]=true,[v7("\41\191\146\4\220\22\174\130\57\222\17","\185\98\218\235\87")]={[v7("\255\53\51\234\219","\202\171\92\71\134\190")]="Luxx's Key System",[v7("\26\212\46\156\32\213\32\141","\232\73\161\76")]=v7("\158\215\86\88\12\251\224\77\72\12\251\242\71\68","\126\219\185\34\61"),[v7("\34\193\74\119","\135\108\174\62\18\30\23\147")]=v7("\132\232\62\206\88\154\59\194\246\207\47\202\12\187\33\194\165","\167\214\137\74\171\120\206\83"),[v7("\173\249\62\88\214\166\134\245","\199\235\144\82\61\152")]=v7("\52\31\171\34\18\5","\75\103\118\217"),[v7("\244\85\102\17\146\27\222","\126\167\52\16\116\217")]=false,[v7("\227\43\57","\156\168\78\64\224\212\121")]=v7("\85\190\247\155","\174\103\142\197")}});local v10=v9:CreateTab(v7("\113\45\81\61\55\95\236\89\58\76","\152\54\72\63\88\69\62"));local v11=v10:CreateSection(v7("\243\193\224\89\198\197\250\83\198\215","\60\180\164\142"));local function v12() local v33=game.Players.LocalPlayer;local v34=v33.Character;if  not v34 then return nil;end local v35=v34:FindFirstChild(v7("\112\75\8\40\41\226\27\92\108\10\38\51\221\19\74\74","\114\56\62\101\73\71\141"));if  not v35 then return nil;end local v36=workspace:WaitForChild(v7("\149\232\203","\164\216\137\187")):WaitForChild(v7("\251\232\54\179\171\251","\107\178\134\81\210\198\158")):WaitForChild(v7("\21\15\146","\202\88\110\226\166")):GetChildren();local v37=nil;local v38=math.huge;for v68,v69 in pairs(v36) do if ((v69.Name==v7("\228\10\140\242\216\194\27\141\229","\170\163\111\226\151")) and v69:FindFirstChild(v7("\35\53\191\55\90\50\58","\73\113\80\210\88\46\87"))) then local v82=0;local v83;while true do if (v82==0) then v83=(v35.Position-v69:GetPivot().Position).Magnitude;if (v83<v38) then local v115=0 -0 ;while true do if (0==v115) then v38=v83;v37=v69;break;end end end break;end end end end return v37;end local function v13() spawn(function() while _G.AutoGeneratorsEnabled do local v76=765 -(574 + 191) ;local v77;while true do if (v76==(0 + 0)) then local v99=0 -0 ;local v100;while true do if ((0 + 0)==v99) then v100=849 -(254 + 595) ;while true do if (v100==(126 -(55 + 71))) then v77=game.Players.LocalPlayer:WaitForChild(v7("\177\32\204\11\226\147\11\216\27","\135\225\76\173\114"));if v77:FindFirstChild(v7("\42\248\162\170\160\184\146\51","\199\122\141\216\208\204\221")) then local v124=v12();if v124 then v124:WaitForChild(v7("\159\216\29\255\108\243\190","\150\205\189\112\144\24")):WaitForChild(v7("\23\161","\112\69\228\223\44\100\232\113")):FireServer();end end v100=1 -0 ;end if (v100==(1791 -(573 + 1217))) then v76=2 -1 ;break;end end break;end end end if (v76==1) then wait(1.75 + 2 );break;end end end end);end local v14=v10:CreateToggle({[v7("\250\30\10\214","\230\180\127\103\179\214\28")]=v7("\173\16\75\73\164\98\239\129\21\83\67\240\68\160\171\0\81\67\246\64\244\131\23\76","\128\236\101\63\38\132\33"),[v7("\143\188\3\86\179\229\219\154\168\29\81\179","\175\204\201\113\36\214\139")]=false,[v7("\97\192\52\219","\100\39\172\85\188")]=v7("\140\109\173\143\20\168\118\188\146\50\185\119\171\147","\83\205\24\217\224"),[v7("\213\192\206\41\239\202\195\13\231\215\200\51\242","\93\134\165\173")]=v11,[v7("\157\243\205\206\56\207\177\117","\30\222\146\161\162\90\174\210")]=function(v39) _G.AutoGeneratorsEnabled=v39;if v39 then local v78=0 -0 ;while true do if (v78==(939 -(714 + 225))) then v8:Notify({[v7("\209\71\100\6\224","\106\133\46\16")]=v7("\127\37\125\249\72\65\76\47\97\239","\32\56\64\19\156\58"),[v7("\121\199\235\66\95\252\148","\224\58\168\133\54\58\146")]=v7("\120\67\95\242\53\161\130\5\92\68\74\233\122\148\148\75\124\88\74\255\121\131\131","\107\57\54\43\157\21\230\231"),[v7("\255\158\3\244\173\213\192\213","\175\187\235\113\149\217\188")]=8 -5 ,[v7("\21\162\128\75\230","\24\92\207\225\44\131\25")]=4483362458});v13();break;end end else v8:Notify({[v7("\127\218\172\64\30","\29\43\179\216\44\123")]=v7("\154\220\46\73\175\216\52\67\175\202","\44\221\185\64"),[v7("\34\232\70\75\118\15\243","\19\97\135\40\63")]=v7("\143\73\39\52\111\22\171\82\54\41\46\37\161\78\32\123\11\56\189\93\49\55\42\53","\81\206\60\83\91\79"),[v7("\106\190\194\115\59\202\66\170","\196\46\203\176\18\79\163\45")]=3 -0 ,[v7("\145\47\127\25\33","\143\216\66\30\126\68\155")]=4483362458 -0 });end end});local v15=v10:CreateSection(v7("\143\251\61","\129\202\168\109\171\165\195\183"));local function v16() local v40=58 -(25 + 33) ;local v41;local v42;local v43;local v44;while true do if (v40==(348 -(10 + 337))) then if  not v42 then return v41;end v43=v42:FindFirstChild(v7("\21\63\14\186\20\238","\85\92\81\105\219\121\139\65"));v40=2;end if (v40==0) then v41={};v42=workspace:FindFirstChild(v7("\15\89\39","\134\66\56\87\184\190\116"));v40=1;end if ((2 + 1)==v40) then if  not v44 then return v41;end for v92,v93 in pairs(v44:GetChildren()) do if (v93.Name==v7("\248\26\250\25\40\222\11\251\14","\90\191\127\148\124")) then table.insert(v41,v93);end end v40=8 -4 ;end if (v40==2) then if  not v43 then return v41;end v44=v43:FindFirstChild(v7("\208\178\64","\191\157\211\48\37\28"));v40=10 -7 ;end if (v40==(736 -(16 + 716))) then return v41;end end end local function v17(v45) while _G.AutoHighlightEnabled and v45.Parent  do local v70=v45:FindFirstChild(v7("\72\149\33\16\106\130\61\4","\119\24\231\78"));if (v70 and v70:IsA(v7("\172\56\168\72\217\82\39\131\33\176\79","\113\226\77\197\42\188\32")) and (v70.Value==(193 -93))) then local v84=v45:FindFirstChildOfClass(v7("\18\31\243\189\54\31\243\189\46","\213\90\118\148"));if v84 then v84:Destroy();end break;end wait();end end local function v18(v46) if  not v46:FindFirstChildOfClass(v7("\115\39\179\94\65\82\41\188\66","\45\59\78\212\54")) then local v79=v46:FindFirstChild(v7("\32\68\140\140\148\43\190\227","\144\112\54\227\235\230\78\205"));if (v79 and v79:IsA(v7("\157\61\2\254\213\73\133\41\3\233\213","\59\211\72\111\156\176")) and (v79.Value<(197 -(11 + 86)))) then local v94=0;local v95;while true do if (v94==0) then v95=Instance.new(v7("\102\142\228\37\66\142\228\37\90","\77\46\231\131"));v95.FillColor=Color3.fromRGB(0,621 -366 ,285 -(175 + 110) );v94=1;end if (v94==(4 -2)) then spawn(function() v17(v46);end);break;end if (v94==1) then v95.OutlineColor=Color3.fromRGB(0,1257 -1002 ,1796 -(503 + 1293) );v95.Parent=v46;v94=5 -3 ;end end end end end local function v19() for v71,v72 in pairs(v16()) do local v73=0;local v74;while true do if (v73==(0 + 0)) then v74=v72:FindFirstChildOfClass(v7("\146\93\177\72\182\93\177\72\174","\32\218\52\214"));if v74 then v74:Destroy();end break;end end end end local function v20() spawn(function() while _G.AutoHighlightEnabled do for v85,v86 in pairs(v16()) do if _G.AutoHighlightEnabled then v18(v86);end end wait();end end);end local v21=v10:CreateToggle({[v7("\96\22\60\173","\58\46\119\81\200\145\208\37")]=v7("\10\153\36\163\233\149\63\44\132\60\165\174\181\34\107\171\53\162\172\175\55\63\131\34\191","\86\75\236\80\204\201\221"),[v7("\81\84\101\151\251\133\102\119\118\137\235\142","\235\18\33\23\229\158")]=false,[v7("\118\182\192\188","\219\48\218\161")]=v7("\197\100\104\70\243\70\231\236\125\117\78\211\91","\128\132\17\28\41\187\47"),[v7("\50\55\5\46\84\14\60\54\59\79\4\60\18","\61\97\82\102\90")]=v15,[v7("\143\47\167\71\197\86\29\2","\105\204\78\203\43\167\55\126")]=function(v47) local v48=0;while true do if (v48==(1061 -(810 + 251))) then _G.AutoHighlightEnabled=v47;if v47 then local v101=0 + 0 ;while true do if (v101==(0 + 0)) then v8:Notify({[v7("\145\163\55\18\22","\49\197\202\67\126\115\100\167")]=v7("\18\104\239","\62\87\59\191\73\224\54"),[v7("\196\13\244\221\226\12\238","\169\135\98\154")]=v7("\234\98\48\91\189\27\193\204\127\40\93\250\59\220\139\80\33\90\248\33\201\223\120\54\71\189\22\198\202\117\40\81\249","\168\171\23\68\52\157\83"),[v7("\208\100\231\172\49\36\136\250","\231\148\17\149\205\69\77")]=3,[v7("\169\170\198\252\82","\159\224\199\167\155\55")]=4483362649 -(53 + 138) });v20();break;end end else local v102=301 -(112 + 189) ;local v103;while true do if (v102==0) then v103=0;while true do if (v103==(0 -0)) then v8:Notify({[v7("\195\250\40\222\242","\178\151\147\92")]=v7("\169\206\124","\26\236\157\44\82\114\44"),[v7("\9\33\219\79\47\32\193","\59\74\78\181")]=v7("\4\196\78\85\243\13\216\93\82\191\44\214\82\78\243\2\212\84\95\161\36\197\85\72\160\101\245\83\73\178\39\221\95\94","\211\69\177\58\58"),[v7("\147\240\107\244\253\194\184\235","\171\215\133\25\149\137")]=4 -1 ,[v7("\200\197\51\253\234","\34\129\168\82\154\143\80\156")]=4483362458});v19();break;end end break;end end end break;end end end});local v22=v9:CreateTab(v7("\181\190\50\18\77\92\154","\233\229\210\83\107\40\46"));local v23=v22:CreateSection(v7("\228\113\2","\101\161\34\82\182"));local function v24() local v49=0 + 0 ;local v50;local v51;local v52;local v53;local v54;while true do if (v49==0) then v50=0;v51=nil;v49=1 -0 ;end if (v49==1) then v52=nil;v53=nil;v49=2;end if (v49==(1 + 1)) then v54=nil;while true do if ((1747 -(1344 + 400))==v50) then if v54 then for v118,v119 in pairs(v54:GetChildren()) do if (v119:IsA(v7("\28\141\120\185\61","\220\81\226\28")) and (v119:GetAttribute(v7("\38\198\135\233\228\198\30\208","\167\115\181\226\155\138"))==v52)) then return v7("\241\55\245\74\114\103\201\240","\166\130\66\135\60\27\17");end end end return nil;end if (v50==(406 -(255 + 150))) then v52=game.Players.LocalPlayer.Name;v53=v51:FindFirstChild(v7("\21\54\245\253\59\45\234","\145\94\95\153"));v50=2 + 0 ;end if (v50==(0 + 0)) then v51=workspace:FindFirstChild(v7("\216\1\88\231\222\240\145","\78\136\109\57\158\187\130\226"));if  not v51 then return nil;end v50=4 -3 ;end if (v50==(6 -4)) then if v53 then for v120,v121 in pairs(v53:GetChildren()) do if (v121:IsA(v7("\208\194\16\208\66","\215\157\173\116\181\46")) and (v121:GetAttribute(v7("\0\167\142\224\212\52\185\142","\186\85\212\235\146"))==v52)) then return v7("\201\136\26\242\60\252","\56\162\225\118\158\89\142");end end end v54=v51:FindFirstChild(v7("\111\16\210\185\43\206\83\23\211","\184\60\101\160\207\66"));v50=3;end end break;end end end local function v25() local v55=0;local v56;local v57;local v58;local v59;while true do if (v55==0) then v56={};v57=workspace:FindFirstChild(v7("\116\70\207\108\53\86\89","\80\36\42\174\21"));v55=1740 -(404 + 1335) ;end if (v55==(409 -(183 + 223))) then return v56;end if (v55==(2 -0)) then v59=game.Players.LocalPlayer.Name;if (v58==v7("\69\25\59\118\75\2","\26\46\112\87")) then local v104=v57:FindFirstChild(v7("\138\54\185\98\182\169\74\166\170","\212\217\67\203\20\223\223\37"));if v104 then for v116,v117 in pairs(v104:GetChildren()) do if (v117:IsA(v7("\151\130\172\215\182","\178\218\237\200")) and v117:GetAttribute(v7("\131\166\227\194\184\180\235\213","\176\214\213\134")) and (v117:GetAttribute(v7("\193\190\179\198\166\87\84\241","\57\148\205\214\180\200\54"))~=v59)) then table.insert(v56,{[v7("\31\242\49\49\122","\22\114\157\85\84")]=v117,[v7("\205\216\56\205\81\250\173\214","\200\164\171\115\164\61\150")]=false});end end end elseif (v58==v7("\173\225\17\83\138\168\251\17","\227\222\148\99\37")) then local v112=v57:FindFirstChild(v7("\24\91\94\250\252\33\65","\153\83\50\50\150"));if v112 then for v122,v123 in pairs(v112:GetChildren()) do if (v123:IsA(v7("\112\121\119\25\127","\45\61\22\19\124\19\203")) and v123:GetAttribute(v7("\244\1\8\231\12\113\180\196","\217\161\114\109\149\98\16")) and (v123:GetAttribute(v7("\39\51\61\110\178\117\31\37","\20\114\64\88\28\220"))~=v59)) then table.insert(v56,{[v7("\60\14\214\177\244","\221\81\97\178\212\152\176")]=v123,[v7("\196\244\54\242\22\193\226\15","\122\173\135\125\155")]=true});end end end end v55=2 + 1 ;end if (v55==1) then if  not v57 then return v56;end v58=v24();v55=2;end end end local function v26(v60,v61) local v62=0 + 0 ;local v63;while true do if ((337 -(10 + 327))==v62) then if ( not v60 or  not v60.Parent) then return;end v63=v60:FindFirstChildOfClass(v7("\172\200\7\177\51\56\207\140\213","\168\228\161\96\217\95\81")) or Instance.new(v7("\243\216\41\84\35\94\220\217\58","\55\187\177\78\60\79")) ;v62=1 + 0 ;end if (v62==(340 -(118 + 220))) then v63.Parent=v60;break;end if (v62==(1 + 0)) then v63.FillColor=(v61 and Color3.fromRGB(704 -(108 + 341) ,0 + 0 ,0 -0 )) or Color3.fromRGB(1748 -(711 + 782) ,316 -151 ,0) ;v63.OutlineColor=(v61 and Color3.fromRGB(200,469 -(270 + 199) ,0 + 0 )) or Color3.fromRGB(200,1919 -(580 + 1239) ,0 -0 ) ;v62=2 + 0 ;end end end local function v27() local v64=0 + 0 ;local v65;while true do if (v64==(1 + 0)) then for v96,v97 in pairs({v7("\183\84\74\56\141\87\87\60\151","\78\228\33\56"),v7("\229\119\190\15\128\220\109","\229\174\30\210\99")}) do local v98=v65:FindFirstChild(v97);if v98 then for v113,v114 in pairs(v98:GetChildren()) do if v114:FindFirstChildOfClass(v7("\51\228\129\89\225\52\62\19\249","\89\123\141\230\49\141\93")) then v114:FindFirstChildOfClass(v7("\219\120\241\4\28\67\244\121\226","\42\147\17\150\108\112")):Destroy();end end end end break;end if (v64==0) then local v91=0 -0 ;while true do if (v91==1) then v64=1 + 0 ;break;end if ((1167 -(645 + 522))==v91) then v65=workspace:FindFirstChild(v7("\29\194\94\242\67\221\147","\224\77\174\63\139\38\175"));if  not v65 then return;end v91=1791 -(1010 + 780) ;end end end end end local function v28() while _G.AutoHighlightPlayersEnabled do local v75=0;while true do if (v75==(0 + 0)) then for v105,v106 in pairs(v25()) do if v106.model.Parent then v26(v106.model,v106.isKiller);end end wait();break;end end end end local v29=v22:CreateToggle({[v7("\33\167\32\122","\136\111\198\77\31\135")]=v7("\35\28\179\89\253\204\30\174\10\5\174\81\181\240\87\140\12\12\170\95\184\247\88\154\23\27\177\95\171\235\5\186\66\65\131\83\173\225\25\173\17\73\136\88\253\214\24\165\7\64","\201\98\105\199\54\221\132\119"),[v7("\154\25\145\51\7\59\184\143\13\143\52\7","\204\217\108\227\65\98\85")]=false,[v7("\120\207\244\226","\160\62\163\149\133\76")]=v7("\247\181\25\32\235\223\167\5\35\202\209\168\25\31\207\215\185\8\61\208","\163\182\192\109\79"),[v7("\7\35\3\212\252\59\40\48\193\231\49\40\20","\149\84\70\96\160")]=v23,[v7("\27\7\1\225\58\7\14\230","\141\88\102\109")]=function(v66) _G.AutoHighlightPlayersEnabled=v66;if v66 then local v80=0 -0 ;while true do if ((0 -0)==v80) then v8:Notify({[v7("\135\90\222\124\31","\161\211\51\170\16\122\93\53")]=v7("\203\162\179\49\254\188\242\13\200\158","\72\155\206\210"),[v7("\101\117\90\26\54\72\110","\83\38\26\52\110")]=v7("\125\25\34\75\65\87\15\79\95\31\43\79\95\31\51\79\86\16\103\99\86\22\37\74\93\19","\38\56\119\71"),[v7("\215\250\74\215\49\95\252\225","\54\147\143\56\182\69")]=1839 -(1045 + 791) ,[v7("\255\140\254\78\218","\191\182\225\159\41")]=4483362458 -0 });spawn(v28);break;end end else local v81=0 -0 ;while true do if (0==v81) then v8:Notify({[v7("\31\27\60\89\142","\162\75\114\72\53\235\231")]=v7("\188\48\69\251\86\16\204\25\119\210","\98\236\92\36\130\51"),[v7("\135\22\2\174\64\166\161","\80\196\121\108\218\37\200\213")]=v7("\37\125\7\114\82\78\162\9\116\10\115\66\9\130\20\122\12\120\11\42\131\19\114\0\115\78\10","\234\96\19\98\31\43\110"),[v7("\34\10\64\198\184\123\132\8","\235\102\127\50\167\204\18")]=508 -(351 + 154) ,[v7("\121\172\244\36\65","\78\48\193\149\67\36")]=4483364032 -(1281 + 293) });v27();break;end end end end});v8:LoadConfiguration();
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local window = Rayfield:CreateWindow({
+    Name = "Forsaken - Alpha Hax",
+    LoadingTitle = "Loading Assets..",
+    LoadingSubtitle = "Created By Luxx",
+    ConfigurationSaving = {
+        Enabled = false,
+        FileName = "Sirius"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Luxx's Key System",
+        Subtitle = "Enter Your Key",
+        Note = "Rate The Features",
+        FileName = "Sirius",
+        SaveKey = false,
+        Key = "2025"
+    }
+})
+
+local generatorsTab = window:CreateTab("Generators")
+local generatorsSection = generatorsTab:CreateSection("Generators")
+
+local function findNearestGenerator()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then return nil end
+    local rootPart = character:FindFirstChild("HumanoidRootPart")
+    if not rootPart then return nil end
+    local generators = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map"):GetChildren()
+    local nearest = nil
+    local minDistance = math.huge
+    for _, obj in pairs(generators) do
+        if obj.Name == "Generator" and obj:FindFirstChild("Remotes") then
+            local distance = (rootPart.Position - obj:GetPivot().Position).Magnitude
+            if distance < minDistance then
+                minDistance = distance
+                nearest = obj
+            end
+        end
+    end
+    return nearest
+end
+
+local function startGeneratorAutoComplete()
+    spawn(function()
+        while _G.AutoGeneratorsEnabled do
+            local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            if playerGui:FindFirstChild("PuzzleUI") then
+                local generator = findNearestGenerator()
+                if generator then
+                    generator:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+                end
+            end
+            wait(3.75)
+        end
+    end)
+end
+
+local autoCompleteToggle = generatorsTab:CreateToggle({
+    Name = "Auto Complete Generators",
+    CurrentValue = false,
+    Flag = "AutoGenerators",
+    SectionParent = generatorsSection,
+    Callback = function(value)
+        _G.AutoGeneratorsEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startGeneratorAutoComplete()
+        else
+            Rayfield:Notify({
+                Title = "Generators",
+                Content = "Auto Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+        end
+    end
+})
+
+local espSection = generatorsTab:CreateSection("ESP")
+
+local function getGenerators()
+    local generators = {}
+    local success, map = pcall(function() return workspace:WaitForChild("Map") end)
+    if not success then return generators end
+    local inGame = map:FindFirstChild("Ingame")
+    if not inGame then return generators end
+    local mapModel = inGame:FindFirstChild("Map")
+    if not mapModel then return generators end
+    for _, obj in pairs(mapModel:GetChildren()) do
+        if obj.Name == "Generator" then
+            table.insert(generators, obj)
+        end
+    end
+    return generators
+end
+
+local function monitorProgress(generator)
+    if not generator or not generator.Parent then return end
+    local progress = generator:FindFirstChild("Progress")
+    if not progress or not progress:IsA("NumberValue") then return end
+    while _G.AutoHighlightEnabled and generator.Parent do
+        if progress.Value == 100 then
+            local highlight = generator:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+            break
+        end
+        wait()
+    end
+end
+
+local function applyHighlight(generator)
+    if not generator or generator:FindFirstChildOfClass("Highlight") then return end
+    local progress = generator:FindFirstChild("Progress")
+    if not progress or not progress:IsA("NumberValue") then return end
+    if progress.Value < 100 then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(0, 255, 0)
+        highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
+        highlight.Parent = generator
+        spawn(function() monitorProgress(generator) end)
+    end
+end
+
+local function clearHighlights()
+    for _, generator in pairs(getGenerators()) do
+        local highlight = generator:FindFirstChildOfClass("Highlight")
+        if highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+local function startHighlighting()
+    spawn(function()
+        while _G.AutoHighlightEnabled do
+            for _, generator in pairs(getGenerators()) do
+                if not _G.AutoHighlightEnabled then break end
+                applyHighlight(generator)
+            end
+            wait()
+        end
+    end)
+end
+
+local autoHighlightToggle = generatorsTab:CreateToggle({
+    Name = "Auto Highlight Generators",
+    CurrentValue = false,
+    Flag = "AutoHighlight",
+    SectionParent = espSection,
+    Callback = function(value)
+        _G.AutoHighlightEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            startHighlighting()
+        else
+            Rayfield:Notify({
+                Title = "ESP",
+                Content = "Auto Highlight Generators Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            clearHighlights()
+        end
+    end
+})
+
+local playersTab = window:CreateTab("Players")
+
+local localPlayerSection = playersTab:CreateSection("LocalPlayer")
+
+local infStaminaToggle = playersTab:CreateToggle({
+    Name = "Inf Stamina (Applies To You)",
+    CurrentValue = false,
+    Flag = "InfStamina",
+    SectionParent = localPlayerSection,
+    Callback = function(value)
+        _G.InfStaminaEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Local Player",
+                Content = "Infinite Stamina Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            spawn(function()
+                local Sprinting = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
+                while _G.InfStaminaEnabled do
+                    Sprinting.StaminaLossDisabled = true
+                    Sprinting.StaminaLoss = 0
+                    if Sprinting.__staminaChangedEvent then
+                        Sprinting.__staminaChangedEvent:Fire(Sprinting.Stamina)
+                    end
+                    wait()
+                end
+                if Sprinting then
+                    Sprinting.StaminaLossDisabled = false
+                end
+            end)
+        else
+            Rayfield:Notify({
+                Title = "Local Player",
+                Content = "Infinite Stamina Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+        end
+    end
+})
+
+local playersEspSection = playersTab:CreateSection("ESP")
+
+local function getPlayerRole()
+    local playersFolder = workspace:FindFirstChild("Players")
+    if not playersFolder then return nil end
+    local localPlayerName = game.Players.LocalPlayer.Name
+    local killersFolder = playersFolder:FindFirstChild("Killers")
+    if killersFolder then
+        for _, model in pairs(killersFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") == localPlayerName then
+                return "killer"
+            end
+        end
+    end
+    local survivorsFolder = playersFolder:FindFirstChild("Survivors")
+    if survivorsFolder then
+        for _, model in pairs(survivorsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("Username") == localPlayerName then
+                return "survivor"
+            end
+        end
+    end
+    return nil
+end
+
+local function getEnemyModels()
+    local enemies = {}
+    local playersFolder = workspace:FindFirstChild("Players")
+    if not playersFolder then return enemies end
+    local role = getPlayerRole()
+    local localPlayerName = game.Players.LocalPlayer.Name
+    if role == "killer" then
+        local survivorsFolder = playersFolder:FindFirstChild("Survivors")
+        if survivorsFolder then
+            for _, model in pairs(survivorsFolder:GetChildren()) do
+                if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+                    table.insert(enemies, {model = model, isKiller = false})
+                end
+            end
+        end
+    elseif role == "survivor" then
+        local killersFolder = playersFolder:FindFirstChild("Killers")
+        if killersFolder then
+            for _, model in pairs(killersFolder:GetChildren()) do
+                if model:IsA("Model") and model:GetAttribute("Username") and model:GetAttribute("Username") ~= localPlayerName then
+                    table.insert(enemies, {model = model, isKiller = true})
+                end
+            end
+        end
+    end
+    return enemies
+end
+
+local function applyPlayerHighlight(model, isKiller)
+    if not model or not model.Parent then return end
+    local highlight = model:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+    highlight.FillColor = isKiller and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 165, 0)
+    highlight.OutlineColor = isKiller and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(200, 100, 0)
+    highlight.Parent = model
+end
+
+local function clearPlayerHighlights()
+    local playersFolder = workspace:FindFirstChild("Players")
+    if not playersFolder then return end
+    for _, folderName in pairs({"Survivors", "Killers"}) do
+        local folder = playersFolder:FindFirstChild(folderName)
+        if folder then
+            for _, model in pairs(folder:GetChildren()) do
+                if model:FindFirstChildOfClass("Highlight") then
+                    model:FindFirstChildOfClass("Highlight"):Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function updateEnemyHighlights()
+    while _G.AutoHighlightPlayersEnabled do
+        for _, enemy in pairs(getEnemyModels()) do
+            if enemy.model.Parent then
+                applyPlayerHighlight(enemy.model, enemy.isKiller)
+            end
+        end
+        wait()
+    end
+end
+
+local autoHighlightPlayersToggle = playersTab:CreateToggle({
+    Name = "Auto Highlight Enemies/Survivors (Depends On Role)",
+    CurrentValue = false,
+    Flag = "AutoHighlightPlayers",
+    SectionParent = playersEspSection,
+    Callback = function(value)
+        _G.AutoHighlightPlayersEnabled = value
+        if value then
+            Rayfield:Notify({
+                Title = "Player ESP",
+                Content = "Enemy Highlighting Enabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            spawn(updateEnemyHighlights)
+        else
+            Rayfield:Notify({
+                Title = "Player ESP",
+                Content = "Enemy Highlighting Disabled",
+                Duration = 3,
+                Image = 4483362458
+            })
+            clearPlayerHighlights()
+        end
+    end
+})
+
+Rayfield:LoadConfiguration()
